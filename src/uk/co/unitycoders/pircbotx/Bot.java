@@ -21,6 +21,7 @@ package uk.co.unitycoders.pircbotx;
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.managers.ListenerManager;
 
+import uk.co.unitycoders.pircbotx.commands.KillerTroutCommand;
 import uk.co.unitycoders.pircbotx.commands.LartCommand;
 import uk.co.unitycoders.pircbotx.commands.RandCommand;
 import uk.co.unitycoders.pircbotx.commands.DateCommand;
@@ -34,6 +35,7 @@ public class Bot
 
 		manager.addListener(new DateCommand());
 		manager.addListener(new RandCommand());
+		manager.addListener(new KillerTroutCommand());
 		manager.addListener(new LartCommand());
 
 		try
