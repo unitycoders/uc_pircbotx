@@ -35,7 +35,7 @@ public class DateCommand extends ListenerAdapter<PircBotX>
 	@Override
 	public void onMessage(MessageEvent<PircBotX> event) throws Exception
 	{
-		if (event.getMessage().equals("!time"))
+		if (event.getMessage().startsWith("!date"))
 			event.respond("The current time is " + new Date());
 	}
 }
