@@ -46,7 +46,7 @@ public class RandCommand extends ListenerAdapter<PircBotX>
 	{
 		String msg = event.getMessage();
 
-		if (msg.startsWith("!time"))
+		if (msg.startsWith("!rand"))
 		{
 			int size = this.lines.size();
 			int index = this.random.nextInt(size - 1);
