@@ -16,50 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with uc_PircBotX.  If not, see <http://www.gnu.org/licenses/>.
  */
-package uk.co.unitycoders.pircbotx.commands;
+package uk.co.unitycoders.pircbotx.listeners;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
-import uk.co.unitycoders.pircbotx.listeners.LinesListener;
-
-/**
- * Keeps a log of all the lines said, and randomly speaks one
- *
- * @author Bruce Cowan
- */
-public class RandCommand extends ListenerAdapter<PircBotX>
+public class LinesListener extends ListenerAdapter<PircBotX>
 {
-	private List<String> lines;
-	private Random random;
+	private ArrayList<String> lines;
 
-	public RandCommand()
+	public LinesListener()
 	{
-		lines = new LinesListener().getLines();
-		this.random = new Random();
+		this.lines = new ArrayList<String>();
 	}
 
 	@Override
 	public void onMessage(MessageEvent<PircBotX> event) throws Exception
 	{
-		String msg = event.getMessage();
+		this.lines.add(event.getMessage());
+	}
 
-		this.lines.add(msg);
-
-		if (msg.startsWith("!rand"))
-		{
-			int size = this.lines.size();
-
-			if (size == 0)
-				return;
-
-			int index = this.random.nextInt(size - 1);
-			event.respond(this.lines.get(index));
-		}
+	public List<String> getLines()
+	{
+		return this.lines;
 	}
 }
