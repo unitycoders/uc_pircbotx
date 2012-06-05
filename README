@@ -1,1 +1,6 @@
 This is a bot for #unity-coders, which uses pircbotx
+
+# Compiling and running with maven
+$ mvn package
+$ java -jar target/uc_pircbotx-0.1-SNAPSHOT-jar-with-dependencies.jar 
+
