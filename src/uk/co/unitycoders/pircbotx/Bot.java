@@ -39,7 +39,7 @@ public class Bot
 		manager.addListener(new JoinsCommand());
 		manager.addListener(new KillerTroutCommand());
 		manager.addListener(new LartCommand());
-		manager.addListener(new LinesListener());
+		manager.addListener(LinesListener.getLinesListener());
 		manager.addListener(new RandCommand());
 
 		try

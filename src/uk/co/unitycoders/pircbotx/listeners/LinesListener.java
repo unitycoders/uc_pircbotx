@@ -27,11 +27,21 @@ import org.pircbotx.hooks.events.MessageEvent;
 
 public class LinesListener extends ListenerAdapter<PircBotX>
 {
+	private static LinesListener singleton;
+
 	private ArrayList<String> lines;
 
-	public LinesListener()
+	private LinesListener()
 	{
 		this.lines = new ArrayList<String>();
+	}
+
+	public static LinesListener getLinesListener()
+	{
+		if (singleton == null)
+			singleton = new LinesListener();
+		
+		return singleton;
 	}
 
 	@Override

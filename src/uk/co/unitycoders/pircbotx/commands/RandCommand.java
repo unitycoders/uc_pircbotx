@@ -39,7 +39,7 @@ public class RandCommand extends ListenerAdapter<PircBotX>
 
 	public RandCommand()
 	{
-		lines = new LinesListener().getLines();
+		lines = LinesListener.getLinesListener().getLines();
 		this.random = new Random();
 	}
 
