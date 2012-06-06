@@ -30,12 +30,12 @@ import org.pircbotx.hooks.events.MessageEvent;
  *
  * @author Bruce Cowan
  */
-public class DateCommand extends ListenerAdapter<PircBotX>
+public class DateTimeCommand extends ListenerAdapter<PircBotX>
 {
 	@Override
 	public void onMessage(MessageEvent<PircBotX> event) throws Exception
 	{
-		if (event.getMessage().startsWith("!date"))
+		if (event.getMessage().startsWith("!date") || event.getMessage().startsWith("!time"))
 			event.respond("The current time is " + new Date());
 	}
 }

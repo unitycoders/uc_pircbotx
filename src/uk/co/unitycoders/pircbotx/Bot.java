@@ -25,7 +25,7 @@ import uk.co.unitycoders.pircbotx.commands.JoinsCommand;
 import uk.co.unitycoders.pircbotx.commands.KillerTroutCommand;
 import uk.co.unitycoders.pircbotx.commands.LartCommand;
 import uk.co.unitycoders.pircbotx.commands.RandCommand;
-import uk.co.unitycoders.pircbotx.commands.DateCommand;
+import uk.co.unitycoders.pircbotx.commands.DateTimeCommand;
 
 public class Bot
 {
@@ -34,7 +34,7 @@ public class Bot
 		PircBotX bot = new PircBotX();
 		ListenerManager<PircBotX> manager = (ListenerManager<PircBotX>) bot.getListenerManager();
 
-		manager.addListener(new DateCommand());
+		manager.addListener(new DateTimeCommand());
 		manager.addListener(new JoinsCommand());
 		manager.addListener(new KillerTroutCommand());
 		manager.addListener(new LartCommand());
