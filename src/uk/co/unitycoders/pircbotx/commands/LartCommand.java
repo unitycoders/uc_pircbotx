@@ -39,12 +39,15 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 		{
 			String[] split = msg.split(" ");
 			if (split.length == 2)
-			{
-				String insult = "slaps " + split[1] + " with a wet trout";
-				event.getBot().sendAction(event.getChannel(), insult);
-			}
+				insult(event, split[1]);
 			else
-				event.respond("No-one to insult");
+				insult(event, event.getUser().getNick());
 		}
+	}
+
+	private void insult(MessageEvent<PircBotX> event, String nick)
+	{
+		String insult = "slaps " + nick + " with a wet trout";
+		event.getBot().sendAction(event.getChannel(), insult);
 	}
 }
