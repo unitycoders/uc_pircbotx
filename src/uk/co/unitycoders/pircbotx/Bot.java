@@ -33,7 +33,7 @@ public class Bot
 	public static void main(String[] args)
 	{
 		PircBotX bot = new PircBotX();
-		ListenerManager<PircBotX> manager = (ListenerManager<PircBotX>) bot.getListenerManager();
+		ListenerManager<? extends PircBotX> manager = bot.getListenerManager();
 
 		manager.addListener(new DateTimeCommand());
 		manager.addListener(new JoinsCommand());

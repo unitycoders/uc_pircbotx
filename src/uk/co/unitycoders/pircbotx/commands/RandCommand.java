@@ -18,7 +18,6 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
