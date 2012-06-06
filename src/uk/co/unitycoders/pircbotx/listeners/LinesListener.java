@@ -25,6 +25,12 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
+/**
+ * A {@link ListenerAdapter} which keeps a log of all the lines said in a
+ * channel.
+ *
+ * @author Bruce Cowan
+ */
 public class LinesListener extends ListenerAdapter<PircBotX>
 {
 	private static LinesListener singleton;
@@ -36,6 +42,10 @@ public class LinesListener extends ListenerAdapter<PircBotX>
 		this.lines = new ArrayList<String>();
 	}
 
+	/**
+	 * Gets the {@link LinesListener} singleton.
+	 * @return the {@link LinesListener} singleton
+	 */
 	public static LinesListener getLinesListener()
 	{
 		if (singleton == null)
@@ -50,6 +60,10 @@ public class LinesListener extends ListenerAdapter<PircBotX>
 		this.lines.add(event.getMessage());
 	}
 
+	/**
+	 * Gets the list of lines.
+	 * @return the list of lines
+	 */
 	public List<String> getLines()
 	{
 		return this.lines;

@@ -28,7 +28,7 @@ import org.pircbotx.hooks.events.MessageEvent;
 import uk.co.unitycoders.pircbotx.listeners.LinesListener;
 
 /**
- * Keeps a log of all the lines said, and randomly speaks one
+ * Keeps a log of all the lines said, and randomly speaks one.
  *
  * @author Bruce Cowan
  */

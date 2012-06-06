@@ -27,10 +27,18 @@ import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 
+/**
+ * Keeps a list of joins, and gives a list of nicks and number of joins.
+ *
+ * @author Bruce Cowan
+ */
 public class JoinsCommand extends ListenerAdapter<PircBotX>
 {
 	private HashMap<User, Integer> joins;
 
+	/**
+	 * Creates a {@link JoinsCommand}.
+	 */
 	public JoinsCommand()
 	{
 		this.joins = new HashMap<User, Integer>();

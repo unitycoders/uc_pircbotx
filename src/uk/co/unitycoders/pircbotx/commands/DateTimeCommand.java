@@ -25,8 +25,7 @@ import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
 /**
- * Gives the unformatted time
- * TODO make it formatted
+ * Outputs the unformatted time.
  *
  * @author Bruce Cowan
  */

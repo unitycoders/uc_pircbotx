@@ -28,6 +28,11 @@ import uk.co.unitycoders.pircbotx.commands.RandCommand;
 import uk.co.unitycoders.pircbotx.commands.DateTimeCommand;
 import uk.co.unitycoders.pircbotx.listeners.LinesListener;
 
+/**
+ * The actual bot itself.
+ *
+ * @author Bruce Cowan
+ */
 public class Bot
 {
 	public static void main(String[] args)

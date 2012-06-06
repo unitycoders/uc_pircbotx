@@ -22,6 +22,11 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
+/**
+ * Kills the bot. The command name is an in-joke.
+ *
+ * @author Bruce Cowan
+ */
 public class KillerTroutCommand extends ListenerAdapter<PircBotX>
 {
 	@Override
