@@ -53,11 +53,18 @@ public class SayCommand extends ListenerAdapter<PircBotX>
 			if (matcher.matches())
 			{
 				String channel = matcher.group("channel");
+
+				if (!event.getBot().channelExists(channel))
+				{
+					event.respond("Not in channel " + channel);
+					return;
+				}
+
 				String say = matcher.group("msg");
 				event.getBot().sendMessage(channel, say);
 			}
 			else
-				event.respond("!say ##channel msg");
+				event.respond("!say [#&]channel msg...");
 		}
 	}
 }
