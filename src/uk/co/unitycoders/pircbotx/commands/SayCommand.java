@@ -36,7 +36,8 @@ public class SayCommand extends ListenerAdapter<PircBotX>
 
 	public SayCommand()
 	{
-		this.re = Pattern.compile("!say (?<channel>[^ ]+) (?<msg>.+)");
+		// Syntax: !say [#&]channel message...
+		this.re = Pattern.compile("^!say (?<channel>[#&][^\\a, ]+) (?<msg>.+)");
 	}
 
 	@Override
