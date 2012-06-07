@@ -26,6 +26,7 @@ import uk.co.unitycoders.pircbotx.commands.KillerTroutCommand;
 import uk.co.unitycoders.pircbotx.commands.LartCommand;
 import uk.co.unitycoders.pircbotx.commands.RandCommand;
 import uk.co.unitycoders.pircbotx.commands.DateTimeCommand;
+import uk.co.unitycoders.pircbotx.commands.SayCommand;
 import uk.co.unitycoders.pircbotx.listeners.LinesListener;
 
 /**
@@ -46,6 +47,7 @@ public class Bot
 		manager.addListener(new LartCommand());
 		manager.addListener(LinesListener.getLinesListener());
 		manager.addListener(new RandCommand());
+		manager.addListener(new SayCommand());
 
 		try
 		{
