@@ -9,11 +9,11 @@
   <modelVersion>4.0.0</modelVersion>
   <name>uc_pircbotx</name>
   <description>A bot for #unity-coders using pircbotx</description>
-  
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-  
+
   <build>
   <plugins>
     <plugin>
@@ -39,14 +39,27 @@
     </plugin>
   </plugins>
   </build>
-  
+  <repositories>
+    <repository>
+      <url>http://repo1.maven.org/maven2/</url>
+      <id>junit_4</id>
+      <layout>default</layout>
+      <name>Repository for library Library[junit_4]</name>
+    </repository>
+  </repositories>
   <dependencies>
     <dependency>
       <groupId>org.pircbotx</groupId>
       <artifactId>pircbotx</artifactId>
       <version>1.7</version>
     </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.10</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
-  
+
 
 </project>

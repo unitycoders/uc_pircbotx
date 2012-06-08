@@ -50,7 +50,7 @@ public class LinesListener extends ListenerAdapter<PircBotX>
 	{
 		if (singleton == null)
 			singleton = new LinesListener();
-		
+
 		return singleton;
 	}
 
