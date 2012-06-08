@@ -51,7 +51,7 @@ public class Bot
 
 		try
 		{
-			bot.setName("uc_jtoaster");
+			bot.setName("uc_pircbotx");
 			bot.connect("irc.freenode.net");
 			bot.joinChannel("#unity-coders");
 			bot.setVerbose(true);
