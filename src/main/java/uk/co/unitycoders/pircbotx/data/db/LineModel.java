@@ -25,7 +25,7 @@ public class LineModel {
 
     private void buildTable() throws SQLException{
         Statement stmt = conn.createStatement();
-        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS lines (name string)");
+        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS lines (nick string, name string)");
     }
 
     public void storeLine(String line) throws SQLException{
