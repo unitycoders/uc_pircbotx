@@ -18,47 +18,23 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
-import java.util.List;
-import java.util.Random;
+import java.util.Date;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
-import uk.co.unitycoders.pircbotx.listeners.LinesListener;
-
 /**
- * Keeps a log of all the lines said, and randomly speaks one.
+ * Outputs the unformatted time.
  *
  * @author Bruce Cowan
  */
-public class RandCommand extends ListenerAdapter<PircBotX>
+public class DateTimeCommand extends ListenerAdapter<PircBotX>
 {
-	private List<String> lines;
-	private Random random;
-
-	public RandCommand()
-	{
-		lines = LinesListener.getLinesListener().getLines();
-		this.random = new Random();
-	}
-
 	@Override
 	public void onMessage(MessageEvent<PircBotX> event) throws Exception
 	{
-		String msg = event.getMessage();
-
-		this.lines.add(msg);
-
-		if (msg.startsWith("!rand"))
-		{
-			int size = this.lines.size();
-
-			if (size == 0)
-				return;
-
-			int index = this.random.nextInt(size - 1);
-			event.respond(this.lines.get(index));
-		}
+		if (event.getMessage().startsWith("!date") || event.getMessage().startsWith("!time"))
+			event.respond("The current time is " + new Date());
 	}
 }

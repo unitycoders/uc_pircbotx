@@ -23,8 +23,7 @@ import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
 /**
- * Insults the 1st argument
- * TODO add, remove and list insults 
+ * Insults the 1st argument.
  *
  * @author Bruce Cowan
  */
@@ -39,12 +38,20 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 		{
 			String[] split = msg.split(" ");
 			if (split.length == 2)
-			{
-				String insult = "slaps " + split[1] + " with a wet trout";
-				event.getBot().sendAction(event.getChannel(), insult);
-			}
+				insult(event, split[1]);
 			else
-				event.respond("No-one to insult");
+				insult(event, event.getUser().getNick());
 		}
+	}
+
+	/**
+	 * Insults someone.
+	 * @param event the event from {@link #onMessage(MessageEvent)}.
+	 * @param nick the nick to insult
+	 */
+	private void insult(MessageEvent<PircBotX> event, String nick)
+	{
+		String insult = "slaps " + nick + " with a wet trout";
+		event.getBot().sendAction(event.getChannel(), insult);
 	}
 }

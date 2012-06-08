@@ -18,47 +18,57 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
-import java.util.List;
-import java.util.Random;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.pircbotx.PircBotX;
+import org.pircbotx.User;
 import org.pircbotx.hooks.ListenerAdapter;
+import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 
-import uk.co.unitycoders.pircbotx.listeners.LinesListener;
-
 /**
- * Keeps a log of all the lines said, and randomly speaks one.
+ * Keeps a list of joins, and gives a list of nicks and number of joins.
  *
  * @author Bruce Cowan
  */
-public class RandCommand extends ListenerAdapter<PircBotX>
+public class JoinsCommand extends ListenerAdapter<PircBotX>
 {
-	private List<String> lines;
-	private Random random;
+	private HashMap<User, Integer> joins;
 
-	public RandCommand()
+	/**
+	 * Creates a {@link JoinsCommand}.
+	 */
+	public JoinsCommand()
 	{
-		lines = LinesListener.getLinesListener().getLines();
-		this.random = new Random();
+		this.joins = new HashMap<User, Integer>();
+	}
+
+	@Override
+	public void onJoin(JoinEvent<PircBotX> event) throws Exception
+	{
+		Integer joins = this.joins.get(event.getUser());
+		if (joins == null)
+			joins = 0;
+		this.joins.put(event.getUser(), joins + 1);
 	}
 
 	@Override
 	public void onMessage(MessageEvent<PircBotX> event) throws Exception
 	{
-		String msg = event.getMessage();
-
-		this.lines.add(msg);
-
-		if (msg.startsWith("!rand"))
+		if (event.getMessage().startsWith("!joins"))
 		{
-			int size = this.lines.size();
+			StringBuilder builder = new StringBuilder();
 
-			if (size == 0)
-				return;
+			for (Map.Entry<User, Integer> entry : this.joins.entrySet())
+			{
+				String nick = entry.getKey().getNick();
+				String value = entry.getValue().toString();
+				builder.append(nick + " = " + value + "; ");
+			}
 
-			int index = this.random.nextInt(size - 1);
-			event.respond(this.lines.get(index));
+			//TODO chop off end semicolon
+			event.respond(builder.toString());
 		}
 	}
 }

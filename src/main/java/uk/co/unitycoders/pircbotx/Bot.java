@@ -21,20 +21,33 @@ package uk.co.unitycoders.pircbotx;
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.managers.ListenerManager;
 
+import uk.co.unitycoders.pircbotx.commands.JoinsCommand;
+import uk.co.unitycoders.pircbotx.commands.KillerTroutCommand;
 import uk.co.unitycoders.pircbotx.commands.LartCommand;
 import uk.co.unitycoders.pircbotx.commands.RandCommand;
-import uk.co.unitycoders.pircbotx.commands.DateCommand;
+import uk.co.unitycoders.pircbotx.commands.DateTimeCommand;
+import uk.co.unitycoders.pircbotx.commands.SayCommand;
+import uk.co.unitycoders.pircbotx.listeners.LinesListener;
 
+/**
+ * The actual bot itself.
+ *
+ * @author Bruce Cowan
+ */
 public class Bot
 {
 	public static void main(String[] args)
 	{
 		PircBotX bot = new PircBotX();
-		ListenerManager<PircBotX> manager = (ListenerManager<PircBotX>) bot.getListenerManager();
+		ListenerManager<? extends PircBotX> manager = bot.getListenerManager();
 
-		manager.addListener(new DateCommand());
-		manager.addListener(new RandCommand());
+		manager.addListener(new DateTimeCommand());
+		manager.addListener(new JoinsCommand());
+		manager.addListener(new KillerTroutCommand());
 		manager.addListener(new LartCommand());
+		manager.addListener(LinesListener.getLinesListener());
+		manager.addListener(new RandCommand());
+		manager.addListener(new SayCommand());
 
 		try
 		{

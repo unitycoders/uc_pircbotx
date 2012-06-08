@@ -16,49 +16,56 @@
  * You should have received a copy of the GNU General Public License
  * along with uc_PircBotX.  If not, see <http://www.gnu.org/licenses/>.
  */
-package uk.co.unitycoders.pircbotx.commands;
+package uk.co.unitycoders.pircbotx.listeners;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
-import uk.co.unitycoders.pircbotx.listeners.LinesListener;
-
 /**
- * Keeps a log of all the lines said, and randomly speaks one.
+ * A {@link ListenerAdapter} which keeps a log of all the lines said in a
+ * channel.
  *
  * @author Bruce Cowan
  */
-public class RandCommand extends ListenerAdapter<PircBotX>
+public class LinesListener extends ListenerAdapter<PircBotX>
 {
-	private List<String> lines;
-	private Random random;
+	private static LinesListener singleton;
 
-	public RandCommand()
+	private ArrayList<String> lines;
+
+	private LinesListener()
 	{
-		lines = LinesListener.getLinesListener().getLines();
-		this.random = new Random();
+		this.lines = new ArrayList<String>();
+	}
+
+	/**
+	 * Gets the {@link LinesListener} singleton.
+	 * @return the {@link LinesListener} singleton
+	 */
+	public static LinesListener getLinesListener()
+	{
+		if (singleton == null)
+			singleton = new LinesListener();
+		
+		return singleton;
 	}
 
 	@Override
 	public void onMessage(MessageEvent<PircBotX> event) throws Exception
 	{
-		String msg = event.getMessage();
+		this.lines.add(event.getMessage());
+	}
 
-		this.lines.add(msg);
-
-		if (msg.startsWith("!rand"))
-		{
-			int size = this.lines.size();
-
-			if (size == 0)
-				return;
-
-			int index = this.random.nextInt(size - 1);
-			event.respond(this.lines.get(index));
-		}
+	/**
+	 * Gets the list of lines.
+	 * @return the list of lines
+	 */
+	public List<String> getLines()
+	{
+		return this.lines;
 	}
 }

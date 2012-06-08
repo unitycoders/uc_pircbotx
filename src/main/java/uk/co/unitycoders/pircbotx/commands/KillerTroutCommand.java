@@ -18,47 +18,25 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
-import java.util.List;
-import java.util.Random;
-
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
-import uk.co.unitycoders.pircbotx.listeners.LinesListener;
-
 /**
- * Keeps a log of all the lines said, and randomly speaks one.
+ * Kills the bot. The command name is an in-joke.
  *
  * @author Bruce Cowan
  */
-public class RandCommand extends ListenerAdapter<PircBotX>
+public class KillerTroutCommand extends ListenerAdapter<PircBotX>
 {
-	private List<String> lines;
-	private Random random;
-
-	public RandCommand()
-	{
-		lines = LinesListener.getLinesListener().getLines();
-		this.random = new Random();
-	}
-
 	@Override
 	public void onMessage(MessageEvent<PircBotX> event) throws Exception
 	{
-		String msg = event.getMessage();
-
-		this.lines.add(msg);
-
-		if (msg.startsWith("!rand"))
+		if (event.getMessage().startsWith("!killertrout"))
 		{
-			int size = this.lines.size();
-
-			if (size == 0)
-				return;
-
-			int index = this.random.nextInt(size - 1);
-			event.respond(this.lines.get(index));
+			String trout = event.getBot().getNick() + " has been killed by a trout";
+			event.getBot().sendMessage(event.getChannel(), trout);
+			event.getBot().shutdown();
 		}
 	}
 }

@@ -18,47 +18,53 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
-import java.util.List;
-import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
-import org.pircbotx.hooks.events.MessageEvent;
-
-import uk.co.unitycoders.pircbotx.listeners.LinesListener;
+import org.pircbotx.hooks.events.PrivateMessageEvent;
 
 /**
- * Keeps a log of all the lines said, and randomly speaks one.
+ * This says messages given to the bot in a private message.
  *
  * @author Bruce Cowan
  */
-public class RandCommand extends ListenerAdapter<PircBotX>
+public class SayCommand extends ListenerAdapter<PircBotX>
 {
-	private List<String> lines;
-	private Random random;
+	private Pattern re;
 
-	public RandCommand()
+	public SayCommand()
 	{
-		lines = LinesListener.getLinesListener().getLines();
-		this.random = new Random();
+		// Syntax: !say [#&]channel message...
+		this.re = Pattern.compile("^!say (?<channel>[#&][^\\a, ]+) (?<msg>.+)");
 	}
 
 	@Override
-	public void onMessage(MessageEvent<PircBotX> event) throws Exception
+	public void onPrivateMessage(PrivateMessageEvent<PircBotX> event)
+			throws Exception
 	{
 		String msg = event.getMessage();
 
-		this.lines.add(msg);
-
-		if (msg.startsWith("!rand"))
+		if (msg.startsWith("!say"))
 		{
-			int size = this.lines.size();
+			Matcher matcher = this.re.matcher(msg);
 
-			if (size == 0)
-				return;
+			if (matcher.matches())
+			{
+				String channel = matcher.group("channel");
 
-			int index = this.random.nextInt(size - 1);
-			event.respond(this.lines.get(index));
+				if (!event.getBot().channelExists(channel))
+				{
+					event.respond("Not in channel " + channel);
+					return;
+				}
+
+				String say = matcher.group("msg");
+				event.getBot().sendMessage(channel, say);
+			}
+			else
+				event.respond("!say [#&]channel msg...");
 		}
 	}
 }
