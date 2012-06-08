@@ -43,11 +43,11 @@ public class Bot
 		manager.addListener(LinesListener.getLinesListener());
 		manager.addListener(new RandCommand());
 		manager.addListener(new SayCommand());
-                manager.addListener(new CalcCommand());
+        manager.addListener(new CalcCommand());
 
-                // Snapshot (1.8-SNAPSHOT) only
-                bot.setAutoReconnect(true);
-                bot.setAutoReconnectChannels(true);
+        // Snapshot (1.8-SNAPSHOT) only
+        bot.setAutoReconnect(true);
+        bot.setAutoReconnectChannels(true);
 
 		try
 		{

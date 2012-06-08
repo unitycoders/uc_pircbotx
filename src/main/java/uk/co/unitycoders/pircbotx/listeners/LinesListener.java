@@ -18,7 +18,6 @@
  */
 package uk.co.unitycoders.pircbotx.listeners;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.pircbotx.PircBotX;
@@ -35,42 +34,44 @@ import uk.co.unitycoders.pircbotx.data.db.LineModel;
  */
 public class LinesListener extends ListenerAdapter<PircBotX>
 {
-	private static LinesListener singleton;
-        private LineModel model;
+    private static LinesListener singleton;
+    private LineModel model;
 
-	private LinesListener(LineModel model)
-	{
-            this.model = model;
-	}
+    private LinesListener(LineModel model)
+    {
+        this.model = model;
+    }
 
-	/**
-	 * Gets the {@link LinesListener} singleton.
-	 * @return the {@link LinesListener} singleton
-	 */
-	public static LinesListener getLinesListener()
-	{
-            if (singleton == null)
-                try{
-                    singleton = new LinesListener(DBConnection.getLineModel());
-                }catch(Exception ex){
-                    ex.printStackTrace();
-                }
+    /**
+     * Gets the {@link LinesListener} singleton.
+     * @return the {@link LinesListener} singleton
+     */
+    public static LinesListener getLinesListener()
+    {
+        if (singleton == null)
+        try
+        {
+            singleton = new LinesListener(DBConnection.getLineModel());
+        } catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
 
-            return singleton;
-	}
+        return singleton;
+    }
 
-	@Override
-	public void onMessage(MessageEvent<PircBotX> event) throws Exception
-	{
-            model.storeLine(event.getMessage());
-	}
+    @Override
+    public void onMessage(MessageEvent<PircBotX> event) throws Exception
+    {
+        model.storeLine(event.getMessage());
+    }
 
-	/**
-	 * Gets the list of lines.
-	 * @return the list of lines
-	 */
-	public List<String> getLines()
-	{
-            return model.getAllLines();
-	}
+    /**
+     * Gets the list of lines.
+     * @return the list of lines
+     */
+    public List<String> getLines()
+    {
+        return model.getAllLines();
+    }
 }
