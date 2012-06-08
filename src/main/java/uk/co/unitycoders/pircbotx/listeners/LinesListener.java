@@ -24,6 +24,8 @@ import java.util.List;
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
+import uk.co.unitycoders.pircbotx.data.db.DBConnection;
+import uk.co.unitycoders.pircbotx.data.db.LineModel;
 
 /**
  * A {@link ListenerAdapter} which keeps a log of all the lines said in a
@@ -34,12 +36,11 @@ import org.pircbotx.hooks.events.MessageEvent;
 public class LinesListener extends ListenerAdapter<PircBotX>
 {
 	private static LinesListener singleton;
+        private LineModel model;
 
-	private ArrayList<String> lines;
-
-	private LinesListener()
+	private LinesListener(LineModel model)
 	{
-		this.lines = new ArrayList<String>();
+            this.model = model;
 	}
 
 	/**
@@ -48,16 +49,20 @@ public class LinesListener extends ListenerAdapter<PircBotX>
 	 */
 	public static LinesListener getLinesListener()
 	{
-		if (singleton == null)
-			singleton = new LinesListener();
+            if (singleton == null)
+                try{
+                    singleton = new LinesListener(DBConnection.getLineModel());
+                }catch(Exception ex){
+                    ex.printStackTrace();
+                }
 
-		return singleton;
+            return singleton;
 	}
 
 	@Override
 	public void onMessage(MessageEvent<PircBotX> event) throws Exception
 	{
-		this.lines.add(event.getMessage());
+            model.storeLine(event.getMessage());
 	}
 
 	/**
@@ -66,6 +71,6 @@ public class LinesListener extends ListenerAdapter<PircBotX>
 	 */
 	public List<String> getLines()
 	{
-		return this.lines;
+            return model.getAllLines();
 	}
 }

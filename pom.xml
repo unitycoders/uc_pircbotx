@@ -39,6 +39,7 @@
     </plugin>
   </plugins>
   </build>
+
   <repositories>
     <repository>
       <url>http://repo1.maven.org/maven2/</url>
@@ -47,11 +48,17 @@
       <name>Repository for library Library[junit_4]</name>
     </repository>
   </repositories>
+
   <dependencies>
     <dependency>
       <groupId>org.pircbotx</groupId>
       <artifactId>pircbotx</artifactId>
       <version>1.7</version>
+    </dependency>
+    <dependency>
+      <groupId>org.xerial</groupId>
+      <artifactId>sqlite-jdbc</artifactId>
+      <version>3.6.16</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

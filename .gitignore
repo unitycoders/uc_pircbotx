@@ -1,2 +1,6 @@
-bin
+# Database releated
+bot.db
+
+# Build/Directory Releated
+bin/
 target/

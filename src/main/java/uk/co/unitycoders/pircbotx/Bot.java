@@ -36,7 +36,7 @@ import uk.co.unitycoders.pircbotx.listeners.LinesListener;
  */
 public class Bot
 {
-	public static void main(String[] args)
+	public static void main(String[] args) throws Exception
 	{
 		PircBotX bot = new PircBotX();
 		ListenerManager<? extends PircBotX> manager = bot.getListenerManager();
@@ -51,7 +51,7 @@ public class Bot
 
 		try
 		{
-			bot.setName("uc_pircbotx");
+			bot.setName("uc_jtoaster");
 			bot.connect("irc.freenode.net");
 			bot.joinChannel("#unity-coders");
 			bot.setVerbose(true);

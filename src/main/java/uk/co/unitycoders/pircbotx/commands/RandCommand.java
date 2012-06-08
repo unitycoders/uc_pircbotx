@@ -20,12 +20,11 @@ package uk.co.unitycoders.pircbotx.commands;
 
 import java.util.List;
 import java.util.Random;
-
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
-
-import uk.co.unitycoders.pircbotx.listeners.LinesListener;
+import uk.co.unitycoders.pircbotx.data.db.DBConnection;
+import uk.co.unitycoders.pircbotx.data.db.LineModel;
 
 /**
  * Keeps a log of all the lines said, and randomly speaks one.
@@ -34,12 +33,12 @@ import uk.co.unitycoders.pircbotx.listeners.LinesListener;
  */
 public class RandCommand extends ListenerAdapter<PircBotX>
 {
-	private List<String> lines;
+	private LineModel lines;
 	private Random random;
 
-	public RandCommand()
+	public RandCommand() throws Exception
 	{
-		lines = LinesListener.getLinesListener().getLines();
+		lines = DBConnection.getLineModel();
 		this.random = new Random();
 	}
 
@@ -48,17 +47,14 @@ public class RandCommand extends ListenerAdapter<PircBotX>
 	{
 		String msg = event.getMessage();
 
-		this.lines.add(msg);
-
 		if (msg.startsWith("!rand"))
 		{
-			int size = this.lines.size();
+                    List<String> lineList = lines.getAllLines();
+                    if(lineList.isEmpty())
+                        return;
 
-			if (size == 0)
-				return;
-
-			int index = this.random.nextInt(size - 1);
-			event.respond(this.lines.get(index));
+                    int index = this.random.nextInt(lineList.size() - 1);
+                    event.respond(lineList.get(index));
 		}
 	}
 }
