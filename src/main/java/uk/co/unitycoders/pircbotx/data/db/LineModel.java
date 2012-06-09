@@ -30,21 +30,23 @@ public class LineModel {
     private final PreparedStatement createLine;
     private final PreparedStatement readLines;
 
+    private final int LINE_COLUMN = 1;
+
     public LineModel(Connection conn) throws Exception{
         this.conn = conn;
         buildTable();
-        createLine = conn.prepareStatement("INSERT INTO lines VALUES(?, ?)");
+        createLine = conn.prepareStatement("INSERT INTO lines VALUES(?)");
         readLines = conn.prepareStatement("SELECT * FROM lines");
     }
 
     private void buildTable() throws SQLException{
         Statement stmt = conn.createStatement();
-        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS lines (nick string, name string)");
+        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS lines (name string)");
     }
 
     public void storeLine(String line) throws SQLException{
         createLine.clearParameters();
-        createLine.setString(1, line);
+        createLine.setString(LINE_COLUMN, line);
         createLine.execute();
     }
 
@@ -53,7 +55,7 @@ public class LineModel {
         try{
             ResultSet rs = readLines.executeQuery();
             while(rs.next()){
-                lines.add(rs.getString(1));
+                lines.add(rs.getString(LINE_COLUMN));
             }
             rs.close();
         }catch(SQLException ex){

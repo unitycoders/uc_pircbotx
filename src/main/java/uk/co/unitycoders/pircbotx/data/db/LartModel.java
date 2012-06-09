@@ -46,6 +46,10 @@ public class LartModel
 	private final PreparedStatement deleteLart;
 	private final PreparedStatement randomLart;
 
+	private final int CHANNEL_COLUMN = 1;
+	private final int NICK_COLUMN = 2;
+	private final int PATTERN_COLUMN = 3;
+
 	public LartModel(Connection conn) throws Exception
 	{
 		this.conn = conn;
@@ -70,9 +74,9 @@ public class LartModel
 			throw new IllegalArgumentException("No $who section found");
 
 		createLart.clearParameters();
-		createLart.setString(1, channel.getName());
-		createLart.setString(2, user.getNick());
-		createLart.setString(3, pattern);
+		createLart.setString(CHANNEL_COLUMN, channel.getName());
+		createLart.setString(NICK_COLUMN, user.getNick());
+		createLart.setString(PATTERN_COLUMN, pattern);
 		createLart.execute();
 
 		ResultSet rs = createLart.getGeneratedKeys();
