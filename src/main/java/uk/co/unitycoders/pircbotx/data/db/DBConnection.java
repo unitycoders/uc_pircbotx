@@ -44,5 +44,7 @@ public class DBConnection {
         return new LineModel(getInstance());
     }
 
-
+    public static LartModel getLartModel() throws Exception {
+    	return new LartModel(getInstance());
+    }
 }

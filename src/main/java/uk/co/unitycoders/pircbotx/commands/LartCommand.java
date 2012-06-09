@@ -18,9 +18,15 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
+
+import uk.co.unitycoders.pircbotx.data.db.DBConnection;
+import uk.co.unitycoders.pircbotx.data.db.LartModel;
 
 /**
  * Insults the 1st argument.
@@ -29,6 +35,25 @@ import org.pircbotx.hooks.events.MessageEvent;
  */
 public class LartCommand extends ListenerAdapter<PircBotX>
 {
+	private LartModel model;
+	private final Pattern re;
+
+	/**
+	 * Creates a {@link LartCommand}.
+	 */
+	public LartCommand()
+	{
+		try
+		{
+			this.model = DBConnection.getLartModel();
+		} catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+
+		this.re = Pattern.compile("!lart ([^ ]+)[ ]?(.*)?");
+	}
+
 	@Override
 	public void onMessage(MessageEvent<PircBotX> event) throws Exception
 	{
@@ -36,11 +61,37 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 
 		if (msg.startsWith("!lart"))
 		{
-			String[] split = msg.split(" ");
-			if (split.length == 2)
-				insult(event, split[1]);
+			Matcher matcher = this.re.matcher(msg);
+
+			if(matcher.matches())
+			{
+				String subcommand = matcher.group(1);
+				String opts = matcher.group(2);
+
+				if (subcommand.equals("add"))
+				{
+					try
+					{
+						int num = this.model.storeLart(event.getChannel(), event.getUser(), opts);
+						event.respond("Lart #" + num + " added");
+					} catch (IllegalArgumentException ex)
+					{
+						event.respond("No $msg section given");
+						return;
+					}
+				}
+				else if (subcommand.equals("delete"))
+				{
+					this.model.deleteLart(Integer.parseInt(opts));
+					event.respond("Deleted lart #" + Integer.parseInt(opts));
+				}
+				else if (subcommand.equals("list"))
+					event.respond("Not implemented"); // TODO
+				else
+					insult(event, subcommand);
+			}
 			else
-				insult(event, event.getUser().getNick());
+				event.respond("Couldn't parse command");
 		}
 	}
 
@@ -51,7 +102,14 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 	 */
 	private void insult(MessageEvent<PircBotX> event, String nick)
 	{
-		String insult = "slaps " + nick + " with a wet trout";
-		event.getBot().sendAction(event.getChannel(), insult);
+		String insult;
+		try
+		{
+			insult = this.model.getRandomLart().replace("$who", nick);
+			event.getBot().sendAction(event.getChannel(), insult);
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
