@@ -32,12 +32,12 @@ import org.pircbotx.hooks.events.PrivateMessageEvent;
  */
 public class SayCommand extends ListenerAdapter<PircBotX>
 {
-	private Pattern re;
+	private final Pattern re;
 
 	public SayCommand()
 	{
 		// Syntax: !say [#&]channel message...
-		this.re = Pattern.compile("^!say (?<channel>[#&][^\\a, ]+) (?<msg>.+)");
+		this.re = Pattern.compile("^!say ([#&][^\\a, ]+) (.+)");
 	}
 
 	@Override
@@ -52,19 +52,18 @@ public class SayCommand extends ListenerAdapter<PircBotX>
 
 			if (matcher.matches())
 			{
-				String channel = matcher.group("channel");
-
+				String channel = matcher.group(1);
 				if (!event.getBot().channelExists(channel))
 				{
 					event.respond("Not in channel " + channel);
 					return;
 				}
 
-				String say = matcher.group("msg");
+				String say = matcher.group(2);
 				event.getBot().sendMessage(channel, say);
 			}
 			else
-				event.respond("!say [#&]channel msg...");
+				event.respond("SYNTAX: !say [#&]channel msg...");
 		}
 	}
 }
