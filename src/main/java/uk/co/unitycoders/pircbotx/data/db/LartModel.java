@@ -44,8 +44,10 @@ public class LartModel
 	private final PreparedStatement createLart;
 	private final PreparedStatement readLarts;
 	private final PreparedStatement deleteLart;
+	private final PreparedStatement specificLart;
 	private final PreparedStatement randomLart;
 
+	// FIXME sometimes these columns are 1,2,3; other times 2,3,4
 	private final int CHANNEL_COLUMN = 1;
 	private final int NICK_COLUMN = 2;
 	private final int PATTERN_COLUMN = 3;
@@ -58,6 +60,7 @@ public class LartModel
 		this.createLart = conn.prepareStatement("INSERT INTO larts VALUES(null, ?, ?, ?)");
 		this.readLarts = conn.prepareStatement("SELECT * FROM larts");
 		this.deleteLart = conn.prepareStatement("DELETE FROM larts WHERE id = ?");
+		this.specificLart = conn.prepareStatement("SELECT * FROM larts WHERE id = ?");
 		this.randomLart = conn.prepareStatement("SELECT * FROM larts ORDER BY RANDOM() LIMIT 1");
 	}
 
@@ -79,6 +82,7 @@ public class LartModel
 		createLart.setString(PATTERN_COLUMN, pattern);
 		createLart.execute();
 
+		// FIXME doesn't return the right row id
 		ResultSet rs = createLart.getGeneratedKeys();
 		return rs.getInt(1);
 	}
@@ -90,10 +94,28 @@ public class LartModel
 		deleteLart.execute();
 	}
 
-	public String getRandomLart() throws Exception
+	private Lart buildLart(ResultSet rs) throws SQLException
+	{
+		String channel = rs.getString(2);
+		String nick = rs.getString(3);
+		String pattern = rs.getString(4);
+		return new Lart(channel, nick, pattern);
+	}
+
+	public Lart getLart(int id) throws Exception
+	{
+		specificLart.clearParameters();
+		specificLart.setInt(1, id);
+		specificLart.execute();
+
+		ResultSet rs = specificLart.getResultSet();
+		return buildLart(rs);
+	}
+
+	public Lart getRandomLart() throws Exception
 	{
 		ResultSet rs = randomLart.executeQuery();
-		return rs.getString("pattern");
+		return buildLart(rs);
 	}
 	
 	public List<Lart> getAllLarts()

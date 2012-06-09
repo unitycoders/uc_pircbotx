@@ -18,6 +18,7 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
+import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +28,7 @@ import org.pircbotx.hooks.events.MessageEvent;
 
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.data.db.LartModel;
+import uk.co.unitycoders.pircbotx.types.Lart;
 
 /**
  * Insults the 1st argument.
@@ -82,19 +84,39 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 			{
 				try
 				{
-					int pid = Integer.parseInt(opts);
-					this.model.deleteLart(pid);
-					event.respond("Deleted lart #" + pid);
+					int id = Integer.parseInt(opts);
+					this.model.deleteLart(id);
+					event.respond("Deleted lart #" + id);
 				} catch (NumberFormatException ex)
 				{
 					event.respond("Couldn't parse number");
+				} catch (SQLException ex)
+				{
+					event.respond("No such lart in database");
 				} catch (Exception ex)
 				{
 					ex.printStackTrace();
 				}
 			}
 			else if (subcommand.equals("info"))
-				event.respond("Not implemented"); // TODO add this subcommand
+			{
+				try
+				{
+					int id = Integer.parseInt(opts);
+					Lart lart = this.model.getLart(id);
+					String resp = "Channel: " + lart.getChannel() + " Nick: " + lart.getNick() + " Pattern: " + lart.getPattern();
+					event.respond(resp);
+				} catch (NumberFormatException ex)
+				{
+					event.respond("Couldn't parse number");
+				} catch (SQLException ex)
+				{
+					event.respond("No such lart in database");
+				} catch (Exception ex)
+				{
+					ex.printStackTrace();
+				}
+			}
 			else if (subcommand.equals("list"))
 				event.respond("Not implemented"); // TODO add this subcommand
 			else
@@ -112,7 +134,8 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 		String insult;
 		try
 		{
-			insult = this.model.getRandomLart().replace("$who", nick);
+			String pattern = this.model.getRandomLart().getPattern();
+			insult = pattern.replace("$who", nick);
 			event.getBot().sendAction(event.getChannel(), insult);
 		} catch (Exception e)
 		{
