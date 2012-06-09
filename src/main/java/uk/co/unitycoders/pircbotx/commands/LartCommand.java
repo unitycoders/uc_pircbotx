@@ -51,7 +51,7 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 			ex.printStackTrace();
 		}
 
-		this.re = Pattern.compile("!lart ([^ ]+)[ ]?(.*)?");
+		this.re = Pattern.compile("!lart ([^ ]+) *(.*)?");
 	}
 
 	@Override
@@ -59,39 +59,46 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 	{
 		String msg = event.getMessage();
 
-		if (msg.startsWith("!lart"))
+		Matcher matcher = this.re.matcher(msg);
+
+		if(matcher.matches())
 		{
-			Matcher matcher = this.re.matcher(msg);
+			String subcommand = matcher.group(1);
+			String opts = matcher.group(2);
 
-			if(matcher.matches())
+			if (subcommand.equals("add"))
 			{
-				String subcommand = matcher.group(1);
-				String opts = matcher.group(2);
-
-				if (subcommand.equals("add"))
+				try
 				{
-					try
-					{
-						int num = this.model.storeLart(event.getChannel(), event.getUser(), opts);
-						event.respond("Lart #" + num + " added");
-					} catch (IllegalArgumentException ex)
-					{
-						event.respond("No $msg section given");
-						return;
-					}
-				}
-				else if (subcommand.equals("delete"))
+					int num = this.model.storeLart(event.getChannel(), event.getUser(), opts);
+					event.respond("Lart #" + num + " added");
+				} catch (IllegalArgumentException ex)
 				{
-					this.model.deleteLart(Integer.parseInt(opts));
-					event.respond("Deleted lart #" + Integer.parseInt(opts));
+					event.respond("No $who section given");
+					return;
 				}
-				else if (subcommand.equals("list"))
-					event.respond("Not implemented"); // TODO
-				else
-					insult(event, subcommand);
 			}
+			else if (subcommand.equals("delete"))
+			{
+				try
+				{
+					int pid = Integer.parseInt(opts);
+					this.model.deleteLart(pid);
+					event.respond("Deleted lart #" + pid);
+				} catch (NumberFormatException ex)
+				{
+					event.respond("Couldn't parse number");
+				} catch (Exception ex)
+				{
+					ex.printStackTrace();
+				}
+			}
+			else if (subcommand.equals("info"))
+				event.respond("Not implemented"); // TODO add this subcommand
+			else if (subcommand.equals("list"))
+				event.respond("Not implemented"); // TODO add this subcommand
 			else
-				event.respond("Couldn't parse command");
+				insult(event, subcommand);
 		}
 	}
 
