@@ -40,7 +40,7 @@ public class Bot
 		manager.addListener(new JoinsCommand());
 		manager.addListener(new KillerTroutCommand());
 		manager.addListener(new LartCommand());
-		manager.addListener(LinesListener.getLinesListener());
+		manager.addListener(new LinesListener());
 		manager.addListener(new RandCommand());
 		manager.addListener(new SayCommand());
         manager.addListener(new CalcCommand());

@@ -34,30 +34,20 @@ import uk.co.unitycoders.pircbotx.data.db.LineModel;
  */
 public class LinesListener extends ListenerAdapter<PircBotX>
 {
-    private static LinesListener singleton;
     private LineModel model;
 
-    private LinesListener(LineModel model)
-    {
-        this.model = model;
-    }
-
     /**
-     * Gets the {@link LinesListener} singleton.
-     * @return the {@link LinesListener} singleton
+     * Creates a new {@link LinesListener}.
      */
-    public static LinesListener getLinesListener()
+    public LinesListener()
     {
-        if (singleton == null)
         try
         {
-            singleton = new LinesListener(DBConnection.getLineModel());
-        } catch(Exception ex)
+            this.model = DBConnection.getLineModel();
+        } catch (Exception ex)
         {
             ex.printStackTrace();
         }
-
-        return singleton;
     }
 
     @Override
