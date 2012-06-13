@@ -18,6 +18,7 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
+import java.text.DateFormat;
 import java.util.Date;
 
 import org.pircbotx.PircBotX;
@@ -25,7 +26,7 @@ import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
 /**
- * Outputs the unformatted time.
+ * Outputs the formatted date or time.
  *
  * @author Bruce Cowan
  */
@@ -34,7 +35,18 @@ public class DateTimeCommand extends ListenerAdapter<PircBotX>
 	@Override
 	public void onMessage(MessageEvent<PircBotX> event) throws Exception
 	{
-		if (event.getMessage().startsWith("!date") || event.getMessage().startsWith("!time"))
-			event.respond("The current time is " + new Date());
+		String msg = event.getMessage();
+		Date date = new Date();
+
+		if (event.getMessage().startsWith("!date"))
+		{
+			String fmt = DateFormat.getDateInstance().format(date);
+			event.respond("The current date is " + fmt);
+		}
+		else if (msg.startsWith("!time"))
+		{
+			String fmt = DateFormat.getTimeInstance().format(date);
+			event.respond("The current time is " + fmt);
+		}
 	}
 }
