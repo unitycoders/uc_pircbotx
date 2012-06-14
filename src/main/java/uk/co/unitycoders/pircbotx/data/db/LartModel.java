@@ -46,6 +46,7 @@ public class LartModel
 	private final PreparedStatement deleteLart;
 	private final PreparedStatement specificLart;
 	private final PreparedStatement randomLart;
+	private final PreparedStatement lastId;
 
 	private final int ID_COLUMN = 1;
 	private final int CHANNEL_COLUMN = 2;
@@ -62,6 +63,7 @@ public class LartModel
 		this.deleteLart = conn.prepareStatement("DELETE FROM larts WHERE id = ?");
 		this.specificLart = conn.prepareStatement("SELECT * FROM larts WHERE id = ?");
 		this.randomLart = conn.prepareStatement("SELECT * FROM larts ORDER BY RANDOM() LIMIT 1");
+		this.lastId = conn.prepareStatement("SELECT last_insert_rowid();");
 	}
 
 	private void buildTable() throws SQLException
@@ -82,8 +84,10 @@ public class LartModel
 		createLart.setString(PATTERN_COLUMN - 1, pattern);
 		createLart.execute();
 
-		// FIXME doesn't return the right row id
-		ResultSet rs = createLart.getGeneratedKeys();
+		// Do this manually because @link LartModel.getGeneratedKeys() is broken
+		lastId.clearParameters();
+		lastId.execute();
+		ResultSet rs = lastId.getResultSet();
 		return rs.getInt(ID_COLUMN);
 	}
 
