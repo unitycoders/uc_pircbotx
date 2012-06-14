@@ -32,6 +32,15 @@ import org.pircbotx.hooks.events.MessageEvent;
  */
 public class DateTimeCommand extends ListenerAdapter<PircBotX>
 {
+	private final DateFormat dformat;
+	private final DateFormat tformat;
+
+	public DateTimeCommand()
+	{
+		this.dformat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
+		this.tformat = DateFormat.getTimeInstance(DateFormat.LONG);
+	}
+
 	@Override
 	public void onMessage(MessageEvent<PircBotX> event) throws Exception
 	{
@@ -39,14 +48,8 @@ public class DateTimeCommand extends ListenerAdapter<PircBotX>
 		Date date = new Date();
 
 		if (event.getMessage().startsWith("!date"))
-		{
-			String fmt = DateFormat.getDateInstance().format(date);
-			event.respond("The current date is " + fmt);
-		}
+			event.respond("The current date is " + this.dformat.format(date));
 		else if (msg.startsWith("!time"))
-		{
-			String fmt = DateFormat.getTimeInstance().format(date);
-			event.respond("The current time is " + fmt);
-		}
+			event.respond("The current time is " + this.tformat.format(date));
 	}
 }
