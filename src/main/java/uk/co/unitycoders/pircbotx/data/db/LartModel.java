@@ -47,12 +47,12 @@ public class LartModel
 	private final PreparedStatement specificLart;
 	private final PreparedStatement randomLart;
 
-	// FIXME sometimes these columns are 1,2,3; other times 2,3,4
-	private final int CHANNEL_COLUMN = 1;
-	private final int NICK_COLUMN = 2;
-	private final int PATTERN_COLUMN = 3;
+	private final int ID_COLUMN = 1;
+	private final int CHANNEL_COLUMN = 2;
+	private final int NICK_COLUMN = 3;
+	private final int PATTERN_COLUMN = 4;
 
-	public LartModel(Connection conn) throws Exception
+	public LartModel(Connection conn) throws SQLException
 	{
 		this.conn = conn;
 
@@ -77,42 +77,42 @@ public class LartModel
 			throw new IllegalArgumentException("No $who section found");
 
 		createLart.clearParameters();
-		createLart.setString(CHANNEL_COLUMN, channel.getName());
-		createLart.setString(NICK_COLUMN, user.getNick());
-		createLart.setString(PATTERN_COLUMN, pattern);
+		createLart.setString(CHANNEL_COLUMN - 1, channel.getName());
+		createLart.setString(NICK_COLUMN -1 , user.getNick());
+		createLart.setString(PATTERN_COLUMN - 1, pattern);
 		createLart.execute();
 
 		// FIXME doesn't return the right row id
 		ResultSet rs = createLart.getGeneratedKeys();
-		return rs.getInt(1);
+		return rs.getInt(ID_COLUMN);
 	}
 
-	public void deleteLart(int id) throws Exception
+	public void deleteLart(int id) throws SQLException
 	{
 		deleteLart.clearParameters();
-		deleteLart.setInt(1, id);
+		deleteLart.setInt(ID_COLUMN, id);
 		deleteLart.execute();
 	}
 
 	private Lart buildLart(ResultSet rs) throws SQLException
 	{
-		String channel = rs.getString(2);
-		String nick = rs.getString(3);
-		String pattern = rs.getString(4);
+		String channel = rs.getString(CHANNEL_COLUMN);
+		String nick = rs.getString(NICK_COLUMN);
+		String pattern = rs.getString(PATTERN_COLUMN);
 		return new Lart(channel, nick, pattern);
 	}
 
-	public Lart getLart(int id) throws Exception
+	public Lart getLart(int id) throws SQLException
 	{
 		specificLart.clearParameters();
-		specificLart.setInt(1, id);
+		specificLart.setInt(ID_COLUMN, id);
 		specificLart.execute();
 
 		ResultSet rs = specificLart.getResultSet();
 		return buildLart(rs);
 	}
 
-	public Lart getRandomLart() throws Exception
+	public Lart getRandomLart() throws SQLException
 	{
 		ResultSet rs = randomLart.executeQuery();
 		return buildLart(rs);
@@ -127,9 +127,9 @@ public class LartModel
 			ResultSet rs = readLarts.executeQuery();
 			while(rs.next())
 			{
-				String channel = rs.getString(1);
-				String nick = rs.getString(2);
-				String pattern = rs.getString(3);
+				String channel = rs.getString(CHANNEL_COLUMN);
+				String nick = rs.getString(NICK_COLUMN);
+				String pattern = rs.getString(PATTERN_COLUMN);
 
 				Lart lart = new Lart(channel, nick, pattern);
 				larts.add(lart);
