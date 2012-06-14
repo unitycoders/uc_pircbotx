@@ -29,6 +29,7 @@ public class LineModel {
     private final Connection conn;
     private final PreparedStatement createLine;
     private final PreparedStatement readLines;
+    private final PreparedStatement randomLine;
 
     private final int LINE_COLUMN = 1;
 
@@ -37,6 +38,7 @@ public class LineModel {
         buildTable();
         createLine = conn.prepareStatement("INSERT INTO lines VALUES(?)");
         readLines = conn.prepareStatement("SELECT * FROM lines");
+        randomLine = conn.prepareStatement("SELECT * FROM lines ORDER BY RANDOM LIMIT(1)");
     }
 
     private void buildTable() throws SQLException{
@@ -48,6 +50,11 @@ public class LineModel {
         createLine.clearParameters();
         createLine.setString(LINE_COLUMN, line);
         createLine.execute();
+    }
+
+    public String getRandomLine() throws SQLException{
+        ResultSet rs = randomLine.executeQuery();
+        return rs.getString(1);
     }
 
     public List<String> getAllLines(){

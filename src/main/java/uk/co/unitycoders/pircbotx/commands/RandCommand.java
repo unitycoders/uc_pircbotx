@@ -18,8 +18,6 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
-import java.util.List;
-import java.util.Random;
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
@@ -34,12 +32,10 @@ import uk.co.unitycoders.pircbotx.data.db.LineModel;
 public class RandCommand extends ListenerAdapter<PircBotX>
 {
 	private LineModel lines;
-	private Random random;
 
 	public RandCommand() throws Exception
 	{
 		lines = DBConnection.getLineModel();
-		this.random = new Random();
 	}
 
 	@Override
@@ -49,12 +45,7 @@ public class RandCommand extends ListenerAdapter<PircBotX>
 
 		if (msg.startsWith("!rand"))
 		{
-                    List<String> lineList = lines.getAllLines();
-                    if(lineList.isEmpty())
-                        return;
-
-                    int index = this.random.nextInt(lineList.size() - 1);
-                    event.respond(lineList.get(index));
+			event.respond(lines.getRandomLine());
 		}
 	}
 }
