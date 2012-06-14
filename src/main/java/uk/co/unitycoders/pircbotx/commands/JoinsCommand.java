@@ -64,10 +64,13 @@ public class JoinsCommand extends ListenerAdapter<PircBotX>
 			{
 				String nick = entry.getKey().getNick();
 				String value = entry.getValue().toString();
-				builder.append(nick + " = " + value + "; ");
+				builder.append(nick);
+                                builder.append(" = ");
+                                builder.append(value);
+                                builder.append(";");
 			}
 
-			//TODO chop off end semicolon
+                        builder.deleteCharAt(builder.length()-1);
 			event.respond(builder.toString());
 		}
 	}
