@@ -18,9 +18,8 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
-import java.util.HashMap;
 import java.util.Map;
-
+import java.util.TreeMap;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 import org.pircbotx.hooks.ListenerAdapter;
@@ -34,14 +33,14 @@ import org.pircbotx.hooks.events.MessageEvent;
  */
 public class JoinsCommand extends ListenerAdapter<PircBotX>
 {
-	private HashMap<User, Integer> joins;
+	private Map<User, Integer> joins;
 
 	/**
 	 * Creates a {@link JoinsCommand}.
 	 */
 	public JoinsCommand()
 	{
-		this.joins = new HashMap<User, Integer>();
+		this.joins = new TreeMap<User, Integer>();
 	}
 
 	@Override
