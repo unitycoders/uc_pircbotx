@@ -11,11 +11,39 @@
   <description>A bot for #unity-coders using pircbotx</description>
 
   <properties>
+    <!-- see https://github.com/github/maven-plugins -->
+    <github.global.server>github</github.global.server>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <build>
   <plugins>
+    <plugin>
+      <groupId>com.github.github</groupId>
+      <artifactId>downloads-maven-plugin</artifactId>
+      <version>0.5</version>
+      <configuration>
+        <description>${project.version} release of {$project.name}</description>
+        <override>true</override>
+        <includeAttached>true</includeAttached>
+      </configuration>
+    </plugin>
+    <plugin>
+      <groupId>com.github.github</groupId>
+      <artifactId>site-maven-plugin</artifactId>
+      <version>0.6</version>
+      <configuration>
+        <message>Creating site for ${project.version}</message>
+      </configuration>
+      <executions>
+        <execution>
+          <goals>
+            <goal>site</goal>
+          </goals>
+          <phase>site</phase>
+        </execution>
+      </executions>
+    </plugin>
     <plugin>
       <artifactId>maven-assembly-plugin</artifactId>
       <configuration>
@@ -78,6 +106,5 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
 
 </project>
