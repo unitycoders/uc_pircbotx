@@ -71,7 +71,7 @@ public class LartModel
 				"(id INTEGER PRIMARY KEY AUTOINCREMENT, channel STRING, nick STRING, pattern STRING)");
 	}
 
-	public int storeLart(Channel channel, User user, String pattern) throws Exception
+	public int storeLart(Channel channel, User user, String pattern) throws IllegalArgumentException, SQLException
 	{
 		if(!pattern.contains("$who"))
 			throw new IllegalArgumentException("No $who section found");

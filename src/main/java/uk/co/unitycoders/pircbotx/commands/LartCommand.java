@@ -78,6 +78,9 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 				{
 					event.respond("No $who section given");
 					return;
+				} catch (SQLException ex)
+				{
+					event.respond("Failed to add lart: " + ex.getMessage());
 				}
 			}
 			else if (subcommand.equals("delete"))
@@ -92,10 +95,7 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 					event.respond("Couldn't parse number");
 				} catch (SQLException ex)
 				{
-					event.respond("No such lart in database");
-				} catch (Exception ex)
-				{
-					ex.printStackTrace();
+					event.respond("Failed to delete lart: " + ex.getMessage());
 				}
 			}
 			else if (subcommand.equals("info"))
@@ -111,10 +111,8 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 					event.respond("Couldn't parse number");
 				} catch (SQLException ex)
 				{
-					event.respond("No such lart in database");
-				} catch (Exception ex)
-				{
 					ex.printStackTrace();
+					event.respond("Failed to get lart info: " + ex.getMessage());
 				}
 			}
 			else if (subcommand.equals("list"))

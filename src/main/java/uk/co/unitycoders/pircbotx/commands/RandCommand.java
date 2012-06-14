@@ -18,6 +18,8 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
+import java.sql.SQLException;
+
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
@@ -45,7 +47,14 @@ public class RandCommand extends ListenerAdapter<PircBotX>
 
 		if (msg.startsWith("!rand"))
 		{
-			event.respond(lines.getRandomLine());
+			try
+			{
+				String line = lines.getRandomLine();
+				event.respond(line);
+			} catch (SQLException ex)
+			{
+				event.respond("Failed to get random line: " + ex.getMessage());
+			}
 		}
 	}
 }

@@ -33,7 +33,7 @@ public class LineModel {
 
     private final int LINE_COLUMN = 1;
 
-    public LineModel(Connection conn) throws Exception{
+    public LineModel(Connection conn) throws SQLException{
         this.conn = conn;
         buildTable();
         createLine = conn.prepareStatement("INSERT INTO lines VALUES(?)");
