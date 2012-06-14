@@ -38,7 +38,7 @@ public class LineModel {
         buildTable();
         createLine = conn.prepareStatement("INSERT INTO lines VALUES(?)");
         readLines = conn.prepareStatement("SELECT * FROM lines");
-        randomLine = conn.prepareStatement("SELECT * FROM lines ORDER BY RANDOM LIMIT(1)");
+        randomLine = conn.prepareStatement("SELECT * FROM lines ORDER BY RANDOM() LIMIT 1");
     }
 
     private void buildTable() throws SQLException{
