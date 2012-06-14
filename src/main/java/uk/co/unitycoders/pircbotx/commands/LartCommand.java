@@ -88,8 +88,10 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 				try
 				{
 					int id = Integer.parseInt(opts);
-					this.model.deleteLart(id);
-					event.respond("Deleted lart #" + id);
+					if (this.model.deleteLart(id))
+						event.respond("Deleted lart #" + id);
+					else
+						event.respond("No such lart in database");
 				} catch (NumberFormatException ex)
 				{
 					event.respond("Couldn't parse number");
@@ -118,6 +120,9 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 			else if (subcommand.equals("list"))
 			{
 				StringBuilder builder = new StringBuilder();
+
+				if (this.model.getAllLarts().isEmpty())
+					return;
 
 				for (Lart lart : this.model.getAllLarts())
 				{

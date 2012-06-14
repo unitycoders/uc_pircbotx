@@ -87,11 +87,11 @@ public class LartModel
 		return rs.getInt(ID_COLUMN);
 	}
 
-	public void deleteLart(int id) throws SQLException
+	public boolean deleteLart(int id) throws SQLException
 	{
 		deleteLart.clearParameters();
 		deleteLart.setInt(ID_COLUMN, id);
-		deleteLart.execute();
+		return (deleteLart.executeUpdate() > 0);
 	}
 
 	private Lart buildLart(ResultSet rs) throws SQLException
