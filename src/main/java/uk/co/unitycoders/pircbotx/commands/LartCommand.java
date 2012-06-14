@@ -118,7 +118,19 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 				}
 			}
 			else if (subcommand.equals("list"))
-				event.respond("Not implemented"); // TODO add this subcommand
+			{
+				StringBuilder builder = new StringBuilder();
+
+				for (Lart lart : this.model.getAllLarts())
+				{
+					int id = lart.getID();
+					builder.append(id);
+					builder.append(',');
+				}
+
+				builder.deleteCharAt(builder.length() - 1);
+				event.respond(builder.toString());
+			}
 			else
 				insult(event, subcommand);
 		}

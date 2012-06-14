@@ -96,10 +96,11 @@ public class LartModel
 
 	private Lart buildLart(ResultSet rs) throws SQLException
 	{
+		int id = rs.getInt(ID_COLUMN);
 		String channel = rs.getString(CHANNEL_COLUMN);
 		String nick = rs.getString(NICK_COLUMN);
 		String pattern = rs.getString(PATTERN_COLUMN);
-		return new Lart(channel, nick, pattern);
+		return new Lart(id, channel, nick, pattern);
 	}
 
 	public Lart getLart(int id) throws SQLException
@@ -127,11 +128,12 @@ public class LartModel
 			ResultSet rs = readLarts.executeQuery();
 			while(rs.next())
 			{
+				int id = rs.getInt(ID_COLUMN);
 				String channel = rs.getString(CHANNEL_COLUMN);
 				String nick = rs.getString(NICK_COLUMN);
 				String pattern = rs.getString(PATTERN_COLUMN);
 
-				Lart lart = new Lart(channel, nick, pattern);
+				Lart lart = new Lart(id, channel, nick, pattern);
 				larts.add(lart);
 			}
 			rs.close();

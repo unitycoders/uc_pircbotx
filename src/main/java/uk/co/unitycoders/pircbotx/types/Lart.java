@@ -25,6 +25,7 @@ package uk.co.unitycoders.pircbotx.types;
  */
 public class Lart
 {
+	private final int id;
 	private final String channel;
 	private final String nick;
 	private final String pattern;
@@ -35,11 +36,21 @@ public class Lart
 	 * @param user the creator of the lart
 	 * @param pattern the pattern of the lart, requires a $who part
 	 */
-	public Lart(String channel, String nick, String pattern)
+	public Lart(int id, String channel, String nick, String pattern)
 	{
+		this.id = id;
 		this.channel = channel;
 		this.nick = nick;
 		this.pattern = pattern;
+	}
+
+	/**
+	 * Gets the ID of the lart/
+	 * @return the ID of the lart
+	 */
+	public int getID()
+	{
+		return this.id;
 	}
 
 	/**
