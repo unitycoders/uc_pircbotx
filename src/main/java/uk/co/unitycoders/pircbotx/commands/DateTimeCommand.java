@@ -22,15 +22,15 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import org.pircbotx.PircBotX;
-import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
+import uk.co.unitycoders.pircbotx.commandProcessor.Command;
 
 /**
  * Outputs the formatted date or time.
  *
  * @author Bruce Cowan
  */
-public class DateTimeCommand extends ListenerAdapter<PircBotX>
+public class DateTimeCommand
 {
 	private final DateFormat dformat;
 	private final DateFormat tformat;
@@ -41,7 +41,8 @@ public class DateTimeCommand extends ListenerAdapter<PircBotX>
 		this.tformat = DateFormat.getTimeInstance(DateFormat.LONG);
 	}
 
-	@Override
+
+	@Command
 	public void onMessage(MessageEvent<PircBotX> event) throws Exception
 	{
 		String msg = event.getMessage();

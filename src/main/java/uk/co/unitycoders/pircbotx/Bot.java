@@ -20,6 +20,8 @@ package uk.co.unitycoders.pircbotx;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.managers.ListenerManager;
+import uk.co.unitycoders.pircbotx.commandProcessor.CommandListener;
+import uk.co.unitycoders.pircbotx.commandProcessor.CommandProcessor;
 
 import uk.co.unitycoders.pircbotx.commands.*;
 import uk.co.unitycoders.pircbotx.listeners.LinesListener;
@@ -33,15 +35,19 @@ public class Bot
 {
 	public static void main(String[] args) throws Exception
 	{
+                CommandProcessor processor = new CommandProcessor();
+                processor.register("!rand", new RandCommand());
+                processor.register("!time", new DateTimeCommand());
+                processor.register("!date", new DateTimeCommand());
+
 		PircBotX bot = new PircBotX();
 		ListenerManager<? extends PircBotX> manager = bot.getListenerManager();
 
-		manager.addListener(new DateTimeCommand());
+                manager.addListener(new CommandListener(processor));
 		manager.addListener(new JoinsCommand());
 		manager.addListener(new KillerTroutCommand());
 		manager.addListener(new LartCommand());
 		manager.addListener(new LinesListener());
-		manager.addListener(new RandCommand());
 		manager.addListener(new SayCommand());
 		manager.addListener(new CalcCommand());
 
@@ -51,7 +57,7 @@ public class Bot
 
 		try
 		{
-			bot.setName("uc_pircbotx");
+			bot.setName("uc_pircbotx2");
 			bot.connect("irc.freenode.net");
 			bot.joinChannel("#unity-coders");
 			bot.setVerbose(true);
