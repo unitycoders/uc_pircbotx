@@ -1,0 +1,26 @@
+-classpath
+'/home/webpigeon/Documents/uc_pircbotx/target/classes:/home/webpigeon/Documents/uc_pircbotx/target/test-classes:/home/webpigeon/.m2/repository/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar:/home/webpigeon/.m2/repository/org/xerial/thirdparty/nestedvm/1.0/nestedvm-1.0.jar:/home/webpigeon/.m2/repository/org/pircbotx/pircbotx/1.8-SNAPSHOT/pircbotx-1.8-SNAPSHOT.jar:/home/webpigeon/.m2/repository/org/xerial/sqlite-jdbc/3.6.16/sqlite-jdbc-3.6.16.jar:/home/webpigeon/.m2/repository/junit/junit/4.10/junit-4.10.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/home/webpigeon/Documents/uc_pircbotx/src/test/java'
+-author
+-bottom
+'Copyright &#169; 2012. All Rights Reserved.'
+-charset
+'UTF-8'
+-d
+'/home/webpigeon/Documents/uc_pircbotx/target/site/testapidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'uc_pircbotx 0.2-SNAPSHOT Test API'
+-link
+'../apidocs'
+-linkoffline
+'http://download.oracle.com/javase/6/docs/api' '/home/webpigeon/Documents/uc_pircbotx/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'uc_pircbotx 0.2-SNAPSHOT Test API'
