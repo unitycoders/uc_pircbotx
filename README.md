@@ -1,12 +1,21 @@
-This is a bot for #unity-coders, which uses pircbotx
+# uc_pircbotx - IRC Bot
+This is a bot for #unity-coders, which uses pircbotx. Source available on
+(github)[http://git.unitycoders.co.uk/uc_pircbotx].
 
-# Compiling and running with maven
+## Documentation
+If you would like documentation on how to use the bot, please consult the
+(project wiki)[https://github.com/unitycoders/uc_pircbotx/wiki].
+
+
+## Developer Infomation
+
+### Compiling and running with maven
 $ mvn package
-$ java -jar target/uc_pircbotx-0.1-SNAPSHOT-jar-with-dependencies.jar 
+$ java -jar target/uc_pircbotx-0.1-SNAPSHOT-jar-with-dependencies.jar
 
-# Maven With IDEs
-## Maven With Eclipse
+### Maven With IDEs
+#### Maven With Eclipse
 The maven website has tutorials on using maven with eclipse. You can see them at http://maven.apache.org/guides/mini/guide-ide-eclipse.html.
 
-## Maven with NetBeans
+#### Maven with NetBeans
 Opening a maven project in netbeans will work 'out of the box' as of Netbeans 6.9 (7.1+ recommended).
