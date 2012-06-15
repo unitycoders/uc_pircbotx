@@ -26,10 +26,12 @@ import java.io.Serializable;
  *
  * Java objects are too complex to be stored as-is in a relational database.
  * They can however be stored using serialisation. It's a requirement of the
- * java spec. states that such an object implement Serialisable.
+ * java spec. states that such an object implement {@link Serializable}.
  */
-public interface ObjectStorage {
+public interface ObjectStorage
+{
 
-    public void store(String name, Serializable object) throws IOException;
-    public Object load(String name) throws IOException, ClassNotFoundException;
+	public void store(String name, Serializable object) throws IOException;
+
+	public Object load(String name) throws IOException, ClassNotFoundException;
 }

@@ -69,18 +69,18 @@ public class LartModel
 	private void buildTable() throws SQLException
 	{
 		Statement stmt = this.conn.createStatement();
-		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS larts" +
-				"(id INTEGER PRIMARY KEY AUTOINCREMENT, channel STRING, nick STRING, pattern STRING)");
+		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS larts"
+				+ "(id INTEGER PRIMARY KEY AUTOINCREMENT, channel STRING, nick STRING, pattern STRING)");
 	}
 
 	public int storeLart(Channel channel, User user, String pattern) throws IllegalArgumentException, SQLException
 	{
-		if(!pattern.contains("$who"))
+		if (!pattern.contains("$who"))
 			throw new IllegalArgumentException("No $who section found");
 
 		createLart.clearParameters();
 		createLart.setString(CHANNEL_COLUMN - 1, channel.getName());
-		createLart.setString(NICK_COLUMN -1 , user.getNick());
+		createLart.setString(NICK_COLUMN - 1, user.getNick());
 		createLart.setString(PATTERN_COLUMN - 1, pattern);
 		createLart.execute();
 
@@ -122,7 +122,7 @@ public class LartModel
 		ResultSet rs = randomLart.executeQuery();
 		return buildLart(rs);
 	}
-	
+
 	public List<Lart> getAllLarts()
 	{
 		List<Lart> larts = new ArrayList<Lart>();
@@ -130,7 +130,7 @@ public class LartModel
 		try
 		{
 			ResultSet rs = readLarts.executeQuery();
-			while(rs.next())
+			while (rs.next())
 			{
 				int id = rs.getInt(ID_COLUMN);
 				String channel = rs.getString(CHANNEL_COLUMN);

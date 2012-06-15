@@ -32,103 +32,118 @@ import org.pircbotx.hooks.events.MessageEvent;
  *
  * @author webpigeon
  */
-public class CalcCommand extends ListenerAdapter<PircBotX> {
-    private static final Integer OP_TOKEN = 1;
-    private static final Integer NUM_TOKEN = 2;
+public class CalcCommand extends ListenerAdapter<PircBotX>
+{
+	private static final Integer OP_TOKEN = 1;
+	private static final Integer NUM_TOKEN = 2;
 
-    private int doExpr(int left, char op, int right){
-        switch(op){
-            case '*':
-                return left * right;
+	private int doExpr(int left, char op, int right)
+	{
+		switch (op)
+		{
+			case '*':
+				return left * right;
+			case '/':
+				return left / right;
+			case '+':
+				return left + right;
+			case '-':
+				return left - right;
+			case '%':
+				return left % right;
+		}
 
-            case '/':
-                return left / right;
+		return -1;
+	}
 
-            case '+':
-                return left + right;
+	private int doNum(Token num)
+	{
+		return Integer.parseInt(num.data);
+	}
 
-            case '-':
-                return left - right;
+	private char doOp(Token op)
+	{
+		return op.data.charAt(0);
+	}
 
-            case '%':
-                return left % right;
-        }
+	private int doStmt(Stack<Token> input)
+	{
+		Token t = input.pop();
+		System.out.println("token = " + t.data);
 
-        return -1;
-    }
+		if (t.type == NUM_TOKEN)
+		{
+			return doNum(t);
+		}
+		else if (t.type == OP_TOKEN)
+		{
+			char op = doOp(t);
+			int right = doStmt(input);
+			int left = doStmt(input);
+			return doExpr(left, op, right);
+		}
 
-    private int doNum(Token num){
-        return Integer.parseInt(num.data);
-    }
+		return -1;
+	}
 
-    private char doOp(Token op){
-        return op.data.charAt(0);
-    }
+	private Stack<Token> tokenise(String input)
+	{
+		String[] tokens = input.split(" ");
+		Stack<Token> stack = new Stack<Token>();
 
-    private int doStmt(Stack<Token> input){
-        Token t = input.pop();
-        System.out.println("token = "+t.data);
-        if(t.type == NUM_TOKEN){
-            return doNum(t);
-        }
+		for (int i = 0; i < tokens.length; i++)
+		{
+			Token t = new Token();
+			t.data = tokens[i];
 
-        if(t.type == OP_TOKEN){
-            char op = doOp(t);
-            int right = doStmt(input);
-            int left = doStmt(input);
-            return doExpr(left, op, right);
-        }
+			if (tokens[i].matches("\\d+"))
+			{
+				t.type = NUM_TOKEN;
+			}
 
-        return -1;
-    }
+			if (tokens[i].matches("[+*/%-]"))
+			{
+				t.type = OP_TOKEN;
+			}
 
-    private Stack<Token> tokenise(String input){
-        String[] tokens = input.split(" ");
-        Stack<Token> stack = new Stack<Token>();
+			if (t.type == null)
+			{
+				throw new RuntimeException("illegal token " + tokens[i]);
+			}
 
-        for(int i=0; i<tokens.length; i++){
-            Token t = new Token();
-            t.data = tokens[i];
+			stack.push(t);
+		}
 
-            if(tokens[i].matches("\\d+")){
-                t.type = NUM_TOKEN;
-            }
+		return stack;
+	}
 
-            if(tokens[i].matches("[+*/%-]")){
-                t.type = OP_TOKEN;
-            }
+	@Override
+	public void onMessage(MessageEvent<PircBotX> event) throws Exception
+	{
+		String msg = event.getMessage();
+		if (msg.startsWith("!calc "))
+		{
+			try
+			{
+				msg = msg.substring(6);
+				event.respond(msg + " = " + parse(msg));
+			} catch (Exception ex)
+			{
+				event.respond(ex.getLocalizedMessage());
+			}
+		}
+	}
 
-            if(t.type == null){
-                throw new RuntimeException("illegal token "+tokens[i]);
-            }
+	public int parse(String input)
+	{
+		Stack<Token> tokens = tokenise(input);
+		return doStmt(tokens);
+	}
 
-            stack.push(t);
-        }
-
-        return stack;
-    }
-
-    @Override
-    public void onMessage(MessageEvent<PircBotX> event) throws Exception{
-        String msg = event.getMessage();
-        if(msg.startsWith("!calc ")){
-            try{
-                msg = msg.substring(6);
-                event.respond(msg+" = "+parse(msg));
-            }catch(Exception ex){
-                event.respond(ex.getLocalizedMessage());
-            }
-        }
-    }
-
-    public int parse(String input){
-        Stack<Token> tokens = tokenise(input);
-        return doStmt(tokens);
-    }
-
-    class Token{
-        Integer type;
-        String data;
-    }
+	class Token
+	{
+		Integer type;
+		String data;
+	}
 
 }

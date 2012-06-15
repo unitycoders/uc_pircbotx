@@ -23,55 +23,62 @@ import java.io.*;
 /**
  * Java native object serialisation.
  *
- * The simplest form of persistent storage is serialisation. This class uses
- * the in built serialisation system to create files on the system for classes
- * which need to persist over many runs of the bot.
+ * The simplest form of persistent storage is serialisation. This class uses the
+ * in built serialisation system to create files on the system for classes which
+ * need to persist over many runs of the bot.
  */
-public class JavaObjectStore implements ObjectStorage {
-    private final File basePath;
+public class JavaObjectStore implements ObjectStorage
+{
+	private final File basePath;
 
-    public static ObjectStorage build(String pathStr){
-        File path = new File(pathStr);
+	public static ObjectStorage build(String pathStr)
+	{
+		File path = new File(pathStr);
 
-        //if the path doesn't exist, create it
-        if(!path.exists()){
-            path.mkdir();
-        }
+		// if the path doesn't exist, create it
+		if (!path.exists())
+		{
+			path.mkdir();
+		}
 
-        return new JavaObjectStore(path);
-    }
+		return new JavaObjectStore(path);
+	}
 
-    public JavaObjectStore(File basePath){
-        this.basePath = basePath;
-    }
+	public JavaObjectStore(File basePath)
+	{
+		this.basePath = basePath;
+	}
 
-    public void store(String name, Serializable object) throws IOException {
-        File path = new File(basePath, name+".obj");
-        if(path.exists()){
-            path.delete();
-        }
-        path.createNewFile();
+	public void store(String name, Serializable object) throws IOException
+	{
+		File path = new File(basePath, name + ".obj");
+		if (path.exists())
+		{
+			path.delete();
+		}
+		path.createNewFile();
 
-        FileOutputStream fos = new FileOutputStream(path, true);
-        ObjectOutputStream out = new ObjectOutputStream(fos);
+		FileOutputStream fos = new FileOutputStream(path, true);
+		ObjectOutputStream out = new ObjectOutputStream(fos);
 
-        out.writeObject(object);
+		out.writeObject(object);
 
-        out.close();
-        fos.close();
-    }
+		out.close();
+		fos.close();
+	}
 
-    public Object load(String name) throws IOException, ClassNotFoundException {
-        File path = new File(basePath, name+".obj");
-        FileInputStream fin = new FileInputStream(path);
-        ObjectInputStream in = new ObjectInputStream(fin);
+	public Object load(String name) throws IOException, ClassNotFoundException
+	{
+		File path = new File(basePath, name + ".obj");
+		FileInputStream fin = new FileInputStream(path);
+		ObjectInputStream in = new ObjectInputStream(fin);
 
-        Object oin = in.readObject();
+		Object oin = in.readObject();
 
-        fin.close();
-        in.close();
+		fin.close();
+		in.close();
 
-        return oin;
-    }
+		return oin;
+	}
 
 }

@@ -48,7 +48,7 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 		try
 		{
 			this.model = DBConnection.getLartModel();
-		} catch(Exception ex)
+		} catch (Exception ex)
 		{
 			ex.printStackTrace();
 		}
@@ -63,7 +63,7 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 
 		Matcher matcher = this.re.matcher(msg);
 
-		if(matcher.matches())
+		if (matcher.matches())
 		{
 			String subcommand = matcher.group(1);
 			String opts = matcher.group(2);
@@ -141,6 +141,7 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 
 	/**
 	 * Insults someone.
+	 *
 	 * @param event the event from {@link #onMessage(MessageEvent)}.
 	 * @param nick the nick to insult
 	 */

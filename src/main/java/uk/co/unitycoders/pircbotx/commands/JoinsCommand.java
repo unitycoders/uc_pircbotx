@@ -69,7 +69,7 @@ public class JoinsCommand extends ListenerAdapter<PircBotX>
 				builder.append(";");
 			}
 
-			builder.deleteCharAt(builder.length()-1);
+			builder.deleteCharAt(builder.length() - 1);
 			event.respond(builder.toString());
 		}
 	}

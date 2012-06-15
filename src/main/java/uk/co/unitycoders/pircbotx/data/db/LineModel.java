@@ -25,50 +25,59 @@ import java.util.List;
 /**
  *
  */
-public class LineModel {
-    private final Connection conn;
-    private final PreparedStatement createLine;
-    private final PreparedStatement readLines;
-    private final PreparedStatement randomLine;
+public class LineModel
+{
+	private final Connection conn;
+	private final PreparedStatement createLine;
+	private final PreparedStatement readLines;
+	private final PreparedStatement randomLine;
 
-    private final int LINE_COLUMN = 1;
+	private final int LINE_COLUMN = 1;
 
-    public LineModel(Connection conn) throws SQLException{
-        this.conn = conn;
-        buildTable();
-        createLine = conn.prepareStatement("INSERT INTO lines VALUES(?)");
-        readLines = conn.prepareStatement("SELECT * FROM lines");
-        randomLine = conn.prepareStatement("SELECT * FROM lines ORDER BY RANDOM() LIMIT 1");
-    }
+	public LineModel(Connection conn) throws SQLException
+	{
+		this.conn = conn;
+		buildTable();
+		createLine = conn.prepareStatement("INSERT INTO lines VALUES(?)");
+		readLines = conn.prepareStatement("SELECT * FROM lines");
+		randomLine = conn.prepareStatement("SELECT * FROM lines ORDER BY RANDOM() LIMIT 1");
+	}
 
-    private void buildTable() throws SQLException{
-        Statement stmt = conn.createStatement();
-        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS lines (name string)");
-    }
+	private void buildTable() throws SQLException
+	{
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS lines (name string)");
+	}
 
-    public void storeLine(String line) throws SQLException{
-        createLine.clearParameters();
-        createLine.setString(LINE_COLUMN, line);
-        createLine.execute();
-    }
+	public void storeLine(String line) throws SQLException
+	{
+		createLine.clearParameters();
+		createLine.setString(LINE_COLUMN, line);
+		createLine.execute();
+	}
 
-    public String getRandomLine() throws SQLException{
-        ResultSet rs = randomLine.executeQuery();
-        return rs.getString(1);
-    }
+	public String getRandomLine() throws SQLException
+	{
+		ResultSet rs = randomLine.executeQuery();
+		return rs.getString(1);
+	}
 
-    public List<String> getAllLines(){
-        List<String> lines = new ArrayList<String>();
-        try{
-            ResultSet rs = readLines.executeQuery();
-            while(rs.next()){
-                lines.add(rs.getString(LINE_COLUMN));
-            }
-            rs.close();
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-        return lines;
-    }
+	public List<String> getAllLines()
+	{
+		List<String> lines = new ArrayList<String>();
+		try
+		{
+			ResultSet rs = readLines.executeQuery();
+			while (rs.next())
+			{
+				lines.add(rs.getString(LINE_COLUMN));
+			}
+			rs.close();
+		} catch (SQLException ex)
+		{
+			ex.printStackTrace();
+		}
+		return lines;
+	}
 
 }
