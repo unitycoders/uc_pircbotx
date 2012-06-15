@@ -48,11 +48,6 @@ public class LartModel
 	private final PreparedStatement randomLart;
 	private final PreparedStatement lastId;
 
-	private final int ID_COLUMN = 1;
-	private final int CHANNEL_COLUMN = 2;
-	private final int NICK_COLUMN = 3;
-	private final int PATTERN_COLUMN = 4;
-
 	/**
 	 * Creates a new LartModel.
 	 *
@@ -95,16 +90,16 @@ public class LartModel
 			throw new IllegalArgumentException("No $who section found");
 
 		createLart.clearParameters();
-		createLart.setString(CHANNEL_COLUMN - 1, channel.getName());
-		createLart.setString(NICK_COLUMN - 1, user.getNick());
-		createLart.setString(PATTERN_COLUMN - 1, pattern);
+		createLart.setString(1, channel.getName());
+		createLart.setString(2, user.getNick());
+		createLart.setString(3, pattern);
 		createLart.execute();
 
 		// Do this manually because getGeneratedKeys() is broken
 		lastId.clearParameters();
 		lastId.execute();
 		ResultSet rs = lastId.getResultSet();
-		return rs.getInt(ID_COLUMN);
+		return rs.getInt(1);
 	}
 
 	/**
@@ -117,16 +112,16 @@ public class LartModel
 	public boolean deleteLart(int id) throws SQLException
 	{
 		deleteLart.clearParameters();
-		deleteLart.setInt(ID_COLUMN, id);
+		deleteLart.setInt(1, id);
 		return (deleteLart.executeUpdate() > 0);
 	}
 
 	private Lart buildLart(ResultSet rs) throws SQLException
 	{
-		int id = rs.getInt(ID_COLUMN);
-		String channel = rs.getString(CHANNEL_COLUMN);
-		String nick = rs.getString(NICK_COLUMN);
-		String pattern = rs.getString(PATTERN_COLUMN);
+		int id = rs.getInt(1);
+		String channel = rs.getString(2);
+		String nick = rs.getString(3);
+		String pattern = rs.getString(4);
 		return new Lart(id, channel, nick, pattern);
 	}
 
@@ -140,7 +135,7 @@ public class LartModel
 	public Lart getLart(int id) throws SQLException
 	{
 		specificLart.clearParameters();
-		specificLart.setInt(ID_COLUMN, id);
+		specificLart.setInt(1, id);
 		specificLart.execute();
 
 		ResultSet rs = specificLart.getResultSet();
@@ -173,10 +168,10 @@ public class LartModel
 			ResultSet rs = readLarts.executeQuery();
 			while (rs.next())
 			{
-				int id = rs.getInt(ID_COLUMN);
-				String channel = rs.getString(CHANNEL_COLUMN);
-				String nick = rs.getString(NICK_COLUMN);
-				String pattern = rs.getString(PATTERN_COLUMN);
+				int id = rs.getInt(1);
+				String channel = rs.getString(2);
+				String nick = rs.getString(3);
+				String pattern = rs.getString(4);
 
 				Lart lart = new Lart(id, channel, nick, pattern);
 				larts.add(lart);

@@ -32,8 +32,6 @@ public class LineModel
 	private final PreparedStatement readLines;
 	private final PreparedStatement randomLine;
 
-	private final int LINE_COLUMN = 1;
-
 	/**
 	 * Creates a new LineModel.
 	 *
@@ -64,7 +62,7 @@ public class LineModel
 	public void storeLine(String line) throws SQLException
 	{
 		createLine.clearParameters();
-		createLine.setString(LINE_COLUMN, line);
+		createLine.setString(1, line);
 		createLine.execute();
 	}
 
@@ -93,7 +91,7 @@ public class LineModel
 			ResultSet rs = readLines.executeQuery();
 			while (rs.next())
 			{
-				lines.add(rs.getString(LINE_COLUMN));
+				lines.add(rs.getString(1));
 			}
 			rs.close();
 		} catch (SQLException ex)
