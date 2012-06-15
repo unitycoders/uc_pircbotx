@@ -39,6 +39,7 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 {
 	private LartModel model;
 	private final Pattern re;
+	private final Pattern alterRe;
 
 	/**
 	 * Creates a {@link LartCommand}.
@@ -54,6 +55,7 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 		}
 
 		this.re = Pattern.compile("!lart ([^ ]+) *(.*)?");
+		this.alterRe = Pattern.compile("(\\d) (.*)");
 	}
 
 	@Override
@@ -133,6 +135,31 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 
 				builder.deleteCharAt(builder.length() - 1);
 				event.respond(builder.toString());
+			}
+			else if (subcommand.equals("alter"))
+			{
+				Matcher alterMatcher = this.alterRe.matcher(opts);
+				if (alterMatcher.matches())
+				{
+					try
+					{
+						int id = Integer.parseInt((alterMatcher.group(1)));
+						String pattern = alterMatcher.group(2);
+
+						this.model.alterLart(id, event.getChannel(), event.getUser(), pattern);
+						event.respond("Lart #" + id + " altered");
+					} catch (IllegalArgumentException ex)
+					{
+						event.respond("No $who section given");
+						return;
+					} catch (SQLException ex)
+					{
+						event.respond("Failed to add lart: " + ex.getMessage());
+					}
+				}
+				else
+					event.respond("Failed to parse command");
+
 			}
 			else
 				insult(event, subcommand);

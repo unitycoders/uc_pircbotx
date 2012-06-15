@@ -47,6 +47,7 @@ public class LartModel
 	private final PreparedStatement specificLart;
 	private final PreparedStatement randomLart;
 	private final PreparedStatement lastId;
+	private final PreparedStatement alterLart;
 
 	/**
 	 * Creates a new LartModel.
@@ -65,6 +66,7 @@ public class LartModel
 		this.specificLart = conn.prepareStatement("SELECT * FROM larts WHERE id = ?");
 		this.randomLart = conn.prepareStatement("SELECT * FROM larts ORDER BY RANDOM() LIMIT 1");
 		this.lastId = conn.prepareStatement("SELECT last_insert_rowid();");
+		this.alterLart = conn.prepareStatement("UPDATE larts SET channel = ?, nick = ?, pattern = ? WHERE id = ?");
 	}
 
 	private void buildTable() throws SQLException
@@ -183,5 +185,18 @@ public class LartModel
 		}
 
 		return larts;
+	}
+
+	public void alterLart(int id, Channel channel, User user, String pattern) throws SQLException
+	{
+		if (!pattern.contains("$who"))
+			throw new IllegalArgumentException("No $who section found");
+
+		alterLart.clearParameters();
+		alterLart.setString(1, channel.getName());
+		alterLart.setString(2, user.getNick());
+		alterLart.setString(3, pattern);
+		alterLart.setInt(4, id);
+		alterLart.execute();
 	}
 }
