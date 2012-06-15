@@ -1,5 +1,5 @@
 /**
- * Copyright © 2012 Bruce Cowan <bruce@bcowan.me.uk>
+ * Copyright © 2012 Joseph Walton-Rivers <webpigeon@unitycoders.co.uk>
  *
  * This file is part of uc_PircBotX.
  *
@@ -16,41 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with uc_PircBotX.  If not, see <http://www.gnu.org/licenses/>.
  */
-package uk.co.unitycoders.pircbotx.commands;
-
-import java.text.DateFormat;
-import java.util.Date;
+package uk.co.unitycoders.pircbotx.commandprocessor;
 
 import org.pircbotx.PircBotX;
+import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
-import uk.co.unitycoders.pircbotx.commandprocessor.Command;
-
 /**
- * Outputs the formatted date or time.
  *
- * @author Bruce Cowan
  */
-public class DateTimeCommand
+public class CommandListener extends ListenerAdapter<PircBotX>
 {
-	private final DateFormat dformat;
-	private final DateFormat tformat;
+	private final CommandProcessor processor;
 
-	public DateTimeCommand()
+	public CommandListener(CommandProcessor processor)
 	{
-		this.dformat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
-		this.tformat = DateFormat.getTimeInstance(DateFormat.LONG);
+		this.processor = processor;
 	}
 
-	@Command
+	@Override
 	public void onMessage(MessageEvent<PircBotX> event) throws Exception
 	{
-		String msg = event.getMessage();
-		Date date = new Date();
-
-		if (event.getMessage().startsWith("!date"))
-			event.respond("The current date is " + this.dformat.format(date));
-		else if (msg.startsWith("!time"))
-			event.respond("The current time is " + this.tformat.format(date));
+		processor.invoke(event);
 	}
 }
