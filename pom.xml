@@ -24,6 +24,40 @@
     <developerConnection>scm:git:ssh://git@github.com:unitycoders/uc_pircbotx.git</developerConnection>
   </scm>
 
+  <issueManagement>
+    <system>Github Issues</system>
+    <url>https://github.com/unitycoders/uc_pircbotx/issues</url>
+  </issueManagement>
+
+  <distributionManagement>
+    <url>https://github.com/unitycoders/uc_pircbotx/downloads</url>
+  </distributionManagement>
+
+  <licenses>
+    <license>
+      <name>GPL v3</name>
+      <url>http://www.gnu.org/licenses/gpl-3.0-standalone.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>bruce89</id>
+      <name>Bruce Cowan</name>
+      <roles>
+        <role>lead developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>webpigeon</id>
+      <name>Joseph Walton-Rivers</name>
+      <roles>
+        <role>developer</role>
+      </roles>
+    </developer>
+  </developers>
+
   <build>
   <plugins>
     <plugin>
@@ -45,6 +79,7 @@
                <report>scm</report>
                <report>issue-tracking</report>
                <report>help</report>
+               <report>project-team</report>
                <report>license</report>
              </reports>
            </plugin>
