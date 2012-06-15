@@ -34,6 +34,12 @@ public class LineModel
 
 	private final int LINE_COLUMN = 1;
 
+	/**
+	 * Creates a new LineModel.
+	 *
+	 * @param conn the database connection
+	 * @throws SQLException if there was a database error
+	 */
 	public LineModel(Connection conn) throws SQLException
 	{
 		this.conn = conn;
@@ -49,6 +55,12 @@ public class LineModel
 		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS lines (name string)");
 	}
 
+	/**
+	 * Store a line in the database.
+	 *
+	 * @param line the line to store
+	 * @throws SQLException if there was a database error
+	 */
 	public void storeLine(String line) throws SQLException
 	{
 		createLine.clearParameters();
@@ -56,12 +68,23 @@ public class LineModel
 		createLine.execute();
 	}
 
+	/**
+	 * Get a random line from the database.
+	 *
+	 * @return the random line
+	 * @throws SQLException if there was a database error
+	 */
 	public String getRandomLine() throws SQLException
 	{
 		ResultSet rs = randomLine.executeQuery();
 		return rs.getString(1);
 	}
 
+	/**
+	 * Get a {@link List} of all lines in the database.
+	 *
+	 * @return a list of all lines
+	 */
 	public List<String> getAllLines()
 	{
 		List<String> lines = new ArrayList<String>();

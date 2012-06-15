@@ -53,6 +53,12 @@ public class LartModel
 	private final int NICK_COLUMN = 3;
 	private final int PATTERN_COLUMN = 4;
 
+	/**
+	 * Creates a new LartModel.
+	 *
+	 * @param conn the database connection
+	 * @throws SQLException if there was a database error
+	 */
 	public LartModel(Connection conn) throws SQLException
 	{
 		this.conn = conn;
@@ -73,6 +79,16 @@ public class LartModel
 				+ "(id INTEGER PRIMARY KEY AUTOINCREMENT, channel STRING, nick STRING, pattern STRING)");
 	}
 
+	/**
+	 * Stores a lart in the database.
+	 *
+	 * @param channel the channel where the lart belongs to
+	 * @param user the user who created the lart
+	 * @param pattern the pattern of the lart
+	 * @return the ID of the newly-created lart
+	 * @throws IllegalArgumentException if no $who section is given
+	 * @throws SQLException if there was a database error
+	 */
 	public int storeLart(Channel channel, User user, String pattern) throws IllegalArgumentException, SQLException
 	{
 		if (!pattern.contains("$who"))
@@ -84,13 +100,20 @@ public class LartModel
 		createLart.setString(PATTERN_COLUMN - 1, pattern);
 		createLart.execute();
 
-		// Do this manually because @link LartModel.getGeneratedKeys() is broken
+		// Do this manually because getGeneratedKeys() is broken
 		lastId.clearParameters();
 		lastId.execute();
 		ResultSet rs = lastId.getResultSet();
 		return rs.getInt(ID_COLUMN);
 	}
 
+	/**
+	 * Deletes a lart from the database.
+	 *
+	 * @param id the ID of the lart to delete
+	 * @return <code>true</code> if successful, <code>false</code> if not
+	 * @throws SQLException if there was a database error
+	 */
 	public boolean deleteLart(int id) throws SQLException
 	{
 		deleteLart.clearParameters();
@@ -107,6 +130,13 @@ public class LartModel
 		return new Lart(id, channel, nick, pattern);
 	}
 
+	/**
+	 * Gets a {@link Lart} from the database.
+	 *
+	 * @param id the ID of the lart to get
+	 * @return the lart
+	 * @throws SQLException if there was a database error
+	 */
 	public Lart getLart(int id) throws SQLException
 	{
 		specificLart.clearParameters();
@@ -117,12 +147,23 @@ public class LartModel
 		return buildLart(rs);
 	}
 
+	/**
+	 * Gets a random {@link Lart} from the database.
+	 *
+	 * @return a random lart
+	 * @throws SQLException if there was a database error
+	 */
 	public Lart getRandomLart() throws SQLException
 	{
 		ResultSet rs = randomLart.executeQuery();
 		return buildLart(rs);
 	}
 
+	/**
+	 * Gets a {@link List} of all {@link Lart}s in the database.
+	 *
+	 * @return a list of all the larts
+	 */
 	public List<Lart> getAllLarts()
 	{
 		List<Lart> larts = new ArrayList<Lart>();

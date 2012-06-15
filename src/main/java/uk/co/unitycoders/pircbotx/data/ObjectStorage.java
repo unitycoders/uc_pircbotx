@@ -30,8 +30,22 @@ import java.io.Serializable;
  */
 public interface ObjectStorage
 {
-
+	/**
+	 * Store an object in a file.
+	 *
+	 * @param name the filename without extension to store the object in
+	 * @param object the object to store
+	 * @throws IOException if an I/O error occurred
+	 */
 	public void store(String name, Serializable object) throws IOException;
 
+	/**
+	 * Load an object from a file.
+	 *
+	 * @param name the filename without extension to load from
+	 * @return the new object loaded from the file
+	 * @throws IOException if an I/O error occurred
+	 * @throws ClassNotFoundException if the class of the object can't be found
+	 */
 	public Object load(String name) throws IOException, ClassNotFoundException;
 }

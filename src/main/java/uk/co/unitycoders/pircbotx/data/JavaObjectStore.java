@@ -31,6 +31,12 @@ public class JavaObjectStore implements ObjectStorage
 {
 	private final File basePath;
 
+	/**
+	 * Creates a new JavaObjectStore.
+	 *
+	 * @param pathStr the base path for files read/written by this store
+	 * @return the new JavaObjectStore.
+	 */
 	public static ObjectStorage build(String pathStr)
 	{
 		File path = new File(pathStr);
@@ -44,6 +50,11 @@ public class JavaObjectStore implements ObjectStorage
 		return new JavaObjectStore(path);
 	}
 
+	/**
+	 * Creates a new JavaObjectStore.
+	 *
+	 * @param basePath the base path for files read/written by this store
+	 */
 	public JavaObjectStore(File basePath)
 	{
 		this.basePath = basePath;

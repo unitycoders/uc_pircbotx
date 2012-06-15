@@ -20,6 +20,7 @@ package uk.co.unitycoders.pircbotx.data.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * Java SQLite backed database driver
@@ -34,7 +35,14 @@ public class DBConnection
 
 	}
 
-	public static Connection getInstance() throws Exception
+	/**
+	 * Gets the {@link Connection} singleton.
+	 *
+	 * @return the connection singleton
+	 * @throws ClassNotFoundException if the class can't be located
+	 * @throws SQLException if there was a database error
+	 */
+	public static Connection getInstance() throws ClassNotFoundException, SQLException
 	{
 		if (instance == null)
 		{
@@ -45,12 +53,26 @@ public class DBConnection
 		return instance;
 	}
 
-	public static LineModel getLineModel() throws Exception
+	/**
+	 * Gets a {@link LineModel}.
+	 *
+	 * @return a new {@link LineModel}
+	 * @throws ClassNotFoundException if the class can't be located
+	 * @throws SQLException if there was a database error
+	 */
+	public static LineModel getLineModel() throws ClassNotFoundException, SQLException
 	{
 		return new LineModel(getInstance());
 	}
 
-	public static LartModel getLartModel() throws Exception
+	/**
+	 * Gets a {@link LartModel}.
+	 *
+	 * @return a new {@link LartModel}
+	 * @throws ClassNotFoundException if the class can't be located
+	 * @throws SQLException if there was a database error
+	 */
+	public static LartModel getLartModel() throws ClassNotFoundException, SQLException
 	{
 		return new LartModel(getInstance());
 	}

@@ -47,7 +47,7 @@ public class Lart
 	}
 
 	/**
-	 * Gets the ID of the lart/
+	 * Gets the ID of the lart.
 	 *
 	 * @return the ID of the lart
 	 */
