@@ -30,7 +30,7 @@
   </issueManagement>
 
   <distributionManagement>
-    <url>https://github.com/unitycoders/uc_pircbotx/downloads</url>
+    <downloadUrl>https://github.com/unitycoders/uc_pircbotx/downloads</downloadUrl> 
   </distributionManagement>
 
   <licenses>
