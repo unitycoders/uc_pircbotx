@@ -42,20 +42,6 @@ public class LartCommand
 	private final Pattern re;
 	private final Pattern alterRe;
 
-        private int toInt(MessageEvent<PircBotX> event){
-            try
-            {
-                String msg = event.getMessage();
-                Matcher matcher = re.matcher(msg);
-                return Integer.parseInt(matcher.group(2));
-            }
-            catch(NumberFormatException ex)
-            {
-                event.respond("Couldn't read int from argument");
-                throw new RuntimeException("invalid command");
-            }
-        }
-
 	/**
 	 * Creates a {@link LartCommand}.
 	 */
@@ -69,7 +55,7 @@ public class LartCommand
 			ex.printStackTrace();
 		}
 
-		this.re = Pattern.compile("!lart ([^ ]+) *(.*)?");
+		this.re = Pattern.compile(".lart ([^ ]+) *(.*)?");
 		this.alterRe = Pattern.compile("(\\d) (.*)");
 	}
 
@@ -202,4 +188,22 @@ public class LartCommand
                 e.printStackTrace();
             }
 	}
+
+        private int toInt(MessageEvent<PircBotX> event){
+            try
+            {
+                String msg = event.getMessage();
+                Matcher matcher = re.matcher(msg);
+                if(!matcher.matches())
+                {
+                    throw new RuntimeException("invalid command format");
+                }
+                return Integer.parseInt(matcher.group(2));
+            }
+            catch(NumberFormatException ex)
+            {
+                event.respond("Couldn't read int from argument");
+                throw new RuntimeException("invalid command");
+            }
+        }
 }

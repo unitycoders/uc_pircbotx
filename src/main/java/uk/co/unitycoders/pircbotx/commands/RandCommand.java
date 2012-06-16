@@ -46,16 +46,13 @@ public class RandCommand
 	{
 		String msg = event.getMessage();
 
-		if (msg.startsWith("!rand"))
+		try
 		{
-			try
-			{
-				String line = lines.getRandomLine();
-				event.respond(line);
-			} catch (SQLException ex)
-			{
-				event.respond("Failed to get random line: " + ex.getMessage());
-			}
+			String line = lines.getRandomLine();
+			event.respond(line);
+		} catch (SQLException ex)
+		{
+			event.respond("Failed to get random line: " + ex.getMessage());
 		}
 	}
 }

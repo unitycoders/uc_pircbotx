@@ -48,9 +48,22 @@ public class DateTimeCommand
 		String msg = event.getMessage();
 		Date date = new Date();
 
-		if (event.getMessage().startsWith("!date"))
-			event.respond("The current date is " + this.dformat.format(date));
-		else if (msg.startsWith("!time"))
-			event.respond("The current time is " + this.tformat.format(date));
+                String[] args = msg.split(" ");
+                String keyword = args[0].substring(1);
+
+
+                String resp = "INVALID";
+                if(keyword.equals("date"))
+                {
+                    resp = dformat.format(date);
+                }
+
+                if(keyword.equals("time"))
+                {
+                    resp = tformat.format(date);
+                }
+
+                String fmt = String.format("The current %s is %s", keyword, resp);
+                event.respond(fmt);
 	}
 }

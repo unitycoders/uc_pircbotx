@@ -35,11 +35,11 @@ public class Bot
 {
 	public static void main(String[] args) throws Exception
 	{
-		CommandProcessor processor = new CommandProcessor();
-		processor.register("!rand", new RandCommand());
-		processor.register("!time", new DateTimeCommand());
-		processor.register("!date", new DateTimeCommand());
-                processor.register("!lart", new LartCommand());
+		CommandProcessor processor = new CommandProcessor('&');
+		processor.register("rand", new RandCommand());
+		processor.register("time", new DateTimeCommand());
+		processor.register("date", new DateTimeCommand());
+                processor.register("lart", new LartCommand());
 
 		PircBotX bot = new PircBotX();
 		ListenerManager<? extends PircBotX> manager = bot.getListenerManager();
@@ -59,7 +59,8 @@ public class Bot
 		{
 			bot.setName("uc_pircbotx");
 			bot.connect("irc.freenode.net");
-			bot.joinChannel("#unity-coders");
+                        bot.joinChannel("#unitycoders");
+			//bot.joinChannel("#unity-coders");
 			bot.setVerbose(true);
 		} catch (Exception e)
 		{
