@@ -59,8 +59,7 @@ public class Bot
 		{
 			bot.setName("uc_pircbotx");
 			bot.connect("irc.freenode.net");
-                        bot.joinChannel("#unitycoders");
-			//bot.joinChannel("#unity-coders");
+                        bot.joinChannel("#unity-coders");
 			bot.setVerbose(true);
 		} catch (Exception e)
 		{
