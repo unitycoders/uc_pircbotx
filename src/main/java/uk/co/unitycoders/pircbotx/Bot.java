@@ -39,6 +39,7 @@ public class Bot
 		processor.register("!rand", new RandCommand());
 		processor.register("!time", new DateTimeCommand());
 		processor.register("!date", new DateTimeCommand());
+                processor.register("!lart", new LartCommand());
 
 		PircBotX bot = new PircBotX();
 		ListenerManager<? extends PircBotX> manager = bot.getListenerManager();
@@ -46,7 +47,6 @@ public class Bot
 		manager.addListener(new CommandListener(processor));
 		manager.addListener(new JoinsCommand());
 		manager.addListener(new KillerTroutCommand());
-		manager.addListener(new LartCommand());
 		manager.addListener(new LinesListener());
 		manager.addListener(new SayCommand());
 		manager.addListener(new CalcCommand());

@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
+import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.data.db.LartModel;
@@ -35,11 +36,25 @@ import uk.co.unitycoders.pircbotx.types.Lart;
  *
  * @author Bruce Cowan
  */
-public class LartCommand extends ListenerAdapter<PircBotX>
+public class LartCommand
 {
 	private LartModel model;
 	private final Pattern re;
 	private final Pattern alterRe;
+
+        private int toInt(MessageEvent<PircBotX> event){
+            try
+            {
+                String msg = event.getMessage();
+                Matcher matcher = re.matcher(msg);
+                return Integer.parseInt(matcher.group(2));
+            }
+            catch(NumberFormatException ex)
+            {
+                event.respond("Couldn't read int from argument");
+                throw new RuntimeException("invalid command");
+            }
+        }
 
 	/**
 	 * Creates a {@link LartCommand}.
@@ -58,131 +73,133 @@ public class LartCommand extends ListenerAdapter<PircBotX>
 		this.alterRe = Pattern.compile("(\\d) (.*)");
 	}
 
-	@Override
-	public void onMessage(MessageEvent<PircBotX> event) throws Exception
-	{
-		String msg = event.getMessage();
+        @Command(keyword="add")
+        public void onAdd(MessageEvent<PircBotX> event) throws Exception{
+            //TODO this bit could still be nicer
+            String msg = event.getMessage();
+            Matcher matcher = re.matcher(msg);
+            String ops = matcher.group(2);
 
-		Matcher matcher = this.re.matcher(msg);
+            try
+            {
+                int num = model.storeLart(event.getChannel(), event.getUser(), ops);
+                event.respond("Lart # "+num+" added");
+            }
+            catch(IllegalArgumentException ex)
+            {
+                event.respond("No $who section given");
+            }
+            catch(SQLException ex)
+            {
+                event.respond("Database Error: "+ex.getMessage());
+            }
 
-		if (matcher.matches())
-		{
-			String subcommand = matcher.group(1);
-			String opts = matcher.group(2);
+        }
 
-			if (subcommand.equals("add"))
-			{
-				try
-				{
-					int num = this.model.storeLart(event.getChannel(), event.getUser(), opts);
-					event.respond("Lart #" + num + " added");
-				} catch (IllegalArgumentException ex)
-				{
-					event.respond("No $who section given");
-					return;
-				} catch (SQLException ex)
-				{
-					event.respond("Failed to add lart: " + ex.getMessage());
-				}
-			}
-			else if (subcommand.equals("delete"))
-			{
-				try
-				{
-					int id = Integer.parseInt(opts);
-					if (this.model.deleteLart(id))
-						event.respond("Deleted lart #" + id);
-					else
-						event.respond("No such lart in database");
-				} catch (NumberFormatException ex)
-				{
-					event.respond("Couldn't parse number");
-				} catch (SQLException ex)
-				{
-					event.respond("Failed to delete lart: " + ex.getMessage());
-				}
-			}
-			else if (subcommand.equals("info"))
-			{
-				try
-				{
-					int id = Integer.parseInt(opts);
-					Lart lart = this.model.getLart(id);
-					String resp = "Channel: " + lart.getChannel() + " Nick: " + lart.getNick() + " Pattern: " + lart.getPattern();
-					event.respond(resp);
-				} catch (NumberFormatException ex)
-				{
-					event.respond("Couldn't parse number");
-				} catch (SQLException ex)
-				{
-					ex.printStackTrace();
-					event.respond("Failed to get lart info: " + ex.getMessage());
-				}
-			}
-			else if (subcommand.equals("list"))
-			{
-				StringBuilder builder = new StringBuilder();
+        @Command(keyword="delete")
+        public void onDelete(MessageEvent<PircBotX> event) throws Exception{
+            try{
+                int id = toInt(event);
 
-				if (this.model.getAllLarts().isEmpty())
-					return;
+                boolean result = model.deleteLart(id);
+                if(result)
+                {
+                    event.respond("Deleted lart #"+id);
+                }
+                else
+                {
+                    event.respond("No such lart in database");
+                }
+            }
+            catch(RuntimeException ex)
+            {
+                //reading arguments failed
+                //XXX possibly intregrate some kind of command exception to show
+                //usage of command 1 level up?
+            }
+        }
 
-				for (Lart lart : this.model.getAllLarts())
-				{
-					int id = lart.getID();
-					builder.append(id);
-					builder.append(',');
-				}
+        @Command(keyword="info")
+        public void onInfo(MessageEvent<PircBotX> event) throws Exception{
+            try
+            {
+                int id = toInt(event);
+                Lart lart = model.getLart(id);
+                String resp = String.format("Channel: %s, Nick: %s, Pattern: %s", lart.getChannel(), lart.getNick(), lart.getPattern());
+                event.respond(resp);
+            }
+            catch(SQLException ex)
+            {
+                event.respond("Database Error: "+ex.getMessage());
+            }
+        }
 
-				builder.deleteCharAt(builder.length() - 1);
-				event.respond(builder.toString());
-			}
-			else if (subcommand.equals("alter"))
-			{
-				Matcher alterMatcher = this.alterRe.matcher(opts);
-				if (alterMatcher.matches())
-				{
-					try
-					{
-						int id = Integer.parseInt((alterMatcher.group(1)));
-						String pattern = alterMatcher.group(2);
+        @Command(keyword="list")
+        public void onList(MessageEvent<PircBotX> event) throws Exception{
+            StringBuilder builder = new StringBuilder();
 
-						this.model.alterLart(id, event.getChannel(), event.getUser(), pattern);
-						event.respond("Lart #" + id + " altered");
-					} catch (IllegalArgumentException ex)
-					{
-						event.respond("No $who section given");
-						return;
-					} catch (SQLException ex)
-					{
-						event.respond("Failed to add lart: " + ex.getMessage());
-					}
-				}
-				else
-					event.respond("Failed to parse command");
+            if (this.model.getAllLarts().isEmpty())
+                return;
 
-			}
-			else
-				insult(event, subcommand);
-		}
-	}
+            for (Lart lart : this.model.getAllLarts())
+            {
+		int id = lart.getID();
+		builder.append(id);
+		builder.append(',');
+            }
+
+            builder.deleteCharAt(builder.length() - 1);
+            event.respond(builder.toString());
+        }
+
+        @Command(keyword="alter")
+        public void onAlter(MessageEvent<PircBotX> event) throws Exception{
+            Matcher matcher = alterRe.matcher(event.getMessage());
+            if(!matcher.matches())
+            {
+                event.respond("Invalid Format for alter");
+                return;
+            }
+
+            try
+            {
+                int id = toInt(event);
+		String pattern = matcher.group(2);
+
+                this.model.alterLart(id, event.getChannel(), event.getUser(), pattern);
+		event.respond("Lart #" + id + " altered");
+            }
+            catch (IllegalArgumentException ex)
+            {
+                event.respond("No $who section given");
+		return;
+            }
+            catch (SQLException ex)
+            {
+                event.respond("Failed to add lart: " + ex.getMessage());
+            }
+        }
 
 	/**
 	 * Insults someone.
 	 *
 	 * @param event the event from {@link #onMessage(MessageEvent)}.
-	 * @param nick the nick to insult
 	 */
-	private void insult(MessageEvent<PircBotX> event, String nick)
+        @Command(keyword="default")
+	public void insult(MessageEvent<PircBotX> event)
 	{
-		String insult;
-		try
-		{
-			String pattern = this.model.getRandomLart().getPattern();
-			insult = pattern.replace("$who", nick);
-			event.getBot().sendAction(event.getChannel(), insult);
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+            //TODO deal with exception from this
+            String nick = event.getMessage().split(" ")[1];
+            String insult;
+            try
+            {
+		String pattern = this.model.getRandomLart().getPattern();
+		insult = pattern.replace("$who", nick);
+		event.getBot().sendAction(event.getChannel(), insult);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
 	}
 }
