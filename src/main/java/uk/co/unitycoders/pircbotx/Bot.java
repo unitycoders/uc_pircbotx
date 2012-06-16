@@ -36,9 +36,13 @@ public class Bot
 	public static void main(String[] args) throws Exception
 	{
 		CommandProcessor processor = new CommandProcessor('&');
-		processor.register("rand", new RandCommand());
-		processor.register("time", new DateTimeCommand());
-		processor.register("date", new DateTimeCommand());
+
+                DateTimeCommand dtCmd = new DateTimeCommand();
+
+                processor.register("rand", new RandCommand());
+		processor.register("time", dtCmd);
+		processor.register("date", dtCmd);
+                processor.register("time&date", dtCmd);
                 processor.register("lart", new LartCommand());
 
 		PircBotX bot = new PircBotX();
