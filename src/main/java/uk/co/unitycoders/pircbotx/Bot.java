@@ -48,15 +48,13 @@ public class Bot
 		processor.register("lart", new LartCommand());
 		processor.register("killertrout", new KillerTroutCommand());
 		processor.register("joins", new JoinsCommand());
+		processor.register("calc", new CalcCommand());
 
 		PircBotX bot = new PircBotX();
 		ListenerManager<? extends PircBotX> manager = bot.getListenerManager();
 		manager.addListener(new CommandListener(processor));
 
-		// Unported
-		manager.addListener(new CalcCommand());
-
-		// Not portable
+		// Not portable yet
 		manager.addListener(new SayCommand());
 
 		// Other listeners

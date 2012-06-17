@@ -1,5 +1,6 @@
 /**
  * Copyright © 2012 Joseph Walton-Rivers <webpigeon@unitycoders.co.uk>
+ * Copyright © 2012 Bruce Cowan <bruce@bcowan.me.uk>
  *
  * This file is part of uc_PircBotX.
  *
@@ -25,14 +26,15 @@ package uk.co.unitycoders.pircbotx.commands;
 
 import java.util.Stack;
 import org.pircbotx.PircBotX;
-import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
+
+import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 
 /**
  *
  * @author webpigeon
  */
-public class CalcCommand extends ListenerAdapter<PircBotX>
+public class CalcCommand
 {
 	private static final Integer OP_TOKEN = 1;
 	private static final Integer NUM_TOKEN = 2;
@@ -117,20 +119,18 @@ public class CalcCommand extends ListenerAdapter<PircBotX>
 		return stack;
 	}
 
-	@Override
-	public void onMessage(MessageEvent<PircBotX> event) throws Exception
+	@Command
+	public void onCalc(MessageEvent<PircBotX> event) throws Exception
 	{
 		String msg = event.getMessage();
-		if (msg.startsWith("!calc "))
+
+		try
 		{
-			try
-			{
-				msg = msg.substring(6);
-				event.respond(msg + " = " + parse(msg));
-			} catch (Exception ex)
-			{
-				event.respond(ex.getLocalizedMessage());
-			}
+			msg = msg.substring(6);
+			event.respond(msg + " = " + parse(msg));
+		} catch (IndexOutOfBoundsException ex)
+		{
+			event.respond(ex.getLocalizedMessage());
 		}
 	}
 
