@@ -1,5 +1,6 @@
 /**
  * Copyright © 2012 Bruce Cowan <bruce@bcowan.me.uk>
+ * Copyright © 2012 Joseph Walton-Rivers <webpigeon@unitycoders.co.uk>
  *
  * This file is part of uc_PircBotX.
  *
@@ -37,13 +38,13 @@ public class Bot
 	{
 		CommandProcessor processor = new CommandProcessor('&');
 
-                DateTimeCommand dtCmd = new DateTimeCommand();
+		DateTimeCommand dtCmd = new DateTimeCommand();
 
-                processor.register("rand", new RandCommand());
+		processor.register("rand", new RandCommand());
 		processor.register("time", dtCmd);
 		processor.register("date", dtCmd);
-                processor.register("time&date", dtCmd);
-                processor.register("lart", new LartCommand());
+		processor.register("time&date", dtCmd);
+		processor.register("lart", new LartCommand());
 
 		PircBotX bot = new PircBotX();
 		ListenerManager<? extends PircBotX> manager = bot.getListenerManager();
@@ -63,7 +64,7 @@ public class Bot
 		{
 			bot.setName("uc_pircbotx");
 			bot.connect("irc.freenode.net");
-                        bot.joinChannel("#unity-coders");
+			bot.joinChannel("#unity-coders");
 			bot.setVerbose(true);
 		} catch (Exception e)
 		{

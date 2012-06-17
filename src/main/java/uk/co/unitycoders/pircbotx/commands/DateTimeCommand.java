@@ -1,5 +1,6 @@
 /**
  * Copyright © 2012 Bruce Cowan <bruce@bcowan.me.uk>
+ * Copyright © 2012 Joseph Walton-Rivers <webpigeon@unitycoders.co.uk>
  *
  * This file is part of uc_PircBotX.
  *
@@ -33,14 +34,14 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Command;
  */
 public class DateTimeCommand
 {
-        private final DateFormat tdformat;
+	private final DateFormat dtformat;
 	private final DateFormat dformat;
 	private final DateFormat tformat;
 
 	public DateTimeCommand()
 	{
-		this.tdformat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
-                this.dformat = DateFormat.getDateInstance(DateFormat.LONG);
+		this.dtformat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
+		this.dformat = DateFormat.getDateInstance(DateFormat.LONG);
 		this.tformat = DateFormat.getTimeInstance(DateFormat.LONG);
 	}
 
@@ -50,32 +51,32 @@ public class DateTimeCommand
 		String msg = event.getMessage();
 		Date date = new Date();
 
-                String[] args = msg.split(" ");
-                String keyword = args[0].substring(1);
+		String[] args = msg.split(" ");
+		String keyword = args[0].substring(1);
 
 
-                String tense = "are";
-                String resp = "INVALID";
-                if(keyword.equals("date"))
-                {
-                    tense = "is";
-                    resp = dformat.format(date);
-                }
+		String tense = "are";
+		String resp = "INVALID";
+		if (keyword.equals("date"))
+		{
+			tense = "is";
+			resp = dformat.format(date);
+		}
 
-                if(keyword.equals("time"))
-                {
-                    tense = "is";
-                    resp = tformat.format(date);
-                }
+		if (keyword.equals("time"))
+		{
+			tense = "is";
+			resp = tformat.format(date);
+		}
 
-                if(keyword.equals("time&date"))
-                {
-                    keyword = "time and date";
-                    tense = "are";
-                    resp = tdformat.format(date);
-                }
+		if (keyword.equals("time&date"))
+		{
+			keyword = "date and time";
+			tense = "are";
+			resp = dtformat.format(date);
+		}
 
-                String fmt = String.format("The current %s %s %s", keyword, tense, resp);
-                event.respond(fmt);
+		String fmt = String.format("The current %s %s %s", keyword, tense, resp);
+		event.respond(fmt);
 	}
 }

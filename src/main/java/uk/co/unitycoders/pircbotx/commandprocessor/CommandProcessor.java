@@ -33,13 +33,13 @@ import org.pircbotx.hooks.events.MessageEvent;
  */
 public class CommandProcessor
 {
-        private final Pattern regex;
+	private final Pattern regex;
 	private final Map<String, Object> commands;
 	private final Map<String, Map<String, Method>> callbacks;
 
 	public CommandProcessor(char trigger)
 	{
-                this.regex = Pattern.compile(trigger+"([a-z0-9]+)(?: ([a-z0-9]+))?(?: (.*))?");
+		this.regex = Pattern.compile(trigger+"([a-z0-9]+)(?: ([a-z0-9]+))?(?: (.*))?");
 		this.commands = new HashMap<String, Object>();
 		this.callbacks = new HashMap<String, Map<String, Method>>();
 	}
@@ -65,57 +65,54 @@ public class CommandProcessor
 
 	public void invoke(MessageEvent<PircBotX> event) throws Exception
 	{
-            Matcher matcher = regex.matcher(event.getMessage());
+		Matcher matcher = regex.matcher(event.getMessage());
 
-            //not valid command format
-            if(!matcher.matches()){
-                return;
-            }
+		//not valid command format
+		if (!matcher.matches())
+			return;
 
-            //XXX lart [thing], thing will be an action
-            String command = matcher.group(1);
-            String action = matcher.group(2);
-            String args = matcher.group(3);
+		//XXX lart [thing], thing will be an action
+		String command = matcher.group(1);
+		String action = matcher.group(2);
+		String args = matcher.group(3);
 
-            System.out.println("[DEBUG] Command: "+command);
-            System.out.println("[DEBUG] action: "+action);
-            System.out.println("[DEBUG] args: "+args);
+		System.out.println("[DEBUG] Command: "+command);
+		System.out.println("[DEBUG] action: "+action);
+		System.out.println("[DEBUG] args: "+args);
 
-            try
-            {
-                boolean valid;
-                if(action == null)
-                    valid = false;
-                else
-                    valid = call(command, action, event);
+		try
+		{
+			boolean valid;
+			if (action == null)
+				valid = false;
+			else
+				valid = call(command, action, event);
 
-                if(!valid)
-                    call(command, "default", event);
-            }
-            catch(InvocationTargetException ex){
-                Throwable real = ex.getCause();
-                real.printStackTrace();
-                event.respond("[cmd-error] "+real.getMessage());
-            }
-            catch(Exception ex)
-            {
-                ex.printStackTrace();
-                event.respond("[error] "+ex.getMessage());
-            }
+			if(!valid)
+				call(command, "default", event);
+		} catch (InvocationTargetException ex){
+			Throwable real = ex.getCause();
+			real.printStackTrace();
+			event.respond("[cmd-error] "+real.getMessage());
+		} catch(Exception ex)
+		{
+			ex.printStackTrace();
+			event.respond("[error] "+ex.getMessage());
+		}
 	}
 
 	private boolean call(String type, String cmd, Object... args) throws Exception {
 		Object obj = commands.get(type);
 		Map<String, Method> methods = callbacks.get(type);
 
-                System.out.println("Invoking "+type+" : "+cmd+" "+args);
+		System.out.println("Invoking "+type+" : "+cmd+" "+args);
 
 		if (methods == null)
-                    return false;
+			return false;
 
 		Method method = methods.get(cmd);
 		if (method == null)
-                    return false;
+			return false;
 
 		method.invoke(obj, args);
 		return true;
