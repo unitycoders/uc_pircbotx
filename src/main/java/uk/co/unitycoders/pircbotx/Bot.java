@@ -1,5 +1,6 @@
 /**
  * Copyright © 2012 Bruce Cowan <bruce@bcowan.me.uk>
+ * Copyright © 2012 Joseph Walton-Rivers <webpigeon@unitycoders.co.uk>
  *
  * This file is part of uc_PircBotX.
  *
@@ -21,7 +22,10 @@ package uk.co.unitycoders.pircbotx;
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.managers.ListenerManager;
 
+import uk.co.unitycoders.pircbotx.commandprocessor.CommandListener;
+import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commands.*;
+import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
 import uk.co.unitycoders.pircbotx.listeners.LinesListener;
 
 /**
@@ -33,17 +37,27 @@ public class Bot
 {
 	public static void main(String[] args) throws Exception
 	{
+		CommandProcessor processor = new CommandProcessor('&');
+
+		DateTimeCommand dtCmd = new DateTimeCommand();
+
+		// Commands
+		processor.register("rand", new RandCommand());
+		processor.register("time", dtCmd);
+		processor.register("date", dtCmd);
+		processor.register("datetime", dtCmd);
+		processor.register("lart", new LartCommand());
+		processor.register("killertrout", new KillerTroutCommand());
+		processor.register("joins", new JoinsCommand());
+		processor.register("calc", new CalcCommand());
+
 		PircBotX bot = new PircBotX();
 		ListenerManager<? extends PircBotX> manager = bot.getListenerManager();
 
-		manager.addListener(new DateTimeCommand());
-		manager.addListener(new JoinsCommand());
-		manager.addListener(new KillerTroutCommand());
-		manager.addListener(new LartCommand());
+		// Listeners
+		manager.addListener(new CommandListener(processor));
 		manager.addListener(new LinesListener());
-		manager.addListener(new RandCommand());
-		manager.addListener(new SayCommand());
-		manager.addListener(new CalcCommand());
+		manager.addListener(JoinsListener.getInstance());
 
 		// Snapshot (1.8-SNAPSHOT) only
 		bot.setAutoReconnect(true);

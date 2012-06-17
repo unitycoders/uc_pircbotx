@@ -21,8 +21,9 @@ package uk.co.unitycoders.pircbotx.commands;
 import java.sql.SQLException;
 
 import org.pircbotx.PircBotX;
-import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
+
+import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.data.db.LineModel;
 
@@ -31,7 +32,7 @@ import uk.co.unitycoders.pircbotx.data.db.LineModel;
  *
  * @author Bruce Cowan
  */
-public class RandCommand extends ListenerAdapter<PircBotX>
+public class RandCommand
 {
 	private LineModel lines;
 
@@ -40,21 +41,16 @@ public class RandCommand extends ListenerAdapter<PircBotX>
 		lines = DBConnection.getLineModel();
 	}
 
-	@Override
-	public void onMessage(MessageEvent<PircBotX> event) throws Exception
+	@Command
+	public void onRandom(MessageEvent<PircBotX> event) throws Exception
 	{
-		String msg = event.getMessage();
-
-		if (msg.startsWith("!rand"))
+		try
 		{
-			try
-			{
-				String line = lines.getRandomLine();
-				event.respond(line);
-			} catch (SQLException ex)
-			{
-				event.respond("Failed to get random line: " + ex.getMessage());
-			}
+			String line = lines.getRandomLine();
+			event.respond(line);
+		} catch (SQLException ex)
+		{
+			event.respond("Failed to get random line: " + ex.getMessage());
 		}
 	}
 }
