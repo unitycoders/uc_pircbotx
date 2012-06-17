@@ -21,7 +21,6 @@ package uk.co.unitycoders.pircbotx.commands;
 import java.util.Map;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
-import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
@@ -32,7 +31,7 @@ import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
  *
  * @author Bruce Cowan
  */
-public class JoinsCommand extends ListenerAdapter<PircBotX>
+public class JoinsCommand
 {
 	private Map<User, Integer> joins;
 
@@ -45,7 +44,7 @@ public class JoinsCommand extends ListenerAdapter<PircBotX>
 	}
 
 	@Command
-	public void onMessage(MessageEvent<PircBotX> event) throws Exception
+	public void onJoins(MessageEvent<PircBotX> event) throws Exception
 	{
 		StringBuilder builder = new StringBuilder();
 

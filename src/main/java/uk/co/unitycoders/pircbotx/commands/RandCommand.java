@@ -44,8 +44,6 @@ public class RandCommand
 	@Command
 	public void onRandom(MessageEvent<PircBotX> event) throws Exception
 	{
-		String msg = event.getMessage();
-
 		try
 		{
 			String line = lines.getRandomLine();

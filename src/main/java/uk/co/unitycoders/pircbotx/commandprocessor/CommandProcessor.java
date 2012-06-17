@@ -90,7 +90,8 @@ public class CommandProcessor
 
 			if(!valid)
 				call(command, "default", event);
-		} catch (InvocationTargetException ex){
+		} catch (InvocationTargetException ex)
+		{
 			Throwable real = ex.getCause();
 			real.printStackTrace();
 			event.respond("[cmd-error] "+real.getMessage());
@@ -101,7 +102,8 @@ public class CommandProcessor
 		}
 	}
 
-	private boolean call(String type, String cmd, Object... args) throws Exception {
+	private boolean call(String type, String cmd, Object... args) throws Exception
+	{
 		Object obj = commands.get(type);
 		Map<String, Method> methods = callbacks.get(type);
 
