@@ -41,6 +41,7 @@ public class Bot
 
 		DateTimeCommand dtCmd = new DateTimeCommand();
 
+		// Commands
 		processor.register("rand", new RandCommand());
 		processor.register("time", dtCmd);
 		processor.register("date", dtCmd);
@@ -52,12 +53,9 @@ public class Bot
 
 		PircBotX bot = new PircBotX();
 		ListenerManager<? extends PircBotX> manager = bot.getListenerManager();
+
+		// Listeners
 		manager.addListener(new CommandListener(processor));
-
-		// Not portable yet
-		manager.addListener(new SayCommand());
-
-		// Other listeners
 		manager.addListener(new LinesListener());
 		manager.addListener(JoinsListener.getInstance());
 
