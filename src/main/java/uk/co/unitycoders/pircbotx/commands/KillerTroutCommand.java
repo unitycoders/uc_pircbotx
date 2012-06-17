@@ -19,24 +19,21 @@
 package uk.co.unitycoders.pircbotx.commands;
 
 import org.pircbotx.PircBotX;
-import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
+
+import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 
 /**
  * Kills the bot. The command name is an in-joke.
  *
  * @author Bruce Cowan
  */
-public class KillerTroutCommand extends ListenerAdapter<PircBotX>
+public class KillerTroutCommand
 {
-	@Override
-	public void onMessage(MessageEvent<PircBotX> event) throws Exception
+	@Command
+	public void onTrout(MessageEvent<PircBotX> event) throws Exception
 	{
-		if (event.getMessage().startsWith("!killertrout"))
-		{
-			String trout = event.getBot().getNick() + " has been killed by a trout";
-			event.getBot().sendMessage(event.getChannel(), trout);
-			event.getBot().shutdown();
-		}
+		event.getBot().sendMessage(event.getChannel(), event.getBot().getNick() + " has been killed by a trout");
+		event.getBot().shutdown();
 	}
 }

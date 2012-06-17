@@ -45,16 +45,21 @@ public class Bot
 		processor.register("date", dtCmd);
 		processor.register("time&date", dtCmd);
 		processor.register("lart", new LartCommand());
+		processor.register("killertrout", new KillerTroutCommand());
 
 		PircBotX bot = new PircBotX();
 		ListenerManager<? extends PircBotX> manager = bot.getListenerManager();
-
 		manager.addListener(new CommandListener(processor));
-		manager.addListener(new JoinsCommand());
-		manager.addListener(new KillerTroutCommand());
-		manager.addListener(new LinesListener());
-		manager.addListener(new SayCommand());
+
+		// Unported
 		manager.addListener(new CalcCommand());
+
+		// Not portable
+		manager.addListener(new JoinsCommand());
+		manager.addListener(new SayCommand());
+
+		// Other listeners
+		manager.addListener(new LinesListener());
 
 		// Snapshot (1.8-SNAPSHOT) only
 		bot.setAutoReconnect(true);
