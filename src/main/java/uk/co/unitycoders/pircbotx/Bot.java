@@ -45,7 +45,7 @@ public class Bot
 		processor.register("rand", new RandCommand());
 		processor.register("time", dtCmd);
 		processor.register("date", dtCmd);
-		processor.register("time&date", dtCmd);
+		processor.register("datetime", dtCmd);
 		processor.register("lart", new LartCommand());
 		processor.register("killertrout", new KillerTroutCommand());
 		processor.register("joins", new JoinsCommand());

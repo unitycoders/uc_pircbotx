@@ -69,7 +69,7 @@ public class DateTimeCommand
 			resp = tformat.format(date);
 		}
 
-		if (keyword.equals("time&date"))
+		if (keyword.equals("datetime"))
 		{
 			keyword = "date and time";
 			tense = "are";
