@@ -25,6 +25,7 @@ import org.pircbotx.hooks.managers.ListenerManager;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandListener;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commands.*;
+import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
 import uk.co.unitycoders.pircbotx.listeners.LinesListener;
 
 /**
@@ -46,6 +47,7 @@ public class Bot
 		processor.register("time&date", dtCmd);
 		processor.register("lart", new LartCommand());
 		processor.register("killertrout", new KillerTroutCommand());
+		processor.register("joins", new JoinsCommand());
 
 		PircBotX bot = new PircBotX();
 		ListenerManager<? extends PircBotX> manager = bot.getListenerManager();
@@ -55,11 +57,11 @@ public class Bot
 		manager.addListener(new CalcCommand());
 
 		// Not portable
-		manager.addListener(new JoinsCommand());
 		manager.addListener(new SayCommand());
 
 		// Other listeners
 		manager.addListener(new LinesListener());
+		manager.addListener(JoinsListener.getInstance());
 
 		// Snapshot (1.8-SNAPSHOT) only
 		bot.setAutoReconnect(true);
