@@ -19,19 +19,19 @@
 package uk.co.unitycoders.pircbotx.commands;
 
 import java.util.Map;
-import java.util.TreeMap;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
-import org.pircbotx.hooks.ListenerAdapter;
-import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.MessageEvent;
+
+import uk.co.unitycoders.pircbotx.commandprocessor.Command;
+import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
 
 /**
  * Keeps a list of joins, and gives a list of nicks and number of joins.
  *
  * @author Bruce Cowan
  */
-public class JoinsCommand extends ListenerAdapter<PircBotX>
+public class JoinsCommand
 {
 	private Map<User, Integer> joins;
 
@@ -40,37 +40,25 @@ public class JoinsCommand extends ListenerAdapter<PircBotX>
 	 */
 	public JoinsCommand()
 	{
-		this.joins = new TreeMap<User, Integer>();
+		this.joins = JoinsListener.getInstance().getJoins();
 	}
 
-	@Override
-	public void onJoin(JoinEvent<PircBotX> event) throws Exception
+	@Command
+	public void onJoins(MessageEvent<PircBotX> event) throws Exception
 	{
-		Integer joins = this.joins.get(event.getUser());
-		if (joins == null)
-			joins = 0;
-		this.joins.put(event.getUser(), joins + 1);
-	}
+		StringBuilder builder = new StringBuilder();
 
-	@Override
-	public void onMessage(MessageEvent<PircBotX> event) throws Exception
-	{
-		if (event.getMessage().startsWith("!joins"))
+		for (Map.Entry<User, Integer> entry : this.joins.entrySet())
 		{
-			StringBuilder builder = new StringBuilder();
-
-			for (Map.Entry<User, Integer> entry : this.joins.entrySet())
-			{
-				String nick = entry.getKey().getNick();
-				String value = entry.getValue().toString();
-				builder.append(nick);
-				builder.append(" = ");
-				builder.append(value);
-				builder.append(";");
-			}
-
-			builder.deleteCharAt(builder.length() - 1);
-			event.respond(builder.toString());
+			String nick = entry.getKey().getNick();
+			String value = entry.getValue().toString();
+			builder.append(nick);
+			builder.append(" = ");
+			builder.append(value);
+			builder.append(";");
 		}
+
+		builder.deleteCharAt(builder.length() - 1);
+		event.respond(builder.toString());
 	}
 }

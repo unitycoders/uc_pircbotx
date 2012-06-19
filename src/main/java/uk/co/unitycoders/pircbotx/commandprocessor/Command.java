@@ -1,5 +1,5 @@
 /**
- * Copyright © 2012 Bruce Cowan <bruce@bcowan.me.uk>
+ * Copyright © 2012 Joseph Walton-Rivers <webpigeon@unitycoders.co.uk>
  *
  * This file is part of uc_PircBotX.
  *
@@ -16,24 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with uc_PircBotX.  If not, see <http://www.gnu.org/licenses/>.
  */
-package uk.co.unitycoders.pircbotx.commands;
+package uk.co.unitycoders.pircbotx.commandprocessor;
 
-import org.pircbotx.PircBotX;
-import org.pircbotx.hooks.events.MessageEvent;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import uk.co.unitycoders.pircbotx.commandprocessor.Command;
-
-/**
- * Kills the bot. The command name is an in-joke.
- *
- * @author Bruce Cowan
- */
-public class KillerTroutCommand
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.METHOD })
+public @interface Command
 {
-	@Command
-	public void onTrout(MessageEvent<PircBotX> event) throws Exception
-	{
-		event.getBot().sendMessage(event.getChannel(), event.getBot().getNick() + " has been killed by a trout");
-		event.getBot().shutdown();
-	}
+	public String keyword() default "default";
 }
