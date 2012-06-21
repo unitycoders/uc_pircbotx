@@ -76,4 +76,9 @@ public class DBConnection
 	{
 		return new LartModel(getInstance());
 	}
+
+	public static KarmaModel getKarmaModel() throws ClassNotFoundException, SQLException
+	{
+		return new KarmaModel(getInstance());
+	}
 }
