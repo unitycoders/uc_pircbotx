@@ -65,6 +65,13 @@ public class LartCommand
 		//TODO this bit could still be nicer
 		String msg = event.getMessage();
 		Matcher matcher = re.matcher(msg);
+
+		if (!matcher.matches())
+		{
+			event.respond("Invalid format for add");
+			return;
+		}
+
 		String ops = matcher.group(2);
 
 		try
