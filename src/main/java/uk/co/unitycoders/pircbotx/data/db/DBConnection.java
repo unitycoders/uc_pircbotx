@@ -77,8 +77,14 @@ public class DBConnection
 		return new LartModel(getInstance());
 	}
 
+<<<<<<< HEAD
 	public static KarmaModel getKarmaModel() throws ClassNotFoundException, SQLException
 	{
 		return new KarmaModel(getInstance());
 	}
+=======
+        public static ProfileModel getProfileModel() throws ClassNotFoundException, SQLException {
+            return new ProfileModel(getInstance());
+        }
+>>>>>>> start of session management
 }

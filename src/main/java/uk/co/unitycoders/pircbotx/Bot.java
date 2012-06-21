@@ -25,8 +25,11 @@ import org.pircbotx.hooks.managers.ListenerManager;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandListener;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commands.*;
+import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
 import uk.co.unitycoders.pircbotx.listeners.LinesListener;
+import uk.co.unitycoders.pircbotx.profile.ProfileCommand;
+import uk.co.unitycoders.pircbotx.profile.ProfileManager;
 
 /**
  * The actual bot itself.
@@ -39,6 +42,7 @@ public class Bot
 	{
 		CommandProcessor processor = new CommandProcessor('&');
 
+                ProfileManager profiles = new ProfileManager(DBConnection.getProfileModel());
 		DateTimeCommand dtCmd = new DateTimeCommand();
 
 		// Commands
@@ -50,7 +54,11 @@ public class Bot
 		processor.register("killertrout", new KillerTroutCommand());
 		processor.register("joins", new JoinsCommand());
 		processor.register("calc", new CalcCommand());
+<<<<<<< HEAD
 		processor.register("karma", new KarmaCommand());
+=======
+                processor.register("profile", new ProfileCommand(profiles));
+>>>>>>> start of session management
 
 		PircBotX bot = new PircBotX();
 		ListenerManager<? extends PircBotX> manager = bot.getListenerManager();
