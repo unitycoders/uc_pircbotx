@@ -19,7 +19,7 @@ public class KarmaModel
 	{
 		this.conn = conn;
 		buildTable();
-		newKarma = conn.prepareStatement("INSERT INTO karma VALUES (?, 1)");
+		newKarma = conn.prepareStatement("INSERT INTO karma (target) VALUES (?)");
 		getKarma = conn.prepareStatement("SELECT karma FROM karma WHERE target = ?");
 		incrementKarma = conn.prepareStatement("UPDATE karma SET karma = karma + 1 WHERE target = ?");
 		decrementKarma = conn.prepareStatement("UPDATE karma SET karma = karma - 1 WHERE target = ?");
@@ -28,7 +28,7 @@ public class KarmaModel
 	private void buildTable() throws SQLException
 	{
 		Statement stmt = conn.createStatement();
-		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS karma (target STRING PRIMARY KEY, karma INTEGER)");
+		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS karma (target STRING PRIMARY KEY, karma INTEGER DEFAULT 1)");
 	}
 
 	public int getKarma(String target)

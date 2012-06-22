@@ -13,7 +13,8 @@ import uk.co.unitycoders.pircbotx.profile.Profile;
  *
  *
  */
-public class ProfileModel {
+public class ProfileModel
+{
     private final Connection conn;
     private final PreparedStatement createProfile;
     private final PreparedStatement createPerm;
@@ -21,7 +22,8 @@ public class ProfileModel {
     private final PreparedStatement getProfile;
     private final PreparedStatement getPerms;
 
-    public ProfileModel(Connection conn) throws SQLException {
+    public ProfileModel(Connection conn) throws SQLException
+    {
         this.conn = conn;
         buildTable();
         createProfile = conn.prepareStatement("INSERT INTO profiles VALUES(?)");
@@ -33,9 +35,9 @@ public class ProfileModel {
 
     private void buildTable() throws SQLException
     {
-	Statement stmt = conn.createStatement();
-        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS permissions (user string, name string)");
-	stmt.executeUpdate("CREATE TABLE IF NOT EXISTS profiles (user string)");
+        Statement stmt = conn.createStatement();
+        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS permissions (user STRING, name STRING)");
+        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS profiles (user STRING)");
     }
 
     public void createProfile(String name) throws SQLException
@@ -69,7 +71,8 @@ public class ProfileModel {
         getPerms.setString(1, user);
         ResultSet rs = getPerms.executeQuery();
 
-        while(rs.next()){
+        while(rs.next())
+        {
             perms.add(rs.getString(2));
         }
 
@@ -78,7 +81,8 @@ public class ProfileModel {
         return perms.toArray(new String[perms.size()]);
     }
 
-    public Profile getProfile(String profileName) throws SQLException {
+    public Profile getProfile(String profileName) throws SQLException 
+    {
         getProfile.clearParameters();
         getProfile.setString(1, profileName);
         ResultSet rs = getProfile.executeQuery();

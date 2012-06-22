@@ -60,7 +60,7 @@ public class LartModel
 		this.conn = conn;
 
 		buildTable();
-		this.createLart = conn.prepareStatement("INSERT INTO larts VALUES(null, ?, ?, ?)");
+		this.createLart = conn.prepareStatement("INSERT INTO larts (channel, nick, pattern) VALUES (?, ?, ?)");
 		this.readLarts = conn.prepareStatement("SELECT * FROM larts");
 		this.deleteLart = conn.prepareStatement("DELETE FROM larts WHERE id = ?");
 		this.specificLart = conn.prepareStatement("SELECT * FROM larts WHERE id = ?");
