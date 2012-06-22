@@ -59,7 +59,7 @@ public class LartCommand
 		this.alterRe = Pattern.compile("(\\d) (.*)");
 	}
 
-	@Command(keyword="add")
+	@Command("add")
 	public void onAdd(MessageEvent<PircBotX> event) throws Exception
 	{
 		//TODO this bit could still be nicer
@@ -87,7 +87,7 @@ public class LartCommand
 		}
 	}
 
-	@Command(keyword="delete")
+	@Command("delete")
 	public void onDelete(MessageEvent<PircBotX> event) throws Exception
 	{
 		try
@@ -107,7 +107,7 @@ public class LartCommand
 		}
 	}
 
-	@Command(keyword="info")
+	@Command("info")
 	public void onInfo(MessageEvent<PircBotX> event) throws Exception
 	{
 		try
@@ -122,7 +122,7 @@ public class LartCommand
 		}
 	}
 
-	@Command(keyword="list")
+	@Command("list")
 	public void onList(MessageEvent<PircBotX> event) throws Exception
 	{
 		StringBuilder builder = new StringBuilder();
@@ -141,7 +141,7 @@ public class LartCommand
 		event.respond(builder.toString());
 	}
 
-	@Command(keyword="alter")
+	@Command("alter")
 	public void onAlter(MessageEvent<PircBotX> event) throws Exception
 	{
 		Matcher matcher = alterRe.matcher(event.getMessage());
@@ -173,7 +173,7 @@ public class LartCommand
 	 *
 	 * @param event the event from {@link #onMessage(MessageEvent)}.
 	 */
-	@Command(keyword="default")
+	@Command("default")
 	public void insult(MessageEvent<PircBotX> event)
 	{
 		//TODO deal with exception from this

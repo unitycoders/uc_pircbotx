@@ -24,7 +24,7 @@ public class ProfileCommand {
         this.model = DBConnection.getProfileModel();
     }
 
-    @Command(keyword="register")
+    @Command("register")
     public void register(MessageEvent<PircBotX> event) throws Exception {
         try{
             manager.register("demo123");
@@ -34,19 +34,19 @@ public class ProfileCommand {
         }
     }
 
-    @Command(keyword="login")
+    @Command("login")
     public void login(MessageEvent<PircBotX> event) throws Exception {
         manager.login(event.getUser(), "demo123");
         event.respond("you are now logged in");
     }
 
-    @Command(keyword="logoff")
+    @Command("logoff")
     public void logoff(MessageEvent<PircBotX> event) throws Exception {
         manager.logoff(event.getUser());
         event.respond("you have been logged out");
     }
 
-    @Command(keyword="addperm")
+    @Command("addperm")
     public void addPerm(MessageEvent<PircBotX> event) throws Exception {
         Profile profile = manager.getProfile(event.getUser());
         if( profile == null ){
@@ -58,7 +58,7 @@ public class ProfileCommand {
         event.respond("permission 'perm1' added to your profile");
     }
 
-    @Command(keyword="rmperm")
+    @Command("rmperm")
     public void removePerm(MessageEvent<PircBotX> event) throws Exception {
         Profile profile = manager.getProfile(event.getUser());
         if( profile == null ){
@@ -70,7 +70,7 @@ public class ProfileCommand {
         event.respond("permission 'perm1' removed from your profile");
     }
 
-    @Command(keyword="hasperm")
+    @Command("hasperm")
     public void hasPerm(MessageEvent<PircBotX> event) throws Exception {
         Profile profile = manager.getProfile(event.getUser());
         if( profile == null ){

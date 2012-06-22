@@ -24,7 +24,7 @@ public class KarmaCommand
 		}
 	}
 
-	@Command(keyword="default")
+	@Command("default")
 	public void onKarma(MessageEvent<PircBotX> event) throws Exception
 	{
 		String target = event.getMessage().split(" ")[1];
@@ -33,7 +33,7 @@ public class KarmaCommand
 		event.respond("Karma for " + target + " = " + karma);
 	}
 
-	@Command(keyword={"increment", "add"})
+	@Command({"increment", "add"})
 	public void incrementKarma(MessageEvent<PircBotX> event) throws Exception
 	{
 		String target = event.getMessage().split(" ")[2];
@@ -49,7 +49,7 @@ public class KarmaCommand
 		}
 	}
 
-	@Command(keyword={"decrement", "remove"})
+	@Command({"decrement", "remove"})
 	public void decrementKarma(MessageEvent<PircBotX> event) throws Exception
 	{
 		String target = event.getMessage().split(" ")[2];
