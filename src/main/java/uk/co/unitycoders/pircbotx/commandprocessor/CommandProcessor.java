@@ -54,8 +54,11 @@ public class CommandProcessor
 			if (method.isAnnotationPresent(Command.class))
 			{
 				Command c = method.getAnnotation(Command.class);
-				assert !methods.containsKey(c.keyword());
-				methods.put(c.keyword(), method);
+                                String[] keywords = c.keyword();
+                                for(String keyword : keywords){
+                                    assert !methods.containsKey(keyword);
+                                    methods.put(keyword, method);
+                                }
 			}
 		}
 

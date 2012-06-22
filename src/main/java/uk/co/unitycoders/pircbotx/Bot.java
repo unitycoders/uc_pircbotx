@@ -54,11 +54,8 @@ public class Bot
 		processor.register("killertrout", new KillerTroutCommand());
 		processor.register("joins", new JoinsCommand());
 		processor.register("calc", new CalcCommand());
-<<<<<<< HEAD
 		processor.register("karma", new KarmaCommand());
-=======
                 processor.register("profile", new ProfileCommand(profiles));
->>>>>>> start of session management
 
 		PircBotX bot = new PircBotX();
 		ListenerManager<? extends PircBotX> manager = bot.getListenerManager();
