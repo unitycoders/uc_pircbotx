@@ -73,7 +73,7 @@ public class LartModel
 	{
 		Statement stmt = this.conn.createStatement();
 		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS larts"
-				+ "(id INTEGER PRIMARY KEY AUTOINCREMENT, channel STRING, nick STRING, pattern STRING)");
+				+ "(id INTEGER PRIMARY KEY AUTOINCREMENT, channel TEXT, nick TEXT, pattern TEXT)");
 	}
 
 	/**

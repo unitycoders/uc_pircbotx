@@ -50,7 +50,7 @@ public class LineModel
 	private void buildTable() throws SQLException
 	{
 		Statement stmt = conn.createStatement();
-		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS lines (line string)");
+		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS lines (line TEXT)");
 	}
 
 	/**
