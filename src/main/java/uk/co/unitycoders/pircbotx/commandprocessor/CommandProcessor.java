@@ -20,6 +20,7 @@ package uk.co.unitycoders.pircbotx.commandprocessor;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -122,4 +123,22 @@ public class CommandProcessor
 		method.invoke(obj, args);
 		return true;
 	}
+
+    public String[] getModules() {
+        Collection<String> modules = callbacks.keySet();
+        String[] moduleArray = new String[modules.size()];
+        return modules.toArray(moduleArray);
+    }
+        
+    public String[] getCommands(String moduleName) {
+        Map<String, Method> commands = callbacks.get(moduleName);
+        
+        if( commands == null ) {
+            return new String[0];
+        }
+        
+        Collection<String> names = commands.keySet();
+        String[] nameArray = new String[names.size()];
+        return names.toArray(nameArray);
+    }
 }
