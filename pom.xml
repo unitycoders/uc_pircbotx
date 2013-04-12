@@ -167,7 +167,7 @@
     <dependency>
       <groupId>org.pircbotx</groupId>
       <artifactId>pircbotx</artifactId>
-      <version>1.8-SNAPSHOT</version>
+      <version>1.9</version>
     </dependency>
     <dependency>
       <groupId>org.xerial</groupId>
