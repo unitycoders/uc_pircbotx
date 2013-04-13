@@ -19,6 +19,7 @@
 package uk.co.unitycoders.pircbotx.commands;
 
 import java.util.Map;
+
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 import org.pircbotx.hooks.events.MessageEvent;
@@ -28,7 +29,7 @@ import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
 
 /**
  * Keeps a list of joins, and gives a list of nicks and number of joins.
- *
+ * 
  * @author Bruce Cowan
  */
 public class JoinsCommand

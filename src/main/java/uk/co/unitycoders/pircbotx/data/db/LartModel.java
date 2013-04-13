@@ -51,7 +51,7 @@ public class LartModel
 
 	/**
 	 * Creates a new LartModel.
-	 *
+	 * 
 	 * @param conn the database connection
 	 * @throws SQLException if there was a database error
 	 */
@@ -78,7 +78,7 @@ public class LartModel
 
 	/**
 	 * Stores a lart in the database.
-	 *
+	 * 
 	 * @param channel the channel where the lart belongs to
 	 * @param user the user who created the lart
 	 * @param pattern the pattern of the lart
@@ -106,7 +106,7 @@ public class LartModel
 
 	/**
 	 * Deletes a lart from the database.
-	 *
+	 * 
 	 * @param id the ID of the lart to delete
 	 * @return <code>true</code> if successful, <code>false</code> if not
 	 * @throws SQLException if there was a database error
@@ -129,7 +129,7 @@ public class LartModel
 
 	/**
 	 * Gets a {@link Lart} from the database.
-	 *
+	 * 
 	 * @param id the ID of the lart to get
 	 * @return the lart
 	 * @throws SQLException if there was a database error
@@ -146,7 +146,7 @@ public class LartModel
 
 	/**
 	 * Gets a random {@link Lart} from the database.
-	 *
+	 * 
 	 * @return a random lart
 	 * @throws SQLException if there was a database error
 	 */
@@ -158,7 +158,7 @@ public class LartModel
 
 	/**
 	 * Gets a {@link List} of all {@link Lart}s in the database.
-	 *
+	 * 
 	 * @return a list of all the larts
 	 */
 	public List<Lart> getAllLarts()

@@ -25,12 +25,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
 
 /**
  * centrally managed command parsing.
- *
+ * 
  */
 public class CommandProcessor
 {
@@ -40,7 +41,7 @@ public class CommandProcessor
 
 	public CommandProcessor(char trigger)
 	{
-		this.regex = Pattern.compile(trigger+"([a-z0-9]+)(?: ([a-z0-9]+))?(?: (.*))?");
+		this.regex = Pattern.compile(trigger + "([a-z0-9]+)(?: ([a-z0-9]+))?(?: (.*))?");
 		this.commands = new HashMap<String, Object>();
 		this.callbacks = new HashMap<String, Map<String, Method>>();
 	}
@@ -55,11 +56,12 @@ public class CommandProcessor
 			if (method.isAnnotationPresent(Command.class))
 			{
 				Command c = method.getAnnotation(Command.class);
-                                String[] keywords = c.value();
-                                for(String keyword : keywords){
-                                    assert !methods.containsKey(keyword);
-                                    methods.put(keyword, method);
-                                }
+				String[] keywords = c.value();
+				for (String keyword : keywords)
+				{
+					assert !methods.containsKey(keyword);
+					methods.put(keyword, method);
+				}
 			}
 		}
 
@@ -71,18 +73,18 @@ public class CommandProcessor
 	{
 		Matcher matcher = regex.matcher(event.getMessage());
 
-		//not valid command format
+		// not valid command format
 		if (!matcher.matches())
 			return;
 
-		//XXX lart [thing], thing will be an action
+		// XXX lart [thing], thing will be an action
 		String command = matcher.group(1);
 		String action = matcher.group(2);
 		String args = matcher.group(3);
 
-		System.out.println("[DEBUG] Command: "+command);
-		System.out.println("[DEBUG] action: "+action);
-		System.out.println("[DEBUG] args: "+args);
+		System.out.println("[DEBUG] Command: " + command);
+		System.out.println("[DEBUG] action: " + action);
+		System.out.println("[DEBUG] args: " + args);
 
 		try
 		{
@@ -92,17 +94,17 @@ public class CommandProcessor
 			else
 				valid = call(command, action, event);
 
-			if(!valid)
+			if (!valid)
 				call(command, "default", event);
 		} catch (InvocationTargetException ex)
 		{
 			Throwable real = ex.getCause();
 			real.printStackTrace();
-			event.respond("[cmd-error] "+real.getMessage());
-		} catch(Exception ex)
+			event.respond("[cmd-error] " + real.getMessage());
+		} catch (Exception ex)
 		{
 			ex.printStackTrace();
-			event.respond("[error] "+ex.getMessage());
+			event.respond("[error] " + ex.getMessage());
 		}
 	}
 
@@ -111,7 +113,7 @@ public class CommandProcessor
 		Object obj = commands.get(type);
 		Map<String, Method> methods = callbacks.get(type);
 
-		System.out.println("Invoking "+type+" : "+cmd+" "+args);
+		System.out.println("Invoking " + type + " : " + cmd + " " + args);
 
 		if (methods == null)
 			return false;
@@ -124,21 +126,24 @@ public class CommandProcessor
 		return true;
 	}
 
-    public String[] getModules() {
-        Collection<String> modules = callbacks.keySet();
-        String[] moduleArray = new String[modules.size()];
-        return modules.toArray(moduleArray);
-    }
-        
-    public String[] getCommands(String moduleName) {
-        Map<String, Method> commands = callbacks.get(moduleName);
-        
-        if( commands == null ) {
-            return new String[0];
-        }
-        
-        Collection<String> names = commands.keySet();
-        String[] nameArray = new String[names.size()];
-        return names.toArray(nameArray);
-    }
+	public String[] getModules()
+	{
+		Collection<String> modules = callbacks.keySet();
+		String[] moduleArray = new String[modules.size()];
+		return modules.toArray(moduleArray);
+	}
+
+	public String[] getCommands(String moduleName)
+	{
+		Map<String, Method> commands = callbacks.get(moduleName);
+
+		if (commands == null)
+		{
+			return new String[0];
+		}
+
+		Collection<String> names = commands.keySet();
+		String[] nameArray = new String[names.size()];
+		return names.toArray(nameArray);
+	}
 }

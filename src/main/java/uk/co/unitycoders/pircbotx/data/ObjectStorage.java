@@ -23,7 +23,7 @@ import java.io.Serializable;
 
 /**
  * Interface for storing objects.
- *
+ * 
  * Java objects are too complex to be stored as-is in a relational database.
  * They can however be stored using serialisation. It's a requirement of the
  * java spec. states that such an object implement {@link Serializable}.
@@ -32,7 +32,7 @@ public interface ObjectStorage
 {
 	/**
 	 * Store an object in a file.
-	 *
+	 * 
 	 * @param name the filename without extension to store the object in
 	 * @param object the object to store
 	 * @throws IOException if an I/O error occurred
@@ -41,7 +41,7 @@ public interface ObjectStorage
 
 	/**
 	 * Load an object from a file.
-	 *
+	 * 
 	 * @param name the filename without extension to load from
 	 * @return the new object loaded from the file
 	 * @throws IOException if an I/O error occurred

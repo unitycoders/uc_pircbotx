@@ -18,7 +18,11 @@
  */
 package uk.co.unitycoders.pircbotx.data.db;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +38,7 @@ public class LineModel
 
 	/**
 	 * Creates a new LineModel.
-	 *
+	 * 
 	 * @param conn the database connection
 	 * @throws SQLException if there was a database error
 	 */
@@ -55,7 +59,7 @@ public class LineModel
 
 	/**
 	 * Store a line in the database.
-	 *
+	 * 
 	 * @param line the line to store
 	 * @throws SQLException if there was a database error
 	 */
@@ -68,7 +72,7 @@ public class LineModel
 
 	/**
 	 * Get a random line from the database.
-	 *
+	 * 
 	 * @return the random line
 	 * @throws SQLException if there was a database error
 	 */
@@ -80,7 +84,7 @@ public class LineModel
 
 	/**
 	 * Get a {@link List} of all lines in the database.
-	 *
+	 * 
 	 * @return a list of all lines
 	 */
 	public List<String> getAllLines()

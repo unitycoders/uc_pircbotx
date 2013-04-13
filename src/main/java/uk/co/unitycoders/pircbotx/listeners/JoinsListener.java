@@ -38,7 +38,7 @@ public class JoinsListener extends ListenerAdapter<PircBotX>
 
 	/**
 	 * Gets the {@link JoinsListener} singleton.
-	 *
+	 * 
 	 * @return the JoinsListener singleton
 	 */
 	public static JoinsListener getInstance()
@@ -60,7 +60,7 @@ public class JoinsListener extends ListenerAdapter<PircBotX>
 
 	/**
 	 * Gets the {@link Map} of joins.
-	 *
+	 * 
 	 * @return the map of joins
 	 */
 	public Map<User, Integer> getJoins()

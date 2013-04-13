@@ -29,7 +29,7 @@ import uk.co.unitycoders.pircbotx.data.db.LineModel;
 
 /**
  * Keeps a log of all the lines said, and randomly speaks one.
- *
+ * 
  * @author Bruce Cowan
  */
 public class RandCommand

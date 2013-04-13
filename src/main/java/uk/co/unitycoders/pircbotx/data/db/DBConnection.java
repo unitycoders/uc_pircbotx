@@ -37,7 +37,7 @@ public class DBConnection
 
 	/**
 	 * Gets the {@link Connection} singleton.
-	 *
+	 * 
 	 * @return the connection singleton
 	 * @throws ClassNotFoundException if the class can't be located
 	 * @throws SQLException if there was a database error
@@ -55,7 +55,7 @@ public class DBConnection
 
 	/**
 	 * Gets a {@link LineModel}.
-	 *
+	 * 
 	 * @return a new {@link LineModel}
 	 * @throws ClassNotFoundException if the class can't be located
 	 * @throws SQLException if there was a database error
@@ -67,7 +67,7 @@ public class DBConnection
 
 	/**
 	 * Gets a {@link LartModel}.
-	 *
+	 * 
 	 * @return a new {@link LartModel}
 	 * @throws ClassNotFoundException if the class can't be located
 	 * @throws SQLException if there was a database error
@@ -77,13 +77,13 @@ public class DBConnection
 		return new LartModel(getInstance());
 	}
 
-
 	public static KarmaModel getKarmaModel() throws ClassNotFoundException, SQLException
 	{
 		return new KarmaModel(getInstance());
 	}
 
-        public static ProfileModel getProfileModel() throws ClassNotFoundException, SQLException {
-            return new ProfileModel(getInstance());
-        }
+	public static ProfileModel getProfileModel() throws ClassNotFoundException, SQLException
+	{
+		return new ProfileModel(getInstance());
+	}
 }

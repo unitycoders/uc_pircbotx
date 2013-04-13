@@ -29,7 +29,7 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 
 /**
  * Outputs the formatted date or time.
- *
+ * 
  * @author Bruce Cowan
  */
 public class DateTimeCommand
@@ -53,7 +53,6 @@ public class DateTimeCommand
 
 		String[] args = msg.split(" ");
 		String keyword = args[0].substring(1);
-
 
 		String tense = "are";
 		String resp = "INVALID";

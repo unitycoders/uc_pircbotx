@@ -25,7 +25,7 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 
 /**
  * Kills the bot. The command name is an in-joke.
- *
+ * 
  * @author Bruce Cowan
  */
 public class KillerTroutCommand

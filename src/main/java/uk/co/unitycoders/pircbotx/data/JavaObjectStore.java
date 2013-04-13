@@ -18,11 +18,17 @@
  */
 package uk.co.unitycoders.pircbotx.data;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 /**
  * Java native object serialisation.
- *
+ * 
  * The simplest form of persistent storage is serialisation. This class uses the
  * in built serialisation system to create files on the system for classes which
  * need to persist over many runs of the bot.
@@ -33,7 +39,7 @@ public class JavaObjectStore implements ObjectStorage
 
 	/**
 	 * Creates a new JavaObjectStore.
-	 *
+	 * 
 	 * @param pathStr the base path for files read/written by this store
 	 * @return the new JavaObjectStore.
 	 */
@@ -52,7 +58,7 @@ public class JavaObjectStore implements ObjectStorage
 
 	/**
 	 * Creates a new JavaObjectStore.
-	 *
+	 * 
 	 * @param basePath the base path for files read/written by this store
 	 */
 	public JavaObjectStore(File basePath)

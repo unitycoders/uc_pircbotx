@@ -4,45 +4,54 @@
  */
 package uk.co.unitycoders.pircbotx.data;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.Serializable;
-import org.junit.*;
-import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
- *
+ * 
  * @author webpigeon
  */
-public class JavaObjectStoreTest {
-    private ObjectStorage instance;
+public class JavaObjectStoreTest
+{
+	private ObjectStorage instance;
 
-    public JavaObjectStoreTest() {
-    }
+	public JavaObjectStoreTest()
+	{
+	}
 
-    @Before
-    public void setUp() {
-        this.instance = JavaObjectStore.build("data/");
-    }
+	@Before
+	public void setUp()
+	{
+		this.instance = JavaObjectStore.build("data/");
+	}
 
-    @After
-    public void tearDown() {
-    }
+	@After
+	public void tearDown()
+	{
+	}
 
+	/**
+	 * Test of store method, of class JavaObjectStore.
+	 * 
+	 * @throws Exception if the test fails because something blew up.
+	 */
+	@Test
+	public void testStoreLoad() throws Exception
+	{
+		System.out.println("store");
+		String name = "testObject";
 
-    /**
-     * Test of store method, of class JavaObjectStore.
-     * @throws Exception if the test fails because something blew up.
-     */
-    @Test
-    public void testStoreLoad() throws Exception {
-        System.out.println("store");
-        String name = "testObject";
+		Serializable object = "myTestObject";
 
-        Serializable object = "myTestObject";
+		instance.store(name, object);
+		Object result = instance.load(name);
 
-        instance.store(name, object);
-        Object result = instance.load(name);
-
-        assertEquals(object, result);
-    }
+		assertEquals(object, result);
+	}
 
 }

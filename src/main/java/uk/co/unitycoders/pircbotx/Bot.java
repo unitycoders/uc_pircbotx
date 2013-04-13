@@ -33,7 +33,7 @@ import uk.co.unitycoders.pircbotx.profile.ProfileManager;
 
 /**
  * The actual bot itself.
- *
+ * 
  * @author Bruce Cowan
  */
 public class Bot
@@ -42,7 +42,7 @@ public class Bot
 	{
 		CommandProcessor processor = new CommandProcessor('&');
 
-                ProfileManager profiles = new ProfileManager(DBConnection.getProfileModel());
+		ProfileManager profiles = new ProfileManager(DBConnection.getProfileModel());
 		DateTimeCommand dtCmd = new DateTimeCommand();
 
 		// Commands
@@ -55,8 +55,8 @@ public class Bot
 		processor.register("joins", new JoinsCommand());
 		processor.register("calc", new CalcCommand());
 		processor.register("karma", new KarmaCommand());
-                processor.register("profile", new ProfileCommand(profiles));
-                processor.register("help", new HelpCommand(processor));
+		processor.register("profile", new ProfileCommand(profiles));
+		processor.register("help", new HelpCommand(processor));
 
 		PircBotX bot = new PircBotX();
 		ListenerManager<? extends PircBotX> manager = bot.getListenerManager();

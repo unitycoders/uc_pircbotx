@@ -32,7 +32,7 @@ public class Lart
 
 	/**
 	 * Creates a new lart.
-	 *
+	 * 
 	 * @param id the id of the lart in the database
 	 * @param channel the channel the lart belongs in
 	 * @param user the creator of the lart
@@ -48,7 +48,7 @@ public class Lart
 
 	/**
 	 * Gets the ID of the lart.
-	 *
+	 * 
 	 * @return the ID of the lart
 	 */
 	public int getID()
@@ -58,7 +58,7 @@ public class Lart
 
 	/**
 	 * Gets the channel the lart belongs to.
-	 *
+	 * 
 	 * @return the channel the lart belongs to
 	 */
 	public String getChannel()
@@ -68,7 +68,7 @@ public class Lart
 
 	/**
 	 * Gets the author of the lart.
-	 *
+	 * 
 	 * @return the author of the lart
 	 */
 	public String getNick()
@@ -78,7 +78,7 @@ public class Lart
 
 	/**
 	 * Gets the pattern of the lart.
-	 *
+	 * 
 	 * @return the pattern of the lart
 	 */
 	public String getPattern()

@@ -25,13 +25,14 @@
 package uk.co.unitycoders.pircbotx.commands;
 
 import java.util.Stack;
+
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 
 /**
- *
+ * 
  * @author webpigeon
  */
 public class CalcCommand

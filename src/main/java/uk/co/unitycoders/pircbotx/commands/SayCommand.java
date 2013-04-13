@@ -27,7 +27,7 @@ import org.pircbotx.hooks.events.PrivateMessageEvent;
 
 /**
  * This says messages given to the bot in a private message.
- *
+ * 
  * @author Bruce Cowan
  */
 public class SayCommand extends ListenerAdapter<PircBotX>
@@ -41,8 +41,7 @@ public class SayCommand extends ListenerAdapter<PircBotX>
 	}
 
 	@Override
-	public void onPrivateMessage(PrivateMessageEvent<PircBotX> event)
-			throws Exception
+	public void onPrivateMessage(PrivateMessageEvent<PircBotX> event) throws Exception
 	{
 		String msg = event.getMessage();
 

@@ -25,15 +25,15 @@ import java.util.regex.Pattern;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
-import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 
+import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.data.db.LartModel;
 import uk.co.unitycoders.pircbotx.types.Lart;
 
 /**
  * Insults the 1st argument.
- *
+ * 
  * @author Bruce Cowan
  */
 public class LartCommand
@@ -62,7 +62,7 @@ public class LartCommand
 	@Command("add")
 	public void onAdd(MessageEvent<PircBotX> event) throws Exception
 	{
-		//TODO this bit could still be nicer
+		// TODO this bit could still be nicer
 		String msg = event.getMessage();
 		Matcher matcher = re.matcher(msg);
 
@@ -77,13 +77,13 @@ public class LartCommand
 		try
 		{
 			int num = model.storeLart(event.getChannel(), event.getUser(), ops);
-			event.respond("Lart # "+num+" added");
+			event.respond("Lart # " + num + " added");
 		} catch (IllegalArgumentException ex)
 		{
 			event.respond("No $who section given");
 		} catch (SQLException ex)
 		{
-			event.respond("Database Error: "+ex.getMessage());
+			event.respond("Database Error: " + ex.getMessage());
 		}
 	}
 
@@ -96,14 +96,14 @@ public class LartCommand
 
 			boolean result = model.deleteLart(id);
 			if (result)
-				event.respond("Deleted lart #"+id);
+				event.respond("Deleted lart #" + id);
 			else
 				event.respond("No such lart in database");
 		} catch (RuntimeException ex)
 		{
-			//reading arguments failed
-			//XXX possibly intregrate some kind of command exception to show
-			//usage of command 1 level up?
+			// reading arguments failed
+			// XXX possibly intregrate some kind of command exception to show
+			// usage of command 1 level up?
 		}
 	}
 
@@ -116,9 +116,9 @@ public class LartCommand
 			Lart lart = model.getLart(id);
 			String resp = String.format("Channel: %s, Nick: %s, Pattern: %s", lart.getChannel(), lart.getNick(), lart.getPattern());
 			event.respond(resp);
-		} catch(SQLException ex)
+		} catch (SQLException ex)
 		{
-			event.respond("Database Error: "+ex.getMessage());
+			event.respond("Database Error: " + ex.getMessage());
 		}
 	}
 
@@ -170,13 +170,13 @@ public class LartCommand
 
 	/**
 	 * Insults someone.
-	 *
+	 * 
 	 * @param event the event from {@link #onMessage(MessageEvent)}.
 	 */
 	@Command("default")
 	public void insult(MessageEvent<PircBotX> event)
 	{
-		//TODO deal with exception from this
+		// TODO deal with exception from this
 		String nick = event.getMessage().split(" ")[1];
 		String insult;
 		try
@@ -201,7 +201,7 @@ public class LartCommand
 				throw new RuntimeException("invalid command format");
 			}
 			return Integer.parseInt(matcher.group(2));
-		} catch(NumberFormatException ex)
+		} catch (NumberFormatException ex)
 		{
 			event.respond("Couldn't read int from argument");
 			throw new RuntimeException("invalid command");
