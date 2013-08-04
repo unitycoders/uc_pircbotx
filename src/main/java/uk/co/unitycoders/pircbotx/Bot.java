@@ -19,6 +19,8 @@
  */
 package uk.co.unitycoders.pircbotx;
 
+import javax.net.ssl.SSLSocketFactory;
+
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.managers.ListenerManager;
 
@@ -73,7 +75,7 @@ public class Bot
 		try
 		{
 			bot.setName("uc_pircbotx");
-			bot.connect("irc.freenode.net");
+			bot.connect("chat.freenode.net", 6697, SSLSocketFactory.getDefault());
 			bot.joinChannel("#unity-coders");
 			bot.setVerbose(true);
 		} catch (Exception e)
