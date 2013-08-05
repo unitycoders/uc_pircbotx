@@ -32,6 +32,11 @@ import org.pircbotx.hooks.events.MessageEvent;
 /**
  * centrally managed command parsing.
  * 
+ * This class is responsible to breaking IRC messages into commands which the
+ * bot can understand. It contains a list of modules and the methods which are
+ * tagged with the command annotation. Classes must be registered with the
+ * Command Processor in order for the processor to recognise them as commands.
+ * 
  */
 public class CommandProcessor
 {
@@ -39,6 +44,15 @@ public class CommandProcessor
 	private final Map<String, Object> commands;
 	private final Map<String, Map<String, Method>> callbacks;
 
+	/**
+	 * Create a new command processor.
+	 * 
+	 * This will create a new command processor and will initialise the regex
+	 * pattern the bot will use to match commands. It will also create the maps
+	 * needed to store information about the commands.
+	 * 
+	 * @param trigger the first character of any line directed at the bot
+	 */
 	public CommandProcessor(char trigger)
 	{
 		this.regex = Pattern.compile(trigger + "([a-z0-9]+)(?: ([a-z0-9]+))?(?: (.*))?");
@@ -46,6 +60,19 @@ public class CommandProcessor
 		this.callbacks = new HashMap<String, Map<String, Method>>();
 	}
 
+	/**
+	 * Register a new module and extract it's commands.
+	 * 
+	 * This method will look at target and process any method which has been
+	 * annotated with the command annotation. It will then remember the module
+	 * and command names for use when processing messages.
+	 * 
+	 * The module's name will need to be put before any command. This is to
+	 * prevent two modules conflicting with the same named commands.
+	 * 
+	 * @param name the name of the module
+	 * @param target the module object
+	 */
 	public void register(String name, Object target)
 	{
 		Map<String, Method> methods = new HashMap<String, Method>();
@@ -69,6 +96,16 @@ public class CommandProcessor
 		callbacks.put(name, methods);
 	}
 
+	/**
+	 * Process an IRC message to see if the bot needs to respond.
+	 * 
+	 * This method takes an IRC message and splits it into it's component parts.
+	 * if the action is valid it will then call the call method to process the
+	 * event.
+	 * 
+	 * @param event the event to be processed
+	 * @throws Exception
+	 */
 	public void invoke(MessageEvent<PircBotX> event) throws Exception
 	{
 		Matcher matcher = regex.matcher(event.getMessage());
@@ -108,6 +145,15 @@ public class CommandProcessor
 		}
 	}
 
+	/**
+	 * Call a module's command with required arguments.
+	 * 
+	 * @param type the name of the module
+	 * @param cmd the name of the command
+	 * @param args the arguments to pass to the method associated with command
+	 * @return true if method was called, false if not
+	 * @throws Exception if the method throws an exception.
+	 */
 	private boolean call(String type, String cmd, Object... args) throws Exception
 	{
 		Object obj = commands.get(type);
@@ -126,6 +172,11 @@ public class CommandProcessor
 		return true;
 	}
 
+	/**
+	 * Get a list of modules registered with the command processor.
+	 * 
+	 * @return the list of module names
+	 */
 	public String[] getModules()
 	{
 		Collection<String> modules = callbacks.keySet();
@@ -133,6 +184,12 @@ public class CommandProcessor
 		return modules.toArray(moduleArray);
 	}
 
+	/**
+	 * Gets a list of commands which are registered with the command processor
+	 * 
+	 * @param moduleName the name of the module to get the commands from.
+	 * @return the list of command names, or null if command doesn't exist.
+	 */
 	public String[] getCommands(String moduleName)
 	{
 		Map<String, Method> commands = callbacks.get(moduleName);
