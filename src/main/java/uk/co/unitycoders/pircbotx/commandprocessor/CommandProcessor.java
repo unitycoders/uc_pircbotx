@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,8 +57,8 @@ public class CommandProcessor
 	public CommandProcessor(char trigger)
 	{
 		this.regex = Pattern.compile(trigger + "([a-z0-9]+)(?: ([a-z0-9]+))?(?: (.*))?");
-		this.commands = new HashMap<String, Object>();
-		this.callbacks = new HashMap<String, Map<String, Method>>();
+		this.commands = new TreeMap<String, Object>();
+		this.callbacks = new TreeMap<String, Map<String, Method>>();
 	}
 
 	/**
