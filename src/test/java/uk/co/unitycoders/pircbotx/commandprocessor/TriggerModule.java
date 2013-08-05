@@ -1,5 +1,5 @@
 /**
- * Copyright © 2012 Bruce Cowan <bruce@bcowan.me.uk>
+ * Copyright © 2013 Joseph Walton-Rivers <webpigeon@unitycoders.co.uk>
  *
  * This file is part of uc_PircBotX.
  *
