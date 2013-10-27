@@ -26,6 +26,7 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
+import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
 /**
  * Outputs the formatted date or time.
@@ -45,7 +46,7 @@ public class DateTimeCommand {
     }
 
     @Command
-    public void onMessage(MessageEvent<PircBotX> event) throws Exception {
+    public void onMessage(Message event) throws Exception {
         String msg = event.getMessage();
         Date date = new Date();
 
