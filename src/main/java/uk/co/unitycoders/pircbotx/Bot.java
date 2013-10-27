@@ -72,11 +72,21 @@ public class Bot
 		bot.setAutoReconnect(true);
 		bot.setAutoReconnectChannels(true);
 
+                // Bot Configuration
+                Configuration config = ConfigurationManager.loadConfig();
+                
 		try
 		{
-			bot.setName("uc_pircbotx");
-			bot.connect("chat.freenode.net", 6697, SSLSocketFactory.getDefault());
-			bot.joinChannel("#unity-coders");
+			bot.setName(config.nick);
+                        if (config.ssl) {
+                            bot.connect(config.host, config.port, SSLSocketFactory.getDefault());
+                        } else {
+                            bot.connect(config.host, config.port);
+                        }
+                        
+                        for(String channel : config.channels) {
+                            bot.joinChannel(channel);
+                        }
 			bot.setVerbose(true);
 		} catch (Exception e)
 		{
