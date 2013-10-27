@@ -24,6 +24,7 @@ import java.util.Date;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
+import uk.co.unitycoders.pircbotx.commandprocessor.BotMessage;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 
@@ -45,7 +46,7 @@ public class DateTimeCommand {
     }
 
     @Command
-    public void onMessage(MessageEvent<PircBotX> event) throws Exception {
+    public void onMessage(BotMessage event) throws Exception {
         String msg = event.getMessage();
         Date date = new Date();
 

@@ -39,7 +39,7 @@ public class CommandListener extends ListenerAdapter<PircBotX> {
 
     @Override
     public void onPrivateMessage(PrivateMessageEvent<PircBotX> event) throws Exception {
-        event.respond("Sorry, the bot does not currently support private messages");
+        processor.invoke(event);
     }
 
     @Override

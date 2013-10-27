@@ -28,6 +28,7 @@ import java.util.Stack;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
+import uk.co.unitycoders.pircbotx.commandprocessor.BotMessage;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 
@@ -108,7 +109,7 @@ public class CalcCommand {
     }
 
     @Command
-    public void onCalc(MessageEvent<PircBotX> event) throws Exception {
+    public void onCalc(BotMessage event) throws Exception {
         String msg = event.getMessage();
 
         try {

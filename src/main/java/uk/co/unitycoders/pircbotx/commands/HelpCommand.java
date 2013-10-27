@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
+import uk.co.unitycoders.pircbotx.commandprocessor.BotMessage;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
@@ -27,13 +28,13 @@ public class HelpCommand {
     }
 
     @Command
-    public void onList(MessageEvent<PircBotX> event) {
+    public void onList(BotMessage event) {
         String[] modules = processor.getModules();
         event.respond("Loaded modules are: " + Arrays.toString(modules));
     }
 
     @Command("commands")
-    public void onHelp(MessageEvent<PircBotX> event) {
+    public void onHelp(BotMessage event) {
         String line = event.getMessage();
         String[] args = line.split(" ");
 

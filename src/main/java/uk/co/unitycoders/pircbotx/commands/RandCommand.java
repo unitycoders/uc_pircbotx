@@ -22,6 +22,7 @@ import java.sql.SQLException;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
+import uk.co.unitycoders.pircbotx.commandprocessor.BotMessage;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
@@ -41,7 +42,7 @@ public class RandCommand {
     }
 
     @Command
-    public void onRandom(MessageEvent<PircBotX> event) throws Exception {
+    public void onRandom(BotMessage event) throws Exception {
         try {
             String line = lines.getRandomLine();
             event.respond(line);
