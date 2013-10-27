@@ -42,7 +42,10 @@ public class Bot
 {
 	public static void main(String[] args) throws Exception
 	{
-		CommandProcessor processor = new CommandProcessor('&');
+                // Bot Configuration
+                Configuration config = ConfigurationManager.loadJsonConfig();
+                
+                CommandProcessor processor = new CommandProcessor(config.trigger);
 
 		ProfileManager profiles = new ProfileManager(DBConnection.getProfileModel());
 		DateTimeCommand dtCmd = new DateTimeCommand();
@@ -72,9 +75,6 @@ public class Bot
 		bot.setAutoReconnect(true);
 		bot.setAutoReconnectChannels(true);
 
-                // Bot Configuration
-                Configuration config = ConfigurationManager.loadJsonConfig();
-                
 		try
 		{
 			bot.setName(config.nick);

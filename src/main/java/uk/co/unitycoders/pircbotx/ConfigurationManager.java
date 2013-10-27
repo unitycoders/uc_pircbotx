@@ -41,6 +41,7 @@ public class ConfigurationManager {
     public static final String DEFAULT_PORT = "6697";
     public static final String DEFAULT_SSL = "true";
     public static final String DEFAULT_CHANS = "#unity-coders";
+    public static final String DEFAULT_TRIGGER = "&";
     
     private static Reader getFileReader(String file) throws IOException {
         return new FileReader(file);
@@ -57,6 +58,7 @@ public class ConfigurationManager {
         config.port = Integer.parseInt(properties.getProperty("port", DEFAULT_PORT));
         config.nick = properties.getProperty("nick", DEFAULT_BOT_NAME);
         config.ssl = Boolean.parseBoolean(properties.getProperty("ssl", DEFAULT_SSL));
+        config.trigger = properties.getProperty("trigger", DEFAULT_TRIGGER).charAt(0);
         
         //work out what channels to connect to
         String channelStr = properties.getProperty("channels",DEFAULT_CHANS);

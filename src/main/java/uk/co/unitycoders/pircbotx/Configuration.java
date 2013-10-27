@@ -30,4 +30,5 @@ public class Configuration {
     public int port;
     public Boolean ssl;
     public String[] channels;
+    public char trigger;
 }

@@ -8,5 +8,6 @@ host = irc.freenode.net
 port = 6697
 ssl = true
 
-# Channel settings
+# Bot settings
+trigger = &
 channels = #unity-coders,#unity-coders-bots
