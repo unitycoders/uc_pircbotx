@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
+import uk.co.unitycoders.pircbotx.commandprocessor.BotMessage;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
@@ -57,7 +58,7 @@ public class LartCommand {
     }
 
     @Command("add")
-    public void onAdd(MessageEvent<PircBotX> event) throws Exception {
+    public void onAdd(BotMessage event) throws Exception {
         // TODO this bit could still be nicer
         String msg = event.getMessage();
         Matcher matcher = re.matcher(msg);
@@ -80,7 +81,7 @@ public class LartCommand {
     }
 
     @Command("delete")
-    public void onDelete(MessageEvent<PircBotX> event) throws Exception {
+    public void onDelete(BotMessage event) throws Exception {
         try {
             int id = toInt(event);
 
@@ -98,7 +99,7 @@ public class LartCommand {
     }
 
     @Command("info")
-    public void onInfo(MessageEvent<PircBotX> event) throws Exception {
+    public void onInfo(BotMessage event) throws Exception {
         try {
             int id = toInt(event);
             Lart lart = model.getLart(id);
@@ -110,7 +111,7 @@ public class LartCommand {
     }
 
     @Command("list")
-    public void onList(MessageEvent<PircBotX> event) throws Exception {
+    public void onList(BotMessage event) throws Exception {
         StringBuilder builder = new StringBuilder();
 
         if (this.model.getAllLarts().isEmpty()) {
@@ -128,7 +129,7 @@ public class LartCommand {
     }
 
     @Command("alter")
-    public void onAlter(MessageEvent<PircBotX> event) throws Exception {
+    public void onAlter(BotMessage event) throws Exception {
         Matcher matcher = alterRe.matcher(event.getMessage());
         if (!matcher.matches()) {
             event.respond("Invalid Format for alter");
@@ -155,7 +156,7 @@ public class LartCommand {
      * @param event the event from {@link #onMessage(MessageEvent)}.
      */
     @Command("default")
-    public void insult(MessageEvent<PircBotX> event) {
+    public void insult(BotMessage event) {
         // TODO deal with exception from this
         String nick = event.getMessage().split(" ")[1];
         String insult;
@@ -168,7 +169,7 @@ public class LartCommand {
         }
     }
 
-    private int toInt(MessageEvent<PircBotX> event) {
+    private int toInt(BotMessage event) {
         try {
             String msg = event.getMessage();
             Matcher matcher = re.matcher(msg);

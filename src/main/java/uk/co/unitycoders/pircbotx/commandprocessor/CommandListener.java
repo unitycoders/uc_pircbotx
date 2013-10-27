@@ -21,6 +21,7 @@ package uk.co.unitycoders.pircbotx.commandprocessor;
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
+import org.pircbotx.hooks.events.PrivateMessageEvent;
 
 /**
  * Command Processor wrapper class.
@@ -34,6 +35,11 @@ public class CommandListener extends ListenerAdapter<PircBotX> {
 
     public CommandListener(CommandProcessor processor) {
         this.processor = processor;
+    }
+
+    @Override
+    public void onPrivateMessage(PrivateMessageEvent<PircBotX> event) throws Exception {
+        processor.invoke(event);
     }
 
     @Override

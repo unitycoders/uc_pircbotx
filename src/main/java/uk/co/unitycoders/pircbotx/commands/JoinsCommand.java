@@ -23,6 +23,7 @@ import java.util.Map;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 import org.pircbotx.hooks.events.MessageEvent;
+import uk.co.unitycoders.pircbotx.commandprocessor.BotMessage;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
@@ -44,7 +45,7 @@ public class JoinsCommand {
     }
 
     @Command
-    public void onJoins(MessageEvent<PircBotX> event) throws Exception {
+    public void onJoins(BotMessage event) throws Exception {
         StringBuilder builder = new StringBuilder();
 
         for (Map.Entry<User, Integer> entry : this.joins.entrySet()) {
