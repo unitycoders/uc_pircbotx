@@ -1,6 +1,6 @@
 /**
- * Copyright © 2012 Bruce Cowan <bruce@bcowan.me.uk>
- * Copyright © 2012 Joseph Walton-Rivers <webpigeon@unitycoders.co.uk>
+ * Copyright © 2012-2013 Bruce Cowan <bruce@bcowan.me.uk>
+ * Copyright © 2012-2013 Joseph Walton-Rivers <webpigeon@unitycoders.co.uk>
  *
  * This file is part of uc_PircBotX.
  *
@@ -42,10 +42,10 @@ public class Bot
 {
 	public static void main(String[] args) throws Exception
 	{
-                // Bot Configuration
-                Configuration config = ConfigurationManager.loadJsonConfig();
+		// Bot Configuration
+		Configuration config = ConfigurationManager.loadConfig();
                 
-                CommandProcessor processor = new CommandProcessor(config.trigger);
+		CommandProcessor processor = new CommandProcessor(config.trigger);
 
 		ProfileManager profiles = new ProfileManager(DBConnection.getProfileModel());
 		DateTimeCommand dtCmd = new DateTimeCommand();

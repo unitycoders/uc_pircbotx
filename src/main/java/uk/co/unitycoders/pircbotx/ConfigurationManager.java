@@ -1,6 +1,6 @@
 /**
- * Copyright © 2012 Bruce Cowan <bruce@bcowan.me.uk>
- * Copyright © 2012 Joseph Walton-Rivers <webpigeon@unitycoders.co.uk>
+ * Copyright © 2013 Joseph Walton-Rivers <webpigeon@unitycoders.co.uk>
+ * Copyright © 2013 Bruce Cowan <bruce@bcowan.me.uk>
  *
  * This file is part of uc_PircBotX.
  *
@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Properties;
 
 /**
  * Static Utility class to deal with configuration files.
@@ -48,26 +47,6 @@ public class ConfigurationManager {
     }
     
     public static Configuration loadConfig() throws IOException {
-        Properties properties = new Properties();
-        properties.load(getFileReader(CONF_FILE_NAME));
-        
-        Configuration config = new Configuration();
-        
-        // Get connection infomation
-        config.host = properties.getProperty("host", DEFAULT_IRC_HOST);
-        config.port = Integer.parseInt(properties.getProperty("port", DEFAULT_PORT));
-        config.nick = properties.getProperty("nick", DEFAULT_BOT_NAME);
-        config.ssl = Boolean.parseBoolean(properties.getProperty("ssl", DEFAULT_SSL));
-        config.trigger = properties.getProperty("trigger", DEFAULT_TRIGGER).charAt(0);
-        
-        //work out what channels to connect to
-        String channelStr = properties.getProperty("channels",DEFAULT_CHANS);
-        config.channels = channelStr.split(",");
-        
-        return config;
-    }
-    
-    public static Configuration loadJsonConfig() throws IOException {
         Gson gson = new Gson();
         return gson.fromJson(getFileReader(JSON_FILE_NAME), Configuration.class);  
     }
