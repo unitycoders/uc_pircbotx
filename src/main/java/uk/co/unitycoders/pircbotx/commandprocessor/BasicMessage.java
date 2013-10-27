@@ -22,7 +22,6 @@ public abstract class BasicMessage implements Message {
     public BasicMessage(GenericMessageEvent<PircBotX> message) {
         this.event = message;
     }
-
     @Override
     public void respond(String response) {
         event.respond(response);
@@ -36,6 +35,11 @@ public abstract class BasicMessage implements Message {
     @Override
     public User getUser() {
         return event.getUser();
+    }
+
+    @Override
+    public PircBotX getBot() {
+        return event.getBot();
     }
     
 }

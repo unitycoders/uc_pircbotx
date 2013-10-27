@@ -6,6 +6,7 @@
 
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
+import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 /**
@@ -16,9 +17,12 @@ import org.pircbotx.User;
  */
 public interface Message {
     
+    public PircBotX getBot();
     public User getUser();
     public String getMessage();
     
-    public void respond(String message);
+    public String getTargetName();
     
+    public void respond(String message);
+    public void sendAction(String action);
 }

@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
+import org.pircbotx.hooks.events.PrivateMessageEvent;
 
 /**
  * centrally managed command parsing.
@@ -92,6 +93,16 @@ public class CommandProcessor {
         callbacks.put(name, methods);
     }
 
+    public void invoke(MessageEvent<PircBotX> event) throws Exception {
+        Message message = new ChannelMessage(event);
+        invoke(message);
+    }
+    
+    public void invoke(PrivateMessageEvent<PircBotX> event) throws Exception {
+        Message message = new UserMessage(event);
+        invoke(message);
+    }
+    
     /**
      * Process an IRC message to see if the bot needs to respond.
      *
@@ -102,7 +113,7 @@ public class CommandProcessor {
      * @param event the event to be processed
      * @throws Exception
      */
-    public void invoke(MessageEvent<PircBotX> event) throws Exception {
+    public void invoke(Message event) throws Exception {
         Matcher matcher = regex.matcher(event.getMessage());
 
         // not valid command format

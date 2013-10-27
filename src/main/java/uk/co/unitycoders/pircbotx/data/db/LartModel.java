@@ -77,20 +77,20 @@ public class LartModel {
     /**
      * Stores a lart in the database.
      *
-     * @param channel the channel where the lart belongs to
+     * @param target the channel where the lart belongs to, or name if in PM
      * @param user the user who created the lart
      * @param pattern the pattern of the lart
      * @return the ID of the newly-created lart
      * @throws IllegalArgumentException if no $who section is given
      * @throws SQLException if there was a database error
      */
-    public int storeLart(Channel channel, User user, String pattern) throws IllegalArgumentException, SQLException {
+    public int storeLart(String target, User user, String pattern) throws IllegalArgumentException, SQLException {
         if (!pattern.contains("$who")) {
             throw new IllegalArgumentException("No $who section found");
         }
 
         createLart.clearParameters();
-        createLart.setString(1, channel.getName());
+        createLart.setString(1, target);
         createLart.setString(2, user.getNick());
         createLart.setString(3, pattern);
         createLart.execute();
@@ -177,13 +177,13 @@ public class LartModel {
         return larts;
     }
 
-    public void alterLart(int id, Channel channel, User user, String pattern) throws SQLException {
+    public void alterLart(int id, String target, User user, String pattern) throws SQLException {
         if (!pattern.contains("$who")) {
             throw new IllegalArgumentException("No $who section found");
         }
 
         alterLart.clearParameters();
-        alterLart.setString(1, channel.getName());
+        alterLart.setString(1, target);
         alterLart.setString(2, user.getNick());
         alterLart.setString(3, pattern);
         alterLart.setInt(4, id);

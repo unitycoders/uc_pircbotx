@@ -23,6 +23,7 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
+import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
 
 /**
@@ -32,7 +33,7 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 public class NickCommand
 {
     @Command
-    public void onNick(MessageEvent<PircBotX> event) throws Exception {
+    public void onNick(Message event) throws Exception {
     	String nick = event.getMessage().split(" ")[1];
     	event.getBot().changeNick(nick);
     	event.respond("Changed nick to " + nick);

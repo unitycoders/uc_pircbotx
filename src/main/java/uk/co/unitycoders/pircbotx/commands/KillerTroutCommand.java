@@ -22,6 +22,7 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
+import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
 /**
  * Kills the bot. The command name is an in-joke.
@@ -31,8 +32,8 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 public class KillerTroutCommand {
 
     @Command
-    public void onTrout(MessageEvent<PircBotX> event) throws Exception {
-        event.getBot().sendMessage(event.getChannel(), event.getBot().getNick() + " has been killed by a trout");
+    public void onTrout(Message event) throws Exception {
+        event.sendAction("has been killed by a trout");
         event.getBot().shutdown();
     }
 }

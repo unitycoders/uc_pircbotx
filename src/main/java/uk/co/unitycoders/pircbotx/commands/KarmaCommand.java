@@ -6,6 +6,7 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
+import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.data.db.KarmaModel;
 
@@ -22,7 +23,7 @@ public class KarmaCommand {
     }
 
     @Command("default")
-    public void onKarma(MessageEvent<PircBotX> event) throws Exception {
+    public void onKarma(Message event) throws Exception {
         String target = event.getMessage().split(" ")[1];
 
         int karma = this.model.getKarma(target);
@@ -30,7 +31,7 @@ public class KarmaCommand {
     }
 
     @Command({"increment", "add"})
-    public void incrementKarma(MessageEvent<PircBotX> event) throws Exception {
+    public void incrementKarma(Message event) throws Exception {
         String target = event.getMessage().split(" ")[2];
 
         try {
@@ -43,7 +44,7 @@ public class KarmaCommand {
     }
 
     @Command({"decrement", "remove"})
-    public void decrementKarma(MessageEvent<PircBotX> event) throws Exception {
+    public void decrementKarma(Message event) throws Exception {
         String target = event.getMessage().split(" ")[2];
 
         try {

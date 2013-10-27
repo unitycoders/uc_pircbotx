@@ -11,6 +11,7 @@ import org.pircbotx.hooks.events.MessageEvent;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
+import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
 /**
  * Displays information on other commands.
@@ -33,7 +34,7 @@ public class HelpCommand {
     }
 
     @Command("commands")
-    public void onHelp(MessageEvent<PircBotX> event) {
+    public void onHelp(Message event) {
         String line = event.getMessage();
         String[] args = line.split(" ");
 

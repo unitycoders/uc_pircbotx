@@ -27,6 +27,7 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
+import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.data.db.LartModel;
 import uk.co.unitycoders.pircbotx.types.Lart;
@@ -57,7 +58,7 @@ public class LartCommand {
     }
 
     @Command("add")
-    public void onAdd(MessageEvent<PircBotX> event) throws Exception {
+    public void onAdd(Message event) throws Exception {
         // TODO this bit could still be nicer
         String msg = event.getMessage();
         Matcher matcher = re.matcher(msg);
@@ -70,7 +71,7 @@ public class LartCommand {
         String ops = matcher.group(2);
 
         try {
-            int num = model.storeLart(event.getChannel(), event.getUser(), ops);
+            int num = model.storeLart(event.getTargetName(), event.getUser(), ops);
             event.respond("Lart # " + num + " added");
         } catch (IllegalArgumentException ex) {
             event.respond("No $who section given");
@@ -80,7 +81,7 @@ public class LartCommand {
     }
 
     @Command("delete")
-    public void onDelete(MessageEvent<PircBotX> event) throws Exception {
+    public void onDelete(Message event) throws Exception {
         try {
             int id = toInt(event);
 
@@ -98,7 +99,7 @@ public class LartCommand {
     }
 
     @Command("info")
-    public void onInfo(MessageEvent<PircBotX> event) throws Exception {
+    public void onInfo(Message event) throws Exception {
         try {
             int id = toInt(event);
             Lart lart = model.getLart(id);
@@ -110,7 +111,7 @@ public class LartCommand {
     }
 
     @Command("list")
-    public void onList(MessageEvent<PircBotX> event) throws Exception {
+    public void onList(Message event) throws Exception {
         StringBuilder builder = new StringBuilder();
 
         if (this.model.getAllLarts().isEmpty()) {
@@ -128,7 +129,7 @@ public class LartCommand {
     }
 
     @Command("alter")
-    public void onAlter(MessageEvent<PircBotX> event) throws Exception {
+    public void onAlter(Message event) throws Exception {
         Matcher matcher = alterRe.matcher(event.getMessage());
         if (!matcher.matches()) {
             event.respond("Invalid Format for alter");
@@ -139,7 +140,7 @@ public class LartCommand {
             int id = Integer.parseInt(matcher.group(1));
             String pattern = matcher.group(2);
 
-            this.model.alterLart(id, event.getChannel(), event.getUser(), pattern);
+            this.model.alterLart(id, event.getTargetName(), event.getUser(), pattern);
             event.respond("Lart #" + id + " altered");
         } catch (IllegalArgumentException ex) {
             event.respond("No $who section given");
@@ -155,20 +156,20 @@ public class LartCommand {
      * @param event the event from {@link #onMessage(MessageEvent)}.
      */
     @Command("default")
-    public void insult(MessageEvent<PircBotX> event) {
+    public void insult(Message event) {
         // TODO deal with exception from this
         String nick = event.getMessage().split(" ")[1];
         String insult;
         try {
             String pattern = this.model.getRandomLart().getPattern();
             insult = pattern.replace("$who", nick);
-            event.getBot().sendAction(event.getChannel(), insult);
+            event.sendAction(insult);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private int toInt(MessageEvent<PircBotX> event) {
+    private int toInt(Message event) {
         try {
             String msg = event.getMessage();
             Matcher matcher = re.matcher(msg);

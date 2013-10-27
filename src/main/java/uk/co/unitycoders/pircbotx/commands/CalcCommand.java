@@ -30,6 +30,7 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
+import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
 /**
  *
@@ -108,7 +109,7 @@ public class CalcCommand {
     }
 
     @Command
-    public void onCalc(MessageEvent<PircBotX> event) throws Exception {
+    public void onCalc(Message event) throws Exception {
         String msg = event.getMessage();
 
         try {
