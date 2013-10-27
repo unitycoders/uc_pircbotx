@@ -61,6 +61,7 @@ public class Bot {
         processor.register("karma", new KarmaCommand());
         processor.register("profile", new ProfileCommand(profiles));
         processor.register("help", new HelpCommand(processor));
+        processor.register("nick", new NickCommand());
 
         PircBotX bot = new PircBotX();
         ListenerManager<? extends PircBotX> manager = bot.getListenerManager();
