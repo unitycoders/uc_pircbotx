@@ -39,7 +39,7 @@ public class HelpCommand {
         String[] args = line.split(" ");
 
         if (args.length != 3) {
-            event.respond("usage: help [module]");
+            event.respond("usage: help commands [module]");
             return;
         }
 
@@ -50,7 +50,7 @@ public class HelpCommand {
             event.respond("Sorry, that module doesn't exist or has no commands");
         }
 
-        event.respond(args[1] + " contains: " + Arrays.toString(commands));
+        event.respond(moduleName + " contains: " + Arrays.toString(commands));
     }
 
 }
