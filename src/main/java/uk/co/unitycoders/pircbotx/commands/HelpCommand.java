@@ -38,7 +38,7 @@ public class HelpCommand {
         String[] args = line.split(" ");
 
         if (args.length != 3) {
-            event.respond("usage: help [module]");
+            event.respond("usage: help commands [module]");
             return;
         }
 
