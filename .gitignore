@@ -4,3 +4,7 @@ bot.db
 # Build/Directory Releated
 bin/
 target/
+
+# Configuration
+uc_pircbotx.json
+uc_pircbotx.properties
