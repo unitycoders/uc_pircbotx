@@ -49,7 +49,7 @@ public class HelpCommand {
             event.respond("Sorry, that module doesn't exist or has no commands");
         }
 
-        event.respond(args[1] + " contains: " + Arrays.toString(commands));
+        event.respond(args[2] + " contains: " + Arrays.toString(commands));
     }
 
 }
