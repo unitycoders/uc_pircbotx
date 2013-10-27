@@ -53,7 +53,7 @@ public class LartCommand {
         }
 
         this.re = Pattern.compile(".lart ([^ ]+) *(.*)?");
-        this.alterRe = Pattern.compile("(\\d) (.*)");
+        this.alterRe = Pattern.compile(".lart alter (\\d) (.*)");
     }
 
     @Command("add")
@@ -136,7 +136,7 @@ public class LartCommand {
         }
 
         try {
-            int id = toInt(event);
+            int id = Integer.parseInt(matcher.group(1));
             String pattern = matcher.group(2);
 
             this.model.alterLart(id, event.getChannel(), event.getUser(), pattern);
@@ -145,7 +145,7 @@ public class LartCommand {
             event.respond("No $who section given");
             return;
         } catch (SQLException ex) {
-            event.respond("Failed to add lart: " + ex.getMessage());
+            event.respond("Failed to alter lart: " + ex.getMessage());
         }
     }
 
