@@ -7,3 +7,6 @@ target/
 
 # Configuration
 uc_pircbotx.json
+
+#Netbeans Related
+nbactions.xml

@@ -3,18 +3,18 @@
  *
  * This file is part of uc_PircBotX.
  *
- * uc_PircBotX is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * uc_PircBotX is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * uc_PircBotX is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * uc_PircBotX is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with uc_PircBotX.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * uc_PircBotX. If not, see <http://www.gnu.org/licenses/>.
  */
 package uk.co.unitycoders.pircbotx.listeners;
 
@@ -30,40 +30,35 @@ import uk.co.unitycoders.pircbotx.data.db.LineModel;
 /**
  * A {@link ListenerAdapter} which keeps a log of all the lines said in a
  * channel.
- * 
+ *
  * @author Bruce Cowan
  */
-public class LinesListener extends ListenerAdapter<PircBotX>
-{
-	private LineModel model;
+public class LinesListener extends ListenerAdapter<PircBotX> {
 
-	/**
-	 * Creates a new {@link LinesListener}.
-	 */
-	public LinesListener()
-	{
-		try
-		{
-			this.model = DBConnection.getLineModel();
-		} catch (Exception ex)
-		{
-			ex.printStackTrace();
-		}
-	}
+    private LineModel model;
 
-	@Override
-	public void onMessage(MessageEvent<PircBotX> event) throws Exception
-	{
-		model.storeLine(event.getMessage());
-	}
+    /**
+     * Creates a new {@link LinesListener}.
+     */
+    public LinesListener() {
+        try {
+            this.model = DBConnection.getLineModel();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
-	/**
-	 * Gets the list of lines.
-	 * 
-	 * @return the list of lines
-	 */
-	public List<String> getLines()
-	{
-		return model.getAllLines();
-	}
+    @Override
+    public void onMessage(MessageEvent<PircBotX> event) throws Exception {
+        model.storeLine(event.getMessage());
+    }
+
+    /**
+     * Gets the list of lines.
+     *
+     * @return the list of lines
+     */
+    public List<String> getLines() {
+        return model.getAllLines();
+    }
 }

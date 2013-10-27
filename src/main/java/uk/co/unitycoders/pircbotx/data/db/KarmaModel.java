@@ -6,73 +6,66 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class KarmaModel
-{
-	private final Connection conn;
+public class KarmaModel {
 
-	private final PreparedStatement newKarma;
-	private final PreparedStatement getKarma;
-	private final PreparedStatement incrementKarma;
-	private final PreparedStatement decrementKarma;
+    private final Connection conn;
 
-	public KarmaModel(Connection conn) throws SQLException
-	{
-		this.conn = conn;
-		buildTable();
-		newKarma = conn.prepareStatement("INSERT INTO karma (target) VALUES (?)");
-		getKarma = conn.prepareStatement("SELECT karma FROM karma WHERE target = ?");
-		incrementKarma = conn.prepareStatement("UPDATE karma SET karma = karma + 1 WHERE target = ?");
-		decrementKarma = conn.prepareStatement("UPDATE karma SET karma = karma - 1 WHERE target = ?");
-	}
+    private final PreparedStatement newKarma;
+    private final PreparedStatement getKarma;
+    private final PreparedStatement incrementKarma;
+    private final PreparedStatement decrementKarma;
 
-	private void buildTable() throws SQLException
-	{
-		Statement stmt = conn.createStatement();
-		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS karma (target TEXT PRIMARY KEY, karma INTEGER DEFAULT 1)");
-	}
+    public KarmaModel(Connection conn) throws SQLException {
+        this.conn = conn;
+        buildTable();
+        newKarma = conn.prepareStatement("INSERT INTO karma (target) VALUES (?)");
+        getKarma = conn.prepareStatement("SELECT karma FROM karma WHERE target = ?");
+        incrementKarma = conn.prepareStatement("UPDATE karma SET karma = karma + 1 WHERE target = ?");
+        decrementKarma = conn.prepareStatement("UPDATE karma SET karma = karma - 1 WHERE target = ?");
+    }
 
-	public int getKarma(String target)
-	{
-		try
-		{
-			getKarma.clearParameters();
-			getKarma.setString(1, target);
-			getKarma.execute();
+    private void buildTable() throws SQLException {
+        Statement stmt = conn.createStatement();
+        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS karma (target TEXT PRIMARY KEY, karma INTEGER DEFAULT 1)");
+    }
 
-			ResultSet rs = getKarma.getResultSet();
-			return rs.getInt(1);
-		} catch (SQLException ex)
-		{
-			// Probably not in the database yet, so return 0
-			return 0;
-		}
-	}
+    public int getKarma(String target) {
+        try {
+            getKarma.clearParameters();
+            getKarma.setString(1, target);
+            getKarma.execute();
 
-	private void newKarma(String target) throws SQLException
-	{
-		newKarma.clearParameters();
-		newKarma.setString(1, target);
-		newKarma.execute();
-	}
+            ResultSet rs = getKarma.getResultSet();
+            return rs.getInt(1);
+        } catch (SQLException ex) {
+            // Probably not in the database yet, so return 0
+            return 0;
+        }
+    }
 
-	public int incrementKarma(String target) throws SQLException
-	{
-		incrementKarma.clearParameters();
-		incrementKarma.setString(1, target);
-		int rows = incrementKarma.executeUpdate();
+    private void newKarma(String target) throws SQLException {
+        newKarma.clearParameters();
+        newKarma.setString(1, target);
+        newKarma.execute();
+    }
 
-		if (rows == 0)
-			newKarma(target);
+    public int incrementKarma(String target) throws SQLException {
+        incrementKarma.clearParameters();
+        incrementKarma.setString(1, target);
+        int rows = incrementKarma.executeUpdate();
 
-		return getKarma(target);
-	}
+        if (rows == 0) {
+            newKarma(target);
+        }
 
-	public int decrementKarma(String target) throws SQLException
-	{
-		decrementKarma.clearParameters();
-		decrementKarma.setString(1, target);
-		decrementKarma.execute();
+        return getKarma(target);
+    }
 
-		return getKarma(target);
-	}
+    public int decrementKarma(String target) throws SQLException {
+        decrementKarma.clearParameters();
+        decrementKarma.setString(1, target);
+        decrementKarma.execute();
+
+        return getKarma(target);
+    }
 }
