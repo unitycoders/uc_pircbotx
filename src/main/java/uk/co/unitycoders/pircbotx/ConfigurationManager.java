@@ -19,6 +19,7 @@
  */
 package uk.co.unitycoders.pircbotx;
 
+import com.google.gson.Gson;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -32,6 +33,7 @@ import java.util.Properties;
  */
 public class ConfigurationManager {
     public static final String CONF_FILE_NAME = "uc_pircbotx.properties";
+    public static final String JSON_FILE_NAME = "uc_pircbotx.json";
     
     // Default configuration values
     public static final String DEFAULT_IRC_HOST = "irc.freenode.net";
@@ -40,10 +42,13 @@ public class ConfigurationManager {
     public static final String DEFAULT_SSL = "true";
     public static final String DEFAULT_CHANS = "#unity-coders";
     
+    private static Reader getFileReader(String file) throws IOException {
+        return new FileReader(file);
+    }
+    
     public static Configuration loadConfig() throws IOException {
-        Reader reader = new FileReader(CONF_FILE_NAME);
         Properties properties = new Properties();
-        properties.load(reader);
+        properties.load(getFileReader(CONF_FILE_NAME));
         
         Configuration config = new Configuration();
         
@@ -58,6 +63,11 @@ public class ConfigurationManager {
         config.channels = channelStr.split(",");
         
         return config;
+    }
+    
+    public static Configuration loadJsonConfig() throws IOException {
+        Gson gson = new Gson();
+        return gson.fromJson(getFileReader(JSON_FILE_NAME), Configuration.class);  
     }
     
 }

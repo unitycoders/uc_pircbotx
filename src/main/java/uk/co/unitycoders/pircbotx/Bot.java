@@ -73,7 +73,7 @@ public class Bot
 		bot.setAutoReconnectChannels(true);
 
                 // Bot Configuration
-                Configuration config = ConfigurationManager.loadConfig();
+                Configuration config = ConfigurationManager.loadJsonConfig();
                 
 		try
 		{
