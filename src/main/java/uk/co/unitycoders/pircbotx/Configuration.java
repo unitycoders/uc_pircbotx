@@ -16,22 +16,18 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_PircBotX. If not, see <http://www.gnu.org/licenses/>.
  */
-package uk.co.unitycoders.pircbotx.commandprocessor;
-
-import org.pircbotx.PircBotX;
-import org.pircbotx.hooks.events.MessageEvent;
+package uk.co.unitycoders.pircbotx;
 
 /**
- * @author webpigeon
  *
+ * @author joseph
  */
-public class TriggerModule {
+public class Configuration {
 
-    int called = 0;
-
-    @Command
-    public void onMessage(MessageEvent<PircBotX> pircbox) {
-        called++;
-    }
-
+    public String nick;
+    public String host;
+    public int port;
+    public Boolean ssl;
+    public String[] channels;
+    public char trigger;
 }

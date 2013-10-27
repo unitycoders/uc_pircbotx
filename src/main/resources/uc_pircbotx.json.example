@@ -1,0 +1,11 @@
+{
+    "nick": "uc_pircbotx2",
+    "host": "irc.freenode.net",
+    "port": 6697,
+    "ssl": true,
+    "trigger": "&",
+    "channels": [
+        "#unity-coders",
+        "#unity-coders-bots"
+    ]
+}

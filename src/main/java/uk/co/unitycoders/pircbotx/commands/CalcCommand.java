@@ -4,18 +4,18 @@
  *
  * This file is part of uc_PircBotX.
  *
- * uc_PircBotX is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * uc_PircBotX is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
  *
- * uc_PircBotX is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * uc_PircBotX is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
  *
- * You should have received a copy of the GNU General Public License
- * along with uc_PircBotX.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with
+ * uc_PircBotX. If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -32,119 +32,102 @@ import org.pircbotx.hooks.events.MessageEvent;
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 
 /**
- * 
+ *
  * @author webpigeon
  */
-public class CalcCommand
-{
-	private static final Integer OP_TOKEN = 1;
-	private static final Integer NUM_TOKEN = 2;
+public class CalcCommand {
 
-	private int doExpr(int left, char op, int right)
-	{
-		switch (op)
-		{
-			case '*':
-				return left * right;
-			case '/':
-				return left / right;
-			case '+':
-				return left + right;
-			case '-':
-				return left - right;
-			case '%':
-				return left % right;
-		}
+    private static final Integer OP_TOKEN = 1;
+    private static final Integer NUM_TOKEN = 2;
 
-		return -1;
-	}
+    private int doExpr(int left, char op, int right) {
+        switch (op) {
+            case '*':
+                return left * right;
+            case '/':
+                return left / right;
+            case '+':
+                return left + right;
+            case '-':
+                return left - right;
+            case '%':
+                return left % right;
+        }
 
-	private int doNum(Token num)
-	{
-		return Integer.parseInt(num.data);
-	}
+        return -1;
+    }
 
-	private char doOp(Token op)
-	{
-		return op.data.charAt(0);
-	}
+    private int doNum(Token num) {
+        return Integer.parseInt(num.data);
+    }
 
-	private int doStmt(Stack<Token> input)
-	{
-		Token t = input.pop();
-		System.out.println("token = " + t.data);
+    private char doOp(Token op) {
+        return op.data.charAt(0);
+    }
 
-		if (t.type == NUM_TOKEN)
-		{
-			return doNum(t);
-		}
-		else if (t.type == OP_TOKEN)
-		{
-			char op = doOp(t);
-			int right = doStmt(input);
-			int left = doStmt(input);
-			return doExpr(left, op, right);
-		}
+    private int doStmt(Stack<Token> input) {
+        Token t = input.pop();
+        System.out.println("token = " + t.data);
 
-		return -1;
-	}
+        if (t.type == NUM_TOKEN) {
+            return doNum(t);
+        } else if (t.type == OP_TOKEN) {
+            char op = doOp(t);
+            int right = doStmt(input);
+            int left = doStmt(input);
+            return doExpr(left, op, right);
+        }
 
-	private Stack<Token> tokenise(String input)
-	{
-		String[] tokens = input.split(" ");
-		Stack<Token> stack = new Stack<Token>();
+        return -1;
+    }
 
-		for (int i = 0; i < tokens.length; i++)
-		{
-			Token t = new Token();
-			t.data = tokens[i];
+    private Stack<Token> tokenise(String input) {
+        String[] tokens = input.split(" ");
+        Stack<Token> stack = new Stack<Token>();
 
-			if (tokens[i].matches("\\d+"))
-			{
-				t.type = NUM_TOKEN;
-			}
+        for (int i = 0; i < tokens.length; i++) {
+            Token t = new Token();
+            t.data = tokens[i];
 
-			if (tokens[i].matches("[+*/%-]"))
-			{
-				t.type = OP_TOKEN;
-			}
+            if (tokens[i].matches("\\d+")) {
+                t.type = NUM_TOKEN;
+            }
 
-			if (t.type == null)
-			{
-				throw new RuntimeException("illegal token " + tokens[i]);
-			}
+            if (tokens[i].matches("[+*/%-]")) {
+                t.type = OP_TOKEN;
+            }
 
-			stack.push(t);
-		}
+            if (t.type == null) {
+                throw new RuntimeException("illegal token " + tokens[i]);
+            }
 
-		return stack;
-	}
+            stack.push(t);
+        }
 
-	@Command
-	public void onCalc(MessageEvent<PircBotX> event) throws Exception
-	{
-		String msg = event.getMessage();
+        return stack;
+    }
 
-		try
-		{
-			msg = msg.substring(6);
-			event.respond(msg + " = " + parse(msg));
-		} catch (IndexOutOfBoundsException ex)
-		{
-			event.respond(ex.getLocalizedMessage());
-		}
-	}
+    @Command
+    public void onCalc(MessageEvent<PircBotX> event) throws Exception {
+        String msg = event.getMessage();
 
-	public int parse(String input)
-	{
-		Stack<Token> tokens = tokenise(input);
-		return doStmt(tokens);
-	}
+        try {
+            msg = msg.substring(6);
+            event.respond(msg + " = " + parse(msg));
+        } catch (IndexOutOfBoundsException ex) {
+            event.respond(ex.getLocalizedMessage());
+        }
+    }
 
-	class Token
-	{
-		Integer type;
-		String data;
-	}
+    public int parse(String input) {
+        Stack<Token> tokens = tokenise(input);
+        return doStmt(tokens);
+    }
+
+    class Token {
+
+        Integer type;
+        String data;
+    }
 
 }

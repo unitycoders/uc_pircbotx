@@ -13,45 +13,41 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * 
+ *
  * @author webpigeon
  */
-public class JavaObjectStoreTest
-{
-	private ObjectStorage instance;
+public class JavaObjectStoreTest {
 
-	public JavaObjectStoreTest()
-	{
-	}
+    private ObjectStorage instance;
 
-	@Before
-	public void setUp()
-	{
-		this.instance = JavaObjectStore.build("data/");
-	}
+    public JavaObjectStoreTest() {
+    }
 
-	@After
-	public void tearDown()
-	{
-	}
+    @Before
+    public void setUp() {
+        this.instance = JavaObjectStore.build("data/");
+    }
 
-	/**
-	 * Test of store method, of class JavaObjectStore.
-	 * 
-	 * @throws Exception if the test fails because something blew up.
-	 */
-	@Test
-	public void testStoreLoad() throws Exception
-	{
-		System.out.println("store");
-		String name = "testObject";
+    @After
+    public void tearDown() {
+    }
 
-		Serializable object = "myTestObject";
+    /**
+     * Test of store method, of class JavaObjectStore.
+     *
+     * @throws Exception if the test fails because something blew up.
+     */
+    @Test
+    public void testStoreLoad() throws Exception {
+        System.out.println("store");
+        String name = "testObject";
 
-		instance.store(name, object);
-		Object result = instance.load(name);
+        Serializable object = "myTestObject";
 
-		assertEquals(object, result);
-	}
+        instance.store(name, object);
+        Object result = instance.load(name);
+
+        assertEquals(object, result);
+    }
 
 }

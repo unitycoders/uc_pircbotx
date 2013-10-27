@@ -14,47 +14,42 @@ import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 
 /**
  * Displays information on other commands.
- * 
+ *
  * This plug in helps users find information about the bot's capabilties and how
  * to use the bot.
  */
-public class HelpCommand
-{
-	private final CommandProcessor processor;
+public class HelpCommand {
 
-	public HelpCommand(CommandProcessor processor)
-	{
-		this.processor = processor;
-	}
+    private final CommandProcessor processor;
 
-	@Command
-	public void onList(MessageEvent<PircBotX> event)
-	{
-		String[] modules = processor.getModules();
-		event.respond("Loaded modules are: " + Arrays.toString(modules));
-	}
+    public HelpCommand(CommandProcessor processor) {
+        this.processor = processor;
+    }
 
-	@Command("commands")
-	public void onHelp(MessageEvent<PircBotX> event)
-	{
-		String line = event.getMessage();
-		String[] args = line.split(" ");
+    @Command
+    public void onList(MessageEvent<PircBotX> event) {
+        String[] modules = processor.getModules();
+        event.respond("Loaded modules are: " + Arrays.toString(modules));
+    }
 
-		if (args.length != 3)
-		{
-			event.respond("usage: help [module]");
-			return;
-		}
+    @Command("commands")
+    public void onHelp(MessageEvent<PircBotX> event) {
+        String line = event.getMessage();
+        String[] args = line.split(" ");
 
-		String moduleName = args[2];
-		String[] commands = processor.getCommands(moduleName);
+        if (args.length != 3) {
+            event.respond("usage: help [module]");
+            return;
+        }
 
-		if (commands.length == 0)
-		{
-			event.respond("Sorry, that module doesn't exist or has no commands");
-		}
+        String moduleName = args[2];
+        String[] commands = processor.getCommands(moduleName);
 
-		event.respond(args[1] + " contains: " + Arrays.toString(commands));
-	}
+        if (commands.length == 0) {
+            event.respond("Sorry, that module doesn't exist or has no commands");
+        }
+
+        event.respond(args[1] + " contains: " + Arrays.toString(commands));
+    }
 
 }
