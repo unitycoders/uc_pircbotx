@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright © 2012-2013 Bruce Cowan <bruce@bcowan.me.uk>
  * Copyright © 2012-2013 Joseph Walton-Rivers <webpigeon@unitycoders.co.uk>
  *
