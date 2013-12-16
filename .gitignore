@@ -8,5 +8,7 @@ target/
 # Configuration
 uc_pircbotx.json
 
-#Netbeans Related
+#IDE Related
 nbactions.xml
+.idea/
+*.iml
