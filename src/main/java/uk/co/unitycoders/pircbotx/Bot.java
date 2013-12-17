@@ -62,6 +62,7 @@ public class Bot {
         processor.register("profile", new ProfileCommand(profiles));
         processor.register("help", new HelpCommand(processor));
         processor.register("nick", new NickCommand());
+        processor.register("factoid", new FactoidCommand(DBConnection.getFactoidModel()));
 
         PircBotX bot = new PircBotX();
         ListenerManager<? extends PircBotX> manager = bot.getListenerManager();

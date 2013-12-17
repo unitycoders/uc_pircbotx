@@ -79,4 +79,8 @@ public class DBConnection {
     public static ProfileModel getProfileModel() throws ClassNotFoundException, SQLException {
         return new ProfileModel(getInstance());
     }
+
+    public static FactoidModel getFactoidModel() throws ClassNotFoundException, SQLException {
+        return new FactoidModel(getInstance());
+    }
 }
