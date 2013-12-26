@@ -1,6 +1,8 @@
 uk.co.unitycoders.pircbotx
+uk.co.unitycoders.pircbotx.commandprocessor
 uk.co.unitycoders.pircbotx.commands
 uk.co.unitycoders.pircbotx.data
 uk.co.unitycoders.pircbotx.data.db
 uk.co.unitycoders.pircbotx.listeners
+uk.co.unitycoders.pircbotx.profile
 uk.co.unitycoders.pircbotx.types

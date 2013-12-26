@@ -1,5 +1,5 @@
 -classpath
-'/home/webpigeon/Documents/uc_pircbotx/target/classes:/home/webpigeon/.m2/repository/org/xerial/thirdparty/nestedvm/1.0/nestedvm-1.0.jar:/home/webpigeon/.m2/repository/org/pircbotx/pircbotx/1.8-SNAPSHOT/pircbotx-1.8-SNAPSHOT.jar:/home/webpigeon/.m2/repository/org/xerial/sqlite-jdbc/3.6.16/sqlite-jdbc-3.6.16.jar'
+'/home/webpigeon/Documents/uc_pircbotx/target/classes:/home/webpigeon/.m2/repository/com/google/code/gson/gson/2.3-SNAPSHOT/gson-2.3-SNAPSHOT.jar:/home/webpigeon/.m2/repository/org/pircbotx/pircbotx/1.9/pircbotx-1.9.jar:/home/webpigeon/.m2/repository/org/xerial/sqlite-jdbc/3.7.2/sqlite-jdbc-3.7.2.jar'
 -encoding
 'UTF-8'
 -protected
@@ -7,7 +7,7 @@
 '/home/webpigeon/Documents/uc_pircbotx/src/main/java'
 -author
 -bottom
-'Copyright &#169; 2012. All Rights Reserved.'
+'Copyright &#169; 2013. All Rights Reserved.'
 -charset
 'UTF-8'
 -d
