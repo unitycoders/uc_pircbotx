@@ -1,10 +1,10 @@
 package uk.co.unitycoders.pircbotx.data.db;
 
-import uk.co.unitycoders.pircbotx.commandprocessor.Command;
-import uk.co.unitycoders.pircbotx.commandprocessor.Message;
-
-import java.sql.*;
-import java.util.regex.Pattern;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Created by webpigeon on 16/12/13.

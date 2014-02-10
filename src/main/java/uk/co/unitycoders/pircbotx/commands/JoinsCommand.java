@@ -20,9 +20,7 @@ package uk.co.unitycoders.pircbotx.commands;
 
 import java.util.Map;
 
-import org.pircbotx.PircBotX;
 import org.pircbotx.User;
-import org.pircbotx.hooks.events.MessageEvent;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;

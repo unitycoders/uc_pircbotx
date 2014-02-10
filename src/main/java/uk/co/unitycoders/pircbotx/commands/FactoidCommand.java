@@ -1,12 +1,12 @@
 package uk.co.unitycoders.pircbotx.commands;
 
-import uk.co.unitycoders.pircbotx.commandprocessor.Command;
-import uk.co.unitycoders.pircbotx.commandprocessor.Message;
-import uk.co.unitycoders.pircbotx.data.db.FactoidModel;
-
 import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import uk.co.unitycoders.pircbotx.commandprocessor.Command;
+import uk.co.unitycoders.pircbotx.commandprocessor.Message;
+import uk.co.unitycoders.pircbotx.data.db.FactoidModel;
 
 /**
  * Created by webpigeon on 16/12/13.

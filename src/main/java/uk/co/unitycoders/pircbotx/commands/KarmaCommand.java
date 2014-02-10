@@ -2,9 +2,6 @@ package uk.co.unitycoders.pircbotx.commands;
 
 import java.sql.SQLException;
 
-import org.pircbotx.PircBotX;
-import org.pircbotx.hooks.events.MessageEvent;
-
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;

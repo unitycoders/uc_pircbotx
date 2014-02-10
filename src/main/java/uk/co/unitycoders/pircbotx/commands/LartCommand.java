@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;

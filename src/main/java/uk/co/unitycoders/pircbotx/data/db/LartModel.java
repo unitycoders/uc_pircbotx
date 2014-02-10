@@ -27,7 +27,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.pircbotx.Channel;
 import org.pircbotx.User;
 
 import uk.co.unitycoders.pircbotx.types.Lart;

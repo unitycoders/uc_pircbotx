@@ -19,10 +19,11 @@
  */
 package uk.co.unitycoders.pircbotx;
 
-import com.google.gson.Gson;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+
+import com.google.gson.Gson;
 
 /**
  * Static Utility class to deal with configuration files.
