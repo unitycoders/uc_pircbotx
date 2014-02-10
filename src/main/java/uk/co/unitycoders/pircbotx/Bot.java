@@ -19,6 +19,8 @@
  */
 package uk.co.unitycoders.pircbotx;
 
+import javax.net.ssl.SSLSocketFactory;
+
 import org.pircbotx.Configuration;
 import org.pircbotx.Configuration.Builder;
 import org.pircbotx.PircBotX;
@@ -82,6 +84,10 @@ public class Bot {
             .addListener(new CommandListener(processor))
             .addListener(new LinesListener())
             .addListener(JoinsListener.getInstance());
+
+        // Configure SSL
+        if (localConfig.ssl)
+            cb.setSocketFactory(SSLSocketFactory.getDefault());
 
         // Add channels to join
         for (String channel : localConfig.channels)
