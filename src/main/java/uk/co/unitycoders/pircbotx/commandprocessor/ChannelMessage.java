@@ -23,8 +23,7 @@ public class ChannelMessage extends BasicMessage {
     
     @Override
     public void sendAction(String action) {
-        PircBotX bot = event.getBot();
-        bot.sendAction(event.getChannel(), action);
+        event.getChannel().send().action(action);
     }
 
     @Override

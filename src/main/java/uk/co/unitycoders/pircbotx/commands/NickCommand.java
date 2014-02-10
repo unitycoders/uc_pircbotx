@@ -18,7 +18,6 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
-
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
@@ -31,8 +30,8 @@ public class NickCommand
 {
     @Command
     public void onNick(Message event) throws Exception {
-    	String nick = event.getMessage().split(" ")[1];
-    	event.getBot().changeNick(nick);
-    	event.respond("Changed nick to " + nick);
+        String nick = event.getMessage().split(" ")[1];
+        event.getBot().sendIRC().changeNick(nick);
+        event.respond("Changed nick to " + nick);
     }
 }
