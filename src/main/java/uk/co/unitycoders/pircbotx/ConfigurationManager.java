@@ -46,9 +46,9 @@ public class ConfigurationManager {
         return new FileReader(file);
     }
 
-    public static Configuration loadConfig() throws IOException {
+    public static LocalConfiguration loadConfig() throws IOException {
         Gson gson = new Gson();
-        return gson.fromJson(getFileReader(JSON_FILE_NAME), Configuration.class);
+        return gson.fromJson(getFileReader(JSON_FILE_NAME), LocalConfiguration.class);
     }
 
 }

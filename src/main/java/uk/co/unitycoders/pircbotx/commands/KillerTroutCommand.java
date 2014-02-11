@@ -30,7 +30,6 @@ public class KillerTroutCommand {
 
     @Command
     public void onTrout(Message event) throws Exception {
-        event.sendAction("has been killed by a trout");
-        event.getBot().shutdown();
+        event.sendAction("would have been killed by a trout");
     }
 }

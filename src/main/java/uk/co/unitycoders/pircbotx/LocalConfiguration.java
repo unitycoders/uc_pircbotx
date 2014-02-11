@@ -22,7 +22,7 @@ package uk.co.unitycoders.pircbotx;
  *
  * @author joseph
  */
-public class Configuration {
+public class LocalConfiguration {
 
     public String nick;
     public String host;

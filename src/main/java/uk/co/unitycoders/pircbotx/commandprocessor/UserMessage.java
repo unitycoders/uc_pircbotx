@@ -23,8 +23,7 @@ public class UserMessage extends BasicMessage {
 
     @Override
     public void sendAction(String action) {
-        PircBotX bot = event.getBot();
-        bot.sendAction(event.getUser(), action);
+        event.getUser().send().action(action);
     }
 
     @Override
