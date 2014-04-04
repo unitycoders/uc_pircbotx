@@ -2,18 +2,17 @@
 [![Build Status](https://travis-ci.org/unitycoders/uc_pircbotx.svg?branch=master)](https://travis-ci.org/unitycoders/uc_pircbotx)
 
 This is a bot for #unity-coders, which uses pircbotx. Source available on
-(github)[http://git.unitycoders.co.uk/uc_pircbotx].
+[github](http://git.unitycoders.co.uk/uc_pircbotx).
 
 ## Documentation
 If you would like documentation on how to use the bot, please consult the
-(project wiki)[https://github.com/unitycoders/uc_pircbotx/wiki].
-
+[project wiki](https://github.com/unitycoders/uc_pircbotx/wiki).
 
 ## Developer Infomation
 
 ### Compiling and running with maven
-$ mvn package
-$ java -jar target/uc_pircbotx-0.1-SNAPSHOT-jar-with-dependencies.jar
+    $ mvn package
+    $ java -jar target/uc_pircbotx-0.1-SNAPSHOT-jar-with-dependencies.jar
 
 ### Maven With IDEs
 #### Maven With Eclipse
