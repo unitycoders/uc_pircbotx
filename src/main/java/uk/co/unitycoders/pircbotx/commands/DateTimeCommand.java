@@ -19,11 +19,12 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
-import java.text.DateFormat;
-import java.util.Date;
-
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
+
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Outputs the formatted date or time.
@@ -69,6 +70,21 @@ public class DateTimeCommand {
         }
 
         String fmt = String.format("The current %s %s %s", keyword, tense, resp);
+        event.respond(fmt);
+    }
+
+    @Command("local")
+    public void onLocalTime(Message event) throws Exception {
+        String[] args = event.getMessage().split(" ");
+
+        Date date = new Date();
+        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
+
+        if (args.length > 2) {
+            df.setTimeZone(TimeZone.getTimeZone(args[2]));
+        }
+
+        String fmt = String.format("The current %s %s %s", "date and time", "is", df.format(date));
         event.respond(fmt);
     }
 }
