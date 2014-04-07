@@ -52,10 +52,9 @@ public class JoinsCommand {
             builder.append(nick);
             builder.append(" = ");
             builder.append(value);
-            builder.append(";");
+            builder.append("; ");
         }
 
-        builder.deleteCharAt(builder.length() - 1);
-        event.respond(builder.toString());
+        event.respond(builder.substring(0, builder.length() - 2));
     }
 }
