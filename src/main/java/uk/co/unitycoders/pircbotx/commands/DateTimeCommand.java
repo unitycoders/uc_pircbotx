@@ -87,4 +87,10 @@ public class DateTimeCommand {
         String fmt = String.format("The current %s %s %s", "date and time", "is", df.format(date));
         event.respond(fmt);
     }
+
+    @Command("unix")
+    public void unixToTime(Message event) throws Exception {
+        String fmt = String.format("The current unix timestamp is %s", (int) (System.currentTimeMillis() / 1000L));
+        event.respond(fmt);
+    }
 }
