@@ -4,14 +4,11 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
-import java.util.Arrays;
-
-import org.pircbotx.PircBotX;
-import org.pircbotx.hooks.events.MessageEvent;
-
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
+
+import java.util.Arrays;
 
 /**
  * Displays information on other commands.
@@ -28,7 +25,7 @@ public class HelpCommand {
     }
 
     @Command
-    public void onList(MessageEvent<PircBotX> event) {
+    public void onList(Message event) {
         String[] modules = processor.getModules();
         event.respond("Loaded modules are: " + Arrays.toString(modules));
     }
