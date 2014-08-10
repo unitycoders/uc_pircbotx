@@ -124,15 +124,16 @@ public class CommandProcessor {
         System.out.println("[DEBUG] args: " + args);
 
         try {
-            boolean valid;
-            if (action == null) {
-                valid = false;
-            } else {
-                valid = call(command, action, event);
+            CommandNode commandNode = commands.get(command);
+            if (commandNode == null) {
+                //TODO throw exception
+                return;
             }
 
-            if (!valid) {
-                call(command, "default", event);
+            if (commandNode.isValidAction(action)) {
+                commandNode.invoke(action, event);
+            } else {
+                commandNode.invoke("default", event);
             }
         } catch (InvocationTargetException ex) {
             Throwable real = ex.getCause();
@@ -142,26 +143,6 @@ public class CommandProcessor {
             ex.printStackTrace();
             event.respond("[error] " + ex.getMessage());
         }
-    }
-
-    /**
-     * Call a module's command with required arguments.
-     *
-     * @param command the name of the module
-     * @param action the name of the command
-     * @param args the arguments to pass to the method associated with command
-     * @return true if method was called, false if not
-     * @throws Exception if the method throws an exception.
-     */
-    private boolean call(String command, String action, Object... args) throws Exception {
-        CommandNode commandNode = commands.get(command);
-        if (commandNode == null) {
-            //TODO throw exception if command is not valid
-            return false;
-        }
-
-        System.out.println("Invoking " + command + " : " + action + " " + args);
-        return commandNode.invoke(action, args);
     }
 
     /**
