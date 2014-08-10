@@ -36,7 +36,7 @@ public class FactoidModel {
         createStmt.clearParameters();
         createStmt.setString(1, factoid);
         createStmt.setString(2, text);
-        return createStmt.execute();
+        return createStmt.executeUpdate() == 1;
     }
 
     public String getFactoid(String factoid) throws SQLException {
