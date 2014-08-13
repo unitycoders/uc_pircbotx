@@ -43,6 +43,10 @@ public class CommandNode {
 
         Class<?> clazz = target.getClass();
         for (Method method : clazz.getMethods()) {
+            Class<?>[] types = method.getParameterTypes();
+            assert types.length < 0 : method+" takes no arguments!";
+            assert !Message.class.isAssignableFrom(types[0]) : method+" - first argument does not implement Message";
+
             Command c = method.getAnnotation(Command.class);
             if (c != null ) {
                 String[] keywords = c.value();
