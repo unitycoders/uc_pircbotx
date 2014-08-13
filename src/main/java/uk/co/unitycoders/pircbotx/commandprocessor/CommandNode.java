@@ -43,12 +43,13 @@ public class CommandNode {
 
         Class<?> clazz = target.getClass();
         for (Method method : clazz.getMethods()) {
-            Class<?>[] types = method.getParameterTypes();
-            assert types.length < 0 : method+" takes no arguments!";
-            assert !Message.class.isAssignableFrom(types[0]) : method+" - first argument does not implement Message";
 
             Command c = method.getAnnotation(Command.class);
             if (c != null ) {
+
+                // check the class params match our spec
+                assert isValidParams(method) : "first parameter of a command must be Message";
+
                 String[] keywords = c.value();
                 for (String keyword : keywords) {
                     node.registerAction(keyword,method);
@@ -59,4 +60,8 @@ public class CommandNode {
         return node;
     }
 
+    private static boolean isValidParams(Method method) {
+        Class<?>[] types = method.getParameterTypes();
+        return types.length > 0 && types[0].equals(Message.class);
+    }
 }
