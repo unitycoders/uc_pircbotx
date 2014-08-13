@@ -70,19 +70,7 @@ public class CommandProcessor {
      * @param target the module object
      */
     public void register(String name, Object target) {
-        CommandNode node = new CommandNode(target);
-
-        Class<?> clazz = target.getClass();
-        for (Method method : clazz.getMethods()) {
-            Command c = method.getAnnotation(Command.class);
-            if (c != null ) {
-                String[] keywords = c.value();
-                for (String keyword : keywords) {
-                    node.registerAction(keyword,method);
-                }
-            }
-        }
-
+        CommandNode node = CommandNode.build(target);
         commands.put(name, node);
     }
 

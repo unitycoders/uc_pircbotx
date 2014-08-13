@@ -38,4 +38,21 @@ public class CommandNode {
         methods.put(action, method);
     }
 
+    static CommandNode build(Object target) {
+        CommandNode node = new CommandNode(target);
+
+        Class<?> clazz = target.getClass();
+        for (Method method : clazz.getMethods()) {
+            Command c = method.getAnnotation(Command.class);
+            if (c != null ) {
+                String[] keywords = c.value();
+                for (String keyword : keywords) {
+                    node.registerAction(keyword,method);
+                }
+            }
+        }
+
+        return node;
+    }
+
 }
