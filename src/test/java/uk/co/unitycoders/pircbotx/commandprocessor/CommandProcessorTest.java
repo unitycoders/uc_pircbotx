@@ -18,7 +18,7 @@
  */
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
-import java.util.Arrays;
+import java.util.*;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -47,9 +47,10 @@ public class CommandProcessorTest {
      */
     @Test
     public void testEmptyModules() {
-        String[] expected = new String[0];
-        String[] result = processor.getModules();
-        Assert.assertArrayEquals(expected, result);
+        Collection<String> expected = new LinkedList<String>();
+        Collection<String> result = processor.getModules();
+        Assert.assertTrue(expected.containsAll(result));
+        Assert.assertTrue(result.containsAll(expected));
     }
 
     /**
@@ -59,9 +60,10 @@ public class CommandProcessorTest {
     @Test
     public void testInvalidModuleCommands() {
         String fakeModuleName = "fakemodule";
-        String[] expected = new String[0];
-        String[] result = processor.getCommands(fakeModuleName);
-        Assert.assertArrayEquals(expected, result);
+        Collection<String> expected = new LinkedList<String>();
+        Collection<String> result = processor.getCommands(fakeModuleName);
+        Assert.assertTrue(expected.containsAll(result));
+        Assert.assertTrue(result.containsAll(expected));
     }
 
     /**
@@ -73,9 +75,12 @@ public class CommandProcessorTest {
         Object module = new FakeModule();
         processor.register(name, module);
 
-        String[] expected = {"fake"};
-        String[] result = processor.getModules();
-        Assert.assertArrayEquals(expected, result);
+        Collection<String> expected = new ArrayList<String>();
+        expected.add(name);
+
+        Collection<String> result = processor.getModules();
+        Assert.assertTrue(expected.containsAll(result));
+        Assert.assertTrue(result.containsAll(expected));
     }
 
     /**
@@ -87,14 +92,15 @@ public class CommandProcessorTest {
         Object module = new FakeModule();
         processor.register(name, module);
 
-        String[] expected = {"default", "goodbye", "bye", "hello"};
-        String[] result = processor.getCommands(name);
+        Collection<String> expected = new ArrayList<String>();
+        expected.add("default");
+        expected.add("goodbye");
+        expected.add("bye");
+        expected.add("hello");
 
-        // sort arrays to prevent ordering error
-        Arrays.sort(result);
-        Arrays.sort(expected);
-
-        Assert.assertArrayEquals(expected, result);
+        Collection<String> result = processor.getCommands(name);
+        Assert.assertTrue(expected.containsAll(result));
+        Assert.assertTrue(result.containsAll(expected));
     }
 
 }
