@@ -18,9 +18,6 @@
  */
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
-import org.pircbotx.PircBotX;
-import org.pircbotx.hooks.events.MessageEvent;
-
 /**
  * Fake module used for unit testing.
  *
@@ -35,7 +32,7 @@ public class FakeModule {
      * @param ex
      */
     @Command
-    public void doStuff(MessageEvent<PircBotX> ex) {
+    public void doStuff(Message ex) {
     }
 
     /**
@@ -44,7 +41,7 @@ public class FakeModule {
      * @param ex
      */
     @Command("hello")
-    public void doStuffOnce(MessageEvent<PircBotX> ex) {
+    public void doStuffOnce(Message ex) {
     }
 
     /**
@@ -53,6 +50,6 @@ public class FakeModule {
      * @param ex
      */
     @Command({"goodbye", "bye"})
-    public void doStuffTwice(MessageEvent<PircBotX> ex) {
+    public void doStuffTwice(Message ex) {
     }
 }
