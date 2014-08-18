@@ -20,10 +20,7 @@ package uk.co.unitycoders.pircbotx.commandprocessor;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,8 +40,7 @@ import org.pircbotx.hooks.events.PrivateMessageEvent;
 public class CommandProcessor {
 
     private final Pattern regex;
-    private final Map<String, Object> commands;
-    private final Map<String, Map<String, Method>> callbacks;
+    private final Map<String, CommandNode> commands;
 
     /**
      * Create a new command processor.
@@ -57,8 +53,7 @@ public class CommandProcessor {
      */
     public CommandProcessor(char trigger) {
         this.regex = Pattern.compile(trigger + "([a-z0-9]+)(?: ([a-z0-9]+))?(?: (.*))?");
-        this.commands = new TreeMap<String, Object>();
-        this.callbacks = new TreeMap<String, Map<String, Method>>();
+        this.commands = new TreeMap<String, CommandNode>();
     }
 
     /**
@@ -75,22 +70,8 @@ public class CommandProcessor {
      * @param target the module object
      */
     public void register(String name, Object target) {
-        Map<String, Method> methods = new HashMap<String, Method>();
-
-        Class<?> clazz = target.getClass();
-        for (Method method : clazz.getMethods()) {
-            if (method.isAnnotationPresent(Command.class)) {
-                Command c = method.getAnnotation(Command.class);
-                String[] keywords = c.value();
-                for (String keyword : keywords) {
-                    assert !methods.containsKey(keyword);
-                    methods.put(keyword, method);
-                }
-            }
-        }
-
-        commands.put(name, target);
-        callbacks.put(name, methods);
+        CommandNode node = CommandNode.build(target);
+        commands.put(name, node);
     }
 
     public void invoke(MessageEvent<PircBotX> event) throws Exception {
@@ -131,15 +112,16 @@ public class CommandProcessor {
         System.out.println("[DEBUG] args: " + args);
 
         try {
-            boolean valid;
-            if (action == null) {
-                valid = false;
-            } else {
-                valid = call(command, action, event);
+            CommandNode commandNode = commands.get(command);
+            if (commandNode == null) {
+                //TODO throw exception
+                return;
             }
 
-            if (!valid) {
-                call(command, "default", event);
+            if (commandNode.isValidAction(action)) {
+                commandNode.invoke(action, event);
+            } else {
+                commandNode.invoke("default", event);
             }
         } catch (InvocationTargetException ex) {
             Throwable real = ex.getCause();
@@ -152,42 +134,12 @@ public class CommandProcessor {
     }
 
     /**
-     * Call a module's command with required arguments.
-     *
-     * @param type the name of the module
-     * @param cmd the name of the command
-     * @param args the arguments to pass to the method associated with command
-     * @return true if method was called, false if not
-     * @throws Exception if the method throws an exception.
-     */
-    private boolean call(String type, String cmd, Object... args) throws Exception {
-        Object obj = commands.get(type);
-        Map<String, Method> methods = callbacks.get(type);
-
-        System.out.println("Invoking " + type + " : " + cmd + " " + args);
-
-        if (methods == null) {
-            return false;
-        }
-
-        Method method = methods.get(cmd);
-        if (method == null) {
-            return false;
-        }
-
-        method.invoke(obj, args);
-        return true;
-    }
-
-    /**
      * Get a list of modules registered with the command processor.
      *
      * @return the list of module names
      */
-    public String[] getModules() {
-        Collection<String> modules = callbacks.keySet();
-        String[] moduleArray = new String[modules.size()];
-        return modules.toArray(moduleArray);
+    public Collection<String> getModules() {
+        return Collections.unmodifiableCollection(commands.keySet());
     }
 
     /**
@@ -196,15 +148,13 @@ public class CommandProcessor {
      * @param moduleName the name of the module to get the commands from.
      * @return the list of command names, or null if command doesn't exist.
      */
-    public String[] getCommands(String moduleName) {
-        Map<String, Method> commands = callbacks.get(moduleName);
+    public Collection<String> getCommands(String moduleName) {
+        CommandNode command = commands.get(moduleName);
 
-        if (commands == null) {
-            return new String[0];
+        if (command == null) {
+            return Collections.emptyList();
         }
 
-        Collection<String> names = commands.keySet();
-        String[] nameArray = new String[names.size()];
-        return names.toArray(nameArray);
+        return command.getActions();
     }
 }

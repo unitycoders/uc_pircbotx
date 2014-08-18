@@ -9,6 +9,7 @@ import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Displays information on other commands.
@@ -26,8 +27,8 @@ public class HelpCommand {
 
     @Command
     public void onList(Message event) {
-        String[] modules = processor.getModules();
-        event.respond("Loaded modules are: " + Arrays.toString(modules));
+        Collection<String> modules = processor.getModules();
+        event.respond("Loaded modules are: " + modules);
     }
 
     @Command("commands")
@@ -41,13 +42,13 @@ public class HelpCommand {
         }
 
         String moduleName = args[2];
-        String[] commands = processor.getCommands(moduleName);
+        Collection<String> commands = processor.getCommands(moduleName);
 
-        if (commands.length == 0) {
+        if (commands.isEmpty()) {
             event.respond("Sorry, that module doesn't exist or has no commands");
+        } else {
+            event.respond(args[2] + " contains: " + commands);
         }
-
-        event.respond(args[2] + " contains: " + Arrays.toString(commands));
     }
 
 }

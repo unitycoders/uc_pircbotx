@@ -18,9 +18,6 @@
  */
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
-import org.pircbotx.PircBotX;
-import org.pircbotx.hooks.events.MessageEvent;
-
 /**
  * @author webpigeon
  *
@@ -30,7 +27,7 @@ public class TriggerModule {
     int called = 0;
 
     @Command
-    public void onMessage(MessageEvent<PircBotX> pircbox) {
+    public void onMessage(Message pircbox) {
         called++;
     }
 
