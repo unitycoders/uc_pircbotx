@@ -19,6 +19,7 @@
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
 import java.util.*;
+import java.util.concurrent.Exchanger;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -31,13 +32,14 @@ import org.junit.Test;
 public class CommandProcessorTest {
 
     private CommandProcessor processor;
+    private static final Character TRIGGER = '!';
 
     /**
      * @throws java.lang.Exception
      */
     @Before
     public void setUp() throws Exception {
-        processor = new CommandProcessor('!');
+        processor = new CommandProcessor(TRIGGER);
 
     }
 
@@ -49,8 +51,8 @@ public class CommandProcessorTest {
     public void testEmptyModules() {
         Collection<String> expected = new LinkedList<String>();
         Collection<String> result = processor.getModules();
-        Assert.assertTrue(expected.containsAll(result));
-        Assert.assertTrue(result.containsAll(expected));
+
+        Assert.assertTrue(hasTheSameContents(result, expected));
     }
 
     /**
@@ -62,8 +64,8 @@ public class CommandProcessorTest {
         String fakeModuleName = "fakemodule";
         Collection<String> expected = new LinkedList<String>();
         Collection<String> result = processor.getCommands(fakeModuleName);
-        Assert.assertTrue(expected.containsAll(result));
-        Assert.assertTrue(result.containsAll(expected));
+
+        Assert.assertTrue(hasTheSameContents(result, expected));
     }
 
     /**
@@ -79,8 +81,8 @@ public class CommandProcessorTest {
         expected.add(name);
 
         Collection<String> result = processor.getModules();
-        Assert.assertTrue(expected.containsAll(result));
-        Assert.assertTrue(result.containsAll(expected));
+
+        Assert.assertTrue(hasTheSameContents(result, expected));
     }
 
     /**
@@ -99,8 +101,49 @@ public class CommandProcessorTest {
         expected.add("hello");
 
         Collection<String> result = processor.getCommands(name);
-        Assert.assertTrue(expected.containsAll(result));
-        Assert.assertTrue(result.containsAll(expected));
+
+        Assert.assertTrue(hasTheSameContents(result, expected));
+    }
+
+    @Test
+    public void testNullModule() throws Exception {
+        String name = null;
+
+        Collection<String> expected = Collections.emptyList();
+        Collection<String> result = processor.getCommands(name);
+
+        Assert.assertTrue(hasTheSameContents(expected, result));
+    }
+
+    @Test
+    public void testInvokeInvalidModule() throws Exception {
+        Message message = new MessageStub(TRIGGER+"invalidModule");
+        processor.invoke(message);
+    }
+
+    @Test
+    public void testDefaultCommand() throws Exception {
+        String name = "fake";
+        Object module = new FakeModule();
+        processor.register(name, module);
+
+        Message message = new MessageStub(TRIGGER+name);
+        processor.invoke(message);
+    }
+
+
+    @Test
+    public void testCommandsNotExists() {
+        String name = "doesNotExist";
+
+        Collection<String> expected = Collections.emptyList();
+        Collection<String> result = processor.getCommands(name);
+
+        Assert.assertTrue(hasTheSameContents(result, expected));
+    }
+
+    private static <T> boolean hasTheSameContents(Collection<T> c1, Collection<T> c2) {
+        return c1.containsAll(c2) && c2.containsAll(c1);
     }
 
 }

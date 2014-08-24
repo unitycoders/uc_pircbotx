@@ -118,7 +118,7 @@ public class CommandProcessor {
                 return;
             }
 
-            if (commandNode.isValidAction(action)) {
+            if (action != null && commandNode.isValidAction(action)) {
                 commandNode.invoke(action, event);
             } else {
                 commandNode.invoke("default", event);
@@ -149,6 +149,10 @@ public class CommandProcessor {
      * @return the list of command names, or null if command doesn't exist.
      */
     public Collection<String> getCommands(String moduleName) {
+        if (moduleName == null) {
+            return Collections.emptyList();
+        }
+
         CommandNode command = commands.get(moduleName);
 
         if (command == null) {
