@@ -51,56 +51,10 @@ import uk.co.unitycoders.pircbotx.profile.ProfileManager;
 public class Bot {
 
     public static void main(String[] args) throws Exception {
-        // Bot Configuration
-        LocalConfiguration localConfig = ConfigurationManager.loadConfig();
+        BotRunnable runnable = new BotRunnable();
+        Thread botThread = new Thread(runnable);
 
-        CommandProcessor processor = new CommandProcessor(localConfig.trigger);
-
-        ProfileManager profiles = new ProfileManager(DBConnection.getProfileModel());
-        DateTimeCommand dtCmd = new DateTimeCommand();
-
-        // Commands
-        processor.register("rand", new RandCommand());
-        processor.register("time", dtCmd);
-        processor.register("date", dtCmd);
-        processor.register("datetime", dtCmd);
-        processor.register("lart", new LartCommand());
-        processor.register("killertrout", new KillerTroutCommand());
-        processor.register("joins", new JoinsCommand());
-        processor.register("calc", new CalcCommand());
-        processor.register("karma", new KarmaCommand());
-        processor.register("profile", new ProfileCommand(profiles));
-        processor.register("help", new HelpCommand(processor));
-        processor.register("nick", new NickCommand());
-        processor.register("factoid", new FactoidCommand(DBConnection.getFactoidModel()));
-
-        // Configure bot
-        Builder<PircBotX> cb = new Configuration.Builder<PircBotX>()
-            .setName(localConfig.nick)
-            .setAutoNickChange(true)
-            .setAutoReconnect(true)
-            .setServer(localConfig.host, localConfig.port)
-            .addAutoJoinChannel("unity-coders")
-            .addListener(new CommandListener(processor))
-            .addListener(new LinesListener())
-            .addListener(JoinsListener.getInstance());
-
-        // Configure SSL
-        if (localConfig.ssl)
-            cb.setSocketFactory(SSLSocketFactory.getDefault());
-
-        // Add channels to join
-        for (String channel : localConfig.channels)
-        {
-            cb.addAutoJoinChannel(channel);
-        }
-        Configuration<PircBotX> configuration = cb.buildConfiguration();
-        PircBotX bot = new PircBotX(configuration);
-
-        try {
-            bot.startBot();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        botThread.start();
+        botThread.join();
     }
 }
