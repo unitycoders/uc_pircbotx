@@ -21,6 +21,7 @@ package uk.co.unitycoders.pircbotx.commandprocessor;
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
+import org.pircbotx.hooks.events.PrivateMessageEvent;
 
 /**
  * Command Processor wrapper class.
@@ -31,13 +32,25 @@ import org.pircbotx.hooks.events.MessageEvent;
 public class CommandListener extends ListenerAdapter<PircBotX> {
 
     private final CommandProcessor processor;
+    private final String prefix;
 
-    public CommandListener(CommandProcessor processor) {
+    public CommandListener(CommandProcessor processor, char prefix) {
         this.processor = processor;
+        this.prefix = ""+prefix;
     }
 
     @Override
     public void onMessage(MessageEvent<PircBotX> event) throws Exception {
-        processor.invoke(event);
+        String messageText = event.getMessage();
+
+        if (messageText.startsWith(prefix)) {
+            Message message = new ChannelMessage(event, messageText.substring(1));
+            processor.invoke(message);
+        }
+    }
+
+    @Override
+    public void onPrivateMessage(PrivateMessageEvent<PircBotX> event) throws Exception {
+        processor.invoke(new UserMessage(event));
     }
 }

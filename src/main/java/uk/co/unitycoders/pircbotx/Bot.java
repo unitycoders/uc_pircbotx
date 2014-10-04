@@ -54,7 +54,7 @@ public class Bot {
         // Bot Configuration
         LocalConfiguration localConfig = ConfigurationManager.loadConfig();
 
-        CommandProcessor processor = new CommandProcessor(localConfig.trigger);
+        CommandProcessor processor = new CommandProcessor();
 
         ProfileManager profiles = new ProfileManager(DBConnection.getProfileModel());
         DateTimeCommand dtCmd = new DateTimeCommand();
@@ -81,7 +81,7 @@ public class Bot {
             .setAutoReconnect(true)
             .setServer(localConfig.host, localConfig.port)
             .addAutoJoinChannel("unity-coders")
-            .addListener(new CommandListener(processor))
+            .addListener(new CommandListener(processor, localConfig.trigger))
             .addListener(new LinesListener())
             .addListener(JoinsListener.getInstance());
 
