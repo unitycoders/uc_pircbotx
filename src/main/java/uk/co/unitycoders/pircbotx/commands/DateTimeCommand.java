@@ -49,7 +49,7 @@ public class DateTimeCommand {
         Date date = new Date();
 
         String[] args = msg.split(" ");
-        String keyword = args[0].substring(1);
+        String keyword = args[0];
 
         String tense = "are";
         String resp = "INVALID";

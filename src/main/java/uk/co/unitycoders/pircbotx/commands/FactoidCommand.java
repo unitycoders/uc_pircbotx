@@ -17,7 +17,7 @@ public class FactoidCommand {
 
     public FactoidCommand(FactoidModel model) {
         this.model = model;
-        this.factoidPattern = Pattern.compile(".factoid ([^ ]+) (\\S+) (.+)");
+        this.factoidPattern = Pattern.compile("factoid ([^ ]+) (\\S+) (.+)");
     }
 
     @Command("add")
