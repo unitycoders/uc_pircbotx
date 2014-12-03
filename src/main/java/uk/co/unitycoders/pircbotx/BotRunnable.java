@@ -45,6 +45,7 @@ public class BotRunnable implements Runnable {
             processor.register("nick", new NickCommand());
             processor.register("factoid", new FactoidCommand(DBConnection.getFactoidModel()));
             processor.register("session", new SessionCommand(security));
+            processor.register("irc", new IRCCommands());
 
             cb.addListener(JoinsListener.getInstance());
             cb.addListener(new LinesListener());
