@@ -27,6 +27,7 @@ public class FactoidCommand {
         Matcher matcher = factoidPattern.matcher(messageText);
         if (!matcher.matches()) {
             message.respond("usage: factoid add [name] [text]");
+            return;
         }
 
         boolean status = model.addFactoid(matcher.group(2), matcher.group(3));
@@ -42,6 +43,7 @@ public class FactoidCommand {
 
         if (args.length != 3) {
             message.respond("usage: factoid get [name]");
+            return;
         }
 
         String factoid = model.getFactoid(args[2]);
