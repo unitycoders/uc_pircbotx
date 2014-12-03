@@ -39,7 +39,7 @@ public class CommandProcessorTest {
      */
     @Before
     public void setUp() throws Exception {
-        processor = new CommandProcessor(TRIGGER);
+        processor = new CommandProcessor(TRIGGER, null);
 
     }
 

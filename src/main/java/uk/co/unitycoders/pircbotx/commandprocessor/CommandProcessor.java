@@ -25,8 +25,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.pircbotx.PircBotX;
+import org.pircbotx.User;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
+import uk.co.unitycoders.pircbotx.security.*;
+import uk.co.unitycoders.pircbotx.security.SecurityManager;
 
 /**
  * centrally managed command parsing.
@@ -41,6 +44,7 @@ public class CommandProcessor {
 
     private final Pattern regex;
     private final Map<String, CommandNode> commands;
+    private final SecurityManager security;
 
     /**
      * Create a new command processor.
@@ -51,9 +55,10 @@ public class CommandProcessor {
      *
      * @param trigger the first character of any line directed at the bot
      */
-    public CommandProcessor(char trigger) {
+    public CommandProcessor(char trigger, SecurityManager security) {
         this.regex = Pattern.compile(trigger + "([a-z0-9]+)(?: ([a-z0-9]+))?(?: (.*))?");
         this.commands = new TreeMap<String, CommandNode>();
+        this.security = security;
     }
 
     /**
@@ -119,8 +124,14 @@ public class CommandProcessor {
             }
 
             if (action != null && commandNode.isValidAction(action)) {
+                if (!checkPermissions(commandNode, action, event.getUser())){
+                    throw new RuntimeException("you don't have permission");
+                }
                 commandNode.invoke(action, event);
             } else {
+                if (!checkPermissions(commandNode, "default", event.getUser())){
+                    throw new RuntimeException("you don't have permission");
+                }
                 commandNode.invoke("default", event);
             }
         } catch (InvocationTargetException ex) {
@@ -131,6 +142,20 @@ public class CommandProcessor {
             ex.printStackTrace();
             event.respond("[error] " + ex.getMessage());
         }
+    }
+
+    private boolean checkPermissions(CommandNode node, String action, User user) {
+        //check if security is disabled
+        if (security == null) {
+            return true;
+        }
+
+        String[] permissions = node.getRequiredPermissions(action);
+        if (permissions != null) {
+            Session session = security.getSession(user);
+            return session != null && session.hasPermissions(permissions);
+        }
+        return true;
     }
 
     /**

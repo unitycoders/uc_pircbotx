@@ -1,5 +1,7 @@
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
+import uk.co.unitycoders.pircbotx.security.Secured;
+
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -9,10 +11,16 @@ import java.util.*;
 public class CommandNode {
     private final Object command;
     private final Map<String, Method> methods;
+    private final Map<String, String[]> permissions;
 
     public CommandNode(Object command) {
         this.command = command;
         this.methods = new TreeMap<String, Method>();
+        this.permissions =  new TreeMap<String, String[]>();
+    }
+
+    public String[] getRequiredPermissions(String action) {
+        return permissions.get(action);
     }
 
     public boolean invoke(String action, Object ... args) throws Exception {
@@ -36,6 +44,12 @@ public class CommandNode {
 
     void registerAction(String action, Method method) {
         methods.put(action, method);
+
+        Secured permissionsRequired = method.getAnnotation(Secured.class);
+        if (permissionsRequired != null) {
+            String[] permissionList = permissionsRequired.value();
+            permissions.put(action, permissionList);
+        }
     }
 
     static CommandNode build(Object target) {

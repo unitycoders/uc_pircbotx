@@ -8,6 +8,8 @@ import uk.co.unitycoders.pircbotx.commands.*;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
 import uk.co.unitycoders.pircbotx.listeners.LinesListener;
+import uk.co.unitycoders.pircbotx.security.*;
+import uk.co.unitycoders.pircbotx.security.SecurityManager;
 
 import javax.net.ssl.SSLSocketFactory;
 
@@ -25,7 +27,8 @@ public class BotRunnable implements Runnable {
             Configuration.Builder<PircBotX> cb = new Configuration.Builder<PircBotX>();
             LocalConfiguration config = ConfigurationManager.loadConfig();
 
-            processor = buildProcessor(config.trigger, cb);
+            SecurityManager security = new SecurityManager();
+            processor = buildProcessor(config.trigger, security, cb);
 
             DateTimeCommand dtCmd = new DateTimeCommand();
 
@@ -41,6 +44,7 @@ public class BotRunnable implements Runnable {
             processor.register("help", new HelpCommand(processor));
             processor.register("nick", new NickCommand());
             processor.register("factoid", new FactoidCommand(DBConnection.getFactoidModel()));
+            processor.register("session", new SessionCommand(security));
 
             cb.addListener(JoinsListener.getInstance());
             cb.addListener(new LinesListener());
@@ -99,8 +103,8 @@ public class BotRunnable implements Runnable {
      * @param cb PircBotX configuration
      * @return A constructed CommandProcessor instance
      */
-    private CommandProcessor buildProcessor(char trigger, Configuration.Builder<PircBotX> cb) {
-        CommandProcessor processor = new CommandProcessor(trigger);
+    private CommandProcessor buildProcessor(char trigger, SecurityManager s, Configuration.Builder<PircBotX> cb) {
+        CommandProcessor processor = new CommandProcessor(trigger, s);
         cb.addListener(new CommandListener(processor));
         return processor;
     }
