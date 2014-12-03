@@ -79,6 +79,26 @@ public class CommandProcessor {
         commands.put(name, node);
     }
 
+    //proper aliasing of commands is now possible
+    public void alias(String name, String oldName) {
+        CommandNode node = commands.get(oldName);
+
+        if (oldName == null) {
+            throw new RuntimeException(oldName + " is not a loaded class");
+        }
+
+        CommandNode aliasNode = commands.get(name);
+        if (aliasNode != null) {
+            throw new RuntimeException(name + " is already a keyword!");
+        }
+
+        commands.put(name, node);
+    }
+
+    public void remove(String command) {
+        commands.remove(command);
+    }
+
     public void invoke(MessageEvent<PircBotX> event) throws Exception {
         Message message = new ChannelMessage(event);
         invoke(message);
@@ -166,6 +186,7 @@ public class CommandProcessor {
     public Collection<String> getModules() {
         return Collections.unmodifiableCollection(commands.keySet());
     }
+
 
     /**
      * Gets a list of commands which are registered with the command processor

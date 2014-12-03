@@ -2,6 +2,9 @@
 jar_path=`pwd`/target/uc_pircbotx-0.3-SNAPSHOT-jar-with-dependencies.jar
 java_class="uk.co.unitycoders.pircbotx.BotService"
 conf_location=`pwd`
+extras_location=target/extras/*
+
+CLASSPATH="$CLASSPATH:$EXTRAS_LOCATION"
 
 if [ ! -f $conf_location/uc_pircbotx.json ];
 then

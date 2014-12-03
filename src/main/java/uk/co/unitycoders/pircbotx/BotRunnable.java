@@ -33,8 +33,6 @@ public class BotRunnable implements Runnable {
             DateTimeCommand dtCmd = new DateTimeCommand();
 
             processor.register("rand", new RandCommand());
-            processor.register("time", dtCmd);
-            processor.register("date", dtCmd);
             processor.register("datetime", dtCmd);
             processor.register("lart", new LartCommand());
             processor.register("killertrout", new KillerTroutCommand());
@@ -46,6 +44,11 @@ public class BotRunnable implements Runnable {
             processor.register("factoid", new FactoidCommand(DBConnection.getFactoidModel()));
             processor.register("session", new SessionCommand(security));
             processor.register("irc", new IRCCommands());
+            processor.register("plugin", new PluginCommand(processor));
+
+
+            processor.alias("date", "datetime");
+            processor.alias("time", "datetime");
 
             cb.addListener(JoinsListener.getInstance());
             cb.addListener(new LinesListener());
