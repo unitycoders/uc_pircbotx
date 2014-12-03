@@ -108,8 +108,8 @@ public class BotRunnable implements Runnable {
      * @return A constructed CommandProcessor instance
      */
     private CommandProcessor buildProcessor(char trigger, SecurityManager s, Configuration.Builder<PircBotX> cb) {
-        CommandProcessor processor = new CommandProcessor(trigger, s);
-        cb.addListener(new CommandListener(processor));
+        CommandProcessor processor = new CommandProcessor(s);
+        cb.addListener(new CommandListener(processor, trigger));
         return processor;
     }
 }

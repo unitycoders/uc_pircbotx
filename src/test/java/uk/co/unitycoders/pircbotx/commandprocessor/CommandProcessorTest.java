@@ -39,8 +39,12 @@ public class CommandProcessorTest {
      */
     @Before
     public void setUp() throws Exception {
+<<<<<<< HEAD
         processor = new CommandProcessor(TRIGGER, null);
 
+=======
+        processor = new CommandProcessor();
+>>>>>>> master
     }
 
     /**

@@ -52,11 +52,9 @@ public class CommandProcessor {
      * This will create a new command processor and will initialise the regex
      * pattern the bot will use to match commands. It will also create the maps
      * needed to store information about the commands.
-     *
-     * @param trigger the first character of any line directed at the bot
      */
-    public CommandProcessor(char trigger, SecurityManager security) {
-        this.regex = Pattern.compile(trigger + "([a-z0-9]+)(?: ([a-z0-9]+))?(?: (.*))?");
+    public CommandProcessor(SecurityManager security) {
+        this.regex = Pattern.compile("([a-z0-9]+)(?: ([a-z0-9]+))?(?: (.*))?");
         this.commands = new TreeMap<String, CommandNode>();
         this.security = security;
     }
@@ -99,16 +97,7 @@ public class CommandProcessor {
         commands.remove(command);
     }
 
-    public void invoke(MessageEvent<PircBotX> event) throws Exception {
-        Message message = new ChannelMessage(event);
-        invoke(message);
-    }
-    
-    public void invoke(PrivateMessageEvent<PircBotX> event) throws Exception {
-        Message message = new UserMessage(event);
-        invoke(message);
-    }
-    
+
     /**
      * Process an IRC message to see if the bot needs to respond.
      *
