@@ -38,6 +38,6 @@ public class IRCCommands {
     public void onQuitRequest(Message message) {
         PircBotX bot = message.getBot();
         bot.stopBotReconnect();
-        bot.sendIRC().quitServer(message.getUser()+" told me to quit");
+        bot.sendIRC().quitServer(message.getUser().getNick()+" told me to quit");
     }
 }
