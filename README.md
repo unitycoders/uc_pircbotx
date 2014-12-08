@@ -16,6 +16,7 @@ If you would like documentation on how to use the bot, please consult the
 
 ### Running as a service (demo, not a real system service yet)
 Warning: This is **very** experimental. It /should/ work on debian based distributions providing all the packages needed are installed.
+
     $ mvn package
     $ # edit src/main/scripts/ucbot-ctl # change user as needed
     $ # edit src/main/scripts/unix-install # change user to match ucbot-ctl
