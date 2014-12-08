@@ -11,7 +11,13 @@ public class BotService implements Daemon {
 
     @Override
     public void init(DaemonContext daemonContext) throws Exception {
-        botThread = new Thread(new BotRunnable());
+        String[] args = daemonContext.getArguments();
+        String configPath = ConfigurationManager.JSON_FILE_NAME;
+        if (args.length != 0) {
+            configPath = args[0];
+        }
+
+        botThread = new Thread(new BotRunnable(ConfigurationManager.loadConfig(configPath)));
     }
 
     @Override

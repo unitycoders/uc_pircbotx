@@ -1,9 +1,9 @@
 #! /bin/bash
 JAR_PATH=/usr/lib/uc-pircbotx/uc_pircbotx.jar
 MAIN_CLASS=uk.co.unitycoders.pircbotx.BotService
-CONF_DIR=/etc/uc_pircbotx.json
+CONF_FILE=/etc/uc_pircbotx.json
 EXTRAS_DIR=/usr/lib/uc-pircbotx/extras/*
-DEP_PATHS="/usr/share/java/guava.jar:/usr/share/java/gson.jar:/usr/share/java/commons-daemon.jar:/usr/share/java/slf4j-api.jar:/usr/share/java/slf4j-simple.jar:/usr/lib/uc-pircbotx/deps/*"
+DEP_PATHS="/usr/share/java/guava.jar:/usr/share/java/gson.jar:/usr/share/java/commons-lang3.jar:/usr/share/java/commons-daemon.jar:/usr/share/java/slf4j-api.jar:/usr/share/java/slf4j-simple.jar:/usr/lib/uc-pircbotx/deps/*"
 
 # Set useful variables
 CLASSPATH="$CLASSPATH:$DEP_PATHS:$JAR_PATH:$EXTRAS_DIR"
@@ -16,4 +16,4 @@ then
 	exit 1
 fi
 
-/usr/bin/jsvc -jvm server $@ -cwd `pwd` -cp $CLASSPATH $MAIN_CLASS
+/usr/bin/jsvc -jvm server $@ -cwd `pwd` -cp $CLASSPATH $MAIN_CLASS $CONF_FILE

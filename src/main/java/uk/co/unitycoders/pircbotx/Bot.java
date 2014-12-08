@@ -51,7 +51,12 @@ import uk.co.unitycoders.pircbotx.profile.ProfileManager;
 public class Bot {
 
     public static void main(String[] args) throws Exception {
-        BotRunnable runnable = new BotRunnable();
+        String configPath = ConfigurationManager.JSON_FILE_NAME;
+        if (args.length > 1) {
+            configPath = args[1];
+        }
+
+        BotRunnable runnable = new BotRunnable(ConfigurationManager.loadConfig(configPath));
         Thread botThread = new Thread(runnable);
 
         botThread.start();

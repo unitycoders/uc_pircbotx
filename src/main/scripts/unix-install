@@ -6,6 +6,10 @@ mkdir -p /usr/lib/uc-pircbotx/deps/
 mkdir -p /usr/lib/uc-pircbotx/extras
 cp target/uc_pircbotx-0.3-SNAPSHOT.jar /usr/lib/uc-pircbotx/uc_pircbotx.jar
 cp src/main/scripts/ucbot-ctl /usr/bin/ucbot-ctl
+cp /home/webpigeon/Documents/unitycoders/uc_pircbotx/src/main/resources/uc_pircbotx.json.example /etc/uc_pircbotx.json
 
 #TODO package pircbotx to avoid doing this
 wget http://repo1.maven.org/maven2/org/pircbotx/pircbotx/2.0.1/pircbotx-2.0.1.jar -nc -O /usr/lib/uc-pircbotx/deps/pircbotx.jar
+
+#TODO do something about this to...
+wget https://bitbucket.org/xerial/sqlite-jdbc/downloads/sqlite-jdbc-3.8.7.jar -nc -O /usr/lib/uc-pircbotx/deps/sqlite-jdbc.jar

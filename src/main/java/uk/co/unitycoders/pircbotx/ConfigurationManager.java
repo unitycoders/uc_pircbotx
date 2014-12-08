@@ -46,6 +46,11 @@ public class ConfigurationManager {
         return new FileReader(file);
     }
 
+    public static LocalConfiguration loadConfig(String filePath) throws IOException {
+        Gson gson = new Gson();
+        return gson.fromJson(getFileReader(filePath), LocalConfiguration.class);
+    }
+
     public static LocalConfiguration loadConfig() throws IOException {
         Gson gson = new Gson();
         return gson.fromJson(getFileReader(JSON_FILE_NAME), LocalConfiguration.class);

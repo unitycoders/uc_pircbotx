@@ -19,13 +19,17 @@ import javax.net.ssl.SSLSocketFactory;
 public class BotRunnable implements Runnable {
     private PircBotX instance;
     private CommandProcessor processor;
+    private LocalConfiguration config;
+
+    public BotRunnable(LocalConfiguration config) {
+        this.config = config;
+    }
 
     @Override
     public void run() {
 
         try {
             Configuration.Builder<PircBotX> cb = new Configuration.Builder<PircBotX>();
-            LocalConfiguration config = ConfigurationManager.loadConfig();
 
             SecurityManager security = new SecurityManager();
             processor = buildProcessor(config.trigger, security, cb);
