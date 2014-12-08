@@ -19,7 +19,6 @@
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
