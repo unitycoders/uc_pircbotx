@@ -1,5 +1,8 @@
 #! /bin/bash
+BOT_USER=webpigeon
+BOT_WORKINGDIR=/var/uc-pircbotx/
 JAR_PATH=/usr/lib/uc-pircbotx/uc_pircbotx.jar
+PID_FILE=/var/run/uc-pircbotx.pid
 MAIN_CLASS=uk.co.unitycoders.pircbotx.BotService
 CONF_FILE=/etc/uc_pircbotx.json
 EXTRAS_DIR=/usr/lib/uc-pircbotx/extras/*
@@ -16,4 +19,4 @@ then
 	exit 1
 fi
 
-/usr/bin/jsvc -jvm server $@ -cwd `pwd` -cp $CLASSPATH $MAIN_CLASS $CONF_FILE
+/usr/bin/jsvc -jvm server $@ -cwd $BOT_WORKINGDIR -user $BOT_USER -pidfile $PID_FILE -cp $CLASSPATH $MAIN_CLASS $CONF_FILE

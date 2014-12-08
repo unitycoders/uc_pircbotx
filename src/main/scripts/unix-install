@@ -1,6 +1,7 @@
 #! /bin/bash
 # Hacky install script for Unix
 
+mkdir -p /var/uc-pircbotx/
 mkdir -p /usr/lib/uc-pircbotx
 mkdir -p /usr/lib/uc-pircbotx/deps/
 mkdir -p /usr/lib/uc-pircbotx/extras
