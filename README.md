@@ -14,6 +14,15 @@ If you would like documentation on how to use the bot, please consult the
     $ mvn package
     $ java -jar target/uc_pircbotx-0.1-SNAPSHOT-jar-with-dependencies.jar
 
+### Running as a service (demo, not a real system service yet)
+Warning: This is **very** experimental. It /should/ work on debian based distributions providing all the packages needed are installed.
+    $ mvn package
+    $ # edit src/main/scripts/ucbot-ctl # change user as needed
+    $ # edit src/main/scripts/unix-install # change user to match ucbot-ctl
+    $ sudo src/main/scripts/unix-install
+    $ vim /etc/uc_pircbotx.json # edit to suit your needs
+    $ sudo ucbot-ctl
+
 ### Maven With IDEs
 #### Maven With Eclipse
 The maven website has tutorials on using maven with eclipse. You can see them at http://maven.apache.org/guides/mini/guide-ide-eclipse.html.
