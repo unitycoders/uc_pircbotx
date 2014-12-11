@@ -1,0 +1,19 @@
+#! /bin/bash
+echo "examples in brackets"
+read -p "bot name: (uc_pircbotx) " bot_name
+read -p "irc network: (irc.freenode.net 6667) " bot_host bot_port
+read -p "trigger: (!) " bot_trigger
+read -p "channel: (#unity-coders) " bot_channels
+
+cat > uc_pircbotx.json <<DELIM
+{
+    "nick": "${bot_name}",
+    "host": "${bot_host}",
+    "port": ${bot_port},
+    "ssl": true,
+    "trigger": "${bot_trigger}",
+    "channels": [
+	"${bot_channels}"
+    ]
+}
+DELIM

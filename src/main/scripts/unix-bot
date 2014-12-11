@@ -1,0 +1,15 @@
+#! /bin/bash
+jar_path=`pwd`/target/uc_pircbotx-0.3-SNAPSHOT-jar-with-dependencies.jar
+java_class="uk.co.unitycoders.pircbotx.BotService"
+conf_location=`pwd`
+EXTRAS_DIR=target/extras/*
+
+CLASSPATH="$jar_path:$EXTRAS_DIR"
+
+if [ ! -f $conf_location/uc_pircbotx.json ];
+then
+	echo "config file missing (wrong directory or run unix-config)"
+	exit 1
+fi
+
+/usr/bin/jsvc -jvm server $@ -cwd `pwd` -cp $CLASSPATH $java_class

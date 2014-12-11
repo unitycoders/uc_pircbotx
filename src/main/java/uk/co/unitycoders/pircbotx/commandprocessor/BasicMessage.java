@@ -6,6 +6,7 @@
 
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
+import org.pircbotx.Colors;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 import org.pircbotx.hooks.types.GenericMessageEvent;
@@ -29,7 +30,7 @@ public abstract class BasicMessage implements Message {
 
     @Override
     public  String getMessage() {
-       return event.getMessage();
+       return Colors.removeFormattingAndColors(event.getMessage());
     }
 
     @Override

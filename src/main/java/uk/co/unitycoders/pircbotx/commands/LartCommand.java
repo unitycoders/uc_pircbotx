@@ -52,8 +52,8 @@ public class LartCommand {
             ex.printStackTrace();
         }
 
-        this.re = Pattern.compile(".lart ([^ ]+) *(.*)?");
-        this.alterRe = Pattern.compile(".lart alter (\\d) (.*)");
+        this.re = Pattern.compile("lart ([^ ]+) *(.*)?");
+        this.alterRe = Pattern.compile("lart alter (\\d) (.*)");
     }
 
     @Command("add")

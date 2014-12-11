@@ -9,6 +9,29 @@ target/
 uc_pircbotx.json
 
 #IDE Related
+## Netbeans stuff
 nbactions.xml
+
+## Intellij IDEA stuff
 .idea/
 *.iml
+
+## Eclipse Stuff
+*.pydevproject
+.metadata
+.gradle
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+
+### External tool builders
+.externalToolBuilders/
+
+### Locally stored "Eclipse launch configurations"
+*.launch

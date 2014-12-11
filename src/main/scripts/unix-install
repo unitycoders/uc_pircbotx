@@ -1,0 +1,26 @@
+#! /bin/bash
+# Hacky install script for Unix
+
+# configuration
+BOT_USER=webpigeon # the user the bot will run as
+
+# Variable data - pwd gets set here
+mkdir -p /var/uc-pircbotx/
+chown $BOT_USER /var/uc-pircbotx/
+chmod 770 /var/uc-pircbotx/
+
+# Places where our files will live
+mkdir -p /usr/lib/uc-pircbotx
+mkdir -p /usr/lib/uc-pircbotx/deps/
+mkdir -p /usr/lib/uc-pircbotx/extras
+cp target/uc_pircbotx-0.3-SNAPSHOT.jar /usr/lib/uc-pircbotx/uc_pircbotx.jar
+cp src/main/scripts/ucbot-ctl /usr/bin/ucbot-ctl
+
+# Create a copy of the config file
+cp /home/webpigeon/Documents/unitycoders/uc_pircbotx/src/main/resources/uc_pircbotx.json.example /etc/uc_pircbotx.json
+
+#TODO package pircbotx to avoid doing this
+wget http://repo1.maven.org/maven2/org/pircbotx/pircbotx/2.0.1/pircbotx-2.0.1.jar -nc -O /usr/lib/uc-pircbotx/deps/pircbotx.jar
+
+#TODO do something about this to...
+wget https://bitbucket.org/xerial/sqlite-jdbc/downloads/sqlite-jdbc-3.8.7.jar -nc -O /usr/lib/uc-pircbotx/deps/sqlite-jdbc.jar

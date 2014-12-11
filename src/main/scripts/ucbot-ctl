@@ -1,0 +1,22 @@
+#! /bin/bash
+BOT_USER=webpigeon
+BOT_WORKINGDIR=/var/uc-pircbotx/
+JAR_PATH=/usr/lib/uc-pircbotx/uc_pircbotx.jar
+PID_FILE=/var/run/uc-pircbotx.pid
+MAIN_CLASS=uk.co.unitycoders.pircbotx.BotService
+CONF_FILE=/etc/uc_pircbotx.json
+EXTRAS_DIR=/usr/lib/uc-pircbotx/extras/*
+DEP_PATHS="/usr/share/java/guava.jar:/usr/share/java/gson.jar:/usr/share/java/commons-lang3.jar:/usr/share/java/commons-daemon.jar:/usr/share/java/slf4j-api.jar:/usr/share/java/slf4j-simple.jar:/usr/lib/uc-pircbotx/deps/*"
+
+# Set useful variables
+CLASSPATH="$CLASSPATH:$DEP_PATHS:$JAR_PATH:$EXTRAS_DIR"
+echo $CLASSPATH
+
+# Check the config file exists
+if [ ! -f $CONF_FILE ];
+then
+	echo "config file missing (wrong directory or run unix-config)"
+	exit 1
+fi
+
+/usr/bin/jsvc -jvm server $@ -cwd $BOT_WORKINGDIR -user $BOT_USER -pidfile $PID_FILE -cp $CLASSPATH $MAIN_CLASS $CONF_FILE

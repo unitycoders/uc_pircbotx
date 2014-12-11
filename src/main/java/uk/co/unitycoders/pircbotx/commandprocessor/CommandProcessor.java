@@ -19,14 +19,16 @@
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.pircbotx.PircBotX;
+import org.pircbotx.User;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
+import uk.co.unitycoders.pircbotx.security.*;
+import uk.co.unitycoders.pircbotx.security.SecurityManager;
 
 /**
  * centrally managed command parsing.
@@ -41,6 +43,7 @@ public class CommandProcessor {
 
     private final Pattern regex;
     private final Map<String, CommandNode> commands;
+    private final SecurityManager security;
 
     /**
      * Create a new command processor.
@@ -49,9 +52,10 @@ public class CommandProcessor {
      * pattern the bot will use to match commands. It will also create the maps
      * needed to store information about the commands.
      */
-    public CommandProcessor() {
+    public CommandProcessor(SecurityManager security) {
         this.regex = Pattern.compile("([a-z0-9]+)(?: ([a-z0-9]+))?(?: (.*))?");
         this.commands = new TreeMap<String, CommandNode>();
+        this.security = security;
     }
 
     /**
@@ -71,7 +75,28 @@ public class CommandProcessor {
         CommandNode node = CommandNode.build(target);
         commands.put(name, node);
     }
-    
+
+    //proper aliasing of commands is now possible
+    public void alias(String name, String oldName) {
+        CommandNode node = commands.get(oldName);
+
+        if (oldName == null) {
+            throw new RuntimeException(oldName + " is not a loaded class");
+        }
+
+        CommandNode aliasNode = commands.get(name);
+        if (aliasNode != null) {
+            throw new RuntimeException(name + " is already a keyword!");
+        }
+
+        commands.put(name, node);
+    }
+
+    public void remove(String command) {
+        commands.remove(command);
+    }
+
+
     /**
      * Process an IRC message to see if the bot needs to respond.
      *
@@ -107,8 +132,14 @@ public class CommandProcessor {
             }
 
             if (action != null && commandNode.isValidAction(action)) {
+                if (!checkPermissions(commandNode, action, event.getUser())){
+                    throw new RuntimeException("you don't have permission");
+                }
                 commandNode.invoke(action, event);
             } else {
+                if (!checkPermissions(commandNode, "default", event.getUser())){
+                    throw new RuntimeException("you don't have permission");
+                }
                 commandNode.invoke("default", event);
             }
         } catch (InvocationTargetException ex) {
@@ -121,6 +152,20 @@ public class CommandProcessor {
         }
     }
 
+    private boolean checkPermissions(CommandNode node, String action, User user) {
+        //check if security is disabled
+        if (security == null) {
+            return true;
+        }
+
+        String[] permissions = node.getRequiredPermissions(action);
+        if (permissions != null) {
+            Session session = security.getSession(user);
+            return session != null && session.hasPermissions(permissions);
+        }
+        return true;
+    }
+
     /**
      * Get a list of modules registered with the command processor.
      *
@@ -129,6 +174,7 @@ public class CommandProcessor {
     public Collection<String> getModules() {
         return Collections.unmodifiableCollection(commands.keySet());
     }
+
 
     /**
      * Gets a list of commands which are registered with the command processor
