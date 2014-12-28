@@ -10,5 +10,8 @@
     "channels": [
         "#unity-coders",
         "#unity-coders-bots"
+    ],
+    "modules": [
+    	{"name": "datetime", "aliases": ["date", "time"]},
     ]
 }

@@ -25,6 +25,7 @@ public class LocalConfiguration {
     public int port;
     public Boolean ssl;
     public String[] channels;
+    public ModuleConfig[] modules;
     public char trigger;
     public boolean sasl;
     public String username;

@@ -18,9 +18,17 @@
  */
 package uk.co.unitycoders.pircbotx;
 
+import java.util.Collection;
+import java.util.Map;
+
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
+<<<<<<< a7f5e2ad7942130b9a25a866f46fc56b34801c25
 import org.pircbotx.cap.SASLCapHandler;
+=======
+
+import com.google.common.collect.MapMaker;
+>>>>>>> dynamic module loading, with alias support
 
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandListener;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
@@ -36,6 +44,7 @@ import uk.co.unitycoders.pircbotx.security.SecurityManager;
 
 import java.util.List;
 import java.util.ServiceLoader;
+import java.util.TreeMap;
 
 import javax.net.ssl.SSLSocketFactory;
 
@@ -63,10 +72,29 @@ public class BotRunnable implements Runnable {
             SecurityManager security = new SecurityManager();
             processor = buildProcessor(config.trigger, security, rewrite, cb);
             
+            Map<String, ModuleConfig> moduleConfigs = new TreeMap<String,ModuleConfig>();
+            for (ModuleConfig config : config.modules) {
+            	moduleConfigs.put(config.className, config);
+            }
+            
             ServiceLoader<Module> modules = ServiceLoader.load(Module.class);
             for (Module module : modules) {
-            	processor.register(module.getName(), module);
+            	
+            	//module data
+            	String name = module.getName();
+            	processor.register(name, module);
             	System.out.println("new module: "+module);
+            	
+            	//configuration items
+            	ModuleConfig config = moduleConfigs.get(name);
+            	if (config != null) {    		
+            		if (config.aliases != null) {
+            			for (String alias : config.aliases) {
+            				processor.alias(module.getName(), alias);
+            			}
+            		}
+            	}
+            	
             }
             
             Module[] legacyModules = new Module[] {
@@ -79,11 +107,8 @@ public class BotRunnable implements Runnable {
             for (Module module : legacyModules) {
             	processor.register(module.getName(), module);
             }
-            
-            processor.alias("date", "datetime");
-            processor.alias("time", "datetime");
 
-            cb.addListener(new JoinsListener());
+			cb.addListener(new JoinsListener());
             cb.addListener(new LinesListener());
 
             buildBot(cb, config);
