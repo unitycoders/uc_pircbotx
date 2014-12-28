@@ -18,6 +18,7 @@
  */
 package uk.co.unitycoders.pircbotx;
 
+
 /**
  *
  * @author joseph
@@ -29,5 +30,6 @@ public class LocalConfiguration {
     public int port;
     public Boolean ssl;
     public String[] channels;
+    public ModuleConfig[] modules;
     public char trigger;
 }

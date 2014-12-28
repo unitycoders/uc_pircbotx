@@ -1,7 +1,13 @@
 package uk.co.unitycoders.pircbotx;
 
+import java.util.Collection;
+import java.util.Map;
+
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
+
+import com.google.common.collect.MapMaker;
+
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandListener;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commands.*;
@@ -33,11 +39,28 @@ public class BotRunnable implements Runnable {
 
             SecurityManager security = new SecurityManager();
             processor = buildProcessor(config.trigger, security, cb);
-
-            DateTimeCommand dtCmd = new DateTimeCommand();
+            
+            ModuleConfig[] modules = config.modules;
+            for (ModuleConfig item : modules){
+            	if (item != null) {
+	            	System.out.println(item.name + " " + item.className);
+	            	Class<?> objectClass = Class.forName(item.className);
+	            	if (objectClass == null) {
+	            		System.err.println("Could not load class "+objectClass);
+	            		continue;
+	            	}
+	            	
+	            	processor.register(item.name, objectClass.newInstance());
+	            	
+	            	if (item.aliases != null) {
+	            		for (String alias : item.aliases) {
+	            		processor.alias(alias, item.name);
+	            		}
+	            	}
+            	}
+            }
 
             processor.register("rand", new RandCommand());
-            processor.register("datetime", dtCmd);
             processor.register("lart", new LartCommand());
             processor.register("killertrout", new KillerTroutCommand());
             processor.register("joins", new JoinsCommand());
@@ -49,10 +72,6 @@ public class BotRunnable implements Runnable {
             processor.register("session", new SessionCommand(security));
             processor.register("irc", new IRCCommands());
             processor.register("plugin", new PluginCommand(processor));
-
-
-            processor.alias("date", "datetime");
-            processor.alias("time", "datetime");
 
             cb.addListener(JoinsListener.getInstance());
             cb.addListener(new LinesListener());
