@@ -10,5 +10,14 @@
     ],
     "modules": [
     	{"name": "datetime", "aliases": ["date", "time"], "className": "uk.co.unitycoders.pircbotx.commands.DateTimeCommand"},
+    	{"name": "rand", "className": "uk.co.unitycoders.pircbotx.commands.RandCommand"},
+    	{"name": "lart", "className": "uk.co.unitycoders.pircbotx.commands.LartCommand"},
+    	{"name": "killertrout", "className": "uk.co.unitycoders.pircbotx.commands.KillerTroutCommand"},
+    	{"name": "joins", "className": "uk.co.unitycoders.pircbotx.commands.JoinsCommand"},
+    	{"name": "calc", "className": "uk.co.unitycoders.pircbotx.commands.CalcCommand"},
+    	{"name": "karma", "className": "uk.co.unitycoders.pircbotx.commands.KarmaCommand"},
+    	{"name": "nick", "className": "uk.co.unitycoders.pircbotx.commands.NickCommand"},
+    	{"name": "irc", "className": "uk.co.unitycoders.pircbotx.commands.IRCCommands"},
+    	{"name": "factoid", "className": "uk.co.unitycoders.pircbotx.commands.FactoidCommands"},
     ]
 }

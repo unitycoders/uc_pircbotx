@@ -59,18 +59,9 @@ public class BotRunnable implements Runnable {
 	            	}
             	}
             }
-
-            processor.register("rand", new RandCommand());
-            processor.register("lart", new LartCommand());
-            processor.register("killertrout", new KillerTroutCommand());
-            processor.register("joins", new JoinsCommand());
-            processor.register("calc", new CalcCommand());
-            processor.register("karma", new KarmaCommand());
+            
             processor.register("help", new HelpCommand(processor));
-            processor.register("nick", new NickCommand());
-            processor.register("factoid", new FactoidCommand(DBConnection.getFactoidModel()));
             processor.register("session", new SessionCommand(security));
-            processor.register("irc", new IRCCommands());
             processor.register("plugin", new PluginCommand(processor));
 
             cb.addListener(JoinsListener.getInstance());
