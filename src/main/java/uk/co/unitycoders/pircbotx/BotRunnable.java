@@ -18,17 +18,11 @@
  */
 package uk.co.unitycoders.pircbotx;
 
-import java.util.Collection;
 import java.util.Map;
 
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
-<<<<<<< a7f5e2ad7942130b9a25a866f46fc56b34801c25
 import org.pircbotx.cap.SASLCapHandler;
-=======
-
-import com.google.common.collect.MapMaker;
->>>>>>> dynamic module loading, with alias support
 
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandListener;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
@@ -42,7 +36,6 @@ import uk.co.unitycoders.pircbotx.modules.ModuleUtils;
 import uk.co.unitycoders.pircbotx.security.*;
 import uk.co.unitycoders.pircbotx.security.SecurityManager;
 
-import java.util.List;
 import java.util.ServiceLoader;
 import java.util.TreeMap;
 
