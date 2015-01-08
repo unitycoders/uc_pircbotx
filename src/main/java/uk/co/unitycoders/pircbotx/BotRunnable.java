@@ -2,6 +2,8 @@ package uk.co.unitycoders.pircbotx;
 
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
+import org.pircbotx.cap.SASLCapHandler;
+
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandListener;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commands.*;
@@ -75,6 +77,10 @@ public class BotRunnable implements Runnable {
     private void buildBot(Configuration.Builder<PircBotX> cb, LocalConfiguration config) {
         cb.setName(config.nick);
         cb.setServer(config.host, config.port);
+        
+        if (config.sasl){
+        	cb.addCapHandler(new SASLCapHandler(config.username, config.password));
+        }
 
         if (config.ssl) {
             cb.setSocketFactory(SSLSocketFactory.getDefault());

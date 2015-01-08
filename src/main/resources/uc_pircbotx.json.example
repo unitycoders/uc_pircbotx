@@ -4,6 +4,9 @@
     "port": 6697,
     "ssl": true,
     "trigger": "&",
+    "sasl": false,
+    "username": "sasl_username",
+    "password": "sasl_password",
     "channels": [
         "#unity-coders",
         "#unity-coders-bots"

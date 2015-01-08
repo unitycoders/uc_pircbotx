@@ -30,4 +30,7 @@ public class LocalConfiguration {
     public Boolean ssl;
     public String[] channels;
     public char trigger;
+    public boolean sasl;
+    public String username;
+    public String password;
 }
