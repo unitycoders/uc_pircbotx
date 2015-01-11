@@ -36,8 +36,6 @@ import uk.co.unitycoders.pircbotx.security.SecurityManager;
  *
  */
 public class CommandProcessor {
-
-    private final Pattern regex;
     private final Pattern tokeniser;
     private final Map<String, CommandNode> commands;
     private final SecurityManager security;
@@ -50,7 +48,6 @@ public class CommandProcessor {
      * needed to store information about the commands.
      */
     public CommandProcessor(SecurityManager security) {
-        this.regex = Pattern.compile("([a-z0-9]+)(?: ([a-z0-9]+))?(?: (.*))?");
         this.tokeniser = Pattern.compile("([^\\s\"']+)|\"([^\"]*)\"|'([^']*)'");
         this.commands = new TreeMap<String, CommandNode>();
         this.security = security;

@@ -19,7 +19,6 @@
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
 import java.util.*;
-import java.util.concurrent.Exchanger;
 
 import org.junit.Assert;
 import org.junit.Before;

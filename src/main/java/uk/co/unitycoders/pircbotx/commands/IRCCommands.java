@@ -1,12 +1,10 @@
 package uk.co.unitycoders.pircbotx.commands;
 
 import org.pircbotx.PircBotX;
-import uk.co.unitycoders.pircbotx.commandprocessor.ChannelMessage;
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.security.Secured;
 
-import java.nio.channels.Channel;
 
 /**
  * Created by webpigeon on 03/12/14.
