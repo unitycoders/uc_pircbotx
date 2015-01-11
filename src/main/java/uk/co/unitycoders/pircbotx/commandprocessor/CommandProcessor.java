@@ -135,11 +135,11 @@ public class CommandProcessor {
     	}
     	
     	String action = "default";
-    	if (argc > 2 && !node.isValidAction(arguments.get(1))){
-    		action = arguments.get(1);
-    	}else {
+    	if (argc < 2 || !node.isValidAction(arguments.get(1))){
     		//ensure that if default is invoked that default is on the queue
     		arguments.add(1, "default");
+    	}else {
+    		action = arguments.get(1);
     	}
     	
     	if (!checkPermissions(node, action, message.getUser())) {

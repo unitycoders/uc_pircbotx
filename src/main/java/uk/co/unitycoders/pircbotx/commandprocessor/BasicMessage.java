@@ -32,7 +32,7 @@ public abstract class BasicMessage implements Message {
     }
     
     public String getArgument(int id, String defaultValue) {
-    	if (arguments == null || arguments.size() >= id){
+    	if (arguments == null || arguments.size() <= id){
     		return defaultValue;
     	}
     	
