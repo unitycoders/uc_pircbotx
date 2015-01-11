@@ -27,7 +27,7 @@ public class CommandNode {
         Method method = methods.get(action);
 
         if (method == null) {
-            return false; //TODO throw exception
+            throw new CommandNotFoundException("");
         }
 
         method.invoke(command, args);

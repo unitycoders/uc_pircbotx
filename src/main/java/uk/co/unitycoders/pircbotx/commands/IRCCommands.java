@@ -16,8 +16,11 @@ public class IRCCommands {
     @Command("join")
     @Secured
     public void onJoinRequest(Message message) {
-        String[] args = message.getMessage().split(" ");
-        String channel = args[2];
+        String channel = message.getArgument(2, null);
+        
+        if (channel == null) {
+        	message.respond("you didn't supply a channel");
+        }
 
         PircBotX bot = message.getBot();
         bot.sendIRC().joinChannel(channel);
@@ -26,8 +29,11 @@ public class IRCCommands {
     @Command("nick")
     @Secured
     public void onNickRequest(Message message) {
-        String[] args = message.getMessage().split(" ");
-        String newNick = args[2];
+        String newNick = message.getArgument(2, null);
+        
+        if (newNick == null) {
+        	message.respond("you didn't supply a new nick");
+        }
 
         PircBotX bot = message.getBot();
         bot.sendIRC().changeNick(newNick);

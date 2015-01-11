@@ -21,7 +21,7 @@ public class KarmaCommand {
 
     @Command("default")
     public void onKarma(Message event) throws Exception {
-        String target = event.getMessage().split(" ")[1];
+        String target = event.getArgument(2, null);
 
         int karma = this.model.getKarma(target);
         event.respond("Karma for " + target + " = " + karma);
@@ -29,7 +29,7 @@ public class KarmaCommand {
 
     @Command({"increment", "add"})
     public void incrementKarma(Message event) throws Exception {
-        String target = event.getMessage().split(" ")[2];
+        String target = event.getArgument(2, null);
 
         try {
             int karma = this.model.incrementKarma(target);
@@ -42,7 +42,7 @@ public class KarmaCommand {
 
     @Command({"decrement", "remove"})
     public void decrementKarma(Message event) throws Exception {
-        String target = event.getMessage().split(" ")[2];
+        String target = event.getArgument(2, null);
 
         try {
             int karma = this.model.decrementKarma(target);

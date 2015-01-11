@@ -41,16 +41,24 @@ public class CommandListener extends ListenerAdapter<PircBotX> {
 
     @Override
     public void onMessage(MessageEvent<PircBotX> event) throws Exception {
-        String messageText = event.getMessage();
-
-        if (messageText.startsWith(prefix)) {
-            BasicMessage message = new ChannelMessage(event, messageText.substring(1));
-            processor.invoke(message);
-        }
+    	try{
+	        String messageText = event.getMessage();
+	
+	        if (messageText.startsWith(prefix)) {
+	            BasicMessage message = new ChannelMessage(event, messageText.substring(1));
+	            processor.invoke(message);
+	        }
+    	} catch (Exception ex) {
+    		event.respond("error: "+ex.getMessage());
+    	}
     }
 
     @Override
     public void onPrivateMessage(PrivateMessageEvent<PircBotX> event) throws Exception {
-        processor.invoke(new UserMessage(event));
+    	try {
+    		processor.invoke(new UserMessage(event));
+    	} catch(Exception ex) {
+    		event.respond("error:"+ex.getMessage());
+    	}
     }
 }
