@@ -21,10 +21,17 @@ import org.pircbotx.hooks.types.GenericMessageEvent;
  */
 public abstract class BasicMessage implements Message {
     private final GenericMessageEvent<PircBotX> event;
+    private final String text;
     private List<String> arguments;
     
     public BasicMessage(GenericMessageEvent<PircBotX> message) {
         this.event = message;
+        this.text = Colors.removeFormattingAndColors(event.getMessage());
+    }
+    
+    public BasicMessage(GenericMessageEvent<PircBotX> message, String text) {
+        this.event = message;
+        this.text = text;
     }
     
     public void setArguments(List<String> arguments) {
@@ -46,7 +53,7 @@ public abstract class BasicMessage implements Message {
 
     @Override
     public  String getMessage() {
-       return Colors.removeFormattingAndColors(event.getMessage());
+       return text;
     }
 
     @Override

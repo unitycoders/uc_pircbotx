@@ -15,17 +15,10 @@ import org.pircbotx.hooks.events.MessageEvent;
  */
 public class ChannelMessage extends BasicMessage {
     private final MessageEvent<PircBotX> event;
-    private final String message;
     
     public ChannelMessage(MessageEvent<PircBotX> event, String message) {
-        super(event);
+        super(event, message);
         this.event = event;
-        this.message = message;
-    }
-
-    @Override
-    public String getMessage() {
-        return message;
     }
     
     @Override

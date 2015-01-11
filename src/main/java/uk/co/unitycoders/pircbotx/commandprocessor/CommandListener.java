@@ -18,6 +18,7 @@
  */
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
+import org.pircbotx.Colors;
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
@@ -31,11 +32,13 @@ import org.pircbotx.hooks.events.PrivateMessageEvent;
  */
 public class CommandListener extends ListenerAdapter<PircBotX> {
 
+	private final RewriteEngine rewriter;
     private final CommandProcessor processor;
     private final String prefix;
 
-    public CommandListener(CommandProcessor processor, char prefix) {
+    public CommandListener(CommandProcessor processor, RewriteEngine rewriter, char prefix) {
         this.processor = processor;
+        this.rewriter = rewriter;
         this.prefix = ""+prefix;
     }
 
@@ -45,7 +48,9 @@ public class CommandListener extends ListenerAdapter<PircBotX> {
 	        String messageText = event.getMessage();
 	
 	        if (messageText.startsWith(prefix)) {
-	            BasicMessage message = new ChannelMessage(event, messageText.substring(1));
+	        	messageText = extractMessage(messageText.substring(1));
+	        	
+	            BasicMessage message = new ChannelMessage(event, messageText);
 	            processor.invoke(message);
 	        }
     	} catch (Exception ex) {
@@ -56,9 +61,15 @@ public class CommandListener extends ListenerAdapter<PircBotX> {
     @Override
     public void onPrivateMessage(PrivateMessageEvent<PircBotX> event) throws Exception {
     	try {
-    		processor.invoke(new UserMessage(event));
+    		String messageText = extractMessage(event.getMessage());
+    		processor.invoke(new UserMessage(event, messageText));
     	} catch(Exception ex) {
     		event.respond("error:"+ex.getMessage());
     	}
+    }
+    
+    private String extractMessage(String raw) {
+    	String clean = Colors.removeFormattingAndColors(raw);
+    	return rewriter.process(clean);
     }
 }
