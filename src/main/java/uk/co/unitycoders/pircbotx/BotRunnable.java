@@ -54,7 +54,7 @@ public class BotRunnable implements Runnable {
             processor.alias("date", "datetime");
             processor.alias("time", "datetime");
 
-            cb.addListener(JoinsListener.getInstance());
+            cb.addListener(new JoinsListener());
             cb.addListener(new LinesListener());
 
             buildBot(cb, config);

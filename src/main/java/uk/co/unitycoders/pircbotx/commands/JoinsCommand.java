@@ -20,11 +20,10 @@ package uk.co.unitycoders.pircbotx.commands;
 
 import java.util.Map;
 
-import org.pircbotx.User;
-
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
-import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
+import uk.co.unitycoders.pircbotx.data.db.DBConnection;
+import uk.co.unitycoders.pircbotx.data.db.JoinModel;
 
 /**
  * Keeps a list of joins, and gives a list of nicks and number of joins.
@@ -33,21 +32,21 @@ import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
  */
 public class JoinsCommand {
 
-    private Map<User, Integer> joins;
+    private JoinModel model;
 
     /**
      * Creates a {@link JoinsCommand}.
      */
-    public JoinsCommand() {
-        this.joins = JoinsListener.getInstance().getJoins();
+    public JoinsCommand() throws Exception {
+        this.model = DBConnection.getJoinModel();
     }
 
     @Command
     public void onJoins(Message event) throws Exception {
         StringBuilder builder = new StringBuilder();
 
-        for (Map.Entry<User, Integer> entry : this.joins.entrySet()) {
-            String nick = entry.getKey().getNick();
+        for (Map.Entry<String, Integer> entry : this.model.getAllJoins().entrySet()) {
+            String nick = entry.getKey();
             String value = entry.getValue().toString();
             builder.append(nick);
             builder.append(" = ");

@@ -83,4 +83,8 @@ public class DBConnection {
     public static FactoidModel getFactoidModel() throws ClassNotFoundException, SQLException {
         return new FactoidModel(getInstance());
     }
+
+    public static JoinModel getJoinModel() throws ClassNotFoundException, SQLException {
+    	return new JoinModel(getInstance());
+    }
 }
