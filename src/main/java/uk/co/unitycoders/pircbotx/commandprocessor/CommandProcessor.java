@@ -148,6 +148,8 @@ public class CommandProcessor {
     	
     	try {
     		node.invoke(action, message);
+    	} catch (CommandNotFoundException ex) {
+    		throw new CommandNotFoundException(command + " " + action);
     	} catch (Exception ex) {
     		message.respond("Something has gone wrong, please let the developers know");
     		System.err.println("Exception thrown: "+ex.getMessage());
