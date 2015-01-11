@@ -18,15 +18,11 @@
  */
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.pircbotx.PircBotX;
 import org.pircbotx.User;
-import org.pircbotx.hooks.events.MessageEvent;
-import org.pircbotx.hooks.events.PrivateMessageEvent;
 import uk.co.unitycoders.pircbotx.security.*;
 import uk.co.unitycoders.pircbotx.security.SecurityManager;
 
@@ -42,6 +38,7 @@ import uk.co.unitycoders.pircbotx.security.SecurityManager;
 public class CommandProcessor {
 
     private final Pattern regex;
+    private final Pattern tokeniser;
     private final Map<String, CommandNode> commands;
     private final SecurityManager security;
 
@@ -54,6 +51,7 @@ public class CommandProcessor {
      */
     public CommandProcessor(SecurityManager security) {
         this.regex = Pattern.compile("([a-z0-9]+)(?: ([a-z0-9]+))?(?: (.*))?");
+        this.tokeniser = Pattern.compile("([^\\s\"']+)|\"([^\"]*)\"|'([^']*)'");
         this.commands = new TreeMap<String, CommandNode>();
         this.security = security;
     }
@@ -96,6 +94,24 @@ public class CommandProcessor {
         commands.remove(command);
     }
 
+    
+    public List<String> tokenise(String message) {
+    	
+    	List<String> arguments = new ArrayList<String>();
+    	
+    	Matcher matcher = tokeniser.matcher(message);
+    	while(matcher.find()) {
+    		if (matcher.group(1) != null) {
+    			arguments.add(matcher.group(1));
+    		}else if (matcher.group(2) != null) {
+    			arguments.add(matcher.group(2));
+    		}else if (matcher.group(3) != null) {
+    			arguments.add(matcher.group(3));
+    		}
+    	}
+    	
+    	return arguments;
+    }
 
     /**
      * Process an IRC message to see if the bot needs to respond.
@@ -104,52 +120,38 @@ public class CommandProcessor {
      * if the action is valid it will then call the call method to process the
      * event.
      *
-     * @param event the event to be processed
+     * @param message the event to be processed
      * @throws Exception
      */
-    public void invoke(Message event) throws Exception {
-        Matcher matcher = regex.matcher(event.getMessage());
-
-        // not valid command format
-        if (!matcher.matches()) {
-            return;
-        }
-
-        // XXX lart [thing], thing will be an action
-        String command = matcher.group(1);
-        String action = matcher.group(2);
-        String args = matcher.group(3);
-
-        System.out.println("[DEBUG] Command: " + command);
-        System.out.println("[DEBUG] action: " + action);
-        System.out.println("[DEBUG] args: " + args);
-
-        try {
-            CommandNode commandNode = commands.get(command);
-            if (commandNode == null) {
-                //TODO throw exception
-                return;
-            }
-
-            if (action != null && commandNode.isValidAction(action)) {
-                if (!checkPermissions(commandNode, action, event.getUser())){
-                    throw new RuntimeException("you don't have permission");
-                }
-                commandNode.invoke(action, event);
-            } else {
-                if (!checkPermissions(commandNode, "default", event.getUser())){
-                    throw new RuntimeException("you don't have permission");
-                }
-                commandNode.invoke("default", event);
-            }
-        } catch (InvocationTargetException ex) {
-            Throwable real = ex.getCause();
-            real.printStackTrace();
-            event.respond("[cmd-error] " + real.getMessage());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            event.respond("[error] " + ex.getMessage());
-        }
+    public void invoke(Message message) throws Exception {
+    	List<String> arguments = tokenise(message.getMessage());
+    	System.out.println("[debug] decoded: "+arguments);
+    	
+    	int argc = arguments.size();
+    	String command = arguments.get(0);
+    	//XXX not happy about this, should probably be dealt with before ending up here...
+    	message.setArguments(arguments);
+    	
+    	CommandNode node = commands.get(command);
+    	if (node == null) {
+    		throw new CommandNotFoundException(command);
+    	}
+    	
+    	String action = "default";
+    	if (argc > 2 || !node.isValidAction(arguments.get(1))){
+    		action = arguments.get(1);
+    	}
+    	
+    	if (!checkPermissions(node, action, message.getUser())) {
+    		throw new PermissionException();
+    	}
+    	
+    	try {
+    		node.invoke(action, message);
+    	} catch (Exception ex) {
+    		message.respond("Something has gone wrong, please let the developers know");
+    		System.err.println("Exception thrown: "+ex.getMessage());
+    	}
     }
 
     private boolean checkPermissions(CommandNode node, String action, User user) {

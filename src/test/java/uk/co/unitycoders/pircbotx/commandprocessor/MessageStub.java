@@ -1,7 +1,10 @@
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
+import java.util.List;
+
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
+
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -36,11 +39,21 @@ public class MessageStub implements Message {
 
     @Override
     public void respond(String message) {
-        throw new NotImplementedException();
     }
 
     @Override
     public void sendAction(String action) {
-        throw new NotImplementedException();
     }
+
+	@Override
+	public String getArgument(int id, String defaultValue) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setArguments(List<String> args) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -44,7 +44,7 @@ public class CommandListener extends ListenerAdapter<PircBotX> {
         String messageText = event.getMessage();
 
         if (messageText.startsWith(prefix)) {
-            Message message = new ChannelMessage(event, messageText.substring(1));
+            BasicMessage message = new ChannelMessage(event, messageText.substring(1));
             processor.invoke(message);
         }
     }
