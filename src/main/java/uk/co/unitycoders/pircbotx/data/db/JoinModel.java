@@ -92,7 +92,7 @@ public class JoinModel {
         try {
             ResultSet rs = readJoins.executeQuery();
             while (rs.next()) {
-                joins.put(rs.getString(0), rs.getInt(1));
+                joins.put(rs.getString(1), rs.getInt(2));
             }
             rs.close();
         } catch (SQLException ex) {
