@@ -135,7 +135,7 @@ public class CommandProcessor {
     	}
     	
     	String action = "default";
-    	if (argc > 2 || !node.isValidAction(arguments.get(1))){
+    	if (argc > 2 && !node.isValidAction(arguments.get(1))){
     		action = arguments.get(1);
     	}else {
     		//ensure that if default is invoked that default is on the queue
