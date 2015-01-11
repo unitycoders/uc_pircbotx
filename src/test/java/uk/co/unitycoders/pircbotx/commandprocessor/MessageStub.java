@@ -2,7 +2,6 @@ package uk.co.unitycoders.pircbotx.commandprocessor;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Created by webpigeon on 24/08/14.
@@ -36,11 +35,11 @@ public class MessageStub implements Message {
 
     @Override
     public void respond(String message) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void sendAction(String action) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 }
