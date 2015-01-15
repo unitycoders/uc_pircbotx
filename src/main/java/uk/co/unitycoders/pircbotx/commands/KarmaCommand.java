@@ -1,11 +1,13 @@
 package uk.co.unitycoders.pircbotx.commands;
 
 import java.sql.SQLException;
+import java.util.Collection;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.data.db.KarmaModel;
+import uk.co.unitycoders.pircbotx.types.Karma;
 
 public class KarmaCommand {
 
@@ -25,6 +27,19 @@ public class KarmaCommand {
 
         int karma = this.model.getKarma(target);
         event.respond("Karma for " + target + " = " + karma);
+    }
+    
+    @Command("top")
+    public void topKarma(Message event) throws Exception {
+    	Collection<Karma> karmaList = model.getTopKarma(5);
+    	
+    	StringBuffer buffer = new StringBuffer();
+    	for (Karma karma : karmaList) {
+    		buffer.append(karma.toString());
+    		buffer.append(" ");
+    	}
+    	
+    	event.respond(buffer.toString());
     }
 
     @Command({"increment", "add"})

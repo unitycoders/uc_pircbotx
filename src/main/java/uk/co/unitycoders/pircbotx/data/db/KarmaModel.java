@@ -5,6 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import uk.co.unitycoders.pircbotx.types.Karma;
 
 public class KarmaModel {
 
@@ -12,6 +16,7 @@ public class KarmaModel {
 
     private final PreparedStatement newKarma;
     private final PreparedStatement getKarma;
+    private final PreparedStatement topKarma;
     private final PreparedStatement incrementKarma;
     private final PreparedStatement decrementKarma;
 
@@ -19,6 +24,7 @@ public class KarmaModel {
         this.conn = conn;
         buildTable();
         newKarma = conn.prepareStatement("INSERT INTO karma (target) VALUES (?)");
+        topKarma = conn.prepareStatement("SELECT target, karma FROM karma ORDER BY karma DESC LIMIT ?");
         getKarma = conn.prepareStatement("SELECT karma FROM karma WHERE target = ?");
         incrementKarma = conn.prepareStatement("UPDATE karma SET karma = karma + 1 WHERE target = ?");
         decrementKarma = conn.prepareStatement("UPDATE karma SET karma = karma - 1 WHERE target = ?");
@@ -27,6 +33,26 @@ public class KarmaModel {
     private void buildTable() throws SQLException {
         Statement stmt = conn.createStatement();
         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS karma (target TEXT PRIMARY KEY, karma INTEGER DEFAULT 1)");
+    }
+    
+    public Collection<Karma> getTopKarma(int limit) {
+    	ArrayList<Karma> karmaList = new ArrayList<Karma>();
+    	
+    	try {
+    		topKarma.clearParameters();
+    		topKarma.setInt(1, limit);
+    		ResultSet rs = topKarma.executeQuery();
+    		
+    		while(rs.next()) {
+    			Karma karmaEntry = new Karma(rs.getString(1), rs.getInt(2));
+    			karmaList.add(karmaEntry);
+    		}
+    		
+    		rs.close();
+    		return karmaList;
+    	} catch (SQLException ex) {
+    		return null;
+    	}
     }
 
     public int getKarma(String target) {
