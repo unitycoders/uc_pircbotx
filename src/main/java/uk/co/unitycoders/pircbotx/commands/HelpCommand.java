@@ -8,7 +8,6 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 /**

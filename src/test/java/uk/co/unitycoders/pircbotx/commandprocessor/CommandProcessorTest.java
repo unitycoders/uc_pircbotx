@@ -19,7 +19,6 @@
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
 import java.util.*;
-import java.util.concurrent.Exchanger;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,7 +31,6 @@ import org.junit.Test;
 public class CommandProcessorTest {
 
     private CommandProcessor processor;
-    private static final Character TRIGGER = '!';
 
     /**
      * @throws java.lang.Exception
@@ -114,9 +112,9 @@ public class CommandProcessorTest {
         Assert.assertTrue(hasTheSameContents(expected, result));
     }
 
-    @Test
+    @Test(expected=CommandNotFoundException.class)
     public void testInvokeInvalidModule() throws Exception {
-        Message message = new MessageStub(TRIGGER+"invalidModule");
+        Message message = new MessageStub("invalidModule");
         processor.invoke(message);
     }
 
@@ -126,7 +124,7 @@ public class CommandProcessorTest {
         Object module = new FakeModule();
         processor.register(name, module);
 
-        Message message = new MessageStub(TRIGGER+name);
+        Message message = new MessageStub(name);
         processor.invoke(message);
     }
 

@@ -17,8 +17,6 @@ public class SessionCommand {
 
     @Command
     public void onDefault(Message event) {
-        String[] args = event.getMessage().split(" ");
-
         boolean active = securityManager.hasActiveSession(event.getUser());
         if (active) {
             event.respond("You are logged in");

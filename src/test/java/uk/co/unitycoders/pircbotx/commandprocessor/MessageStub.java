@@ -1,5 +1,7 @@
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
+import java.util.List;
+
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
@@ -35,11 +37,21 @@ public class MessageStub implements Message {
 
     @Override
     public void respond(String message) {
-        throw new UnsupportedOperationException();
     }
 
     @Override
     public void sendAction(String action) {
-        throw new UnsupportedOperationException();
     }
+
+	@Override
+	public String getArgument(int id, String defaultValue) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setArguments(List<String> args) {
+		// TODO Auto-generated method stub
+		
+	}
 }

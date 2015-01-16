@@ -16,8 +16,8 @@ import org.pircbotx.hooks.events.PrivateMessageEvent;
 public class UserMessage extends BasicMessage {
     private final PrivateMessageEvent<PircBotX> event;
     
-    public UserMessage(PrivateMessageEvent<PircBotX> event) {
-        super(event);
+    public UserMessage(PrivateMessageEvent<PircBotX> event, String messageText) {
+        super(event, messageText);
         this.event = event;
     }
 

@@ -6,6 +6,7 @@ import org.pircbotx.cap.SASLCapHandler;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandListener;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
+import uk.co.unitycoders.pircbotx.commandprocessor.RewriteEngine;
 import uk.co.unitycoders.pircbotx.commands.*;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
@@ -33,8 +34,13 @@ public class BotRunnable implements Runnable {
         try {
             Configuration.Builder<PircBotX> cb = new Configuration.Builder<PircBotX>();
 
+            //rewrite rules
+            RewriteEngine rewrite = new RewriteEngine();
+    		rewrite.addRule("^([a-z0-9]+)\\+\\+$", "karma add $1");
+    		rewrite.addRule("^([a-z0-9]+)--$", "karma remove $1");
+            
             SecurityManager security = new SecurityManager();
-            processor = buildProcessor(config.trigger, security, cb);
+            processor = buildProcessor(config.trigger, security, rewrite, cb);
 
             DateTimeCommand dtCmd = new DateTimeCommand();
 
@@ -117,9 +123,9 @@ public class BotRunnable implements Runnable {
      * @param cb PircBotX configuration
      * @return A constructed CommandProcessor instance
      */
-    private CommandProcessor buildProcessor(char trigger, SecurityManager s, Configuration.Builder<PircBotX> cb) {
+    private CommandProcessor buildProcessor(char trigger, SecurityManager s, RewriteEngine rewrite, Configuration.Builder<PircBotX> cb) {
         CommandProcessor processor = new CommandProcessor(s);
-        cb.addListener(new CommandListener(processor, trigger));
+        cb.addListener(new CommandListener(processor, rewrite, trigger));
         return processor;
     }
 }

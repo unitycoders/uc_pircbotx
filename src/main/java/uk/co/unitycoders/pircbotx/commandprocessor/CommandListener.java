@@ -18,6 +18,7 @@
  */
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
+import org.pircbotx.Colors;
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
@@ -31,26 +32,44 @@ import org.pircbotx.hooks.events.PrivateMessageEvent;
  */
 public class CommandListener extends ListenerAdapter<PircBotX> {
 
+	private final RewriteEngine rewriter;
     private final CommandProcessor processor;
     private final String prefix;
 
-    public CommandListener(CommandProcessor processor, char prefix) {
+    public CommandListener(CommandProcessor processor, RewriteEngine rewriter, char prefix) {
         this.processor = processor;
+        this.rewriter = rewriter;
         this.prefix = ""+prefix;
     }
 
     @Override
     public void onMessage(MessageEvent<PircBotX> event) throws Exception {
-        String messageText = event.getMessage();
-
-        if (messageText.startsWith(prefix)) {
-            Message message = new ChannelMessage(event, messageText.substring(1));
-            processor.invoke(message);
-        }
+    	try{
+	        String messageText = event.getMessage();
+	
+	        if (messageText.startsWith(prefix)) {
+	        	messageText = extractMessage(messageText.substring(1));
+	        	
+	            BasicMessage message = new ChannelMessage(event, messageText);
+	            processor.invoke(message);
+	        }
+    	} catch (Exception ex) {
+    		event.respond("error: "+ex.getMessage());
+    	}
     }
 
     @Override
     public void onPrivateMessage(PrivateMessageEvent<PircBotX> event) throws Exception {
-        processor.invoke(new UserMessage(event));
+    	try {
+    		String messageText = extractMessage(event.getMessage());
+    		processor.invoke(new UserMessage(event, messageText));
+    	} catch(Exception ex) {
+    		event.respond("error:"+ex.getMessage());
+    	}
+    }
+    
+    private String extractMessage(String raw) {
+    	String clean = Colors.removeFormattingAndColors(raw);
+    	return rewriter.process(clean);
     }
 }
