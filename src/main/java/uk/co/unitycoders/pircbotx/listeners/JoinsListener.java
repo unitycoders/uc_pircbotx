@@ -18,8 +18,6 @@
  */
 package uk.co.unitycoders.pircbotx.listeners;
 
-import java.util.Map;
-
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.JoinEvent;
@@ -42,14 +40,5 @@ public class JoinsListener extends ListenerAdapter<PircBotX> {
     @Override
     public void onJoin(JoinEvent<PircBotX> event) throws Exception {
     	model.incrementJoin(event.getUser().getNick());
-    }
-
-    /**
-     * Gets the {@link Map} of joins.
-     *
-     * @return the map of joins
-     */
-    public Map<String, Integer> getJoins() {
-        return model.getAllJoins();
     }
 }
