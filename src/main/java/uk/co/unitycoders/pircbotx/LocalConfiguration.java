@@ -18,10 +18,6 @@
  */
 package uk.co.unitycoders.pircbotx;
 
-/**
- *
- * @author joseph
- */
 public class LocalConfiguration {
 
     public String nick;

@@ -21,10 +21,6 @@ package uk.co.unitycoders.pircbotx.commandprocessor;
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 
-/**
- *
- * @author joseph
- */
 public class UserMessage extends BasicMessage {
     private final PrivateMessageEvent<PircBotX> event;
     

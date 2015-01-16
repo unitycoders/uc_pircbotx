@@ -21,10 +21,6 @@ package uk.co.unitycoders.pircbotx.commandprocessor;
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
 
-/**
- *
- * @author joseph
- */
 public class ChannelMessage extends BasicMessage {
     private final MessageEvent<PircBotX> event;
     
