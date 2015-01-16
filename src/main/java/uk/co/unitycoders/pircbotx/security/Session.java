@@ -18,9 +18,6 @@
  */
 package uk.co.unitycoders.pircbotx.security;
 
-/**
- * Created by webpigeon on 03/12/14.
- */
 public class Session {
 
     // TODO permission checks per session

@@ -23,10 +23,6 @@ import java.util.Stack;
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
-/**
- *
- * @author webpigeon
- */
 public class CalcCommand {
 
     private static final Integer OP_TOKEN = 1;

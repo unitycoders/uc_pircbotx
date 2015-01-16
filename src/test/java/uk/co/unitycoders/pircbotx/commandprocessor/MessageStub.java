@@ -23,9 +23,6 @@ import java.util.List;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
-/**
- * Created by webpigeon on 24/08/14.
- */
 public class MessageStub implements Message {
     private final String message;
 

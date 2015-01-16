@@ -19,7 +19,7 @@
 package uk.co.unitycoders.pircbotx.types;
 
 /**
- * A lart database
+ * Represents a lart (Luser Attitude Readjustment Tool), or an insult
  *
  * @author Bruce Cowan
  */

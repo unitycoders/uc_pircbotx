@@ -34,9 +34,6 @@ import uk.co.unitycoders.pircbotx.security.SecurityManager;
 
 import javax.net.ssl.SSLSocketFactory;
 
-/**
- * Created by webpigeon on 07/09/14.
- */
 public class BotRunnable implements Runnable {
     private PircBotX instance;
     private CommandProcessor processor;

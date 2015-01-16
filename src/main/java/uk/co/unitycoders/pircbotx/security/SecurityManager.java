@@ -23,9 +23,6 @@ import org.pircbotx.User;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * Created by webpigeon on 03/12/14.
- */
 public class SecurityManager {
     private Map<String, Session> sessions;
 

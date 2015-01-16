@@ -23,9 +23,6 @@ import uk.co.unitycoders.pircbotx.security.Secured;
 import java.lang.reflect.Method;
 import java.util.*;
 
-/**
- * Created by webpigeon on 10/08/14.
- */
 public class CommandNode {
     private final Object command;
     private final Map<String, Method> methods;

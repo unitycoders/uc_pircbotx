@@ -18,23 +18,45 @@
  */
 package uk.co.unitycoders.pircbotx.types;
 
+/**
+ * Represents a "thing" and an integer score associated with it
+ * 
+ * @author Joseph Walton-Rivers
+ */
 public class Karma {
 	private String target;
 	private int karma;
 	
+	/**
+	 * Creates a new "thing" with no score
+	 * @param target the "thing"
+	 */
 	public Karma(String target) {
 		this(target, 0);
 	}
 	
+	/**
+	 * Creates a new "thing" with a score
+	 * @param target the "thing"
+	 * @param karma the score
+	 */
 	public Karma(String target, int karma) {
 		this.target = target;
 		this.karma = karma;
 	}
 	
+	/**
+	 * Gets the name of the "thing" represented
+	 * @return the thing
+	 */
 	public String getTarget() {
 		return target;
 	}
 	
+	/**
+	 * Gets the score associated to the "thing"
+	 * @return the score
+	 */
 	public int getKarma() {
 		return karma;
 	}

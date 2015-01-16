@@ -21,9 +21,6 @@ package uk.co.unitycoders.pircbotx;
 import org.apache.commons.daemon.Daemon;
 import org.apache.commons.daemon.DaemonContext;
 
-/**
- * Created by webpigeon on 07/09/14.
- */
 public class BotService implements Daemon {
     private Thread botThread;
 

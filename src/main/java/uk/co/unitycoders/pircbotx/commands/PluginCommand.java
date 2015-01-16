@@ -25,9 +25,6 @@ import uk.co.unitycoders.pircbotx.security.Secured;
 
 import java.util.Collection;
 
-/**
- * Created by webpigeon on 03/12/14.
- */
 public class PluginCommand {
     private CommandProcessor processor;
 

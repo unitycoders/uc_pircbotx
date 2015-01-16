@@ -23,10 +23,6 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.security.Secured;
 
-
-/**
- * Created by webpigeon on 03/12/14.
- */
 public class IRCCommands {
 
     @Command("join")

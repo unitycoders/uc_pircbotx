@@ -21,9 +21,6 @@ package uk.co.unitycoders.pircbotx.security;
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
-/**
- * Created by webpigeon on 03/12/14.
- */
 public class SessionCommand {
     // TODO replace this with a database/net lookup
     private final static String MAGIC_WORDS = "LlamaLlamaDuck";

@@ -24,9 +24,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- * Created by webpigeon on 16/12/13.
- */
 public class FactoidModel {
     private Connection connection;
 

@@ -18,10 +18,6 @@
  */
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
-/**
- * @author webpigeon
- *
- */
 public class TriggerModule {
 
     int called = 0;
