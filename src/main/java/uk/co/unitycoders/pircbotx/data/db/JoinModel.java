@@ -26,11 +26,14 @@ import java.sql.Statement;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class JoinModel {
 
+    private final Logger logger = LoggerFactory.getLogger(JoinModel.class);
     private final Connection conn;
     private final PreparedStatement newJoin;
-    private final PreparedStatement getJoin;
     private final PreparedStatement incrementJoin;
     private final PreparedStatement readJoins;
 
@@ -44,7 +47,6 @@ public class JoinModel {
         this.conn = conn;
         buildTable();
         newJoin = conn.prepareStatement("INSERT INTO joins (nick) VALUES (?)");
-        getJoin = conn.prepareStatement("SELECT joins FROM joins WHERE nick = ?");
         incrementJoin = conn.prepareStatement("UPDATE joins SET joins = joins + 1 WHERE nick = ?");
         readJoins = conn.prepareStatement("SELECT * FROM joins");
     }
@@ -54,36 +56,28 @@ public class JoinModel {
         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS joins (nick TEXT PRIMARY KEY, joins INTEGER DEFAULT 1)");
     }
 
-    public int getKarma(String nick) {
+    private void newJoin(String nick) {
         try {
-            getJoin.clearParameters();
-            getJoin.setString(1, nick);
-            getJoin.execute();
-
-            ResultSet rs = getJoin.getResultSet();
-            return rs.getInt(1);
+            newJoin.clearParameters();
+            newJoin.setString(1, nick);
+            newJoin.execute();
         } catch (SQLException ex) {
-            // Probably not in the database yet, so return 0
-            return 0;
+            logger.error("Database error", ex);
         }
     }
 
-    private void newJoin(String nick) throws SQLException {
-        newJoin.clearParameters();
-        newJoin.setString(1, nick);
-        newJoin.execute();
-    }
-
-    public int incrementJoin(String nick) throws SQLException {
-        incrementJoin.clearParameters();
-        incrementJoin.setString(1, nick);
-        int rows = incrementJoin.executeUpdate();
-
-        if (rows == 0) {
-            newJoin(nick);
+    public void incrementJoin(String nick) {
+        int rows;
+        try {
+            incrementJoin.clearParameters();
+            incrementJoin.setString(1, nick);
+            rows = incrementJoin.executeUpdate();
+            if (rows == 0) {
+                newJoin(nick);
+            }
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
         }
-
-        return getKarma(nick);
     }
 
     public Map<String, Integer> getAllJoins() {
@@ -95,7 +89,7 @@ public class JoinModel {
             }
             rs.close();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            logger.error("Database error", ex);
         }
         return joins;
     }
