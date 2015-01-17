@@ -54,37 +54,32 @@ public class KarmaCommand {
     @Command("top")
     public void topKarma(Message event) {
         Collection<Karma> karmaList = model.getTopKarma(5);
+        if (karmaList == null) {
+            event.respond("Could not get top 5");
+        } else {
+            StringBuilder builder = new StringBuilder();
+            for (Karma karma : karmaList) {
+                builder.append(karma.toString());
+                builder.append(" ");
+            }
 
-        StringBuilder builder = new StringBuilder();
-        for (Karma karma : karmaList) {
-            builder.append(karma.toString());
-            builder.append(" ");
+            event.respond(builder.toString());
         }
-
-        event.respond(builder.toString());
     }
 
     @Command({ "increment", "add" })
     public void incrementKarma(Message event) {
         String target = event.getArgument(2, null);
 
-        try {
-            int karma = this.model.incrementKarma(target);
-            event.respond("Karma for " + target + " is now " + karma);
-        } catch (SQLException ex) {
-            logger.error("Database error", ex);
-        }
+        int karma = this.model.incrementKarma(target);
+        event.respond("Karma for " + target + " is now " + karma);
     }
 
     @Command({ "decrement", "remove" })
     public void decrementKarma(Message event) {
         String target = event.getArgument(2, null);
 
-        try {
-            int karma = this.model.decrementKarma(target);
-            event.respond("Karma for " + target + " is now " + karma);
-        } catch (SQLException ex) {
-            logger.error("Database error", ex);
-        }
+        int karma = this.model.decrementKarma(target);
+        event.respond("Karma for " + target + " is now " + karma);
     }
 }

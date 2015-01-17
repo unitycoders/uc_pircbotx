@@ -26,10 +26,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.co.unitycoders.pircbotx.types.Karma;
 
 public class KarmaModel {
 
+    private final Logger logger = LoggerFactory.getLogger(KarmaModel.class);
     private final Connection conn;
 
     private final PreparedStatement newKarma;
@@ -69,6 +73,7 @@ public class KarmaModel {
     		rs.close();
     		return karmaList;
     	} catch (SQLException ex) {
+    	    logger.error("Database error", ex);
     		return null;
     	}
     }
@@ -83,33 +88,42 @@ public class KarmaModel {
             return rs.getInt(1);
         } catch (SQLException ex) {
             // Probably not in the database yet, so return 0
+            logger.warn("Database error", ex);
             return 0;
         }
     }
 
-    private void newKarma(String target) throws SQLException {
+    private boolean newKarma(String target) throws SQLException {
         newKarma.clearParameters();
         newKarma.setString(1, target);
-        newKarma.execute();
+        return newKarma.execute();
     }
 
-    public int incrementKarma(String target) throws SQLException {
-        incrementKarma.clearParameters();
-        incrementKarma.setString(1, target);
-        int rows = incrementKarma.executeUpdate();
+    public int incrementKarma(String target) {
+        try {
+            incrementKarma.clearParameters();
+            incrementKarma.setString(1, target);
+            int rows = incrementKarma.executeUpdate();
 
-        if (rows == 0) {
-            newKarma(target);
+            if (rows == 0) {
+                newKarma(target);
+            }
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return 0;
         }
-
         return getKarma(target);
     }
 
-    public int decrementKarma(String target) throws SQLException {
-        decrementKarma.clearParameters();
-        decrementKarma.setString(1, target);
-        decrementKarma.execute();
-
+    public int decrementKarma(String target) {
+        try {
+            decrementKarma.clearParameters();
+            decrementKarma.setString(1, target);
+            decrementKarma.execute();
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return 0;
+        }
         return getKarma(target);
     }
 }
