@@ -38,7 +38,7 @@ public class KarmaCommand {
     public KarmaCommand() {
         try {
             this.model = DBConnection.getKarmaModel();
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             logger.error("Database error", ex);
         }
     }

@@ -50,7 +50,7 @@ public class LartCommand {
     public LartCommand() {
         try {
             this.model = DBConnection.getLartModel();
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             logger.error("Database error", ex);
         }
 
