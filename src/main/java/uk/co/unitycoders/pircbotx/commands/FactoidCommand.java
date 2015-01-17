@@ -22,11 +22,15 @@ import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.data.db.FactoidModel;
 
 public class FactoidCommand {
+    private final Logger logger = LoggerFactory.getLogger(FactoidCommand.class);
     private FactoidModel model;
     private Pattern factoidPattern;
 
@@ -36,7 +40,7 @@ public class FactoidCommand {
     }
 
     @Command("add")
-    public void addFactoid(Message message) throws SQLException {
+    public void addFactoid(Message message) {
         String messageText = message.getMessage();
 
         Matcher matcher = factoidPattern.matcher(messageText);
@@ -45,14 +49,17 @@ public class FactoidCommand {
             return;
         }
 
-        boolean status = model.addFactoid(matcher.group(2), matcher.group(3));
-
-        String result = status?"Factoid added successfully":"factoid failed to get added";
-        message.respond(result);
+        try {
+            boolean status = model.addFactoid(matcher.group(2), matcher.group(3));
+            String result = status?"Factoid added successfully":"factoid failed to get added";
+            message.respond(result);
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+        }
     }
 
     @Command("get")
-    public void getFactoid(Message message) throws SQLException {
+    public void getFactoid(Message message) {
         String messageText = message.getMessage();
         String[] args = messageText.split(" ");
 
@@ -61,16 +68,20 @@ public class FactoidCommand {
             return;
         }
 
+        try {
         String factoid = model.getFactoid(args[2]);
         if (factoid == null) {
             message.respond("Sorry, unknown factoid.");
         } else {
             message.respond(factoid);
         }
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+        }
     }
 
     @Command("edit")
-    public void updateFactoid(Message message) throws SQLException {
+    public void updateFactoid(Message message) {
         String messageText = message.getMessage();
 
         Matcher matcher = factoidPattern.matcher(messageText);
@@ -78,11 +89,15 @@ public class FactoidCommand {
             message.respond("usage: factoid add [name] [text]");
         }
 
+        try {
         model.editFactoid(matcher.group(2), matcher.group(3));
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+        }
     }
 
     @Command("remove")
-    public void removeFactoid(Message message) throws SQLException {
+    public void removeFactoid(Message message) {
         String messageText = message.getMessage();
         String[] args = messageText.split(" ");
 
@@ -90,9 +105,13 @@ public class FactoidCommand {
             message.respond("usage: factoid remove [name]");
         }
 
-        boolean status = model.deleteFactoid(args[2]);
-        String result = status?"Factoid removed successfully":"factoid failed to get removed";
-        message.respond(result);
+        try {
+            boolean status = model.deleteFactoid(args[2]);
+            String result = status?"Factoid removed successfully":"factoid failed to get removed";
+            message.respond(result);
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+        }
     }
 
 }
