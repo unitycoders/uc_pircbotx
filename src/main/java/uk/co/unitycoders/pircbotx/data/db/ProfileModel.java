@@ -26,6 +26,9 @@ import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.co.unitycoders.pircbotx.profile.Profile;
 
 /**
@@ -34,6 +37,7 @@ import uk.co.unitycoders.pircbotx.profile.Profile;
  */
 public class ProfileModel {
 
+    private final Logger logger = LoggerFactory.getLogger(ProfileModel.class);
     private final Connection conn;
     private final PreparedStatement createProfile;
     private final PreparedStatement createPerm;
@@ -57,49 +61,71 @@ public class ProfileModel {
         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS profiles (user TEXT)");
     }
 
-    public void createProfile(String name) throws SQLException {
-        createProfile.clearParameters();
-        createProfile.setString(1, name);
-        createProfile.executeUpdate();
+    public void createProfile(String name) {
+        try {
+            createProfile.clearParameters();
+            createProfile.setString(1, name);
+            createProfile.executeUpdate();
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+        }
     }
 
-    public void addPerm(String user, String perm) throws SQLException {
-        createPerm.clearParameters();
-        createPerm.setString(1, user);
-        createPerm.setString(2, perm);
-        createPerm.execute();
+    public void addPerm(String user, String perm) {
+        try {
+            createPerm.clearParameters();
+            createPerm.setString(1, user);
+            createPerm.setString(2, perm);
+            createPerm.execute();
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+        }
     }
 
-    public void removePerm(String user, String perm) throws SQLException {
-        deletePerm.clearParameters();
-        deletePerm.setString(1, user);
-        deletePerm.setString(2, perm);
-        deletePerm.executeUpdate();
+    public void removePerm(String user, String perm) {
+        try {
+            deletePerm.clearParameters();
+            deletePerm.setString(1, user);
+            deletePerm.setString(2, perm);
+            deletePerm.executeUpdate();
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+        }
     }
 
-    public String[] getPerms(String user) throws SQLException {
+    public String[] getPerms(String user) {
         Set<String> perms = new HashSet<String>();
 
-        getPerms.clearParameters();
-        getPerms.setString(1, user);
-        ResultSet rs = getPerms.executeQuery();
+        try {
+            getPerms.clearParameters();
+            getPerms.setString(1, user);
+            ResultSet rs = getPerms.executeQuery();
 
-        while (rs.next()) {
-            perms.add(rs.getString(2));
+            while (rs.next()) {
+                perms.add(rs.getString(2));
+            }
+
+            rs.close();
+
+            return perms.toArray(new String[perms.size()]);
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return null;
         }
-
-        rs.close();
-
-        return perms.toArray(new String[perms.size()]);
     }
 
-    public Profile getProfile(String profileName) throws SQLException {
-        getProfile.clearParameters();
-        getProfile.setString(1, profileName);
-        ResultSet rs = getProfile.executeQuery();
-        rs.next();
+    public Profile getProfile(String profileName) {
+        try {
+            getProfile.clearParameters();
+            getProfile.setString(1, profileName);
+            ResultSet rs = getProfile.executeQuery();
+            rs.next();
 
-        Profile profile = new Profile(rs.getString(1));
-        return profile;
+            Profile profile = new Profile(rs.getString(1));
+            return profile;
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return null;
+        }
     }
 }
