@@ -18,19 +18,14 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
-import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.data.db.FactoidModel;
 
 public class FactoidCommand {
-    private final Logger logger = LoggerFactory.getLogger(FactoidCommand.class);
     private FactoidModel model;
     private Pattern factoidPattern;
 
@@ -49,13 +44,9 @@ public class FactoidCommand {
             return;
         }
 
-        try {
-            boolean status = model.addFactoid(matcher.group(2), matcher.group(3));
-            String result = status?"Factoid added successfully":"factoid failed to get added";
-            message.respond(result);
-        } catch (SQLException ex) {
-            logger.error("Database error", ex);
-        }
+        boolean status = model.addFactoid(matcher.group(2), matcher.group(3));
+        String result = status?"Factoid added successfully":"factoid failed to get added";
+        message.respond(result);
     }
 
     @Command("get")
@@ -68,15 +59,11 @@ public class FactoidCommand {
             return;
         }
 
-        try {
         String factoid = model.getFactoid(args[2]);
         if (factoid == null) {
             message.respond("Sorry, unknown factoid.");
         } else {
             message.respond(factoid);
-        }
-        } catch (SQLException ex) {
-            logger.error("Database error", ex);
         }
     }
 
@@ -89,11 +76,7 @@ public class FactoidCommand {
             message.respond("usage: factoid add [name] [text]");
         }
 
-        try {
         model.editFactoid(matcher.group(2), matcher.group(3));
-        } catch (SQLException ex) {
-            logger.error("Database error", ex);
-        }
     }
 
     @Command("remove")
@@ -105,13 +88,9 @@ public class FactoidCommand {
             message.respond("usage: factoid remove [name]");
         }
 
-        try {
-            boolean status = model.deleteFactoid(args[2]);
-            String result = status?"Factoid removed successfully":"factoid failed to get removed";
-            message.respond(result);
-        } catch (SQLException ex) {
-            logger.error("Database error", ex);
-        }
+        boolean status = model.deleteFactoid(args[2]);
+        String result = status?"Factoid removed successfully":"factoid failed to get removed";
+        message.respond(result);
     }
 
 }
