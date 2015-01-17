@@ -96,7 +96,7 @@ public class CalcCommand {
     }
 
     @Command
-    public void onCalc(Message event) throws Exception {
+    public void onCalc(Message event) {
         String msg = event.getMessage();
 
         try {

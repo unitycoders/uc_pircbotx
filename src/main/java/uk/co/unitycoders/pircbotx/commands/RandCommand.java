@@ -1,5 +1,5 @@
 /**
- * Copyright © 2012-2014 Unity Coders
+ * Copyright © 2012-2015 Unity Coders
  *
  * This file is part of uc_pircbotx.
  *
@@ -20,6 +20,9 @@ package uk.co.unitycoders.pircbotx.commands;
 
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
@@ -32,14 +35,19 @@ import uk.co.unitycoders.pircbotx.data.db.LineModel;
  */
 public class RandCommand {
 
+    private Logger logger = LoggerFactory.getLogger(RandCommand.class);
     private LineModel lines;
 
-    public RandCommand() throws Exception {
-        lines = DBConnection.getLineModel();
+    public RandCommand() {
+        try {
+            lines = DBConnection.getLineModel();
+        } catch (ClassNotFoundException | SQLException ex) {
+            logger.error("Database error", ex);
+        }
     }
 
     @Command
-    public void onRandom(Message event) throws Exception {
+    public void onRandom(Message event) {
         try {
             String line = lines.getRandomLine();
             event.respond(line);

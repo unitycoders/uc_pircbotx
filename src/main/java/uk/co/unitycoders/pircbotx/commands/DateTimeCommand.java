@@ -43,7 +43,7 @@ public class DateTimeCommand {
     }
 
     @Command
-    public void onMessage(Message event) throws Exception {
+    public void onMessage(Message event) {
         String msg = event.getMessage();
         Date date = new Date();
 
@@ -73,7 +73,7 @@ public class DateTimeCommand {
     }
 
     @Command("local")
-    public void onLocalTime(Message event) throws Exception {
+    public void onLocalTime(Message event) {
         String[] args = event.getMessage().split(" ");
 
         Date date = new Date();
@@ -88,7 +88,7 @@ public class DateTimeCommand {
     }
 
     @Command("unix")
-    public void unixToTime(Message event) throws Exception {
+    public void unixToTime(Message event) {
         String fmt = String.format("The current unix timestamp is %s", (int) (System.currentTimeMillis() / 1000L));
         event.respond(fmt);
     }

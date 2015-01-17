@@ -29,7 +29,7 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 public class KillerTroutCommand {
 
     @Command
-    public void onTrout(Message event) throws Exception {
+    public void onTrout(Message event) {
         event.sendAction("would have been killed by a trout");
     }
 }

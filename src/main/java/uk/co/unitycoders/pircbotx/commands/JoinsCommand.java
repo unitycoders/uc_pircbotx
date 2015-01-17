@@ -42,7 +42,7 @@ public class JoinsCommand {
     }
 
     @Command
-    public void onJoins(Message event) throws Exception {
+    public void onJoins(Message event) {
         StringBuilder builder = new StringBuilder();
 
         for (Map.Entry<String, Integer> entry : this.model.getAllJoins().entrySet()) {
