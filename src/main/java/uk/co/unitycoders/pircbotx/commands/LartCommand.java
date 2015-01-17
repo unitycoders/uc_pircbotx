@@ -1,5 +1,5 @@
 /**
- * Copyright © 2012-2014 Unity Coders
+ * Copyright © 2012-2015 Unity Coders
  *
  * This file is part of uc_pircbotx.
  *
