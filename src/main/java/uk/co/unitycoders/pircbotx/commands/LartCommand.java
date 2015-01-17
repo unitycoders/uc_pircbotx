@@ -76,37 +76,27 @@ public class LartCommand {
             event.respond("Lart # " + num + " added");
         } catch (IllegalArgumentException ex) {
             event.respond("No $who section given");
-        } catch (SQLException ex) {
-        	logger.error("Database error", ex);
         }
     }
 
     @Command("delete")
     public void onDelete(Message event) {
-        try {
-            int id = toInt(event);
+        int id = toInt(event);
 
-            boolean result = model.deleteLart(id);
-            if (result) {
-                event.respond("Deleted lart #" + id);
-            } else {
-                event.respond("No such lart in database");
-            }
-        } catch (SQLException ex) {
-        	logger.error("Database error", ex);
+        boolean result = model.deleteLart(id);
+        if (result) {
+            event.respond("Deleted lart #" + id);
+        } else {
+            event.respond("No such lart in database");
         }
     }
 
     @Command("info")
     public void onInfo(Message event) {
-        try {
-            int id = toInt(event);
-            Lart lart = model.getLart(id);
-            String resp = String.format("Channel: %s, Nick: %s, Pattern: %s", lart.getChannel(), lart.getNick(), lart.getPattern());
-            event.respond(resp);
-        } catch (SQLException ex) {
-        	logger.error("Database error", ex);
-        }
+        int id = toInt(event);
+        Lart lart = model.getLart(id);
+        String resp = String.format("Channel: %s, Nick: %s, Pattern: %s", lart.getChannel(), lart.getNick(), lart.getPattern());
+        event.respond(resp);
     }
 
     @Command("list")
@@ -144,8 +134,6 @@ public class LartCommand {
             event.respond("Lart #" + id + " altered");
         } catch (IllegalArgumentException ex) {
             event.respond("No $who section given");
-        } catch (SQLException ex) {
-        	logger.error("Database error", ex);
         }
     }
 
@@ -159,21 +147,17 @@ public class LartCommand {
         String nick = event.getMessage().split(" ")[1];
         String insult;
 
-        try {
-            String pattern = this.model.getRandomLart().getPattern();
-            insult = pattern.replace("$who", nick);
-            event.sendAction(insult);
-        } catch (SQLException ex) {
-        	logger.error("Database error", ex);
-        }
+        String pattern = this.model.getRandomLart().getPattern();
+        insult = pattern.replace("$who", nick);
+        event.sendAction(insult);
     }
 
     private int toInt(Message event) {
-            String msg = event.getMessage();
-            Matcher matcher = re.matcher(msg);
-            if (!matcher.matches()) {
-            	logger.error("Conversion error");
-            }
-            return Integer.parseInt(matcher.group(2));
+        String msg = event.getMessage();
+        Matcher matcher = re.matcher(msg);
+        if (!matcher.matches()) {
+            logger.error("Conversion error");
+        }
+        return Integer.parseInt(matcher.group(2));
     }
 }

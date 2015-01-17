@@ -48,11 +48,7 @@ public class RandCommand {
 
     @Command
     public void onRandom(Message event) {
-        try {
-            String line = lines.getRandomLine();
-            event.respond(line);
-        } catch (SQLException ex) {
-            event.respond("Failed to get random line: " + ex.getMessage());
-        }
+        String line = lines.getRandomLine();
+        event.respond(line);
     }
 }

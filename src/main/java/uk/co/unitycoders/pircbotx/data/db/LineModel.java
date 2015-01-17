@@ -26,11 +26,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  *
  */
 public class LineModel {
 
+    private final Logger logger = LoggerFactory.getLogger(LineModel.class);
     private final Connection conn;
     private final PreparedStatement createLine;
     private final PreparedStatement readLines;
@@ -60,11 +64,17 @@ public class LineModel {
      *
      * @param line the line to store
      * @throws SQLException if there was a database error
+     * @return if the storing was successful
      */
-    public void storeLine(String line) throws SQLException {
-        createLine.clearParameters();
-        createLine.setString(1, line);
-        createLine.execute();
+    public boolean storeLine(String line) {
+        try {
+            createLine.clearParameters();
+            createLine.setString(1, line);
+            return createLine.execute();
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return false;
+        }
     }
 
     /**
@@ -73,9 +83,14 @@ public class LineModel {
      * @return the random line
      * @throws SQLException if there was a database error
      */
-    public String getRandomLine() throws SQLException {
-        ResultSet rs = randomLine.executeQuery();
-        return rs.getString(1);
+    public String getRandomLine() {
+        try {
+            ResultSet rs = randomLine.executeQuery();
+            return rs.getString(1);
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return "";
+        }
     }
 
     /**
@@ -91,10 +106,12 @@ public class LineModel {
                 lines.add(rs.getString(1));
             }
             rs.close();
+            return lines;
+
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            logger.error("Database error", ex);
+            return null;
         }
-        return lines;
     }
 
 }

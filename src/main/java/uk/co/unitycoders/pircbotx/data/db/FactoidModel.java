@@ -1,5 +1,5 @@
 /**
- * Copyright © 2013-2014 Unity Coders
+ * Copyright © 2013-2015 Unity Coders
  *
  * This file is part of uc_pircbotx.
  *
@@ -24,8 +24,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class FactoidModel {
-    private Connection connection;
+    private final Logger logger = LoggerFactory.getLogger(FactoidModel.class);
+    private final Connection connection;
 
     private final PreparedStatement createStmt;
     private final PreparedStatement readStmt;
@@ -47,36 +51,56 @@ public class FactoidModel {
         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS factoid (name TEXT PRIMARY KEY, body TEXT)");
     }
 
-    public boolean addFactoid(String factoid, String text) throws SQLException {
-        createStmt.clearParameters();
-        createStmt.setString(1, factoid);
-        createStmt.setString(2, text);
-        return createStmt.executeUpdate() == 1;
-    }
-
-    public String getFactoid(String factoid) throws SQLException {
-        readStmt.clearParameters();
-        readStmt.setString(1, factoid);
-
-        ResultSet rs = readStmt.executeQuery();
-        if (rs.next()) {
-            return rs.getString(1);
+    public boolean addFactoid(String factoid, String text) {
+        try {
+            createStmt.clearParameters();
+            createStmt.setString(1, factoid);
+            createStmt.setString(2, text);
+            return createStmt.executeUpdate() == 1;
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return false;
         }
-
-        return null;
     }
 
-    public boolean editFactoid(String factoid, String text) throws SQLException {
-        updateStmt.clearParameters();
-        updateStmt.setString(1, factoid);
-        updateStmt.setString(2, text);
-        return updateStmt.executeUpdate() == 1;
+    public String getFactoid(String factoid) {
+        try {
+            readStmt.clearParameters();
+            readStmt.setString(1, factoid);
+
+            ResultSet rs = readStmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString(1);
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return null;
+        }
     }
 
-    public boolean deleteFactoid(String factoid) throws SQLException {
-        deleteStmt.clearParameters();
-        deleteStmt.setString(1, factoid);
-        return deleteStmt.execute();
+    public boolean editFactoid(String factoid, String text) {
+        try {
+            updateStmt.clearParameters();
+            updateStmt.setString(1, factoid);
+            updateStmt.setString(2, text);
+            return updateStmt.executeUpdate() == 1;
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return false;
+        }
+    }
+
+    public boolean deleteFactoid(String factoid) {
+        try {
+            deleteStmt.clearParameters();
+            deleteStmt.setString(1, factoid);
+            return deleteStmt.execute();
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return false;
+        }
     }
 
 }

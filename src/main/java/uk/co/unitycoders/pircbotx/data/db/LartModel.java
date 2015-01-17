@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.pircbotx.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import uk.co.unitycoders.pircbotx.types.Lart;
 
@@ -38,6 +40,7 @@ import uk.co.unitycoders.pircbotx.types.Lart;
  */
 public class LartModel {
 
+    private final Logger logger = LoggerFactory.getLogger(LartModel.class);
     private final Connection conn;
     private final PreparedStatement createLart;
     private final PreparedStatement readLarts;
@@ -80,24 +83,28 @@ public class LartModel {
      * @param pattern the pattern of the lart
      * @return the ID of the newly-created lart
      * @throws IllegalArgumentException if no $who section is given
-     * @throws SQLException if there was a database error
      */
-    public int storeLart(String target, User user, String pattern) throws IllegalArgumentException, SQLException {
+    public int storeLart(String target, User user, String pattern) throws IllegalArgumentException {
         if (!pattern.contains("$who")) {
             throw new IllegalArgumentException("No $who section found");
         }
 
-        createLart.clearParameters();
-        createLart.setString(1, target);
-        createLart.setString(2, user.getNick());
-        createLart.setString(3, pattern);
-        createLart.execute();
+        try {
+            createLart.clearParameters();
+            createLart.setString(1, target);
+            createLart.setString(2, user.getNick());
+            createLart.setString(3, pattern);
+            createLart.execute();
 
-        // Do this manually because getGeneratedKeys() is broken
-        lastId.clearParameters();
-        lastId.execute();
-        ResultSet rs = lastId.getResultSet();
-        return rs.getInt(1);
+            // Do this manually because getGeneratedKeys() is broken
+            lastId.clearParameters();
+            lastId.execute();
+            ResultSet rs = lastId.getResultSet();
+            return rs.getInt(1);
+        } catch (SQLException ex) {
+           logger.error("Database error", ex);
+           return 0;
+        }
     }
 
     /**
@@ -105,12 +112,16 @@ public class LartModel {
      *
      * @param id the ID of the lart to delete
      * @return <code>true</code> if successful, <code>false</code> if not
-     * @throws SQLException if there was a database error
      */
-    public boolean deleteLart(int id) throws SQLException {
-        deleteLart.clearParameters();
-        deleteLart.setInt(1, id);
-        return (deleteLart.executeUpdate() > 0);
+    public boolean deleteLart(int id) {
+        try {
+            deleteLart.clearParameters();
+            deleteLart.setInt(1, id);
+            return (deleteLart.executeUpdate() > 0);
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return false;
+        }
     }
 
     private Lart buildLart(ResultSet rs) throws SQLException {
@@ -126,26 +137,34 @@ public class LartModel {
      *
      * @param id the ID of the lart to get
      * @return the lart
-     * @throws SQLException if there was a database error
      */
-    public Lart getLart(int id) throws SQLException {
-        specificLart.clearParameters();
-        specificLart.setInt(1, id);
-        specificLart.execute();
+    public Lart getLart(int id) {
+        try {
+            specificLart.clearParameters();
+            specificLart.setInt(1, id);
+            specificLart.execute();
 
-        ResultSet rs = specificLart.getResultSet();
-        return buildLart(rs);
+            ResultSet rs = specificLart.getResultSet();
+            return buildLart(rs);
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return null;
+        }
     }
 
     /**
      * Gets a random {@link Lart} from the database.
      *
      * @return a random lart
-     * @throws SQLException if there was a database error
      */
-    public Lart getRandomLart() throws SQLException {
-        ResultSet rs = randomLart.executeQuery();
-        return buildLart(rs);
+    public Lart getRandomLart() {
+        try {
+            ResultSet rs = randomLart.executeQuery();
+            return buildLart(rs);
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return null;
+        }
     }
 
     /**
@@ -169,22 +188,27 @@ public class LartModel {
             }
             rs.close();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            logger.error("Database error", ex);
         }
 
         return larts;
     }
 
-    public void alterLart(int id, String target, User user, String pattern) throws SQLException {
+    public boolean alterLart(int id, String target, User user, String pattern) throws IllegalArgumentException {
         if (!pattern.contains("$who")) {
             throw new IllegalArgumentException("No $who section found");
         }
 
-        alterLart.clearParameters();
-        alterLart.setString(1, target);
-        alterLart.setString(2, user.getNick());
-        alterLart.setString(3, pattern);
-        alterLart.setInt(4, id);
-        alterLart.execute();
+        try {
+            alterLart.clearParameters();
+            alterLart.setString(1, target);
+            alterLart.setString(2, user.getNick());
+            alterLart.setString(3, pattern);
+            alterLart.setInt(4, id);
+            return alterLart.execute();
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return false;
+        }
     }
 }

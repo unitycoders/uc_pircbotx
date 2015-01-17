@@ -23,6 +23,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.pircbotx.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.co.unitycoders.pircbotx.security.*;
 import uk.co.unitycoders.pircbotx.security.SecurityManager;
 
@@ -36,6 +39,7 @@ import uk.co.unitycoders.pircbotx.security.SecurityManager;
  *
  */
 public class CommandProcessor {
+    private final Logger logger = LoggerFactory.getLogger(CommandProcessor.class);
     private final Pattern tokeniser;
     private final Map<String, CommandNode> commands;
     private final SecurityManager security;
@@ -122,7 +126,7 @@ public class CommandProcessor {
      */
     public void invoke(Message message) throws Exception {
     	List<String> arguments = tokenise(message.getMessage());
-    	System.out.println("[debug] decoded: "+arguments);
+    	logger.info("decoded: " + arguments); // TODO should really be debug, need different log handler
     	
     	int argc = arguments.size();
     	String command = arguments.get(0);
@@ -152,7 +156,7 @@ public class CommandProcessor {
     		throw new CommandNotFoundException(command + " " + action);
     	} catch (Exception ex) {
     		message.respond("Something has gone wrong, please let the developers know");
-    		System.err.println("Exception thrown: "+ex.getMessage());
+    		logger.error("Exception thrown", ex);
     	}
     }
 
