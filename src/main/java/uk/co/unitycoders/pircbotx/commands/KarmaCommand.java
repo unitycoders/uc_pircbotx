@@ -68,23 +68,15 @@ public class KarmaCommand {
     public void incrementKarma(Message event) {
         String target = event.getArgument(2, null);
 
-        try {
-            int karma = this.model.incrementKarma(target);
-            event.respond("Karma for " + target + " is now " + karma);
-        } catch (SQLException ex) {
-            logger.error("Database error", ex);
-        }
+        int karma = this.model.incrementKarma(target);
+        event.respond("Karma for " + target + " is now " + karma);
     }
 
     @Command({ "decrement", "remove" })
     public void decrementKarma(Message event) {
         String target = event.getArgument(2, null);
 
-        try {
-            int karma = this.model.decrementKarma(target);
-            event.respond("Karma for " + target + " is now " + karma);
-        } catch (SQLException ex) {
-            logger.error("Database error", ex);
-        }
+        int karma = this.model.decrementKarma(target);
+        event.respond("Karma for " + target + " is now " + karma);
     }
 }
