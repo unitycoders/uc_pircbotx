@@ -19,10 +19,13 @@
 package uk.co.unitycoders.pircbotx.commands;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.pircbotx.hooks.events.MessageEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
@@ -36,7 +39,7 @@ import uk.co.unitycoders.pircbotx.types.Lart;
  * @author Bruce Cowan
  */
 public class LartCommand {
-
+	final Logger logger = LoggerFactory.getLogger(LartCommand.class);
     private LartModel model;
     private final Pattern re;
     private final Pattern alterRe;
@@ -48,7 +51,7 @@ public class LartCommand {
         try {
             this.model = DBConnection.getLartModel();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error("Database error", ex);
         }
 
         this.re = Pattern.compile("lart ([^ ]+) *(.*)?");
@@ -56,7 +59,7 @@ public class LartCommand {
     }
 
     @Command("add")
-    public void onAdd(Message event) throws Exception {
+    public void onAdd(Message event) {
         // TODO this bit could still be nicer
         String msg = event.getMessage();
         Matcher matcher = re.matcher(msg);
@@ -74,12 +77,12 @@ public class LartCommand {
         } catch (IllegalArgumentException ex) {
             event.respond("No $who section given");
         } catch (SQLException ex) {
-            event.respond("Database Error: " + ex.getMessage());
+        	logger.error("Database error", ex);
         }
     }
 
     @Command("delete")
-    public void onDelete(Message event) throws Exception {
+    public void onDelete(Message event) {
         try {
             int id = toInt(event);
 
@@ -89,34 +92,33 @@ public class LartCommand {
             } else {
                 event.respond("No such lart in database");
             }
-        } catch (RuntimeException ex) {
-            // reading arguments failed
-            // XXX possibly intregrate some kind of command exception to show
-            // usage of command 1 level up?
+        } catch (SQLException ex) {
+        	logger.error("Database error", ex);
         }
     }
 
     @Command("info")
-    public void onInfo(Message event) throws Exception {
+    public void onInfo(Message event) {
         try {
             int id = toInt(event);
             Lart lart = model.getLart(id);
             String resp = String.format("Channel: %s, Nick: %s, Pattern: %s", lart.getChannel(), lart.getNick(), lart.getPattern());
             event.respond(resp);
         } catch (SQLException ex) {
-            event.respond("Database Error: " + ex.getMessage());
+        	logger.error("Database error", ex);
         }
     }
 
     @Command("list")
-    public void onList(Message event) throws Exception {
+    public void onList(Message event) {
         StringBuilder builder = new StringBuilder();
+        List<Lart> larts = this.model.getAllLarts();
 
-        if (this.model.getAllLarts().isEmpty()) {
+        if (larts.isEmpty()) {
             return;
         }
 
-        for (Lart lart : this.model.getAllLarts()) {
+        for (Lart lart : larts) {
             int id = lart.getID();
             builder.append(id);
             builder.append(',');
@@ -127,7 +129,7 @@ public class LartCommand {
     }
 
     @Command("alter")
-    public void onAlter(Message event) throws Exception {
+    public void onAlter(Message event) {
         Matcher matcher = alterRe.matcher(event.getMessage());
         if (!matcher.matches()) {
             event.respond("Invalid Format for alter");
@@ -142,9 +144,8 @@ public class LartCommand {
             event.respond("Lart #" + id + " altered");
         } catch (IllegalArgumentException ex) {
             event.respond("No $who section given");
-            return;
         } catch (SQLException ex) {
-            event.respond("Failed to alter lart: " + ex.getMessage());
+        	logger.error("Database error", ex);
         }
     }
 
@@ -155,29 +156,24 @@ public class LartCommand {
      */
     @Command("default")
     public void insult(Message event) {
-        // TODO deal with exception from this
         String nick = event.getMessage().split(" ")[1];
         String insult;
+
         try {
             String pattern = this.model.getRandomLart().getPattern();
             insult = pattern.replace("$who", nick);
             event.sendAction(insult);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+        	logger.error("Database error", ex);
         }
     }
 
     private int toInt(Message event) {
-        try {
             String msg = event.getMessage();
             Matcher matcher = re.matcher(msg);
             if (!matcher.matches()) {
-                throw new RuntimeException("invalid command format");
+            	logger.error("Conversion error");
             }
             return Integer.parseInt(matcher.group(2));
-        } catch (NumberFormatException ex) {
-            event.respond("Couldn't read int from argument");
-            throw new RuntimeException("invalid command");
-        }
     }
 }
