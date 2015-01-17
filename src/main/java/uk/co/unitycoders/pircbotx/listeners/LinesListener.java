@@ -18,8 +18,6 @@
  */
 package uk.co.unitycoders.pircbotx.listeners;
 
-import java.util.List;
-
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
@@ -51,14 +49,5 @@ public class LinesListener extends ListenerAdapter<PircBotX> {
     @Override
     public void onMessage(MessageEvent<PircBotX> event) throws Exception {
         model.storeLine(event.getMessage());
-    }
-
-    /**
-     * Gets the list of lines.
-     *
-     * @return the list of lines
-     */
-    public List<String> getLines() {
-        return model.getAllLines();
     }
 }

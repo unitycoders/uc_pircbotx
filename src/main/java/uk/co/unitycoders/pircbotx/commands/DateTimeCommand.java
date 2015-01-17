@@ -44,11 +44,9 @@ public class DateTimeCommand {
 
     @Command
     public void onMessage(Message event) {
-        String msg = event.getMessage();
         Date date = new Date();
 
-        String[] args = msg.split(" ");
-        String keyword = args[0];
+        String keyword = event.getArgument(1, null);
 
         String tense = "are";
         String resp = "INVALID";
@@ -74,14 +72,10 @@ public class DateTimeCommand {
 
     @Command("local")
     public void onLocalTime(Message event) {
-        String[] args = event.getMessage().split(" ");
-
         Date date = new Date();
         DateFormat df = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
 
-        if (args.length > 2) {
-            df.setTimeZone(TimeZone.getTimeZone(args[2]));
-        }
+        df.setTimeZone(TimeZone.getTimeZone(event.getArgument(1, null)));
 
         String fmt = String.format("The current %s %s %s", "date and time", "is", df.format(date));
         event.respond(fmt);
