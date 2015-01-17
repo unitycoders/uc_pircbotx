@@ -194,7 +194,7 @@ public class LartModel {
         return larts;
     }
 
-    public void alterLart(int id, String target, User user, String pattern) throws IllegalArgumentException {
+    public boolean alterLart(int id, String target, User user, String pattern) throws IllegalArgumentException {
         if (!pattern.contains("$who")) {
             throw new IllegalArgumentException("No $who section found");
         }
@@ -205,9 +205,10 @@ public class LartModel {
             alterLart.setString(2, user.getNick());
             alterLart.setString(3, pattern);
             alterLart.setInt(4, id);
-            alterLart.execute();
+            return alterLart.execute();
         } catch (SQLException ex) {
             logger.error("Database error", ex);
+            return false;
         }
     }
 }

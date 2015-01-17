@@ -54,14 +54,17 @@ public class KarmaCommand {
     @Command("top")
     public void topKarma(Message event) {
         Collection<Karma> karmaList = model.getTopKarma(5);
+        if (karmaList == null) {
+            event.respond("Could not get top 5");
+        } else {
+            StringBuilder builder = new StringBuilder();
+            for (Karma karma : karmaList) {
+                builder.append(karma.toString());
+                builder.append(" ");
+            }
 
-        StringBuilder builder = new StringBuilder();
-        for (Karma karma : karmaList) {
-            builder.append(karma.toString());
-            builder.append(" ");
+            event.respond(builder.toString());
         }
-
-        event.respond(builder.toString());
     }
 
     @Command({ "increment", "add" })

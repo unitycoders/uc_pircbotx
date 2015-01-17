@@ -106,10 +106,12 @@ public class LineModel {
                 lines.add(rs.getString(1));
             }
             rs.close();
+            return lines;
+
         } catch (SQLException ex) {
             logger.error("Database error", ex);
+            return null;
         }
-        return lines;
     }
 
 }

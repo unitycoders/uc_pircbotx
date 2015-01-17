@@ -56,27 +56,26 @@ public class JoinModel {
         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS joins (nick TEXT PRIMARY KEY, joins INTEGER DEFAULT 1)");
     }
 
-    private void newJoin(String nick) {
-        try {
-            newJoin.clearParameters();
-            newJoin.setString(1, nick);
-            newJoin.execute();
-        } catch (SQLException ex) {
-            logger.error("Database error", ex);
-        }
+    private boolean newJoin(String nick) throws SQLException {
+        newJoin.clearParameters();
+        newJoin.setString(1, nick);
+        return newJoin.execute();
     }
 
-    public void incrementJoin(String nick) {
+    public boolean incrementJoin(String nick) {
         int rows;
         try {
             incrementJoin.clearParameters();
             incrementJoin.setString(1, nick);
             rows = incrementJoin.executeUpdate();
             if (rows == 0) {
-                newJoin(nick);
+                return newJoin(nick);
+            } else {
+                return true;
             }
         } catch (SQLException ex) {
             logger.error("Database error", ex);
+            return false;
         }
     }
 

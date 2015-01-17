@@ -93,10 +93,10 @@ public class KarmaModel {
         }
     }
 
-    private void newKarma(String target) throws SQLException {
+    private boolean newKarma(String target) throws SQLException {
         newKarma.clearParameters();
         newKarma.setString(1, target);
-        newKarma.execute();
+        return newKarma.execute();
     }
 
     public int incrementKarma(String target) {

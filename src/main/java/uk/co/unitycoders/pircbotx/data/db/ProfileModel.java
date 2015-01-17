@@ -61,35 +61,38 @@ public class ProfileModel {
         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS profiles (user TEXT)");
     }
 
-    public void createProfile(String name) {
+    public boolean createProfile(String name) {
         try {
             createProfile.clearParameters();
             createProfile.setString(1, name);
-            createProfile.executeUpdate();
+            return createProfile.executeUpdate() == 1;
         } catch (SQLException ex) {
             logger.error("Database error", ex);
+            return false;
         }
     }
 
-    public void addPerm(String user, String perm) {
+    public boolean addPerm(String user, String perm) {
         try {
             createPerm.clearParameters();
             createPerm.setString(1, user);
             createPerm.setString(2, perm);
-            createPerm.execute();
+            return createPerm.execute();
         } catch (SQLException ex) {
             logger.error("Database error", ex);
+            return false;
         }
     }
 
-    public void removePerm(String user, String perm) {
+    public boolean removePerm(String user, String perm) {
         try {
             deletePerm.clearParameters();
             deletePerm.setString(1, user);
             deletePerm.setString(2, perm);
-            deletePerm.executeUpdate();
+            return deletePerm.executeUpdate() == 1;
         } catch (SQLException ex) {
             logger.error("Database error", ex);
+            return false;
         }
     }
 
