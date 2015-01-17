@@ -31,14 +31,88 @@ import org.pircbotx.User;
  */
 public interface Message {
     
+	/**
+	 * Get the bot this message was sent to.
+	 * 
+	 * @return the instance of the bot which received the message
+	 */
     public PircBotX getBot();
+    
+    /**
+     * Get the user which sent this message.
+     * 
+     * @return the user which sent the message
+     */
     public User getUser();
+    
+    /**
+     * Get the message the bot received.
+     * 
+     * This is mostly of use for the parsing function but may be useful
+     * to some commands. Previously, this was the only way to access message
+     * contents. Formatting will have been removed to make processing easier.
+     * The trigger character (if present) will have also been removed.
+     * 
+     * @return the cleaned message
+     */
     public String getMessage();
     
+    /**
+     * Internal use only, do not use.
+     * 
+     * This is used internally to setup the arguments. It is part of the
+     * private API and should not be used by plugins.
+     * 
+     * @param args the tokenised arguments.
+     */
     public void setArguments(List<String> args);
+    
+    /**
+     * Get a tokenised argument.
+     * 
+     * The tokeniser will parse the message, extract quoted strings and then split
+     * by whitespace. Using this function you can extract arguments from a message.
+     * The zeroth argument is always the command name, the first is always the 
+     * subcommand and 2 onwards is always the arguments.
+     * 
+     * In the event the user calls a command with an invalid subcommand, default
+     * will be inserted as the subcommand.
+     * 
+     * @param id the argument ID
+     * @param defaultValue a value to return of the argument does not exist
+     * @return the argument at position id, else defaultValue
+     */
     public String getArgument(int id, String defaultValue);
+    
+    /**
+     * Gets the target of the message.
+     * 
+     * If this is a channel message, this is the name of the channel. If this is
+     * a private message, this is the name of the user which sent the message.
+     * 
+     * @return a channel name or user name
+     */
     public String getTargetName();
     
+    /**
+     * Send a response to the user.
+     * 
+     * This will send a response to the user highlighting them. If the message is a 
+     * channel message, this will respond in the channel, if this message was a
+     * private message the bot will respond in a private message.
+     * 
+     * @param message the message to send
+     */
     public void respond(String message);
+    
+    /**
+     * Send an action to the user.
+     * 
+     * This will use /me to send an action to the target. If the message is a 
+     * channel message, this will respond in the channel, if this message was a
+     * private message the bot will respond in a private message.
+     * 
+     * @param action the action to perform
+     */
     public void sendAction(String action);
 }
