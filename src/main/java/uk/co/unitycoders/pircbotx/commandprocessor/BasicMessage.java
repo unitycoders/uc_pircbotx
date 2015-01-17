@@ -38,6 +38,19 @@ public abstract class BasicMessage implements Message {
     	this.arguments = arguments;
     }
     
+    public String getArguments() {
+    	if (arguments.size() <= 2) {
+    		return "";
+    	}
+    		
+    	List<String> cmdArgs = arguments.subList(2, arguments.size());
+    	return String.join(" ", cmdArgs);
+    }
+    
+    public int getArgumentCount() {
+    	return arguments.size();
+    }
+    
     public String getArgument(int id, String defaultValue) {
     	if (arguments == null || arguments.size() <= id){
     		return defaultValue;
