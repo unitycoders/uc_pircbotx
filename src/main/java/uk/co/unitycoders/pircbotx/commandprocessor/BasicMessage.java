@@ -18,6 +18,7 @@
  */
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.pircbotx.Colors;
@@ -54,9 +55,21 @@ public abstract class BasicMessage implements Message {
     	if (arguments.size() <= 2) {
     		return "";
     	}
-    		
+    	
+    	// get the argument list
     	List<String> cmdArgs = arguments.subList(2, arguments.size());
-    	return String.join(" ", cmdArgs);
+    	
+    	//emulate String.join in java 1.7
+    	StringBuilder argStr = new StringBuilder();
+    	Iterator<String> argItr = cmdArgs.iterator();
+    	while(argItr.hasNext()) {
+    		argStr.append(argItr.next());
+    		if (argItr.hasNext()) {
+    			argStr.append(" ");
+    		}
+    	}
+    	
+    	return argStr.toString();
     }
     
     public int getArgumentCount() {
