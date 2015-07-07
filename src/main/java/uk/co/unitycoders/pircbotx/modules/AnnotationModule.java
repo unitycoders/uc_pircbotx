@@ -13,9 +13,30 @@ import uk.co.unitycoders.pircbotx.security.Secured;
 
 public class AnnotationModule implements Module {
 	protected final Map<String, Node> nodes;
+	protected final Object source;
 	
+	/**
+	 * Default constructor for inherited classes.
+	 * 
+	 * This is the constructor which subclasses should use. It will automatically register the methods which the subclass has tagged with the command interface. 
+	 */
 	public AnnotationModule() {
 		this.nodes = new TreeMap<>();
+		this.source = this;
+		processAnnotations();
+	}
+	
+	/**
+	 * Constructor for wrapped classes.
+	 * 
+	 * This is the constructor which allows classes with command annotations with does not implement the Module interface.
+	 * This was the case for all plugins which are part of uc_pircbotx 0.2 or earlier, but presents problems for dynamic loading.
+	 * 
+	 * @param source the class which should be wrapped.
+	 */
+	public AnnotationModule(Object source) {
+		this.nodes = new TreeMap<>();
+		this.source = source;
 		processAnnotations();
 	}
 	
@@ -28,7 +49,7 @@ public class AnnotationModule implements Module {
             throw new CommandNotFoundException(action);
         }
 
-        method.invoke(this, message);
+        method.invoke(source, message);
 	}
 	
 	@Override
@@ -46,7 +67,7 @@ public class AnnotationModule implements Module {
 	}
 	
 	protected void processAnnotations() {
-        Class<?> clazz = this.getClass();
+        Class<?> clazz = source.getClass();
         for (Method method : clazz.getMethods()) {
 
             Command c = method.getAnnotation(Command.class);

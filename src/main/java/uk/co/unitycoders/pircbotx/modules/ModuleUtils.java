@@ -21,7 +21,7 @@ public class ModuleUtils {
     }
 	
     public static Module wrap(Object commandClass) {
-    	return new LegacyModule(commandClass);
+    	return new AnnotationModule(commandClass);
     }
     
 }

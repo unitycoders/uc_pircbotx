@@ -60,8 +60,7 @@ public class MessageStub implements Message {
 
 	@Override
 	public String getArgument(int id, String defaultValue) {
-		// TODO Auto-generated method stub
-		return null;
+		return defaultValue;
 	}
 
 	@Override
