@@ -1,6 +1,9 @@
 package uk.co.unitycoders.pircbotx.modules;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ServiceLoader;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
@@ -24,4 +27,14 @@ public class ModuleUtils {
     	return new AnnotationModule(commandClass);
     }
     
+    public static List<Module> loadModules() {
+    	ServiceLoader<Module> moduleLoader = ServiceLoader.load(Module.class);
+    	List<Module> modules = new ArrayList<Module>();
+    	
+    	for (Module m : moduleLoader) {
+    		modules.add(m);
+    	}
+    	
+		return modules;	
+    }
 }
