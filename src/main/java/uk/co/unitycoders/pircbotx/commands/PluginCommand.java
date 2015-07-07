@@ -21,6 +21,8 @@ package uk.co.unitycoders.pircbotx.commands;
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
+import uk.co.unitycoders.pircbotx.modules.Module;
+import uk.co.unitycoders.pircbotx.modules.ModuleUtils;
 import uk.co.unitycoders.pircbotx.security.Secured;
 
 import java.util.Collection;
@@ -47,9 +49,8 @@ public class PluginCommand {
         String name = args[2];
         String className = args[3];
 
-        try {
-            Class<?> clazz = Class.forName(className);
-            Object module = clazz.newInstance();
+        try { 
+            Module module = ModuleUtils.loadModule(className);
             processor.register(name, module);
             message.respond("Class has been loaded");
         } catch (IllegalAccessException ex) {

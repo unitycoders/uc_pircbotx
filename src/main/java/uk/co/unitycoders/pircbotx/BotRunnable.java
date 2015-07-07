@@ -29,6 +29,8 @@ import uk.co.unitycoders.pircbotx.commands.*;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
 import uk.co.unitycoders.pircbotx.listeners.LinesListener;
+import uk.co.unitycoders.pircbotx.modules.Module;
+import uk.co.unitycoders.pircbotx.modules.ModuleUtils;
 import uk.co.unitycoders.pircbotx.security.*;
 import uk.co.unitycoders.pircbotx.security.SecurityManager;
 
@@ -57,21 +59,21 @@ public class BotRunnable implements Runnable {
             SecurityManager security = new SecurityManager();
             processor = buildProcessor(config.trigger, security, rewrite, cb);
 
-            DateTimeCommand dtCmd = new DateTimeCommand();
-
-            processor.register("rand", new RandCommand());
+            Module dtCmd = ModuleUtils.wrap(new DateTimeCommand());
+            
+            processor.register("rand", ModuleUtils.wrap(new RandCommand()));
             processor.register("datetime", dtCmd);
-            processor.register("lart", new LartCommand());
-            processor.register("killertrout", new KillerTroutCommand());
-            processor.register("joins", new JoinsCommand());
-            processor.register("calc", new CalcCommand());
-            processor.register("karma", new KarmaCommand());
-            processor.register("help", new HelpCommand(processor));
-            processor.register("nick", new NickCommand());
-            processor.register("factoid", new FactoidCommand(DBConnection.getFactoidModel()));
-            processor.register("session", new SessionCommand(security));
-            processor.register("irc", new IRCCommands());
-            processor.register("plugin", new PluginCommand(processor));
+            processor.register("lart", ModuleUtils.wrap(new LartCommand()));
+            processor.register("killertrout", ModuleUtils.wrap(new KillerTroutCommand()));
+            processor.register("joins", ModuleUtils.wrap(new JoinsCommand()));
+            processor.register("calc", ModuleUtils.wrap(new CalcCommand()));
+            processor.register("karma", ModuleUtils.wrap(new KarmaCommand()));
+            processor.register("help", ModuleUtils.wrap(new HelpCommand(processor)));
+            processor.register("nick", ModuleUtils.wrap(new NickCommand()));
+            processor.register("factoid", ModuleUtils.wrap(new FactoidCommand(DBConnection.getFactoidModel())));
+            processor.register("session", ModuleUtils.wrap(new SessionCommand(security)));
+            processor.register("irc", ModuleUtils.wrap(new IRCCommands()));
+            processor.register("plugin", ModuleUtils.wrap(new PluginCommand(processor)));
 
 
             processor.alias("date", "datetime");

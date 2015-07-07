@@ -16,19 +16,22 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package uk.co.unitycoders.pircbotx.commandprocessor;
+package uk.co.unitycoders.pircbotx.modules;
 
+import uk.co.unitycoders.pircbotx.commandprocessor.Command;
+import uk.co.unitycoders.pircbotx.commandprocessor.CommandNotFoundException;
+import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.security.Secured;
 
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class CommandNode {
+public class LegacyModule implements Module {
     private final Object command;
     private final Map<String, Method> methods;
     private final Map<String, String[]> permissions;
 
-    public CommandNode(Object command) {
+    public LegacyModule(Object command) {
         this.command = command;
         this.methods = new TreeMap<String, Method>();
         this.permissions =  new TreeMap<String, String[]>();
@@ -36,17 +39,6 @@ public class CommandNode {
 
     public String[] getRequiredPermissions(String action) {
         return permissions.get(action);
-    }
-
-    public boolean invoke(String action, Object ... args) throws Exception {
-        Method method = methods.get(action);
-
-        if (method == null) {
-            throw new CommandNotFoundException("");
-        }
-
-        method.invoke(command, args);
-        return true;
     }
 
     public boolean isValidAction(String action) {
@@ -67,8 +59,8 @@ public class CommandNode {
         }
     }
 
-    static CommandNode build(Object target) {
-        CommandNode node = new CommandNode(target);
+    static LegacyModule build(Object target) {
+        LegacyModule node = new LegacyModule(target);
 
         Class<?> clazz = target.getClass();
         for (Method method : clazz.getMethods()) {
@@ -77,7 +69,7 @@ public class CommandNode {
             if (c != null ) {
 
                 // check the class params match our spec
-                assert isValidParams(method) : "first parameter of a command must be Message";
+                assert ModuleUtils.isValidParams(method) : "first parameter of a command must be Message";
 
                 String[] keywords = c.value();
                 for (String keyword : keywords) {
@@ -89,8 +81,15 @@ public class CommandNode {
         return node;
     }
 
-    private static boolean isValidParams(Method method) {
-        Class<?>[] types = method.getParameterTypes();
-        return types.length > 0 && types[0].equals(Message.class);
-    }
+	@Override
+	public void fire(Message message) throws Exception {
+		String action = message.getArgument(Module.COMMAND_ARG, Module.DEFAULT_COMMAND);
+        Method method = methods.get(action);
+
+        if (method == null) {
+            throw new CommandNotFoundException(action);
+        }
+
+        method.invoke(command, message);
+	}
 }
