@@ -86,8 +86,8 @@ public class BotRunnable implements Runnable {
             cb.addListener(new LinesListener());
 
             buildBot(cb, config);
-            //instance = createBot(cb);
-            //instance.startBot();
+            instance = createBot(cb);
+            instance.startBot();
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new RuntimeException(ex);
