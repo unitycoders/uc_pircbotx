@@ -51,10 +51,16 @@ public class DateTimeCommand extends AnnotationModule {
     public void onMessage(Message event) {
         Date date = new Date();
 
-        String keyword = event.getArgument(1, null);
+        // The command processor will insert the 'default' keyword if omitted
+        // for this command we need to detect this and overwrite the value.
+        String keyword = event.getArgument(1, "default");
+        if ("default".equals(keyword)) {
+            keyword = event.getArgument(0, "datetime");
+        }
         
         String tense = "are";
         String resp = "INVALID";
+        
         if (keyword.equals("date")) {
             tense = "is";
             dformat.setTimeZone(TimeZone.getTimeZone("UTC"));
