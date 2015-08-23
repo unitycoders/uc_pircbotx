@@ -12,6 +12,7 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.security.Secured;
 
 public class AnnotationModule implements Module {
+	protected final String name;
 	protected final Map<String, Node> nodes;
 	protected final Object source;
 	
@@ -20,7 +21,8 @@ public class AnnotationModule implements Module {
 	 * 
 	 * This is the constructor which subclasses should use. It will automatically register the methods which the subclass has tagged with the command interface. 
 	 */
-	public AnnotationModule() {
+	public AnnotationModule(String name) {
+		this.name = name;
 		this.nodes = new TreeMap<>();
 		this.source = this;
 		processAnnotations();
@@ -34,7 +36,8 @@ public class AnnotationModule implements Module {
 	 * 
 	 * @param source the class which should be wrapped.
 	 */
-	public AnnotationModule(Object source) {
+	public AnnotationModule(String name, Object source) {
+		this.name = name;
 		this.nodes = new TreeMap<>();
 		this.source = source;
 		processAnnotations();
@@ -104,5 +107,15 @@ public class AnnotationModule implements Module {
 	static class Node {
 		protected Method method;
 		protected String[] permissions;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+	
+	@Override
+	public String toString() {
+		return getName();
 	}
 }

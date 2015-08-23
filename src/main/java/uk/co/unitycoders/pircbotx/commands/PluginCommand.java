@@ -21,16 +21,18 @@ package uk.co.unitycoders.pircbotx.commands;
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
+import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 import uk.co.unitycoders.pircbotx.modules.Module;
 import uk.co.unitycoders.pircbotx.modules.ModuleUtils;
 import uk.co.unitycoders.pircbotx.security.Secured;
 
 import java.util.Collection;
 
-public class PluginCommand {
+public class PluginCommand extends AnnotationModule {
     private CommandProcessor processor;
 
     public PluginCommand(CommandProcessor processor) {
+    	super("plugin");
         this.processor = processor;
     }
 

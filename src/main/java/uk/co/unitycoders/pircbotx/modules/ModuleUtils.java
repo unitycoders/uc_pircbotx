@@ -20,11 +20,11 @@ public class ModuleUtils {
     		return (Module)moduleClass.newInstance();
     	}
     	
-    	return wrap(moduleClass.newInstance());
+    	return wrap(moduleClass.getSimpleName(), moduleClass.newInstance());
     }
 	
-    public static Module wrap(Object commandClass) {
-    	return new AnnotationModule(commandClass);
+    public static Module wrap(String name, Object commandClass) {
+    	return new AnnotationModule(name, commandClass);
     }
     
     public static List<Module> loadModules() {

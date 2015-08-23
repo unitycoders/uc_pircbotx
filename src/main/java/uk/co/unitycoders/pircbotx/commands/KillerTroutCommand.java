@@ -20,15 +20,20 @@ package uk.co.unitycoders.pircbotx.commands;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
+import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 
 /**
  * Kills the bot. The command name is an in-joke.
  *
  * @author Bruce Cowan
  */
-public class KillerTroutCommand {
+public class KillerTroutCommand extends AnnotationModule {
 
-    @Command
+    public KillerTroutCommand() {
+		super("killerTrout");
+	}
+
+	@Command
     public void onTrout(Message event) {
         event.sendAction("would have been killed by a trout");
     }

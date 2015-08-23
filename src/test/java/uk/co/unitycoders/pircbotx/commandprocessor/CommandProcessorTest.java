@@ -70,7 +70,7 @@ public class CommandProcessorTest {
     @Test
     public void testModuleExists() {
         String name = "fake";
-        Module module = ModuleUtils.wrap(new FakeModule());
+        Module module = ModuleUtils.wrap(name, new FakeModule());
         processor.register(name, module);
 
         Collection<String> expected = new ArrayList<String>();
@@ -87,7 +87,7 @@ public class CommandProcessorTest {
     @Test
     public void testCommandsExists() {
         String name = "fake";
-        Module module = ModuleUtils.wrap(new FakeModule());
+        Module module = ModuleUtils.wrap(name, new FakeModule());
         processor.register(name, module);
 
         Collection<String> expected = new ArrayList<String>();
@@ -120,7 +120,7 @@ public class CommandProcessorTest {
     @Test
     public void testDefaultCommand() throws Exception {
         String name = "fake";
-        Module module = ModuleUtils.wrap(new FakeModule());
+        Module module = ModuleUtils.wrap(name, new FakeModule());
         processor.register(name, module);
 
         Message message = new MessageStub(name);

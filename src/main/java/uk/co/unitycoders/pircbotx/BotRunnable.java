@@ -34,6 +34,9 @@ import uk.co.unitycoders.pircbotx.modules.ModuleUtils;
 import uk.co.unitycoders.pircbotx.security.*;
 import uk.co.unitycoders.pircbotx.security.SecurityManager;
 
+import java.util.List;
+import java.util.ServiceLoader;
+
 import javax.net.ssl.SSLSocketFactory;
 
 public class BotRunnable implements Runnable {
@@ -59,21 +62,22 @@ public class BotRunnable implements Runnable {
             SecurityManager security = new SecurityManager();
             processor = buildProcessor(config.trigger, security, rewrite, cb);
             
+            ServiceLoader<Module> modules = ServiceLoader.load(Module.class);
+            for (Module module : modules) {
+            	processor.register(module.getName(), module);
+            	System.out.println("new module: "+module);
+            }
             
-            processor.register("rand", ModuleUtils.wrap(new RandCommand()));
-            processor.register("datetime", ModuleUtils.wrap(new DateTimeCommand()));
-            processor.register("lart", ModuleUtils.wrap(new LartCommand()));
-            processor.register("killertrout", ModuleUtils.wrap(new KillerTroutCommand()));
-            processor.register("joins", ModuleUtils.wrap(new JoinsCommand()));
-            processor.register("calc", ModuleUtils.wrap(new CalcCommand()));
-            processor.register("karma", ModuleUtils.wrap(new KarmaCommand()));
-            processor.register("nick", ModuleUtils.wrap(new NickCommand()));
-            processor.register("irc", ModuleUtils.wrap(new IRCCommands()));
+            Module[] legacyModules = new Module[] {
+            	ModuleUtils.wrap("factoid", new FactoidCommand(DBConnection.getFactoidModel()) ),
+            	ModuleUtils.wrap("help", new HelpCommand(processor)),
+            	ModuleUtils.wrap("plugins", new PluginCommand(processor)),
+            	ModuleUtils.wrap("sesssion", new SessionCommand(security))
+            };
             
-            processor.register("factoid", ModuleUtils.wrap(new FactoidCommand(DBConnection.getFactoidModel())));
-            processor.register("help", ModuleUtils.wrap(new HelpCommand(processor)));
-            processor.register("plugin", ModuleUtils.wrap(new PluginCommand(processor)));
-            processor.register("session", ModuleUtils.wrap(new SessionCommand(security)));
+            for (Module module : legacyModules) {
+            	processor.register(module.getName(), module);
+            }
             
             processor.alias("date", "datetime");
             processor.alias("time", "datetime");
@@ -82,8 +86,8 @@ public class BotRunnable implements Runnable {
             cb.addListener(new LinesListener());
 
             buildBot(cb, config);
-            instance = createBot(cb);
-            instance.startBot();
+            //instance = createBot(cb);
+            //instance.startBot();
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new RuntimeException(ex);

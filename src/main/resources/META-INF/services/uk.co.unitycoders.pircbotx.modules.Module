@@ -1,0 +1,8 @@
+uk.co.unitycoders.pircbotx.commands.CalcCommand
+uk.co.unitycoders.pircbotx.commands.RandCommand
+uk.co.unitycoders.pircbotx.commands.DateTimeCommand
+uk.co.unitycoders.pircbotx.commands.KillerTroutCommand
+uk.co.unitycoders.pircbotx.commands.JoinsCommand
+uk.co.unitycoders.pircbotx.commands.LartCommand
+uk.co.unitycoders.pircbotx.commands.NickCommand
+uk.co.unitycoders.pircbotx.commands.IRCCommands

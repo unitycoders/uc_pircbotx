@@ -24,13 +24,14 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.data.db.JoinModel;
+import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 
 /**
  * Keeps a list of joins, and gives a list of nicks and number of joins.
  *
  * @author Bruce Cowan
  */
-public class JoinsCommand {
+public class JoinsCommand extends AnnotationModule {
 
     private JoinModel model;
 
@@ -38,6 +39,7 @@ public class JoinsCommand {
      * Creates a {@link JoinsCommand}.
      */
     public JoinsCommand() throws Exception {
+    	super("joins");
         this.model = DBConnection.getJoinModel();
     }
 

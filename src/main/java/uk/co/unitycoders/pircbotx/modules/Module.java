@@ -43,4 +43,11 @@ public interface Module {
 	 */
 	public Collection<String> getActions();
 
+	/**
+	 * Get the name of the module
+	 * 
+	 * @return the string name of the module
+	 */
+	public String getName();
+
 }

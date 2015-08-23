@@ -21,6 +21,7 @@ package uk.co.unitycoders.pircbotx.commands;
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
+import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 
 import java.util.Collection;
 
@@ -30,11 +31,12 @@ import java.util.Collection;
  * This plug in helps users find information about the bot's capabilties and how
  * to use the bot.
  */
-public class HelpCommand {
+public class HelpCommand extends AnnotationModule {
 
     private final CommandProcessor processor;
 
     public HelpCommand(CommandProcessor processor) {
+    	super("help");
         this.processor = processor;
     }
 

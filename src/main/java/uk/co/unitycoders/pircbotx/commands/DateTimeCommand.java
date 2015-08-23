@@ -20,6 +20,7 @@ package uk.co.unitycoders.pircbotx.commands;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
+import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -30,13 +31,14 @@ import java.util.TimeZone;
  *
  * @author Bruce Cowan
  */
-public class DateTimeCommand {
+public class DateTimeCommand extends AnnotationModule {
 
     private final DateFormat dtformat;
     private final DateFormat dformat;
     private final DateFormat tformat;
 
     public DateTimeCommand() {
+    	super("datetime");
         this.dtformat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
         this.dformat = DateFormat.getDateInstance(DateFormat.LONG);
         this.tformat = DateFormat.getTimeInstance(DateFormat.LONG);

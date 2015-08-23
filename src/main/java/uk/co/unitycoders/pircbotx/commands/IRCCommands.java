@@ -21,11 +21,16 @@ package uk.co.unitycoders.pircbotx.commands;
 import org.pircbotx.PircBotX;
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
+import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 import uk.co.unitycoders.pircbotx.security.Secured;
 
-public class IRCCommands {
+public class IRCCommands extends AnnotationModule {
 
-    @Command("join")
+    public IRCCommands() {
+		super("irc");
+	}
+
+	@Command("join")
     @Secured
     public void onJoinRequest(Message message) {
         String channel = message.getArgument(2, null);
