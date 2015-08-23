@@ -30,7 +30,7 @@ import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 public class KillerTroutCommand extends AnnotationModule {
 
     public KillerTroutCommand() {
-		super("killerTrout");
+		super("killertrout");
 	}
 
 	@Command
