@@ -203,4 +203,8 @@ public class CommandProcessor {
 
         return command.getActions();
     }
+
+	public Module getModule(String moduleName) {
+		return commands.get(moduleName);
+	}
 }

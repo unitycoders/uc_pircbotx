@@ -8,6 +8,7 @@ import java.util.TreeMap;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandNotFoundException;
+import uk.co.unitycoders.pircbotx.commandprocessor.HelpText;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.security.Secured;
 
@@ -15,6 +16,7 @@ public class AnnotationModule implements Module {
 	protected final String name;
 	protected final Map<String, Node> nodes;
 	protected final Object source;
+	protected String helpText;
 	
 	/**
 	 * Default constructor for inherited classes.
@@ -71,6 +73,11 @@ public class AnnotationModule implements Module {
 	
 	protected void processAnnotations() {
         Class<?> clazz = source.getClass();
+        HelpText clazzHelp = clazz.getAnnotation(HelpText.class);
+        if (clazzHelp != null) {
+        	helpText = clazzHelp.value();
+        }
+        
         for (Method method : clazz.getMethods()) {
 
             Command c = method.getAnnotation(Command.class);
@@ -79,17 +86,24 @@ public class AnnotationModule implements Module {
                 // check the class params match our spec
                 assert ModuleUtils.isValidParams(method) : "first parameter of a command must be Message";
 
+                HelpText help = method.getAnnotation(HelpText.class);
+                String helpText = "";
+                if (help != null) {
+                	helpText = help.value();
+                }
+                
                 String[] keywords = c.value();
                 for (String keyword : keywords) {
-                    registerAction(keyword,method);
+                    registerAction(keyword,method, helpText);
                 }
             }
         }
 	}
 	
-    protected void registerAction(String action, Method method) {
+    protected void registerAction(String action, Method method, String helpText) {
     	Node node = new Node();
     	node.method = method;
+    	node.helpText = helpText;
         nodes.put(action, node);
         
         //Permissions annotation
@@ -107,6 +121,7 @@ public class AnnotationModule implements Module {
 	static class Node {
 		protected Method method;
 		protected String[] permissions;
+		protected String helpText;
 	}
 
 	@Override
@@ -117,5 +132,20 @@ public class AnnotationModule implements Module {
 	@Override
 	public String toString() {
 		return getName();
+	}
+
+	@Override
+	public String getHelp(String command) {
+		Node node = nodes.get(command);
+		if (node == null) {
+			return null;
+		}
+		
+		return node.helpText;
+	}
+
+	@Override
+	public String getModuleHelp() {
+		return helpText;
 	}
 }

@@ -19,6 +19,7 @@
 package uk.co.unitycoders.pircbotx.commands;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
+import uk.co.unitycoders.pircbotx.commandprocessor.HelpText;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 
@@ -31,6 +32,7 @@ import java.util.TimeZone;
  *
  * @author Bruce Cowan
  */
+@HelpText("Display times and dates in different timezones")
 public class DateTimeCommand extends AnnotationModule {
 
     private final DateFormat dtformat;
@@ -45,26 +47,30 @@ public class DateTimeCommand extends AnnotationModule {
     }
 
     @Command
+    @HelpText("Display time or date infomation for UTC")
     public void onMessage(Message event) {
         Date date = new Date();
 
         String keyword = event.getArgument(1, null);
-
+        
         String tense = "are";
         String resp = "INVALID";
         if (keyword.equals("date")) {
             tense = "is";
+            dformat.setTimeZone(TimeZone.getTimeZone("UTC"));
             resp = dformat.format(date);
         }
 
         if (keyword.equals("time")) {
             tense = "is";
+            tformat.setTimeZone(TimeZone.getTimeZone("UTC"));
             resp = tformat.format(date);
         }
 
         if (keyword.equals("datetime")) {
             keyword = "date and time";
             tense = "are";
+            dtformat.setTimeZone(TimeZone.getTimeZone("UTC"));
             resp = dtformat.format(date);
         }
 
@@ -73,6 +79,7 @@ public class DateTimeCommand extends AnnotationModule {
     }
 
     @Command("local")
+    @HelpText("Display date and time infomation for a local timezone")
     public void onLocalTime(Message event) {
         Date date = new Date();
         DateFormat df = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
@@ -84,6 +91,7 @@ public class DateTimeCommand extends AnnotationModule {
     }
 
     @Command("unix")
+    @HelpText("Display the current unit timestamp")
     public void unixToTime(Message event) {
         String fmt = String.format("The current unix timestamp is %s", (int) (System.currentTimeMillis() / 1000L));
         event.respond(fmt);

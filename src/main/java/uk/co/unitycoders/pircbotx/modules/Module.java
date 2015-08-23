@@ -50,4 +50,7 @@ public interface Module {
 	 */
 	public String getName();
 
+	public String getHelp(String command);
+	public String getModuleHelp();
+	
 }
