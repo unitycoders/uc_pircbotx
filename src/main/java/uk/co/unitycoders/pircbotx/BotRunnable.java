@@ -58,24 +58,23 @@ public class BotRunnable implements Runnable {
             
             SecurityManager security = new SecurityManager();
             processor = buildProcessor(config.trigger, security, rewrite, cb);
-
-            Module dtCmd = ModuleUtils.wrap(new DateTimeCommand());
+            
             
             processor.register("rand", ModuleUtils.wrap(new RandCommand()));
-            processor.register("datetime", dtCmd);
+            processor.register("datetime", ModuleUtils.wrap(new DateTimeCommand()));
             processor.register("lart", ModuleUtils.wrap(new LartCommand()));
             processor.register("killertrout", ModuleUtils.wrap(new KillerTroutCommand()));
             processor.register("joins", ModuleUtils.wrap(new JoinsCommand()));
             processor.register("calc", ModuleUtils.wrap(new CalcCommand()));
             processor.register("karma", ModuleUtils.wrap(new KarmaCommand()));
-            processor.register("help", ModuleUtils.wrap(new HelpCommand(processor)));
             processor.register("nick", ModuleUtils.wrap(new NickCommand()));
-            processor.register("factoid", ModuleUtils.wrap(new FactoidCommand(DBConnection.getFactoidModel())));
-            processor.register("session", ModuleUtils.wrap(new SessionCommand(security)));
             processor.register("irc", ModuleUtils.wrap(new IRCCommands()));
+            
+            processor.register("factoid", ModuleUtils.wrap(new FactoidCommand(DBConnection.getFactoidModel())));
+            processor.register("help", ModuleUtils.wrap(new HelpCommand(processor)));
             processor.register("plugin", ModuleUtils.wrap(new PluginCommand(processor)));
-
-
+            processor.register("session", ModuleUtils.wrap(new SessionCommand(security)));
+            
             processor.alias("date", "datetime");
             processor.alias("time", "datetime");
 
