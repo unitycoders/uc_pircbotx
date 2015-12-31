@@ -31,7 +31,8 @@ import java.util.TimeZone;
  * @author Bruce Cowan
  */
 public class DateTimeCommand {
-
+	private final static String DEFAULT_COMMAND = "datetime";
+	
     private final DateFormat dtformat;
     private final DateFormat dformat;
     private final DateFormat tformat;
@@ -46,7 +47,8 @@ public class DateTimeCommand {
     public void onMessage(Message event) {
         Date date = new Date();
 
-        String keyword = event.getArgument(1, null);
+        //In the event you don't provide an arguement this crashes - which is bad.
+        String keyword = event.getArgument(0, DEFAULT_COMMAND);
 
         String tense = "are";
         String resp = "INVALID";
