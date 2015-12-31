@@ -11,7 +11,7 @@ import java.util.Stack;
  *
  */
 public class ASTParser {
-	private static final TokenType V = null; //TODO find out what v corrisponds to, assumption value/number
+	private static final TokenType V = TokenType.NUMBER; //TODO find out what v corrisponds to, assumption value/number
 	private static final Token SENTINAL = null;
 	
 	private Map<String, Function> functions;
@@ -40,6 +40,27 @@ public class ASTParser {
 	
 	public void e(Queue<Token> input) {
 		p(input);
+		
+		int arity = -1;
+		do {
+			
+			Token next = input.poll();
+			if (next.isType(TokenType.OPERATOR)) {
+				Function nextFunction = functions.get(next.getValue());
+				arity = nextFunction.getArity();
+				
+				pushOperator(next);
+				input.poll();
+				p(input);	
+			}
+			
+		} while (arity == 2);
+		
+		Token next = operators.peek();
+		while (next != SENTINAL) {
+			popOperator();
+		}
+		
 	}
 	
 	public void p(Queue<Token> input) {
@@ -64,6 +85,7 @@ public class ASTParser {
 				p(input);
 			}
 		} else {
+			System.out.println("didn't know what to do with "+next.getType());
 			throw new RuntimeException("nope.");
 		}
 	}
@@ -93,7 +115,4 @@ public class ASTParser {
 		operators.push(op);
 	}
 	
-
-	
-
 }

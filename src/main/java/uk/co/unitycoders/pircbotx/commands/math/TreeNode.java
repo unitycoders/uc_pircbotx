@@ -21,5 +21,13 @@ public class TreeNode {
 	public boolean isLeaf() {
 		return children.isEmpty();
 	}
+	
+	public String toString() {
+		if (isLeaf()) {
+			return data.toString();
+		} else {
+			return String.format("%s[%s]", data, children);
+		}
+	}
 
 }
