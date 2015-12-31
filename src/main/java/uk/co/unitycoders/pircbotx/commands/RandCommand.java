@@ -27,18 +27,20 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.data.db.LineModel;
+import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 
 /**
  * Keeps a log of all the lines said, and randomly speaks one.
  *
  * @author Bruce Cowan
  */
-public class RandCommand {
+public class RandCommand extends AnnotationModule {
 
     private Logger logger = LoggerFactory.getLogger(RandCommand.class);
     private LineModel lines;
 
     public RandCommand() {
+    	super("rand");
         try {
             lines = DBConnection.getLineModel();
         } catch (ClassNotFoundException | SQLException ex) {

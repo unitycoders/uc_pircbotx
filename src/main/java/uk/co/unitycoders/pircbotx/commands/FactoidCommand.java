@@ -24,12 +24,14 @@ import java.util.regex.Pattern;
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.data.db.FactoidModel;
+import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 
-public class FactoidCommand {
+public class FactoidCommand extends AnnotationModule {
     private FactoidModel model;
     private Pattern factoidPattern;
 
     public FactoidCommand(FactoidModel model) {
+    	super("factoid");
         this.model = model;
         this.factoidPattern = Pattern.compile("factoid ([^ ]+) (\\S+) (.+)");
     }

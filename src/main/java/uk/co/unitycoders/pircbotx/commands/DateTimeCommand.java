@@ -19,7 +19,9 @@
 package uk.co.unitycoders.pircbotx.commands;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
+import uk.co.unitycoders.pircbotx.commandprocessor.HelpText;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
+import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -30,7 +32,8 @@ import java.util.TimeZone;
  *
  * @author Bruce Cowan
  */
-public class DateTimeCommand {
+@HelpText("Display times and dates in different timezones")
+public class DateTimeCommand extends AnnotationModule {
 	private final static String DEFAULT_COMMAND = "datetime";
 	private final static String DEFAULT_TIMEZONE = "UTC";
 	
@@ -44,21 +47,23 @@ public class DateTimeCommand {
     private final DateFormat tformat;
 
     public DateTimeCommand() {
+    	super("datetime");
         this.dtformat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
         this.dformat = DateFormat.getDateInstance(DateFormat.LONG);
         this.tformat = DateFormat.getTimeInstance(DateFormat.LONG);
     }
 
     /**
-     * Display the date or time in the default (bot's current) timezone.
+     * Display the date or time in UTC.
      * 
      * @param event the message event from the parser
      */
     @Command
+    @HelpText("Display time or date infomation for UTC")
     public void onMessage(Message event) {
         Date date = new Date();
 
-        //In the event you don't provide an arguement this crashes - which is bad.
+        //In the event you don't provide an argument this crashes - which is bad.
         String keyword = event.getArgument(0, DEFAULT_COMMAND);
 
         String tense = "are";
@@ -66,17 +71,20 @@ public class DateTimeCommand {
         
         if (CMD_DATE.equals(keyword)) {
             tense = "is";
+            dformat.setTimeZone(TimeZone.getTimeZone("UTC"));
             resp = dformat.format(date);
         }
 
         if (CMD_TIME.equals(keyword)) {
             tense = "is";
+            tformat.setTimeZone(TimeZone.getTimeZone("UTC"));
             resp = tformat.format(date);
         }
 
         if (CMD_DATETIME.equals(keyword)) {
             keyword = "date and time";
             tense = "are";
+            dtformat.setTimeZone(TimeZone.getTimeZone("UTC"));
             resp = dtformat.format(date);
         }
 
@@ -90,6 +98,7 @@ public class DateTimeCommand {
      * @param event the message event from the parser
      */
     @Command("local")
+    @HelpText("Display date and time infomation for a local timezone")
     public void onLocalTime(Message event) {
         Date date = new Date();
         DateFormat df = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
@@ -113,6 +122,7 @@ public class DateTimeCommand {
      * @param event the message event from the parser
      */
     @Command("unix")
+    @HelpText("Display the current unit timestamp")
     public void unixToTime(Message event) {
         String fmt = String.format("The current unix timestamp is %s", (int) (System.currentTimeMillis() / 1000L));
         event.respond(fmt);

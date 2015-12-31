@@ -20,15 +20,20 @@ package uk.co.unitycoders.pircbotx.commands;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
+import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 
 
 /**
  * @author Bruce Cowan
  *
  */
-public class NickCommand
+public class NickCommand extends AnnotationModule
 {
-    @Command
+    public NickCommand() {
+		super("nick");
+	}
+
+	@Command
     public void onNick(Message event) {
         String nick = event.getMessage().split(" ")[1];
         event.getBot().sendIRC().changeNick(nick);
