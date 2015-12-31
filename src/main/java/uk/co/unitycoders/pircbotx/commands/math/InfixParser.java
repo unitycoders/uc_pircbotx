@@ -22,6 +22,9 @@ public class InfixParser {
 		Queue<Token> output = new LinkedList<Token>();
 		Stack<Token> stack = new Stack<Token>();
 		
+		// Tokens for RAD(90)+RAD(90)
+		// FUNC(RAD) L_PARA NUMBER(90) R_PARA OPERATOR(+) FUNC(RAD) L_PARA NUMBER(90 R_PARA
+		
 		while(!tokens.isEmpty()) {
 			Token token = tokens.poll();
 			
@@ -33,7 +36,11 @@ public class InfixParser {
 				// Until the token at the top of the stack is a left parenthesis, pop operators off the stack onto the output queue. If no left parentheses are encountered, either the separator was misplaced or parentheses were mismatched.
 			}
 			
-			if (token.isType(TokenType.OPERATOR) || token.isType(TokenType.FUNCTION) ) {
+			if (token.isType(TokenType.FUNCTION)) {
+				stack.add(token);
+			}
+			
+			if (token.isType(TokenType.OPERATOR) ) {
 				if (!stack.isEmpty()) {
 					Function currFunc = functions.get(token.getValue());
 					Token stackTop = stack.peek();

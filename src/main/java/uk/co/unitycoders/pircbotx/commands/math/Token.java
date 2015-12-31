@@ -25,5 +25,21 @@ public class Token {
 	public String toString() {
 		return type+" "+value;
 	}
+	
+	@Override
+	public boolean equals(Object object) {
+		try {
+			Token other = (Token)object;
+			if (!type.equals(other.type)){
+				return false;
+			}
+			
+			//This might not work if other.value != null && value == null
+			//that shouldn't happen
+			return value != null && value.equals(other.value);
+		} catch (ClassCastException ex) {
+			return false;
+		}
+	}
 
 }
