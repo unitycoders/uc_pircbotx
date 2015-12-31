@@ -109,6 +109,9 @@ public class CalcCommand extends AnnotationModule {
             event.respond(msg + " = " + parse(msg));
         } catch (IndexOutOfBoundsException ex) {
             event.respond(ex.getLocalizedMessage());
+        } catch (RuntimeException ex) {
+        	//TODO add an exception type for Parsing math errors
+        	event.respond("Sorry, I didn't understand that");
         }
     }
 
