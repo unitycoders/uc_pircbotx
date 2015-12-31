@@ -28,14 +28,16 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.data.db.KarmaModel;
+import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 import uk.co.unitycoders.pircbotx.types.Karma;
 
-public class KarmaCommand {
+public class KarmaCommand extends AnnotationModule {
 
     private final Logger logger = LoggerFactory.getLogger(KarmaCommand.class);
     private KarmaModel model;
 
     public KarmaCommand() {
+    	super("karma");
         try {
             this.model = DBConnection.getKarmaModel();
         } catch (ClassNotFoundException | SQLException ex) {

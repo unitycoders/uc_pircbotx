@@ -22,10 +22,15 @@ import java.util.Stack;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
+import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 
-public class CalcCommand {
+public class CalcCommand extends AnnotationModule {
 
-    private static final Integer OP_TOKEN = 1;
+    public CalcCommand() {
+		super("calc");
+	}
+
+	private static final Integer OP_TOKEN = 1;
     private static final Integer NUM_TOKEN = 2;
 
     private int doExpr(int left, char op, int right) {
@@ -104,6 +109,9 @@ public class CalcCommand {
             event.respond(msg + " = " + parse(msg));
         } catch (IndexOutOfBoundsException ex) {
             event.respond(ex.getLocalizedMessage());
+        } catch (RuntimeException ex) {
+        	//TODO add an exception type for Parsing math errors
+        	event.respond("Sorry, I didn't understand that");
         }
     }
 

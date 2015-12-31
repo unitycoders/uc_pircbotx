@@ -24,6 +24,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import uk.co.unitycoders.pircbotx.modules.Module;
+import uk.co.unitycoders.pircbotx.modules.ModuleUtils;
+
 public class CommandProcessorTest {
 
     private CommandProcessor processor;
@@ -67,7 +70,7 @@ public class CommandProcessorTest {
     @Test
     public void testModuleExists() {
         String name = "fake";
-        Object module = new FakeModule();
+        Module module = ModuleUtils.wrap(name, new FakeModule());
         processor.register(name, module);
 
         Collection<String> expected = new ArrayList<String>();
@@ -84,7 +87,7 @@ public class CommandProcessorTest {
     @Test
     public void testCommandsExists() {
         String name = "fake";
-        Object module = new FakeModule();
+        Module module = ModuleUtils.wrap(name, new FakeModule());
         processor.register(name, module);
 
         Collection<String> expected = new ArrayList<String>();
@@ -117,7 +120,7 @@ public class CommandProcessorTest {
     @Test
     public void testDefaultCommand() throws Exception {
         String name = "fake";
-        Object module = new FakeModule();
+        Module module = ModuleUtils.wrap(name, new FakeModule());
         processor.register(name, module);
 
         Message message = new MessageStub(name);

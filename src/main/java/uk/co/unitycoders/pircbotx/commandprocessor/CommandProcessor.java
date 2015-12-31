@@ -26,6 +26,7 @@ import org.pircbotx.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import uk.co.unitycoders.pircbotx.modules.Module;
 import uk.co.unitycoders.pircbotx.security.*;
 import uk.co.unitycoders.pircbotx.security.SecurityManager;
 
@@ -41,7 +42,7 @@ import uk.co.unitycoders.pircbotx.security.SecurityManager;
 public class CommandProcessor {
     private final Logger logger = LoggerFactory.getLogger(CommandProcessor.class);
     private final Pattern tokeniser;
-    private final Map<String, CommandNode> commands;
+    private final Map<String, Module> commands;
     private final SecurityManager security;
 
     /**
@@ -53,7 +54,7 @@ public class CommandProcessor {
      */
     public CommandProcessor(SecurityManager security) {
         this.tokeniser = Pattern.compile("([^\\s\"']+)|\"([^\"]*)\"|'([^']*)'");
-        this.commands = new TreeMap<String, CommandNode>();
+        this.commands = new TreeMap<String, Module>();
         this.security = security;
     }
 
@@ -70,20 +71,19 @@ public class CommandProcessor {
      * @param name the name of the module
      * @param target the module object
      */
-    public void register(String name, Object target) {
-        CommandNode node = CommandNode.build(target);
-        commands.put(name, node);
+    public void register(String name, Module target) {
+        commands.put(name, target);
     }
 
     //proper aliasing of commands is now possible
     public void alias(String name, String oldName) {
-        CommandNode node = commands.get(oldName);
+        Module node = commands.get(oldName);
 
         if (oldName == null) {
             throw new RuntimeException(oldName + " is not a loaded class");
         }
 
-        CommandNode aliasNode = commands.get(name);
+        Module aliasNode = commands.get(name);
         if (aliasNode != null) {
             throw new RuntimeException(name + " is already a keyword!");
         }
@@ -133,15 +133,15 @@ public class CommandProcessor {
     	//XXX not happy about this, should probably be dealt with before ending up here...
     	message.setArguments(arguments);
     	
-    	CommandNode node = commands.get(command);
+    	Module node = commands.get(command);
     	if (node == null) {
     		throw new CommandNotFoundException(command);
     	}
     	
-    	String action = "default";
+    	String action = Module.DEFAULT_COMMAND;
     	if (argc < 2 || !node.isValidAction(arguments.get(1))){
     		//ensure that if default is invoked that default is on the queue
-    		arguments.add(1, "default");
+    		arguments.add(1, Module.DEFAULT_COMMAND);
     	}else {
     		action = arguments.get(1);
     	}
@@ -151,7 +151,7 @@ public class CommandProcessor {
     	}
     	
     	try {
-    		node.invoke(action, message);
+    		node.fire(message);
     	} catch (CommandNotFoundException ex) {
     		throw new CommandNotFoundException(command + " " + action);
     	} catch (Exception ex) {
@@ -160,7 +160,7 @@ public class CommandProcessor {
     	}
     }
 
-    private boolean checkPermissions(CommandNode node, String action, User user) {
+    private boolean checkPermissions(Module node, String action, User user) {
         //check if security is disabled
         if (security == null) {
             return true;
@@ -195,7 +195,7 @@ public class CommandProcessor {
             return Collections.emptyList();
         }
 
-        CommandNode command = commands.get(moduleName);
+        Module command = commands.get(moduleName);
 
         if (command == null) {
             return Collections.emptyList();
@@ -203,4 +203,8 @@ public class CommandProcessor {
 
         return command.getActions();
     }
+
+	public Module getModule(String moduleName) {
+		return commands.get(moduleName);
+	}
 }

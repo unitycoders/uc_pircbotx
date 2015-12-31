@@ -31,6 +31,7 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.data.db.LartModel;
+import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 import uk.co.unitycoders.pircbotx.types.Lart;
 
 /**
@@ -38,7 +39,7 @@ import uk.co.unitycoders.pircbotx.types.Lart;
  *
  * @author Bruce Cowan
  */
-public class LartCommand {
+public class LartCommand extends AnnotationModule {
 	final Logger logger = LoggerFactory.getLogger(LartCommand.class);
     private LartModel model;
     private final Pattern re;
@@ -48,6 +49,7 @@ public class LartCommand {
      * Creates a {@link LartCommand}.
      */
     public LartCommand() {
+    	super("lart");
         try {
             this.model = DBConnection.getLartModel();
         } catch (ClassNotFoundException | SQLException ex) {

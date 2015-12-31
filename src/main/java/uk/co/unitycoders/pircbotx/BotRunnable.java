@@ -29,8 +29,13 @@ import uk.co.unitycoders.pircbotx.commands.*;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
 import uk.co.unitycoders.pircbotx.listeners.LinesListener;
+import uk.co.unitycoders.pircbotx.modules.Module;
+import uk.co.unitycoders.pircbotx.modules.ModuleUtils;
 import uk.co.unitycoders.pircbotx.security.*;
 import uk.co.unitycoders.pircbotx.security.SecurityManager;
+
+import java.util.List;
+import java.util.ServiceLoader;
 
 import javax.net.ssl.SSLSocketFactory;
 
@@ -53,27 +58,28 @@ public class BotRunnable implements Runnable {
             RewriteEngine rewrite = new RewriteEngine();
     		rewrite.addRule("^([a-z0-9]+)\\+\\+$", "karma add $1");
     		rewrite.addRule("^([a-z0-9]+)--$", "karma remove $1");
+    		rewrite.addRule("^\\?([a-z0-9]+)$", "factoid get $1");
             
             SecurityManager security = new SecurityManager();
             processor = buildProcessor(config.trigger, security, rewrite, cb);
-
-            DateTimeCommand dtCmd = new DateTimeCommand();
-
-            processor.register("rand", new RandCommand());
-            processor.register("datetime", dtCmd);
-            processor.register("lart", new LartCommand());
-            processor.register("killertrout", new KillerTroutCommand());
-            processor.register("joins", new JoinsCommand());
-            processor.register("calc", new CalcCommand());
-            processor.register("karma", new KarmaCommand());
-            processor.register("help", new HelpCommand(processor));
-            processor.register("nick", new NickCommand());
-            processor.register("factoid", new FactoidCommand(DBConnection.getFactoidModel()));
-            processor.register("session", new SessionCommand(security));
-            processor.register("irc", new IRCCommands());
-            processor.register("plugin", new PluginCommand(processor));
-
-
+            
+            ServiceLoader<Module> modules = ServiceLoader.load(Module.class);
+            for (Module module : modules) {
+            	processor.register(module.getName(), module);
+            	System.out.println("new module: "+module);
+            }
+            
+            Module[] legacyModules = new Module[] {
+            	ModuleUtils.wrap("factoid", new FactoidCommand(DBConnection.getFactoidModel()) ),
+            	ModuleUtils.wrap("help", new HelpCommand(processor)),
+            	ModuleUtils.wrap("plugins", new PluginCommand(processor)),
+            	ModuleUtils.wrap("sesssion", new SessionCommand(security))
+            };
+            
+            for (Module module : legacyModules) {
+            	processor.register(module.getName(), module);
+            }
+            
             processor.alias("date", "datetime");
             processor.alias("time", "datetime");
 
