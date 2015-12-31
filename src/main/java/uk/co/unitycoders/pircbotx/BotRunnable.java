@@ -26,6 +26,7 @@ import uk.co.unitycoders.pircbotx.commandprocessor.CommandListener;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.RewriteEngine;
 import uk.co.unitycoders.pircbotx.commands.*;
+import uk.co.unitycoders.pircbotx.commands.math.MathCommand;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
 import uk.co.unitycoders.pircbotx.listeners.LinesListener;
@@ -65,6 +66,7 @@ public class BotRunnable implements Runnable {
             processor.register("killertrout", new KillerTroutCommand());
             processor.register("joins", new JoinsCommand());
             processor.register("calc", new CalcCommand());
+            processor.register("math", new MathCommand());
             processor.register("karma", new KarmaCommand());
             processor.register("help", new HelpCommand(processor));
             processor.register("nick", new NickCommand());
