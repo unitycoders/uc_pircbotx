@@ -19,6 +19,7 @@ nbactions.xml
 ## Eclipse Stuff
 *.pydevproject
 .metadata
+.classpath
 .gradle
 bin/
 tmp/
