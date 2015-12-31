@@ -49,6 +49,11 @@ public class DateTimeCommand {
         this.tformat = DateFormat.getTimeInstance(DateFormat.LONG);
     }
 
+    /**
+     * Display the date or time in the default (bot's current) timezone.
+     * 
+     * @param event the message event from the parser
+     */
     @Command
     public void onMessage(Message event) {
         Date date = new Date();
@@ -79,6 +84,11 @@ public class DateTimeCommand {
         event.respond(fmt);
     }
 
+    /**
+     * Display a time in the user's selected timezone (defaults to UTC if not provided)
+     * 
+     * @param event the message event from the parser
+     */
     @Command("local")
     public void onLocalTime(Message event) {
         Date date = new Date();
@@ -97,6 +107,11 @@ public class DateTimeCommand {
         event.respond(fmt);
     }
 
+    /**
+     * Display the current unix timestamp.
+     * 
+     * @param event the message event from the parser
+     */
     @Command("unix")
     public void unixToTime(Message event) {
         String fmt = String.format("The current unix timestamp is %s", (int) (System.currentTimeMillis() / 1000L));
