@@ -24,23 +24,23 @@ public class MathFunction implements Function {
 	@Override
 	public double evaulate(double... args) {
 		
-		if ("SIN".equals(name)) {
+		if ("SIN".equalsIgnoreCase(name)) {
 			return Math.sin(args[0]);
 		}
 		
-		if ("TAN".equals(name)) {
+		if ("TAN".equalsIgnoreCase(name)) {
 			return Math.tan(args[0]);
 		}
 		
-		if ("COS".equals(name)) {
+		if ("COS".equalsIgnoreCase(name)) {
 			return Math.cos(args[0]);
 		}
 		
-		if ("DEG".equals(name)) {
+		if ("DEG".equalsIgnoreCase(name)) {
 			return Math.toDegrees(args[0]);
 		}
 		
-		if ("RAD".equals(name)) {
+		if ("RAD".equalsIgnoreCase(name)) {
 			return Math.toRadians(args[0]);
 		}
 		
