@@ -32,6 +32,12 @@ import java.util.TimeZone;
  */
 public class DateTimeCommand {
 	private final static String DEFAULT_COMMAND = "datetime";
+	private final static String DEFAULT_TIMEZONE = "UTC";
+	
+	//avoid magic values in the code
+	private final static String CMD_DATETIME = "datetime";
+	private final static String CMD_TIME = "time";
+	private final static String CMD_DATE = "date";
 	
     private final DateFormat dtformat;
     private final DateFormat dformat;
@@ -52,17 +58,18 @@ public class DateTimeCommand {
 
         String tense = "are";
         String resp = "INVALID";
-        if (keyword.equals("date")) {
+        
+        if (CMD_DATE.equals(keyword)) {
             tense = "is";
             resp = dformat.format(date);
         }
 
-        if (keyword.equals("time")) {
+        if (CMD_TIME.equals(keyword)) {
             tense = "is";
             resp = tformat.format(date);
         }
 
-        if (keyword.equals("datetime")) {
+        if (CMD_DATETIME.equals(keyword)) {
             keyword = "date and time";
             tense = "are";
             resp = dtformat.format(date);
@@ -77,7 +84,14 @@ public class DateTimeCommand {
         Date date = new Date();
         DateFormat df = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
 
-        df.setTimeZone(TimeZone.getTimeZone(event.getArgument(1, null)));
+        //Argument format is:
+        // 0 -> command name
+        // 1 -> option (local, default, unix, etc...)
+        // 2 ... n -> user provided options
+        // if no value for 1 is provided (ie. &date) then "default" is inserted as option
+        // (ie. &date -> &date default).
+        
+        df.setTimeZone(TimeZone.getTimeZone(event.getArgument(2, DEFAULT_TIMEZONE)));
 
         String fmt = String.format("The current %s %s %s", "date and time", "is", df.format(date));
         event.respond(fmt);
