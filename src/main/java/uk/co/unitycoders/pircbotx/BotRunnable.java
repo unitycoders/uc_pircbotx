@@ -56,9 +56,9 @@ public class BotRunnable implements Runnable {
 
             //rewrite rules
             RewriteEngine rewrite = new RewriteEngine();
-    		rewrite.addRule("^([a-z0-9]+)\\+\\+$", "karma add $1");
-    		rewrite.addRule("^([a-z0-9]+)--$", "karma remove $1");
-    		rewrite.addRule("^\\?([a-z0-9]+)$", "factoid get $1");
+    		rewrite.addRule("^([a-zA-Z0-9]+)\\+\\+$", "karma add $1");
+    		rewrite.addRule("^([a-zA-Z0-9]+)--$", "karma remove $1");
+    		rewrite.addRule("^\\?([a-zA-Z0-9]+)$", "factoid get $1");
             
             SecurityManager security = new SecurityManager();
             processor = buildProcessor(config.trigger, security, rewrite, cb);
