@@ -180,8 +180,7 @@ public class CommandProcessorTest {
         Message message = new MessageStub(name);
         processor.invoke(message);
     }
-
-
+    
     @Test
     public void testCommandsNotExists() {
         String name = "doesNotExist";

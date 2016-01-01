@@ -2,10 +2,12 @@ package uk.co.unitycoders.pircbotx.modules;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandNotFoundException;
@@ -14,6 +16,7 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.security.Secured;
 
 public class AnnotationModule implements Module {
+	private final Logger LOG = Logger.getLogger(AnnotationModule.class.getName());
 	protected final String name;
 	protected final Map<String, Node> nodes;
 	protected final Object source;
@@ -66,9 +69,10 @@ public class AnnotationModule implements Module {
 	@Override
 	public String[] getRequiredPermissions(String action) {
 		Node node = nodes.get(action);
-		if (node == null) {
+		if (node == null || node.permissions == null) {
 			return new String[0];
 		}
+
 		return node.permissions;
 	}
 	
@@ -79,28 +83,37 @@ public class AnnotationModule implements Module {
 	
 	protected void processAnnotations() {
         Class<?> clazz = source.getClass();
+        
+        //take the HelpText annotation from the class (if exists)
         HelpText clazzHelp = clazz.getAnnotation(HelpText.class);
         if (clazzHelp != null) {
         	helpText = clazzHelp.value();
         }
         
+        //go though all class methods looking for commands
         for (Method method : clazz.getMethods()) {
-
+        	
             Command c = method.getAnnotation(Command.class);
             if (c != null ) {
 
-                // check the class params match our spec
+            	int modifiers = method.getModifiers();
+            	if (!Modifier.isPublic(modifiers)) {
+            		LOG.warning(String.format("Skipping command %s because it's not public", (Object[])c.value()));
+            		continue;
+            	}
+            	
+            	// check the class params match our spec
                 assert ModuleUtils.isValidParams(method) : "first parameter of a command must be Message";
 
                 HelpText help = method.getAnnotation(HelpText.class);
-                String helpText = "";
+                String helpText = null;
                 if (help != null) {
                 	helpText = help.value();
                 }
                 
                 String[] keywords = c.value();
                 for (String keyword : keywords) {
-                    registerAction(keyword,method, helpText);
+                    registerAction(keyword, method, helpText);
                 }
             }
         }
