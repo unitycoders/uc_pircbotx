@@ -181,7 +181,7 @@ public class CommandProcessor {
         }
 
         String[] permissions = node.getRequiredPermissions(action);
-        if (permissions != null) {
+        if (permissions.length > 0) {
             Session session = security.getSession(user);
             return session != null && session.hasPermissions(permissions);
         }
