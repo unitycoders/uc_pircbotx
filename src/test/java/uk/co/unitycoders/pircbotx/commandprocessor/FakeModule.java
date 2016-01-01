@@ -43,6 +43,17 @@ public class FakeModule {
     @Command("hello")
     public void doStuffOnce(Message ex) {
     }
+    
+    /**
+     * Single command
+     *
+     * @param ex
+     */
+    @Command("exception")
+    public void doBadThings(Message ex) {
+    	System.out.println("test");
+    	throw new NullPointerException();
+    }
 
     /**
      * Double command

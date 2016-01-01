@@ -1,5 +1,6 @@
 package uk.co.unitycoders.pircbotx.modules;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
@@ -49,12 +50,17 @@ public class AnnotationModule implements Module {
 	public void fire(Message message) throws Exception {
 		String action = message.getArgument(Module.COMMAND_ARG, Module.DEFAULT_COMMAND);
 		
-		Method method = nodes.get(action).method;
-        if (method == null) {
-            throw new CommandNotFoundException(action);
-        }
-
-        method.invoke(source, message);
+		Node node = nodes.get(action);
+		if (node == null) {
+			throw new CommandNotFoundException(action);
+		}
+		
+		try {
+			Method method = node.method;
+	        method.invoke(source, message);
+		} catch (InvocationTargetException ex) {
+			throw (Exception)ex.getTargetException();
+		}
 	}
 	
 	@Override
