@@ -12,12 +12,8 @@ import static uk.co.unitycoders.pircbotx.commands.math.TokenType.*;
  * @author webpigeon
  */
 public class ASTParser {
-    private static final TokenType V = TokenType.NUMBER; //TODO find out what v corrisponds to, assumption value/number
-    private static final Token SENTINAL = null;
 
     private Map<String, Function> functions;
-    private Stack<Token> operators;
-    private Stack<TreeNode> operands;
 
     private Queue<Token> input;
 
