@@ -95,10 +95,64 @@ public class CommandProcessorTest {
         expected.add("goodbye");
         expected.add("bye");
         expected.add("hello");
+        expected.add("exception");
 
         Collection<String> result = processor.getCommands(name);
 
         Assert.assertTrue(hasTheSameContents(result, expected));
+    }
+    
+    @Test
+    public void testCommandsRemovalWorks() {
+        String name = "fake";
+        Module module = ModuleUtils.wrap(name, new FakeModule());
+        processor.register(name, module);
+
+        Module result = processor.getModule(name);
+        Assert.assertEquals(module, result);
+        
+        processor.remove(name);
+        Assert.assertEquals(null, processor.getModule(name));
+    }
+    
+    @Test
+    public void testDefaultAction() throws Exception {
+        String name = "fake";
+        Module module = ModuleUtils.wrap(name, new FakeModule());
+        processor.register(name, module);
+
+        MessageStub message = new MessageStub("fake default");
+        processor.invoke(message);
+    }
+    
+    @Test
+    public void testDefaultActionWithArguments() throws Exception {
+        String name = "fake";
+        Module module = ModuleUtils.wrap(name, new FakeModule());
+        processor.register(name, module);
+
+        MessageStub message = new MessageStub("fake banana");
+        processor.invoke(message);
+    }
+    
+    @Test(expected=CommandNotFoundException.class)
+    public void testCommandNotFound() throws Exception {
+        String name = "fake";
+        Module module = new ModuleWhichThrowsExceptions();
+        processor.register(name, module);
+
+        MessageStub message = new MessageStub("fake notFound");
+        processor.invoke(message);
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void testCommandException() throws Exception {
+        String name = "fake";
+        Module module = new ModuleWhichReportsNoCommands();
+        processor.register(name, module);
+
+        MessageStub message = new MessageStub("fake notAValidCommand");
+        processor.invoke(message);
     }
 
     @Test
@@ -126,8 +180,7 @@ public class CommandProcessorTest {
         Message message = new MessageStub(name);
         processor.invoke(message);
     }
-
-
+    
     @Test
     public void testCommandsNotExists() {
         String name = "doesNotExist";
@@ -138,6 +191,108 @@ public class CommandProcessorTest {
         Assert.assertTrue(hasTheSameContents(result, expected));
     }
 
+    @Test
+    public void testAliasValidCommand() {
+    	String existingCommand = "test";
+    	String commandAlias = "test2";
+    	
+    	//setup
+    	Module module = ModuleUtils.wrap(existingCommand, new FakeModule());
+    	processor.register(existingCommand, module);
+    	
+    	//test
+    	processor.alias(commandAlias, existingCommand);
+    	Module result = processor.getModule(commandAlias);
+    	
+    	Assert.assertEquals(module, result);
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void testAliasDefinedCommand() {
+    	String existingCommand = "test";
+    	String commandAlias = "test";
+    	
+    	//setup
+    	Module module = ModuleUtils.wrap(existingCommand, new FakeModule());
+    	processor.register(existingCommand, module);
+    	
+    	//test
+    	processor.alias(commandAlias, existingCommand);
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void testAliasInvalidCommand() {
+    	String existingCommand = "notValidCommand";
+    	String commandAlias = "test2";
+    	
+    	//test
+    	processor.alias(commandAlias, existingCommand);
+    }
+    
+    @Test
+    public void testTokensNoQuote() {
+    	String command = "a b c";
+    	List<String> tokens = Arrays.asList("a", "b", "c");
+    	List<String> result = processor.tokenise(command);
+    	
+    	Assert.assertEquals(tokens, result);
+    }
+    
+    @Test
+    public void testTokensDoubleQuote() {
+    	String command = "a \"b c\"";
+    	List<String> tokens = Arrays.asList("a", "b c");
+    	List<String> result = processor.tokenise(command);
+    	
+    	Assert.assertEquals(tokens, result);
+    }
+    
+    @Test
+    public void testTokensSingleQuote() {
+    	String command = "a 'd e'";
+    	List<String> tokens = Arrays.asList("a", "d e");
+    	List<String> result = processor.tokenise(command);
+    	
+    	Assert.assertEquals(tokens, result);
+    }
+    
+    @Test
+    public void testTokensPrecedingWhitespace() {
+    	String command = "    a";
+    	List<String> tokens = Arrays.asList("a");
+    	List<String> result = processor.tokenise(command);
+    	
+    	Assert.assertEquals(tokens, result);
+    }
+    
+    @Test
+    public void testTokensInWhitespace() {
+    	String command = "a    b";
+    	List<String> tokens = Arrays.asList("a", "b");
+    	List<String> result = processor.tokenise(command);
+    	
+    	Assert.assertEquals(tokens, result);
+    }
+    
+    @Test
+    public void testTokensPostfixWhitespace() {
+    	String command = "a     ";
+    	List<String> tokens = Arrays.asList("a");
+    	List<String> result = processor.tokenise(command);
+    	
+    	Assert.assertEquals(tokens, result);
+    }
+    
+    @Test
+    public void testTokensWhitespace() {
+    	String command = "    ";
+    	List<String> tokens = Arrays.asList();
+    	List<String> result = processor.tokenise(command);
+    	
+    	Assert.assertEquals(tokens, result);
+    }
+    
+    
     private static <T> boolean hasTheSameContents(Collection<T> c1, Collection<T> c2) {
         return c1.containsAll(c2) && c2.containsAll(c1);
     }

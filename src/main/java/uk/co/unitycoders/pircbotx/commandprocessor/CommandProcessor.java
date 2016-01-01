@@ -75,17 +75,29 @@ public class CommandProcessor {
         commands.put(name, target);
     }
 
-    //proper aliasing of commands is now possible
+    /**
+     * Alias an existing module to a new name.
+     * 
+     * This function will let you define an alias for an existing module.
+     * Passing null as either argument is not permitted.
+     * 
+     * @param name the new name to use as the alias
+     * @param oldName the existing name of the module
+     * @throws IllegalArugmentException if module is not defined or alias already exists
+     */
     public void alias(String name, String oldName) {
+    	assert name != null : "name must not be null";
+    	assert oldName != null : "old name must not be null";
+    	
         Module node = commands.get(oldName);
 
-        if (oldName == null) {
-            throw new RuntimeException(oldName + " is not a loaded class");
+        if (node == null) {
+            throw new IllegalArgumentException(oldName + " is not a loaded class");
         }
 
         Module aliasNode = commands.get(name);
         if (aliasNode != null) {
-            throw new RuntimeException(name + " is already a keyword!");
+            throw new IllegalArgumentException(name + " is already a keyword!");
         }
 
         commands.put(name, node);
@@ -104,9 +116,10 @@ public class CommandProcessor {
     	while(matcher.find()) {
     		if (matcher.group(1) != null) {
     			arguments.add(matcher.group(1));
-    		}else if (matcher.group(2) != null) {
+    		} else if (matcher.group(2) != null) {
     			arguments.add(matcher.group(2));
-    		}else if (matcher.group(3) != null) {
+    		} else {
+    			assert matcher.group(3) != null;
     			arguments.add(matcher.group(3));
     		}
     	}
@@ -157,6 +170,7 @@ public class CommandProcessor {
     	} catch (Exception ex) {
     		message.respond("Something has gone wrong, please let the developers know");
     		logger.error("Exception thrown", ex);
+    		throw ex;
     	}
     }
 
