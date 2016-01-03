@@ -1,5 +1,6 @@
 package uk.co.unitycoders.pircbotx.middleware;
 
+import uk.co.unitycoders.pircbotx.LocalConfiguration;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
@@ -15,7 +16,14 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 public interface BotMiddleware {
 	
 	/**
-	 * Preprocess a message before it is tokenised.
+	 * Called when plugin is loaded to initialise it.
+	 * 
+	 * @param config the bot's configuration
+	 */
+	public void init(LocalConfiguration config);
+	
+	/**
+	 * Pre-process a message before it is tokenised.
 	 * 
 	 * This callback is designed for any processing which should be done
 	 * before the rest of the system processes the request (eg. cleaning the

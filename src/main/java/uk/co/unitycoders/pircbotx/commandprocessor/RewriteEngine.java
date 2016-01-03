@@ -21,6 +21,7 @@ package uk.co.unitycoders.pircbotx.commandprocessor;
 import java.util.Map;
 import java.util.TreeMap;
 
+import uk.co.unitycoders.pircbotx.LocalConfiguration;
 import uk.co.unitycoders.pircbotx.middleware.BotMiddleware;
 
 public class RewriteEngine implements BotMiddleware {
@@ -28,6 +29,18 @@ public class RewriteEngine implements BotMiddleware {
 	
 	public RewriteEngine() {
 		this.rules = new TreeMap<String, String>();
+	}
+	
+	@Override
+	public void init(LocalConfiguration config) {
+		if (config.aliases == null) {
+			return;
+		}
+		
+		for (Map.Entry<String, String> rule : config.aliases.entrySet()) {
+			addRule(rule.getKey(), rule.getValue());
+		}
+		
 	}
 	
 	public void addRule(String regex, String replace) {
@@ -53,5 +66,5 @@ public class RewriteEngine implements BotMiddleware {
 	public Message process(CommandProcessor processor, Message message) {
 		return message;
 	}
-
+	
 }

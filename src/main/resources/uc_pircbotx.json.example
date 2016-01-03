@@ -10,5 +10,14 @@
     "channels": [
         "#unity-coders",
         "#unity-coders-bots"
-    ]
+    ],
+    "middleware": [
+    	"uk.co.unitycoders.pircbotx.commandprocessor.CommandFixerMiddleware",
+    	"uk.co.unitycoders.pircbotx.commandprocessor.RewriteEngine"
+    ],
+    aliases: {
+    	"^([a-zA-Z0-9]+)\+\+$": "karma add $1",
+		"^([a-zA-Z0-9]+)--$": "karma remove $1",
+    	"^\?([a-zA-Z0-9]+)$": "factoid get $1"
+    }
 }
