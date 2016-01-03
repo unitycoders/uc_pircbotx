@@ -39,6 +39,7 @@ public class CommandProcessorTest {
     public void setUp() throws Exception {
     	List<BotMiddleware> middleware = new ArrayList<BotMiddleware>();
     	middleware.add(new CommandFixerMiddleware());
+
         processor = new CommandProcessor(middleware);
     }
 
@@ -124,7 +125,7 @@ public class CommandProcessorTest {
         Module module = ModuleUtils.wrap(name, new FakeModule());
         processor.register(name, module);
 
-        Message message = new MessageStubArgs("fake", "default");
+        Message message = new MessageStub("fake", "default");
         processor.invoke(message);
     }
     
@@ -134,8 +135,16 @@ public class CommandProcessorTest {
         Module module = ModuleUtils.wrap(name, new FakeModule());
         processor.register(name, module);
 
-        Message message = new MessageStubArgs(name, "banana");
+        Message message = new MessageStub("fake", "banana");
         processor.invoke(message);
+    }
+    
+    @Test
+    public void testGetModuleNull() {
+    	String moduleName = null;
+    	Module expected = null;
+    	Module result = processor.getModule(moduleName);
+    	Assert.assertEquals(expected, result);
     }
     
     @Test(expected=CommandNotFoundException.class)
@@ -144,7 +153,7 @@ public class CommandProcessorTest {
         Module module = new ModuleWhichThrowsExceptions();
         processor.register(name, module);
 
-        Message message = new MessageStubArgs(name, "notFound");
+        Message message = new MessageStub("fake", "notFound");
         processor.invoke(message);
     }
     
@@ -154,7 +163,8 @@ public class CommandProcessorTest {
         Module module = new ModuleWhichReportsNoCommands();
         processor.register(name, module);
 
-        MessageStub message = new MessageStub("fake notAValidCommand");
+        Message message = new MessageStub("fake", "notAValidCommand");
+        processor.invoke(message);
     }
 
     @Test
