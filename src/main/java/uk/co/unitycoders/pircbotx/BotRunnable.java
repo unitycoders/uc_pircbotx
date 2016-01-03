@@ -33,6 +33,8 @@ import uk.co.unitycoders.pircbotx.modules.Module;
 import uk.co.unitycoders.pircbotx.modules.ModuleUtils;
 import uk.co.unitycoders.pircbotx.security.*;
 import uk.co.unitycoders.pircbotx.security.SecurityManager;
+import uk.co.unitycoders.pircbotx.seen.SeenCommand;
+import uk.co.unitycoders.pircbotx.seen.SeenListener;
 
 import java.util.List;
 import java.util.ServiceLoader;
@@ -69,11 +71,14 @@ public class BotRunnable implements Runnable {
             	System.out.println("new module: "+module);
             }
             
+            SeenListener seenListener = new SeenListener();
+            
             Module[] legacyModules = new Module[] {
             	ModuleUtils.wrap("factoid", new FactoidCommand(DBConnection.getFactoidModel()) ),
             	ModuleUtils.wrap("help", new HelpCommand(processor)),
             	ModuleUtils.wrap("plugins", new PluginCommand(processor)),
-            	ModuleUtils.wrap("sesssion", new SessionCommand(security))
+            	ModuleUtils.wrap("sesssion", new SessionCommand(security)),
+            	new SeenCommand(seenListener)
             };
             
             for (Module module : legacyModules) {
@@ -85,6 +90,7 @@ public class BotRunnable implements Runnable {
 
             cb.addListener(new JoinsListener());
             cb.addListener(new LinesListener());
+            cb.addListener(seenListener);
 
             buildBot(cb, config);
             instance = createBot(cb);
