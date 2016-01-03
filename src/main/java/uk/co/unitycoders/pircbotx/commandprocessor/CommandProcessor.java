@@ -149,14 +149,14 @@ public class CommandProcessor {
      * @param message the event to be processed
      * @throws Exception
      */
-    public void invoke(Message message) throws Exception {
-    	String command = message.getArgument(0, null);
-    	
+    public void invoke(Message message) throws Exception {    	
     	for (BotMiddleware mw : middleware) {
     		message = mw.process(this, message);
+    		
     		assert message != null : mw+" voilates contract";
     	}
     	
+    	String command = message.getArgument(0, null);
     	Module node = commands.get(command);
     	if (node == null) {
     		throw new CommandNotFoundException(command);
