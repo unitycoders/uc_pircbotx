@@ -24,9 +24,9 @@ public class CommandFixerMiddleware implements BotMiddleware {
 		}
 		
 		//check the message has a valid action
-		String action = message.getArgument(1, "default");
-		if (!module.isValidAction(action)) {
-			message.insertArgument(1, "default");
+		String action = message.getArgument(1, null);
+		if (action == null || !module.isValidAction(action)) {
+			message.insertArgument(1, Module.DEFAULT_COMMAND);
 		}
 		
 		return message;
