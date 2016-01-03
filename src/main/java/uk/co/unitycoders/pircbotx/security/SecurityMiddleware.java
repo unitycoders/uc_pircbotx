@@ -2,19 +2,15 @@ package uk.co.unitycoders.pircbotx.security;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
+import uk.co.unitycoders.pircbotx.middleware.AbstractMiddleware;
 import uk.co.unitycoders.pircbotx.middleware.BotMiddleware;
 import uk.co.unitycoders.pircbotx.modules.Module;
 
-public class SecurityMiddleware implements BotMiddleware {
+public class SecurityMiddleware extends AbstractMiddleware {
 	private final SecurityManager security;
 	
 	public SecurityMiddleware(SecurityManager security) {
 		this.security = security;
-	}
-
-	@Override
-	public String preprocess(String text) {
-		return text;
 	}
 
 	@Override

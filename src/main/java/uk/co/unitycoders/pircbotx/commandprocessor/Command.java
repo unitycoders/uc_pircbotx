@@ -23,6 +23,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import uk.co.unitycoders.pircbotx.modules.Module;
+
 /**
  * Command annotation.
  *
@@ -50,5 +52,5 @@ public @interface Command {
      *
      * @return The keywords for this command
      */
-    public String[] value() default "default";
+    public String[] value() default Module.DEFAULT_COMMAND;
 }

@@ -25,10 +25,8 @@ import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 import org.pircbotx.cap.SASLCapHandler;
 
-import uk.co.unitycoders.pircbotx.commandprocessor.CommandFixerMiddleware;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandListener;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
-import uk.co.unitycoders.pircbotx.commandprocessor.RewriteEngine;
 import uk.co.unitycoders.pircbotx.commands.*;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
@@ -59,21 +57,22 @@ public class BotRunnable implements Runnable {
     public void run() {
 
         try {
-            Configuration.Builder<PircBotX> cb = new Configuration.Builder<PircBotX>();
-
-            //rewrite rules
-            RewriteEngine rewrite = new RewriteEngine();
-    		rewrite.addRule("^([a-zA-Z0-9]+)\\+\\+$", "karma add $1");
-    		rewrite.addRule("^([a-zA-Z0-9]+)--$", "karma remove $1");
-    		rewrite.addRule("^\\?([a-zA-Z0-9]+)$", "factoid get $1");
-            
-            SecurityManager security = new SecurityManager();
-            
+            //load in middleware from configuration file
             List<BotMiddleware> middleware = new ArrayList<BotMiddleware>();
-            middleware.add(new CommandFixerMiddleware());
-            middleware.add(rewrite);
+            if (config.middleware != null) {
+	            for (String middlewareClass : config.middleware) {
+	            	BotMiddleware mw = ModuleUtils.loadMiddleware(middlewareClass);
+	            	middleware.add(mw);
+	            	mw.init(config);
+	            }
+            }
+            
+            //legacy middleware
+            SecurityManager security = new SecurityManager();
             middleware.add(new SecurityMiddleware(security));
             
+            //start building the bot
+            Configuration.Builder<PircBotX> cb = new Configuration.Builder<PircBotX>();
             processor = buildProcessor(config.trigger, middleware, cb);
             
             Map<String, ModuleConfig> moduleConfigs = config.modules;
@@ -81,6 +80,7 @@ public class BotRunnable implements Runnable {
             	moduleConfigs = Collections.emptyMap();
             }
             
+            //load in the modules
             ServiceLoader<Module> modules = ServiceLoader.load(Module.class);
             for (Module module : modules) {
             	
@@ -101,6 +101,7 @@ public class BotRunnable implements Runnable {
             	
             }
             
+            //load in modules which require arguments
             Module[] legacyModules = new Module[] {
             	ModuleUtils.wrap("factoid", new FactoidCommand(DBConnection.getFactoidModel()) ),
             	ModuleUtils.wrap("help", new HelpCommand(processor)),
@@ -108,6 +109,7 @@ public class BotRunnable implements Runnable {
             	ModuleUtils.wrap("sesssion", new SessionCommand(security))
             };
             
+            //register all legacy style modules
             for (Module module : legacyModules) {
             	processor.register(module.getName(), module);
             }

@@ -22,14 +22,11 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.pircbotx.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import uk.co.unitycoders.pircbotx.middleware.BotMiddleware;
 import uk.co.unitycoders.pircbotx.modules.Module;
-import uk.co.unitycoders.pircbotx.security.*;
-import uk.co.unitycoders.pircbotx.security.SecurityManager;
 
 /**
  * centrally managed command parsing.

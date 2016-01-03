@@ -189,7 +189,7 @@ public class CommandProcessorTest {
         Module module = ModuleUtils.wrap(name, new FakeModule());
         processor.register(name, module);
 
-        Message message = new MessageStubArgs(name);
+        Message message = new MessageStub(name);
         processor.invoke(message);
     }
     
