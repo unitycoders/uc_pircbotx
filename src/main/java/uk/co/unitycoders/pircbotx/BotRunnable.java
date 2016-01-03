@@ -25,6 +25,7 @@ import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 import org.pircbotx.cap.SASLCapHandler;
 
+import uk.co.unitycoders.pircbotx.commandprocessor.CommandFixerMiddleware;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandListener;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.RewriteEngine;
@@ -32,12 +33,15 @@ import uk.co.unitycoders.pircbotx.commands.*;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
 import uk.co.unitycoders.pircbotx.listeners.LinesListener;
+import uk.co.unitycoders.pircbotx.middleware.BotMiddleware;
 import uk.co.unitycoders.pircbotx.modules.Module;
 import uk.co.unitycoders.pircbotx.modules.ModuleConfig;
 import uk.co.unitycoders.pircbotx.modules.ModuleUtils;
 import uk.co.unitycoders.pircbotx.security.*;
 import uk.co.unitycoders.pircbotx.security.SecurityManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ServiceLoader;
 
 import javax.net.ssl.SSLSocketFactory;
@@ -64,7 +68,13 @@ public class BotRunnable implements Runnable {
     		rewrite.addRule("^\\?([a-zA-Z0-9]+)$", "factoid get $1");
             
             SecurityManager security = new SecurityManager();
-            processor = buildProcessor(config.trigger, security, rewrite, cb);
+            
+            List<BotMiddleware> middleware = new ArrayList<BotMiddleware>();
+            middleware.add(new CommandFixerMiddleware());
+            middleware.add(rewrite);
+            middleware.add(new SecurityMiddleware(security));
+            
+            processor = buildProcessor(config.trigger, middleware, cb);
             
             Map<String, ModuleConfig> moduleConfigs = config.modules;
             if (moduleConfigs == null) {
@@ -163,9 +173,11 @@ public class BotRunnable implements Runnable {
      * @param cb PircBotX configuration
      * @return A constructed CommandProcessor instance
      */
-    private CommandProcessor buildProcessor(char trigger, SecurityManager s, RewriteEngine rewrite, Configuration.Builder<PircBotX> cb) {
-        CommandProcessor processor = new CommandProcessor(s);
-        cb.addListener(new CommandListener(processor, rewrite, trigger));
+    private CommandProcessor buildProcessor(char trigger, List<BotMiddleware> middleware, Configuration.Builder<PircBotX> cb) {
+
+        
+    	CommandProcessor processor = new CommandProcessor(middleware);
+        cb.addListener(new CommandListener(processor, trigger));
         return processor;
     }
 }

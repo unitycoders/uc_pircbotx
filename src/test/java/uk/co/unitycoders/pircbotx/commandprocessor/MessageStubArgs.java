@@ -18,16 +18,19 @@
  */
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 public class MessageStubArgs implements Message {
-    private final String[] args;
+    private final List<String> args;
 
     public MessageStubArgs(String ... message) {
-        this.args = message;
+        this.args = new ArrayList<String>();
+        this.args.addAll(Arrays.asList(message));
     }
 
     @Override
@@ -60,16 +63,15 @@ public class MessageStubArgs implements Message {
 
 	@Override
 	public String getArgument(int id, String defaultValue) {
-		if (args.length <= id) {
+		if (args.size() <= id) {
 			return defaultValue;
 		}
 		
-		return args[id];
+		return args.get(id);
 	}
-
+	
 	@Override
-	public void setArguments(List<String> args) {
-		// TODO Auto-generated method stub
-		
+	public void insertArgument(int i, String arg) {
+		args.add(i, arg);
 	}
 }

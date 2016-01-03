@@ -18,8 +18,6 @@
  */
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
-import java.util.List;
-
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
@@ -64,7 +62,7 @@ public class MessageStub implements Message {
 	}
 
 	@Override
-	public void setArguments(List<String> args) {
+	public void insertArgument(int i, String arg) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -58,16 +58,6 @@ public interface Message {
     public String getMessage();
     
     /**
-     * Internal use only, do not use.
-     * 
-     * This is used internally to setup the arguments. It is part of the
-     * private API and should not be used by plugins.
-     * 
-     * @param args the tokenised arguments.
-     */
-    public void setArguments(List<String> args);
-    
-    /**
      * Get a tokenised argument.
      * 
      * The tokeniser will parse the message, extract quoted strings and then split
@@ -115,4 +105,12 @@ public interface Message {
      * @param action the action to perform
      */
     public void sendAction(String action);
+
+    /**
+     * Insert an argument into the message.
+     * 
+     * @param i position of the new argument
+     * @param arg the argument to insert
+     */
+	public void insertArgument(int i, String arg);
 }
