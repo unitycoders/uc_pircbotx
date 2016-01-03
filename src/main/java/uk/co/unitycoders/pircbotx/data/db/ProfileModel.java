@@ -1,6 +1,20 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Copyright © 2012-2013 Unity Coders
+ *
+ * This file is part of uc_pircbotx.
+ *
+ * uc_pircbotx is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * uc_pircbotx is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
 package uk.co.unitycoders.pircbotx.data.db;
 
@@ -12,6 +26,9 @@ import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.co.unitycoders.pircbotx.profile.Profile;
 
 /**
@@ -20,6 +37,7 @@ import uk.co.unitycoders.pircbotx.profile.Profile;
  */
 public class ProfileModel {
 
+    private final Logger logger = LoggerFactory.getLogger(ProfileModel.class);
     private final Connection conn;
     private final PreparedStatement createProfile;
     private final PreparedStatement createPerm;
@@ -43,49 +61,74 @@ public class ProfileModel {
         stmt.executeUpdate("CREATE TABLE IF NOT EXISTS profiles (user TEXT)");
     }
 
-    public void createProfile(String name) throws SQLException {
-        createProfile.clearParameters();
-        createProfile.setString(1, name);
-        createProfile.executeUpdate();
+    public boolean createProfile(String name) {
+        try {
+            createProfile.clearParameters();
+            createProfile.setString(1, name);
+            return createProfile.executeUpdate() == 1;
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return false;
+        }
     }
 
-    public void addPerm(String user, String perm) throws SQLException {
-        createPerm.clearParameters();
-        createPerm.setString(1, user);
-        createPerm.setString(2, perm);
-        createPerm.execute();
+    public boolean addPerm(String user, String perm) {
+        try {
+            createPerm.clearParameters();
+            createPerm.setString(1, user);
+            createPerm.setString(2, perm);
+            return createPerm.execute();
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return false;
+        }
     }
 
-    public void removePerm(String user, String perm) throws SQLException {
-        deletePerm.clearParameters();
-        deletePerm.setString(1, user);
-        deletePerm.setString(2, perm);
-        deletePerm.executeUpdate();
+    public boolean removePerm(String user, String perm) {
+        try {
+            deletePerm.clearParameters();
+            deletePerm.setString(1, user);
+            deletePerm.setString(2, perm);
+            return deletePerm.executeUpdate() == 1;
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return false;
+        }
     }
 
-    public String[] getPerms(String user) throws SQLException {
+    public String[] getPerms(String user) {
         Set<String> perms = new HashSet<String>();
 
-        getPerms.clearParameters();
-        getPerms.setString(1, user);
-        ResultSet rs = getPerms.executeQuery();
+        try {
+            getPerms.clearParameters();
+            getPerms.setString(1, user);
+            ResultSet rs = getPerms.executeQuery();
 
-        while (rs.next()) {
-            perms.add(rs.getString(2));
+            while (rs.next()) {
+                perms.add(rs.getString(2));
+            }
+
+            rs.close();
+
+            return perms.toArray(new String[perms.size()]);
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return null;
         }
-
-        rs.close();
-
-        return perms.toArray(new String[perms.size()]);
     }
 
-    public Profile getProfile(String profileName) throws SQLException {
-        getProfile.clearParameters();
-        getProfile.setString(1, profileName);
-        ResultSet rs = getProfile.executeQuery();
-        rs.next();
+    public Profile getProfile(String profileName) {
+        try {
+            getProfile.clearParameters();
+            getProfile.setString(1, profileName);
+            ResultSet rs = getProfile.executeQuery();
+            rs.next();
 
-        Profile profile = new Profile(rs.getString(1));
-        return profile;
+            Profile profile = new Profile(rs.getString(1));
+            return profile;
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return null;
+        }
     }
 }

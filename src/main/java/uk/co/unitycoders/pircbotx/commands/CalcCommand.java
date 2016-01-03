@@ -1,26 +1,20 @@
 /**
- * Copyright © 2012 Joseph Walton-Rivers <webpigeon@unitycoders.co.uk>
- * Copyright © 2012 Bruce Cowan <bruce@bcowan.me.uk>
+ * Copyright © 2012-2015 Unity Coders
  *
- * This file is part of uc_PircBotX.
+ * This file is part of uc_pircbotx.
  *
- * uc_PircBotX is free software: you can redistribute it and/or modify it under
+ * uc_pircbotx is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * uc_PircBotX is distributed in the hope that it will be useful, but WITHOUT
+ * uc_pircbotx is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
  *
  * You should have received a copy of the GNU General Public License along with
- * uc_PircBotX. If not, see <http://www.gnu.org/licenses/>.
- */
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
 package uk.co.unitycoders.pircbotx.commands;
 
@@ -28,14 +22,15 @@ import java.util.Stack;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
+import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 
-/**
- *
- * @author webpigeon
- */
-public class CalcCommand {
+public class CalcCommand extends AnnotationModule {
 
-    private static final Integer OP_TOKEN = 1;
+    public CalcCommand() {
+		super("calc");
+	}
+
+	private static final Integer OP_TOKEN = 1;
     private static final Integer NUM_TOKEN = 2;
 
     private int doExpr(int left, char op, int right) {
@@ -106,7 +101,7 @@ public class CalcCommand {
     }
 
     @Command
-    public void onCalc(Message event) throws Exception {
+    public void onCalc(Message event) {
         String msg = event.getMessage();
 
         try {
@@ -114,6 +109,9 @@ public class CalcCommand {
             event.respond(msg + " = " + parse(msg));
         } catch (IndexOutOfBoundsException ex) {
             event.respond(ex.getLocalizedMessage());
+        } catch (RuntimeException ex) {
+        	//TODO add an exception type for Parsing math errors
+        	event.respond("Sorry, I didn't understand that");
         }
     }
 

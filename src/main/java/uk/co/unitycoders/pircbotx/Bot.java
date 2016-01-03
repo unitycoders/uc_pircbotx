@@ -1,39 +1,22 @@
 /**
- * Copyright © 2012-2014 Bruce Cowan <bruce@bcowan.me.uk>
- * Copyright © 2012-2013 Joseph Walton-Rivers <webpigeon@unitycoders.co.uk>
+ * Copyright © 2012-2014 Unity Coders
  *
- * This file is part of uc_PircBotX.
+ * This file is part of uc_pircbotx.
  *
- * uc_PircBotX is free software: you can redistribute it and/or modify it under
+ * uc_pircbotx is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
  *
- * uc_PircBotX is distributed in the hope that it will be useful, but WITHOUT
+ * uc_pircbotx is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
  *
  * You should have received a copy of the GNU General Public License along with
- * uc_PircBotX. If not, see <http://www.gnu.org/licenses/>.
+ * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
 package uk.co.unitycoders.pircbotx;
-
-import org.pircbotx.Configuration;
-import org.pircbotx.Configuration.Builder;
-import org.pircbotx.PircBotX;
-import uk.co.unitycoders.pircbotx.commandprocessor.CommandListener;
-import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
-import uk.co.unitycoders.pircbotx.commands.*;
-import uk.co.unitycoders.pircbotx.data.db.DBConnection;
-import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
-import uk.co.unitycoders.pircbotx.listeners.LinesListener;
-import uk.co.unitycoders.pircbotx.profile.ProfileCommand;
-import uk.co.unitycoders.pircbotx.profile.ProfileManager;
-import uk.co.unitycoders.pircbotx.seen.SeenCommand;
-import uk.co.unitycoders.pircbotx.seen.SeenListener;
-
-import javax.net.ssl.SSLSocketFactory;
 
 /**
  * The actual bot itself.
@@ -43,60 +26,15 @@ import javax.net.ssl.SSLSocketFactory;
 public class Bot {
 
     public static void main(String[] args) throws Exception {
-        // Bot Configuration
-        LocalConfiguration localConfig = ConfigurationManager.loadConfig();
-
-        CommandProcessor processor = new CommandProcessor(localConfig.trigger);
-
-        ProfileManager profiles = new ProfileManager(DBConnection.getProfileModel());
-        DateTimeCommand dtCmd = new DateTimeCommand();
-        SeenListener seenListener = new SeenListener();
-
-        // Commands
-        processor.register("rand", new RandCommand());
-        processor.register("time", dtCmd);
-        processor.register("date", dtCmd);
-        processor.register("datetime", dtCmd);
-        processor.register("lart", new LartCommand());
-        processor.register("killertrout", new KillerTroutCommand());
-        processor.register("joins", new JoinsCommand());
-        processor.register("calc", new CalcCommand());
-        processor.register("karma", new KarmaCommand());
-        processor.register("profile", new ProfileCommand(profiles));
-        processor.register("help", new HelpCommand(processor));
-        processor.register("nick", new NickCommand());
-        processor.register("factoid", new FactoidCommand(DBConnection.getFactoidModel()));
-        processor.register("seen", new SeenCommand(seenListener));
-
-
-        // Configure bot
-        Builder<PircBotX> cb = new Configuration.Builder<PircBotX>()
-            .setName(localConfig.nick)
-            .setAutoNickChange(true)
-            .setAutoReconnect(true)
-            .setServer(localConfig.host, localConfig.port)
-            .addAutoJoinChannel("unity-coders")
-            .addListener(new CommandListener(processor))
-            .addListener(new LinesListener())
-            .addListener(seenListener)
-            .addListener(JoinsListener.getInstance());
-
-        // Configure SSL
-        if (localConfig.ssl)
-            cb.setSocketFactory(SSLSocketFactory.getDefault());
-
-        // Add channels to join
-        for (String channel : localConfig.channels)
-        {
-            cb.addAutoJoinChannel(channel);
+        String configPath = ConfigurationManager.JSON_FILE_NAME;
+        if (args.length > 0) {
+            configPath = args[0];
         }
-        Configuration<PircBotX> configuration = cb.buildConfiguration();
-        PircBotX bot = new PircBotX(configuration);
 
-        try {
-            bot.startBot();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        BotRunnable runnable = new BotRunnable(ConfigurationManager.loadConfig(configPath));
+        Thread botThread = new Thread(runnable);
+
+        botThread.start();
+        botThread.join();
     }
 }
