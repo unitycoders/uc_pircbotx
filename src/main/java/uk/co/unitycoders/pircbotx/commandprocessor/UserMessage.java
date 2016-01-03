@@ -18,14 +18,16 @@
  */
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
+import java.util.List;
+
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 
 public class UserMessage extends BasicMessage {
     private final PrivateMessageEvent<PircBotX> event;
     
-    public UserMessage(PrivateMessageEvent<PircBotX> event, String messageText) {
-        super(event, messageText);
+    public UserMessage(PrivateMessageEvent<PircBotX> event, List<String> args) {
+        super(event, args);
         this.event = event;
     }
 

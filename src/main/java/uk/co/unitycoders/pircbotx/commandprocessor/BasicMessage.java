@@ -34,30 +34,24 @@ import org.pircbotx.hooks.types.GenericMessageEvent;
  */
 public abstract class BasicMessage implements Message {
     private final GenericMessageEvent<PircBotX> event;
-    private final String text;
-    private List<String> arguments;
+    private final List<String> args;
     
-    public BasicMessage(GenericMessageEvent<PircBotX> message) {
+    public BasicMessage(GenericMessageEvent<PircBotX> message, List<String> args) {
         this.event = message;
-        this.text = Colors.removeFormattingAndColors(event.getMessage());
+        this.args = args;
     }
     
-    public BasicMessage(GenericMessageEvent<PircBotX> message, String text) {
-        this.event = message;
-        this.text = text;
-    }
-    
-    public void setArguments(List<String> arguments) {
-    	this.arguments = arguments;
+    public void insertArgument(int pos, String arg) {
+    	args.add(pos, arg);
     }
     
     public String getArguments() {
-    	if (arguments.size() <= 2) {
+    	if (args.size() <= 2) {
     		return "";
     	}
     	
     	// get the argument list
-    	List<String> cmdArgs = arguments.subList(2, arguments.size());
+    	List<String> cmdArgs = args.subList(2, args.size());
     	
     	//emulate String.join in java 1.7
     	StringBuilder argStr = new StringBuilder();
@@ -73,15 +67,15 @@ public abstract class BasicMessage implements Message {
     }
     
     public int getArgumentCount() {
-    	return arguments.size();
+    	return args.size();
     }
     
     public String getArgument(int id, String defaultValue) {
-    	if (arguments == null || arguments.size() <= id){
+    	if (args == null || args.size() <= id){
     		return defaultValue;
     	}
     	
-    	return arguments.get(id);
+    	return args.get(id);
     }
     
     @Override
@@ -91,7 +85,7 @@ public abstract class BasicMessage implements Message {
 
     @Override
     public  String getMessage() {
-       return text;
+       return event.getMessage();
     }
 
     @Override

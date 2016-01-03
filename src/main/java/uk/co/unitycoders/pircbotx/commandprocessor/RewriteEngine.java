@@ -21,7 +21,9 @@ package uk.co.unitycoders.pircbotx.commandprocessor;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class RewriteEngine {
+import uk.co.unitycoders.pircbotx.middleware.BotMiddleware;
+
+public class RewriteEngine implements BotMiddleware {
 	private Map<String, String> rules;
 	
 	public RewriteEngine() {
@@ -40,6 +42,16 @@ public class RewriteEngine {
 		}
 		
 		return output;
+	}
+
+	@Override
+	public String preprocess(String text) {
+		return process(text);
+	}
+	
+	@Override
+	public Message process(CommandProcessor processor, Message message) {
+		return message;
 	}
 
 }
