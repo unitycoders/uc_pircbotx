@@ -18,7 +18,6 @@
  */
 package uk.co.unitycoders.pircbotx;
 
-
 /**
  * The actual bot itself.
  *
