@@ -34,7 +34,6 @@ public class LocalConfiguration {
     public String[] channels;
     
     //authentication
-
     public boolean sasl;
     public String username;
     public String password;

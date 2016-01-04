@@ -52,7 +52,6 @@ public class CommandProcessor {
      */
     public CommandProcessor(List<BotMiddleware> middleware) {
     	assert middleware != null : "don't pass null as the middleware, use empty list instead";
-    	
         this.tokeniser = Pattern.compile("([^\\s\"']+)|\"([^\"]*)\"|'([^']*)'");
         this.commands = new TreeMap<String, Module>();
         this.middleware = middleware;

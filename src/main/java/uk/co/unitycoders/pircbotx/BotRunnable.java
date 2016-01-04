@@ -70,7 +70,7 @@ public class BotRunnable implements Runnable {
             //legacy middleware
             SecurityManager security = new SecurityManager();
             middleware.add(new SecurityMiddleware(security));
-            
+
             //start building the bot
             Configuration.Builder<PircBotX> cb = new Configuration.Builder<PircBotX>();
             processor = buildProcessor(config.trigger, middleware, cb);
