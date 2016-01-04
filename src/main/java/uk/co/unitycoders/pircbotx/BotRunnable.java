@@ -106,7 +106,7 @@ public class BotRunnable implements Runnable {
             	ModuleUtils.wrap("factoid", new FactoidCommand(DBConnection.getFactoidModel()) ),
             	ModuleUtils.wrap("help", new HelpCommand(processor)),
             	ModuleUtils.wrap("plugins", new PluginCommand(processor)),
-            	ModuleUtils.wrap("sesssion", new SessionCommand(security))
+            	ModuleUtils.wrap("session", new SessionCommand(security))
             };
             
             //register all legacy style modules
