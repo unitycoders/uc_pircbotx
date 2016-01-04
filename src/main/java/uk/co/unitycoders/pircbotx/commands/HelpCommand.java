@@ -44,10 +44,16 @@ public class HelpCommand extends AnnotationModule {
     }
 
     @Command
+    @HelpText("Displays infomation how to use the bot")
+    public void onHelp(Message event) {
+    	event.respond("Type 'help modules' for a list of modules or 'help commands' to see valid commands for a module.");
+    }
+    
+    @Command("modules")
     @HelpText("list all loaded modules")
     public void onList(Message event) {
         Collection<String> modules = processor.getModules();
-        event.respond("Loaded modules are: " + modules);
+        event.respond("Loaded modules are: " + modules+" type 'help module <name>' for more infomation or 'help commands <module>' to see valid commands");
     }
     
     @Command("info")
@@ -68,13 +74,13 @@ public class HelpCommand extends AnnotationModule {
     	}
     }
     
-    @Command("mod-info")
+    @Command("module")
     @HelpText("shows help on a module's description")
     public void onModuleHelp(Message event) {
     	String moduleName = event.getArgument(2, null);
 
         if (moduleName == null) {
-            event.respond("usage: help mod-info [module]");
+            event.respond("usage: help module [module]");
         }
 
         Module module = processor.getModule(moduleName);
@@ -84,20 +90,20 @@ public class HelpCommand extends AnnotationModule {
         
         String moduleHelp = module.getModuleHelp();
         if (moduleHelp == null) {
-        	event.respond("Sorry, loops like the developer hasn't provided HelpText");
+        	event.respond("Sorry, looks like the developer hasn't provided HelpText");
         } else {
         	event.respond(moduleHelp);
         }
     }
     
-    @Command("cmd-info")
+    @Command("command")
     @HelpText("shows a description of a command")
     public void onCommandHelp(Message event) {
     	String moduleName = event.getArgument(2, null);
     	String commandName = event.getArgument(3, null);
 
         if (moduleName == null || commandName == null) {
-            event.respond("usage: help cmd-info [module] [command]");
+            event.respond("usage: help command [module] [command]");
             return;
         }
 
@@ -108,7 +114,7 @@ public class HelpCommand extends AnnotationModule {
         
         String moduleHelp = module.getHelp(commandName);
         if (moduleHelp == null) {
-        	event.respond("Sorry, loops like the developer hasn't provided HelpText");
+        	event.respond("Sorry, looks like the developer hasn't provided HelpText");
         } else {
         	event.respond(moduleHelp);
         }
@@ -116,7 +122,7 @@ public class HelpCommand extends AnnotationModule {
 
     @Command("commands")
     @HelpText("Show a list of commands povided by a module")
-    public void onHelp(Message event) {
+    public void onCommands(Message event) {
     	String moduleName = event.getArgument(2, null);
     	
         if (moduleName == null) {
@@ -129,7 +135,7 @@ public class HelpCommand extends AnnotationModule {
         if (commands.isEmpty()) {
             event.respond("Sorry, that module doesn't exist or has no commands");
         } else {
-            event.respond(moduleName + " contains: " + commands);
+            event.respond(moduleName + " contains: " + commands+" type 'help command <module> <command>' for a description.");
         }
     }
 
