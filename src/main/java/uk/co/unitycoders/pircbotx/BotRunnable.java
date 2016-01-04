@@ -18,6 +18,7 @@
  */
 package uk.co.unitycoders.pircbotx;
 
+import java.util.Collections;
 import java.util.Map;
 
 import org.pircbotx.Configuration;
@@ -65,11 +66,9 @@ public class BotRunnable implements Runnable {
             SecurityManager security = new SecurityManager();
             processor = buildProcessor(config.trigger, security, rewrite, cb);
             
-            Map<String, ModuleConfig> moduleConfigs = new TreeMap<String,ModuleConfig>();
-            if (config.modules != null) {
-	            for (ModuleConfig config : config.modules) {
-	            	moduleConfigs.put(config.className, config);
-	            }
+            Map<String, ModuleConfig> moduleConfigs = config.modules;
+            if (moduleConfigs == null) {
+            	moduleConfigs = Collections.emptyMap();
             }
             
             ServiceLoader<Module> modules = ServiceLoader.load(Module.class);

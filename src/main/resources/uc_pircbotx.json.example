@@ -11,16 +11,16 @@
         "#unity-coders",
         "#unity-coders-bots"
     ],
-    "modules": [
-    	{"name": "datetime", "aliases": ["date", "time"]},
-    	{"name": "rand"},
-    	{"name": "lart"},
-    	{"name": "killertrout"},
-    	{"name": "joins"},
-    	{"name": "calc"},
-    	{"name": "karma"},
-    	{"name": "nick"},
-    	{"name": "irc"},
-    	{"name": "factoid"},
-    ]
+    "modules": {
+    	"datetime":{"aliases": ["date", "time"]},
+    	"rand": {},
+    	"lart": {},
+    	"killertrout": {},
+    	"joins": {},
+    	"calc": {},
+    	"karma": {},
+    	"nick": {},
+    	"irc": {},
+    	"factoid": {}
+    }
 }
