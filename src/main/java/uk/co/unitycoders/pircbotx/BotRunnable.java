@@ -39,7 +39,6 @@ import uk.co.unitycoders.pircbotx.security.*;
 import uk.co.unitycoders.pircbotx.security.SecurityManager;
 
 import java.util.ServiceLoader;
-import java.util.TreeMap;
 
 import javax.net.ssl.SSLSocketFactory;
 
