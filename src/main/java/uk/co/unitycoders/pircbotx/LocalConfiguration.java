@@ -20,6 +20,8 @@ package uk.co.unitycoders.pircbotx;
 
 import java.util.Map;
 
+import uk.co.unitycoders.pircbotx.modules.ModuleConfig;
+
 public class LocalConfiguration {
 
     public String nick;
