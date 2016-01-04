@@ -154,7 +154,7 @@ public class CommandProcessor {
     		assert message != null : mw+" voilates contract";
     	}
     	
-    	String command = message.getArgument(0, null);
+    	String command = message.getArgument(Module.MODULE_ARG, null);
     	Module node = commands.get(command);
     	if (node == null) {
     		throw new CommandNotFoundException(command);
