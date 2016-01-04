@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
+import org.pircbotx.cap.EnableCapHandler;
 import org.pircbotx.cap.SASLCapHandler;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandListener;
@@ -94,7 +95,7 @@ public class BotRunnable implements Runnable {
             	if (config != null) {    		
             		if (config.aliases != null) {
             			for (String alias : config.aliases) {
-            				processor.alias(module.getName(), alias);
+            				processor.alias(alias,module.getName());
             			}
             		}
             	}
@@ -136,8 +137,9 @@ public class BotRunnable implements Runnable {
         cb.setName(config.nick);
         cb.setServer(config.host, config.port);
         
-        if (config.sasl){
-        	cb.addCapHandler(new SASLCapHandler(config.username, config.password));
+        if (config.sasl) {
+	        cb.setCapEnabled(true);
+	    	cb.addCapHandler(new SASLCapHandler(config.username, config.password));
         }
 
         if (config.ssl) {
