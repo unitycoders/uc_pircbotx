@@ -41,10 +41,6 @@ public abstract class BasicMessage implements Message {
         this.args = args;
     }
     
-    public void insertArgument(int pos, String arg) {
-    	args.add(pos, arg);
-    }
-    
     public String getArguments() {
     	if (args.size() <= 2) {
     		return "";
@@ -70,6 +66,10 @@ public abstract class BasicMessage implements Message {
     	return args.size();
     }
     
+    public void insertArgument(int pos, String arg) {
+    	args.add(pos, arg);
+    }
+    
     public String getArgument(int id, String defaultValue) {
     	if (args == null || args.size() <= id){
     		return defaultValue;
@@ -85,17 +85,7 @@ public abstract class BasicMessage implements Message {
     
     @Override
     public String getMessage() {
-    	StringBuilder builder = new StringBuilder();
-    	
-    	Iterator<String> argItr = args.iterator();
-    	while(argItr.hasNext()) {
-    		builder.append(argItr.next());
-    		if (argItr.hasNext()) {
-    			builder.append(" ");
-    		}
-    	}
-    	
-    	return builder.toString();
+    	return this.getArguments();
     }
 
     @Override
