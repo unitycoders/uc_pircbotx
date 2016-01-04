@@ -28,6 +28,7 @@ import uk.co.unitycoders.pircbotx.commandprocessor.CommandListener;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.RewriteEngine;
 import uk.co.unitycoders.pircbotx.commands.*;
+import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
 import uk.co.unitycoders.pircbotx.listeners.LinesListener;
 import uk.co.unitycoders.pircbotx.modules.Module;
@@ -65,8 +66,10 @@ public class BotRunnable implements Runnable {
             processor = buildProcessor(config.trigger, security, rewrite, cb);
             
             Map<String, ModuleConfig> moduleConfigs = new TreeMap<String,ModuleConfig>();
-            for (ModuleConfig config : config.modules) {
-            	moduleConfigs.put(config.className, config);
+            if (config.modules != null) {
+	            for (ModuleConfig config : config.modules) {
+	            	moduleConfigs.put(config.className, config);
+	            }
             }
             
             ServiceLoader<Module> modules = ServiceLoader.load(Module.class);
