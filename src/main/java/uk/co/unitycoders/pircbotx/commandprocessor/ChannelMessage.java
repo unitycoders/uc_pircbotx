@@ -18,14 +18,16 @@
  */
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
+import java.util.List;
+
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
 
 public class ChannelMessage extends BasicMessage {
     private final MessageEvent<PircBotX> event;
     
-    public ChannelMessage(MessageEvent<PircBotX> event, String message) {
-        super(event, message);
+    public ChannelMessage(MessageEvent<PircBotX> event, List<String> args) {
+        super(event, args);
         this.event = event;
     }
     

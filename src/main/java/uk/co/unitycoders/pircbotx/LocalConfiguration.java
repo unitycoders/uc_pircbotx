@@ -25,13 +25,21 @@ import uk.co.unitycoders.pircbotx.modules.ModuleConfig;
 public class LocalConfiguration {
 
     public String nick;
+    public char trigger;
+    
+    //connection
     public String host;
     public int port;
     public Boolean ssl;
     public String[] channels;
-    public Map<String, ModuleConfig> modules;
-    public char trigger;
+    
+    //authentication
     public boolean sasl;
     public String username;
     public String password;
+    
+    //Stuff to autoload
+    public String[] middleware;
+    public Map<String, ModuleConfig> modules;
+	public Map<String,String> aliases;
 }

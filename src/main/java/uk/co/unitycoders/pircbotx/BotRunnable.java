@@ -27,17 +27,19 @@ import org.pircbotx.cap.SASLCapHandler;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandListener;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
-import uk.co.unitycoders.pircbotx.commandprocessor.RewriteEngine;
 import uk.co.unitycoders.pircbotx.commands.*;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
 import uk.co.unitycoders.pircbotx.listeners.LinesListener;
+import uk.co.unitycoders.pircbotx.middleware.BotMiddleware;
 import uk.co.unitycoders.pircbotx.modules.Module;
 import uk.co.unitycoders.pircbotx.modules.ModuleConfig;
 import uk.co.unitycoders.pircbotx.modules.ModuleUtils;
 import uk.co.unitycoders.pircbotx.security.*;
 import uk.co.unitycoders.pircbotx.security.SecurityManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ServiceLoader;
 
 import javax.net.ssl.SSLSocketFactory;
@@ -55,22 +57,30 @@ public class BotRunnable implements Runnable {
     public void run() {
 
         try {
-            Configuration.Builder<PircBotX> cb = new Configuration.Builder<PircBotX>();
-
-            //rewrite rules
-            RewriteEngine rewrite = new RewriteEngine();
-    		rewrite.addRule("^([a-zA-Z0-9]+)\\+\\+$", "karma add $1");
-    		rewrite.addRule("^([a-zA-Z0-9]+)--$", "karma remove $1");
-    		rewrite.addRule("^\\?([a-zA-Z0-9]+)$", "factoid get $1");
+            //load in middleware from configuration file
+            List<BotMiddleware> middleware = new ArrayList<BotMiddleware>();
+            if (config.middleware != null) {
+	            for (String middlewareClass : config.middleware) {
+	            	BotMiddleware mw = ModuleUtils.loadMiddleware(middlewareClass);
+	            	middleware.add(mw);
+	            	mw.init(config);
+	            }
+            }
             
+            //legacy middleware
             SecurityManager security = new SecurityManager();
-            processor = buildProcessor(config.trigger, security, rewrite, cb);
+            middleware.add(new SecurityMiddleware(security));
+
+            //start building the bot
+            Configuration.Builder<PircBotX> cb = new Configuration.Builder<PircBotX>();
+            processor = buildProcessor(config.trigger, middleware, cb);
             
             Map<String, ModuleConfig> moduleConfigs = config.modules;
             if (moduleConfigs == null) {
             	moduleConfigs = Collections.emptyMap();
             }
             
+            //load in the modules
             ServiceLoader<Module> modules = ServiceLoader.load(Module.class);
             for (Module module : modules) {
             	
@@ -91,13 +101,15 @@ public class BotRunnable implements Runnable {
             	
             }
             
+            //load in modules which require arguments
             Module[] legacyModules = new Module[] {
             	ModuleUtils.wrap("factoid", new FactoidCommand(DBConnection.getFactoidModel()) ),
             	ModuleUtils.wrap("help", new HelpCommand(processor)),
             	ModuleUtils.wrap("plugins", new PluginCommand(processor)),
-            	ModuleUtils.wrap("sesssion", new SessionCommand(security))
+            	ModuleUtils.wrap("session", new SessionCommand(security))
             };
             
+            //register all legacy style modules
             for (Module module : legacyModules) {
             	processor.register(module.getName(), module);
             }
@@ -163,9 +175,11 @@ public class BotRunnable implements Runnable {
      * @param cb PircBotX configuration
      * @return A constructed CommandProcessor instance
      */
-    private CommandProcessor buildProcessor(char trigger, SecurityManager s, RewriteEngine rewrite, Configuration.Builder<PircBotX> cb) {
-        CommandProcessor processor = new CommandProcessor(s);
-        cb.addListener(new CommandListener(processor, rewrite, trigger));
+    private CommandProcessor buildProcessor(char trigger, List<BotMiddleware> middleware, Configuration.Builder<PircBotX> cb) {
+
+        
+    	CommandProcessor processor = new CommandProcessor(middleware);
+        cb.addListener(new CommandListener(processor, trigger));
         return processor;
     }
 }

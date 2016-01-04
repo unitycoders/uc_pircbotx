@@ -55,17 +55,21 @@ public interface Message {
      * 
      * @return the cleaned message
      */
-    public String getMessage();
+    public String getRawMessage();
     
     /**
-     * Internal use only, do not use.
+     * Get a representation of the message as it arrived to the command.
      * 
-     * This is used internally to setup the arguments. It is part of the
-     * private API and should not be used by plugins.
+     * This is identical to asking for all arguments using getArgument. Using
+     * getArgument is preferred as the parsing will have been done for you. You
+     * can use this if you have a special case though.
      * 
-     * @param args the tokenised arguments.
+     * The string will always be of the form "module action [<args>]". If the user
+     * provided no action the action then action will be set as default.
+     * 
+     * @return a reconstructed normalised string
      */
-    public void setArguments(List<String> args);
+    public String getMessage();
     
     /**
      * Get a tokenised argument.
@@ -115,4 +119,12 @@ public interface Message {
      * @param action the action to perform
      */
     public void sendAction(String action);
+
+    /**
+     * Insert an argument into the message.
+     * 
+     * @param i position of the new argument
+     * @param arg the argument to insert
+     */
+	public void insertArgument(int i, String arg);
 }

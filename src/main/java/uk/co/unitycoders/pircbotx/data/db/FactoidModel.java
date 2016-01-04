@@ -28,22 +28,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class FactoidModel {
+	private static final String CREATE_SQL = "INSERT INTO factoid VALUES (?,?);";
+	private static final String UPDATE_SQL = "UPDATE factoid SET body=? WHERE name=?;";
+	private static final String DELETE_SQL = "DELETE FROM factoid WHERE name=?;";
+	private static final String READ_SQL = "SELECT body FROM factoid WHERE name=?;";
+	
     private final Logger logger = LoggerFactory.getLogger(FactoidModel.class);
     private final Connection connection;
 
-    private final PreparedStatement createStmt;
-    private final PreparedStatement readStmt;
-    private final PreparedStatement updateStmt;
-    private final PreparedStatement deleteStmt;
+    private PreparedStatement createStmt;
+    private PreparedStatement readStmt;
+    private PreparedStatement updateStmt;
+    private PreparedStatement deleteStmt;
 
     public FactoidModel(Connection connection) throws SQLException {
         this.connection = connection;
         buildTable();
 
-        createStmt = connection.prepareStatement("INSERT INTO factoid VALUES (?,?);");
-        readStmt = connection.prepareStatement("SELECT body FROM factoid WHERE name=?;");
-        updateStmt = connection.prepareStatement("UPDATE factoid SET body=? WHERE name=?");
-        deleteStmt = connection.prepareStatement("DELETE FROM factoid WHERE name=?");
+        createStmt = connection.prepareStatement(CREATE_SQL);
+        readStmt = connection.prepareStatement(READ_SQL);
+        updateStmt = connection.prepareStatement(UPDATE_SQL);
+        deleteStmt = connection.prepareStatement(DELETE_SQL);
     }
 
     private void buildTable() throws SQLException {
@@ -52,12 +57,24 @@ public class FactoidModel {
     }
 
     public boolean addFactoid(String factoid, String text) {
+    	if (createStmt == null) {
+    		try {
+    			createStmt = connection.prepareStatement(CREATE_SQL);
+    		} catch (SQLException ex) {
+    			createStmt = null;
+    			return false;
+    		}
+    	}
+    	
         try {
             createStmt.clearParameters();
             createStmt.setString(1, factoid);
             createStmt.setString(2, text);
             return createStmt.executeUpdate() == 1;
         } catch (SQLException ex) {
+        	//work around https://github.com/xerial/sqlite-jdbc/issues/74
+        	killConnection(createStmt);
+        	createStmt = null;
             logger.error("Database error", ex);
             return false;
         }
@@ -81,12 +98,23 @@ public class FactoidModel {
     }
 
     public boolean editFactoid(String factoid, String text) {
+    	if (updateStmt == null) {
+    		try {
+    			updateStmt = connection.prepareStatement(UPDATE_SQL);
+    		} catch (SQLException ex) {
+    			updateStmt = null;
+    			return false;
+    		}
+    	}
+    	
         try {
             updateStmt.clearParameters();
-            updateStmt.setString(1, factoid);
-            updateStmt.setString(2, text);
+            updateStmt.setString(1, text);
+            updateStmt.setString(2, factoid);
             return updateStmt.executeUpdate() == 1;
         } catch (SQLException ex) {
+        	killConnection(updateStmt);
+			updateStmt = null;
             logger.error("Database error", ex);
             return false;
         }
@@ -96,11 +124,19 @@ public class FactoidModel {
         try {
             deleteStmt.clearParameters();
             deleteStmt.setString(1, factoid);
-            return deleteStmt.execute();
+            return deleteStmt.executeUpdate() == 1;
         } catch (SQLException ex) {
             logger.error("Database error", ex);
             return false;
         }
     }
 
+    private void killConnection(PreparedStatement stmt) {
+    	try {
+    		stmt.close();
+    	} catch (SQLException ex) {
+    		//it's probably dead
+    	}
+    }
+    
 }
