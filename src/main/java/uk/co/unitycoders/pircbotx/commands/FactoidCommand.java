@@ -18,8 +18,12 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
+import java.util.List;
+
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
+import uk.co.unitycoders.pircbotx.commandprocessor.MessageUtils;
+import uk.co.unitycoders.pircbotx.data.db.Factoid;
 import uk.co.unitycoders.pircbotx.data.db.FactoidModel;
 import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 
@@ -62,6 +66,34 @@ public class FactoidCommand extends AnnotationModule {
             message.respond(factoid);
         }
     }
+    
+    @Command("search")
+    public void onSearch(Message message) {
+    	String query = message.getArgument(2, null);
+    	if (query == null) {
+    		message.respond("Usage: factoid search [query]");
+    		return;
+    	}
+    	
+    	List<Factoid> factoids = model.search(query);
+    	if (factoids.isEmpty()) {
+    		message.respond("That didn't match any results");
+    	} else {	
+    		String listStr = MessageUtils.buildList(factoids);
+    		message.respond(String.format("matching factoids: %s", listStr));
+    	}
+    }
+    
+    @Command("random")
+    public void getRandom(Message message) {
+        Factoid factoid = model.getRandom();
+        if (factoid == null) {
+            message.respond("Sorry, unknown factoid.");
+        } else {
+            message.respond(factoid.body);
+        }
+    }
+
 
     @Command("edit")
     public void updateFactoid(Message message) {

@@ -48,10 +48,9 @@ public class SessionCommand {
 
     @Command("login")
     public void onLogin(Message event) {
-        String[] args = event.getMessage().split(" ");
-        String password = args[2];
+        String password = event.getArgument(2, null);
 
-        if (password.equals(MAGIC_WORDS)) {
+        if (MAGIC_WORDS.equals(password)) {
             securityManager.startSession(event.getUser());
             System.out.println("Started session for " + securityManager.generateSessionKey(event.getUser()));
             event.respond("Started session");

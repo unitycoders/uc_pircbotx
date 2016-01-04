@@ -23,6 +23,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,12 +34,16 @@ public class FactoidModel {
 	private static final String UPDATE_SQL = "UPDATE factoid SET body=? WHERE name=?;";
 	private static final String DELETE_SQL = "DELETE FROM factoid WHERE name=?;";
 	private static final String READ_SQL = "SELECT body FROM factoid WHERE name=?;";
+	private static final String SEARCH_SQL = "SELECT name,body FROM factoid WHERE name LIKE ? LIMIT 10";
+	private static final String RANDOM_SQL = "SELECT name,body FROM factoid ORDER BY RANDOM() LIMIT 1;";
 	
     private final Logger logger = LoggerFactory.getLogger(FactoidModel.class);
     private final Connection connection;
 
     private PreparedStatement createStmt;
+    private PreparedStatement searchStmt;
     private PreparedStatement readStmt;
+    private PreparedStatement randStmt;
     private PreparedStatement updateStmt;
     private PreparedStatement deleteStmt;
 
@@ -46,9 +52,11 @@ public class FactoidModel {
         buildTable();
 
         createStmt = connection.prepareStatement(CREATE_SQL);
+        searchStmt = connection.prepareStatement(SEARCH_SQL);
         readStmt = connection.prepareStatement(READ_SQL);
         updateStmt = connection.prepareStatement(UPDATE_SQL);
         deleteStmt = connection.prepareStatement(DELETE_SQL);
+        randStmt = connection.prepareStatement(RANDOM_SQL);
     }
 
     private void buildTable() throws SQLException {
@@ -96,7 +104,52 @@ public class FactoidModel {
             return null;
         }
     }
+    
+	public List<Factoid> search(String query) {
+        try {
+            searchStmt.clearParameters();
+            searchStmt.setString(1, query);
+            
+            ResultSet rs = searchStmt.executeQuery();
+            
+            List<Factoid> factoids = new ArrayList<Factoid>();
+            
+            while (rs.next()) {
+                Factoid factoid = new Factoid();
+                factoid.name = rs.getString(1);
+                factoid.body = rs.getString(2);
+                factoids.add(factoid);
+            }
+            rs.close();
+            
+            return factoids;
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return null;
+        }
+	}
 
+	public Factoid getRandom() {
+        try {
+            randStmt.clearParameters();
+            ResultSet rs = randStmt.executeQuery();
+            
+            if (rs.next()) {
+                Factoid factoid = new Factoid();
+                
+                factoid.name = rs.getString(1);
+                factoid.body = rs.getString(2);
+                
+                return factoid;
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            logger.error("Database error", ex);
+            return null;
+        }
+	}
+    
     public boolean editFactoid(String factoid, String text) {
     	if (updateStmt == null) {
     		try {
@@ -119,6 +172,7 @@ public class FactoidModel {
             return false;
         }
     }
+    
 
     public boolean deleteFactoid(String factoid) {
         try {
@@ -138,5 +192,4 @@ public class FactoidModel {
     		//it's probably dead
     	}
     }
-    
 }
