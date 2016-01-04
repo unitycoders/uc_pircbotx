@@ -18,6 +18,10 @@
  */
 package uk.co.unitycoders.pircbotx;
 
+import java.util.Map;
+
+import uk.co.unitycoders.pircbotx.modules.ModuleConfig;
+
 public class LocalConfiguration {
 
     public String nick;
@@ -25,6 +29,7 @@ public class LocalConfiguration {
     public int port;
     public Boolean ssl;
     public String[] channels;
+    public Map<String, ModuleConfig> modules;
     public char trigger;
     public boolean sasl;
     public String username;
