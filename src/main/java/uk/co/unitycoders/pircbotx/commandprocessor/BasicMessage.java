@@ -82,9 +82,24 @@ public abstract class BasicMessage implements Message {
     public void respond(String response) {
         event.respond(response);
     }
+    
+    @Override
+    public String getMessage() {
+    	StringBuilder builder = new StringBuilder();
+    	
+    	Iterator<String> argItr = args.iterator();
+    	while(argItr.hasNext()) {
+    		builder.append(argItr.next());
+    		if (argItr.hasNext()) {
+    			builder.append(" ");
+    		}
+    	}
+    	
+    	return builder.toString();
+    }
 
     @Override
-    public  String getMessage() {
+    public  String getRawMessage() {
        return event.getMessage();
     }
 

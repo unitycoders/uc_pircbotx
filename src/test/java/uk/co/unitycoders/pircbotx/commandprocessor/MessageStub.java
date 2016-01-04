@@ -45,7 +45,7 @@ public class MessageStub implements Message {
 
     @Override
     public String getMessage() {
-        return "";
+        return null;
     }
 
     @Override
@@ -73,5 +73,10 @@ public class MessageStub implements Message {
 	@Override
 	public void insertArgument(int i, String arg) {
 		args.add(i, arg);
+	}
+
+	@Override
+	public String getRawMessage() {
+		return null;
 	}
 }
