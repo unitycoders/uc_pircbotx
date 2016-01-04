@@ -12,7 +12,7 @@
         "#unity-coders-bots"
     ],
     "modules": {
-    	"datetime":{"aliases": ["date", "time"]},
+    	"datetime":{"aliases": ["dt"]},
     	"rand": {},
     	"lart": {},
     	"killertrout": {},
@@ -31,6 +31,8 @@
     	"^([a-zA-Z0-9]+)\\+\\+$": "karma add $1",
 		"^([a-zA-Z0-9]+)--$": "karma remove $1",
 		"^\\?([a-zA-Z0-9]+)$": "factoid get $1",
+		"^date (.+)$": "datetime date $1",
+		"^time (.+)$": "datetime time $1",
 		"^tell me about ([a-zA-Z0-9]+)\\??$": "factoid get $1",
 		"^what is ([a-zA-Z0-9]+)\\?$": "factoid get $1",
 		"^remember ([a-zA-Z0-9]+) is (.+)$": "factoid add $1 '$1 is $2'",
