@@ -24,6 +24,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import uk.co.unitycoders.pircbotx.middleware.BotMiddleware;
 import uk.co.unitycoders.pircbotx.modules.Module;
 import uk.co.unitycoders.pircbotx.modules.ModuleUtils;
 
@@ -36,7 +37,10 @@ public class CommandProcessorTest {
      */
     @Before
     public void setUp() throws Exception {
-        processor = new CommandProcessor(null);
+    	List<BotMiddleware> middleware = new ArrayList<BotMiddleware>();
+    	middleware.add(new CommandFixerMiddleware());
+
+        processor = new CommandProcessor(middleware);
     }
 
     /**
@@ -121,7 +125,7 @@ public class CommandProcessorTest {
         Module module = ModuleUtils.wrap(name, new FakeModule());
         processor.register(name, module);
 
-        MessageStub message = new MessageStub("fake default");
+        Message message = new MessageStub("fake", "default");
         processor.invoke(message);
     }
     
@@ -131,8 +135,16 @@ public class CommandProcessorTest {
         Module module = ModuleUtils.wrap(name, new FakeModule());
         processor.register(name, module);
 
-        MessageStub message = new MessageStub("fake banana");
+        Message message = new MessageStub("fake", "banana");
         processor.invoke(message);
+    }
+    
+    @Test
+    public void testGetModuleNull() {
+    	String moduleName = null;
+    	Module expected = null;
+    	Module result = processor.getModule(moduleName);
+    	Assert.assertEquals(expected, result);
     }
     
     @Test(expected=CommandNotFoundException.class)
@@ -141,7 +153,7 @@ public class CommandProcessorTest {
         Module module = new ModuleWhichThrowsExceptions();
         processor.register(name, module);
 
-        MessageStub message = new MessageStub("fake notFound");
+        Message message = new MessageStub("fake", "notFound");
         processor.invoke(message);
     }
     
@@ -151,7 +163,7 @@ public class CommandProcessorTest {
         Module module = new ModuleWhichReportsNoCommands();
         processor.register(name, module);
 
-        MessageStub message = new MessageStub("fake notAValidCommand");
+        Message message = new MessageStub("fake", "notAValidCommand");
         processor.invoke(message);
     }
 

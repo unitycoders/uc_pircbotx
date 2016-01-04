@@ -21,6 +21,7 @@ package uk.co.unitycoders.pircbotx.commands;
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
+import uk.co.unitycoders.pircbotx.security.Secured;
 
 
 /**
@@ -34,8 +35,13 @@ public class NickCommand extends AnnotationModule
 	}
 
 	@Command
+	@Secured
     public void onNick(Message event) {
-        String nick = event.getMessage().split(" ")[1];
+        String nick = event.getArgument(2, null);
+        if (nick == null) {
+        	event.respond("You didn't provide a new nickname");
+        }
+        
         event.getBot().sendIRC().changeNick(nick);
         event.respond("Changed nick to " + nick);
     }

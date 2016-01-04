@@ -43,7 +43,7 @@ public class AnnotationModuleTests {
 	
 	@Test
 	public void testFireNonDefaultCommand() throws Exception {
-		Message message = new MessageStubArgs("mock", "helpText");
+		Message message = new MessageStub("mock", "helpText");
 		object.fire(message);
 	}
 	
@@ -58,7 +58,7 @@ public class AnnotationModuleTests {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testFirCommandException() throws Exception {
-		Message message = new MessageStubArgs("mock");		
+		Message message = new MessageStub("mock");		
 		Module m = new MockAnnotationModuleThrowsException();
 		m.fire(message);
 	}
@@ -66,7 +66,7 @@ public class AnnotationModuleTests {
 	
 	@Test(expected=CommandNotFoundException.class)
 	public void testFireInvalidCommand() throws Exception {
-		Message message = new MessageStubArgs("mock", INVALID_COMMAND);
+		Message message = new MessageStub("mock", INVALID_COMMAND);
 		object.fire(message);
 	}
 	

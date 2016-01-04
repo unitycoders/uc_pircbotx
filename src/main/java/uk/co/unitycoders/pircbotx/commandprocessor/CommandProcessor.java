@@ -22,13 +22,11 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.pircbotx.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import uk.co.unitycoders.pircbotx.middleware.BotMiddleware;
 import uk.co.unitycoders.pircbotx.modules.Module;
-import uk.co.unitycoders.pircbotx.security.*;
-import uk.co.unitycoders.pircbotx.security.SecurityManager;
 
 /**
  * centrally managed command parsing.
@@ -43,7 +41,7 @@ public class CommandProcessor {
     private final Logger logger = LoggerFactory.getLogger(CommandProcessor.class);
     private final Pattern tokeniser;
     private final Map<String, Module> commands;
-    private final SecurityManager security;
+    private final List<BotMiddleware> middleware;
 
     /**
      * Create a new command processor.
@@ -52,10 +50,11 @@ public class CommandProcessor {
      * pattern the bot will use to match commands. It will also create the maps
      * needed to store information about the commands.
      */
-    public CommandProcessor(SecurityManager security) {
+    public CommandProcessor(List<BotMiddleware> middleware) {
+    	assert middleware != null : "don't pass null as the middleware, use empty list instead";
         this.tokeniser = Pattern.compile("([^\\s\"']+)|\"([^\"]*)\"|'([^']*)'");
         this.commands = new TreeMap<String, Module>();
-        this.security = security;
+        this.middleware = middleware;
     }
 
     /**
@@ -108,7 +107,7 @@ public class CommandProcessor {
     }
 
     
-    public List<String> tokenise(String message) {
+    protected List<String> tokenise(String message) {
     	
     	List<String> arguments = new ArrayList<String>();
     	
@@ -127,6 +126,17 @@ public class CommandProcessor {
     	return arguments;
     }
 
+    public List<String> processMessage(String inputMessage) {
+    	
+    	//let other parts of the bot modify the message if needed
+    	for (BotMiddleware mw : middleware) {
+    		inputMessage = mw.preprocess(inputMessage);
+    		assert inputMessage != null : mw+" voilates contract";
+    	}
+    	
+    	return tokenise(inputMessage);
+    }
+    
     /**
      * Process an IRC message to see if the bot needs to respond.
      *
@@ -138,54 +148,28 @@ public class CommandProcessor {
      * @throws Exception
      */
     public void invoke(Message message) throws Exception {
-    	List<String> arguments = tokenise(message.getMessage());
-    	logger.info("decoded: " + arguments); // TODO should really be debug, need different log handler
+    	for (BotMiddleware mw : middleware) {
+    		message = mw.process(this, message);
+    		
+    		assert message != null : mw+" voilates contract";
+    	}
     	
-    	int argc = arguments.size();
-    	String command = arguments.get(0);
-    	//XXX not happy about this, should probably be dealt with before ending up here...
-    	message.setArguments(arguments);
-    	
+    	String command = message.getArgument(Module.MODULE_ARG, null);
     	Module node = commands.get(command);
     	if (node == null) {
     		throw new CommandNotFoundException(command);
     	}
     	
-    	String action = Module.DEFAULT_COMMAND;
-    	if (argc < 2 || !node.isValidAction(arguments.get(1))){
-    		//ensure that if default is invoked that default is on the queue
-    		arguments.add(1, Module.DEFAULT_COMMAND);
-    	}else {
-    		action = arguments.get(1);
-    	}
-    	
-    	if (!checkPermissions(node, action, message.getUser())) {
-    		throw new PermissionException();
-    	}
-    	
     	try {
     		node.fire(message);
     	} catch (CommandNotFoundException ex) {
-    		throw new CommandNotFoundException(command + " " + action);
+    		message.respond("That's not a valid command");
+    		throw ex;
     	} catch (Exception ex) {
     		message.respond("Something has gone wrong, please let the developers know");
     		logger.error("Exception thrown", ex);
     		throw ex;
     	}
-    }
-
-    private boolean checkPermissions(Module node, String action, User user) {
-        //check if security is disabled
-        if (security == null) {
-            return true;
-        }
-
-        String[] permissions = node.getRequiredPermissions(action);
-        if (permissions.length > 0) {
-            Session session = security.getSession(user);
-            return session != null && session.hasPermissions(permissions);
-        }
-        return true;
     }
 
     /**
@@ -219,6 +203,10 @@ public class CommandProcessor {
     }
 
 	public Module getModule(String moduleName) {
+		if (moduleName == null) {
+			return null;
+		}
+		
 		return commands.get(moduleName);
 	}
 }
