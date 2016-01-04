@@ -102,10 +102,9 @@ public class CalcCommand extends AnnotationModule {
 
     @Command
     public void onCalc(Message event) {
-        String msg = event.getMessage();
-
+    	String msg = event.getArgument(2, null);   	
+    	
         try {
-            msg = msg.substring(6);
             event.respond(msg + " = " + parse(msg));
         } catch (IndexOutOfBoundsException ex) {
             event.respond(ex.getLocalizedMessage());

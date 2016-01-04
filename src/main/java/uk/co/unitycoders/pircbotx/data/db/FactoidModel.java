@@ -83,8 +83,8 @@ public class FactoidModel {
     public boolean editFactoid(String factoid, String text) {
         try {
             updateStmt.clearParameters();
-            updateStmt.setString(1, factoid);
-            updateStmt.setString(2, text);
+            updateStmt.setString(1, text);
+            updateStmt.setString(2, factoid);
             return updateStmt.executeUpdate() == 1;
         } catch (SQLException ex) {
             logger.error("Database error", ex);
@@ -96,7 +96,7 @@ public class FactoidModel {
         try {
             deleteStmt.clearParameters();
             deleteStmt.setString(1, factoid);
-            return deleteStmt.execute();
+            return deleteStmt.executeUpdate() == 1;
         } catch (SQLException ex) {
             logger.error("Database error", ex);
             return false;

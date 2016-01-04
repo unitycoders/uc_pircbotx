@@ -117,21 +117,19 @@ public class HelpCommand extends AnnotationModule {
     @Command("commands")
     @HelpText("Show a list of commands povided by a module")
     public void onHelp(Message event) {
-        String line = event.getMessage();
-        String[] args = line.split(" ");
-
-        if (args.length != 3) {
+    	String moduleName = event.getArgument(2, null);
+    	
+        if (moduleName == null) {
             event.respond("usage: help commands [module]");
             return;
         }
-
-        String moduleName = args[2];
+        
         Collection<String> commands = processor.getCommands(moduleName);
 
         if (commands.isEmpty()) {
             event.respond("Sorry, that module doesn't exist or has no commands");
         } else {
-            event.respond(args[2] + " contains: " + commands);
+            event.respond(moduleName + " contains: " + commands);
         }
     }
 

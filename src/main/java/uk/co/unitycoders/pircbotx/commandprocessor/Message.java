@@ -55,6 +55,20 @@ public interface Message {
      * 
      * @return the cleaned message
      */
+    public String getRawMessage();
+    
+    /**
+     * Get a representation of the message as it arrived to the command.
+     * 
+     * This is identical to asking for all arguments using getArgument. Using
+     * getArgument is preferred as the parsing will have been done for you. You
+     * can use this if you have a special case though.
+     * 
+     * The string will always be of the form "module action [<args>]". If the user
+     * provided no action the action then action will be set as default.
+     * 
+     * @return a reconstructed normalised string
+     */
     public String getMessage();
     
     /**

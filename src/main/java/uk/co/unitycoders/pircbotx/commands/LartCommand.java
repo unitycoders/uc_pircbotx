@@ -20,8 +20,6 @@ package uk.co.unitycoders.pircbotx.commands;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.pircbotx.hooks.events.MessageEvent;
 import org.slf4j.Logger;
@@ -42,8 +40,6 @@ import uk.co.unitycoders.pircbotx.types.Lart;
 public class LartCommand extends AnnotationModule {
 	final Logger logger = LoggerFactory.getLogger(LartCommand.class);
     private LartModel model;
-    private final Pattern re;
-    private final Pattern alterRe;
 
     /**
      * Creates a {@link LartCommand}.
@@ -55,23 +51,15 @@ public class LartCommand extends AnnotationModule {
         } catch (ClassNotFoundException | SQLException ex) {
             logger.error("Database error", ex);
         }
-
-        this.re = Pattern.compile("lart ([^ ]+) *(.*)?");
-        this.alterRe = Pattern.compile("lart alter (\\d) (.*)");
     }
 
     @Command("add")
     public void onAdd(Message event) {
-        // TODO this bit could still be nicer
-        String msg = event.getMessage();
-        Matcher matcher = re.matcher(msg);
-
-        if (!matcher.matches()) {
+        String ops = event.getArgument(2, null);
+        if (ops == null) {
             event.respond("Invalid format for add");
             return;
         }
-
-        String ops = matcher.group(2);
 
         try {
             int num = model.storeLart(event.getTargetName(), event.getUser(), ops);
@@ -84,7 +72,11 @@ public class LartCommand extends AnnotationModule {
     @Command("delete")
     public void onDelete(Message event) {
         int id = toInt(event);
-
+        if (id == -1) {
+        	event.respond("Invalid format for delete");
+        	return;
+        }
+        
         boolean result = model.deleteLart(id);
         if (result) {
             event.respond("Deleted lart #" + id);
@@ -96,6 +88,10 @@ public class LartCommand extends AnnotationModule {
     @Command("info")
     public void onInfo(Message event) {
         int id = toInt(event);
+        if (id == -1) {
+            event.respond("Invalid format for info");
+        }
+        
         Lart lart = model.getLart(id);
         String resp = String.format("Channel: %s, Nick: %s, Pattern: %s", lart.getChannel(), lart.getNick(), lart.getPattern());
         event.respond(resp);
@@ -122,16 +118,15 @@ public class LartCommand extends AnnotationModule {
 
     @Command("alter")
     public void onAlter(Message event) {
-        Matcher matcher = alterRe.matcher(event.getMessage());
-        if (!matcher.matches()) {
+    	int id = toInt(event);
+    	String pattern = event.getArgument(3, null);
+    			
+        if (id == -1 || pattern == null) {
             event.respond("Invalid Format for alter");
             return;
         }
 
         try {
-            int id = Integer.parseInt(matcher.group(1));
-            String pattern = matcher.group(2);
-
             this.model.alterLart(id, event.getTargetName(), event.getUser(), pattern);
             event.respond("Lart #" + id + " altered");
         } catch (IllegalArgumentException ex) {
@@ -146,7 +141,7 @@ public class LartCommand extends AnnotationModule {
      */
     @Command("default")
     public void insult(Message event) {
-        String nick = event.getMessage().split(" ")[1];
+        String nick = event.getArgument(2, event.getUser().getNick());
         String insult;
 
         String pattern = this.model.getRandomLart().getPattern();
@@ -154,12 +149,18 @@ public class LartCommand extends AnnotationModule {
         event.sendAction(insult);
     }
 
-    private int toInt(Message event) {
-        String msg = event.getMessage();
-        Matcher matcher = re.matcher(msg);
-        if (!matcher.matches()) {
-            logger.error("Conversion error");
-        }
-        return Integer.parseInt(matcher.group(2));
+    private int toInt(Message message) {	
+    	try{
+    		String idStr = message.getArgument(2, null);
+    		if (idStr == null) {
+    			return -1;
+    		}
+    		
+    		return Integer.parseInt(idStr);
+    	} catch (NumberFormatException ex) {
+    		logger.error("Conversion error");
+    	}
+    	
+    	return -1;
     }
 }

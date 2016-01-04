@@ -38,6 +38,7 @@ public class RewriteEngine implements BotMiddleware {
 		}
 		
 		for (Map.Entry<String, String> rule : config.aliases.entrySet()) {
+			System.out.println(rule.getKey()+" is mapped to "+rule.getValue());
 			addRule(rule.getKey(), rule.getValue());
 		}
 		
@@ -53,6 +54,7 @@ public class RewriteEngine implements BotMiddleware {
 		for (Map.Entry<String, String> rule : rules.entrySet()) {
 			output = output.replaceAll(rule.getKey(), rule.getValue());
 		}
+		System.out.println(source+" "+output);
 		
 		return output;
 	}

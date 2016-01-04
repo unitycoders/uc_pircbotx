@@ -46,10 +46,8 @@ public class PluginCommand extends AnnotationModule {
     @Command("load")
     @Secured
     public void onLoad(Message message) {
-        String[] args = message.getMessage().split(" ");
-
-        String name = args[2];
-        String className = args[3];
+        String name = message.getArgument(2, null);
+        String className = message.getArgument(3, null);
 
         try { 
             Module module = ModuleUtils.loadModule(className);
@@ -68,11 +66,10 @@ public class PluginCommand extends AnnotationModule {
     @Command("alias")
     @Secured
     public void onAlias(Message message) {
-        String[] args = message.getMessage().split(" ");
 
         try {
-            String alias = args[2];
-            String commandKeyword = args[3];
+            String alias = message.getArgument(2, null);
+            String commandKeyword = message.getArgument(3, null);
             processor.alias(alias, commandKeyword);
             message.respond("Plugin is now aliased");
         } catch (RuntimeException ex) {
@@ -84,9 +81,7 @@ public class PluginCommand extends AnnotationModule {
     @Command("unload")
     @Secured
     public void onUnload(Message message) {
-        String[] args = message.getMessage().split(" ");
-
-        String name = args[2];
+        String name = message.getArgument(2, null);
         processor.remove(name);
         message.respond("Plugin has been unloaded");
     }
