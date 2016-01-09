@@ -293,7 +293,7 @@ public class IRCCommands extends AnnotationModule {
 			return;
 		}
 		
-		channel.send().kick(user,"kicked by "+message.getUser());
+		channel.send().kick(user,"kicked by "+message.getUser().getNick());
 	}
 	
 	@Command("topic")
