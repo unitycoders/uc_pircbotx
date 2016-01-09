@@ -27,6 +27,7 @@ import uk.co.unitycoders.pircbotx.modules.ModuleUtils;
 import uk.co.unitycoders.pircbotx.security.Secured;
 
 import java.util.Collection;
+import java.util.List;
 
 public class PluginCommand extends AnnotationModule {
     private CommandProcessor processor;
@@ -84,5 +85,21 @@ public class PluginCommand extends AnnotationModule {
         String name = message.getArgument(2, null);
         processor.remove(name);
         message.respond("Plugin has been unloaded");
+    }
+    
+    @Command("reverse")
+    public void onReverse(Message message) {
+    	String action = message.getArgument(2, null);
+    	if (action == null) {
+    		message.respond("usage: reverse [message]");
+    		return;
+    	}
+    	
+    	List<String> modules = processor.getReverse(action);
+    	if (!modules.isEmpty()) {
+    		message.respond(String.format("%s is provided by %s", action, modules)); 
+    	} else {
+    		message.respond("nothing provides that");
+    	}
     }
 }

@@ -41,6 +41,7 @@ public class CommandProcessor {
     private final Logger logger = LoggerFactory.getLogger(CommandProcessor.class);
     private final Pattern tokeniser;
     private final Map<String, Module> commands;
+    private final Map<String, List<String>> revLookup;
     private final List<BotMiddleware> middleware;
 
     /**
@@ -54,6 +55,7 @@ public class CommandProcessor {
     	assert middleware != null : "don't pass null as the middleware, use empty list instead";
         this.tokeniser = Pattern.compile("([^\\s\"']+)|\"([^\"]*)\"|'([^']*)'");
         this.commands = new LinkedHashMap<String, Module>();
+        this.revLookup = new HashMap<String, List<String>>();
         this.middleware = middleware;
     }
 
@@ -72,8 +74,33 @@ public class CommandProcessor {
      */
     public void register(String name, Module target) {
         commands.put(name, target);
+        
+        //create a reverse lookup for all commands
+        for (String action : target.getActions()){
+        	List<String> providers = revLookup.get(action);
+        	if (providers == null) {
+        		providers = new ArrayList<String>();
+        		revLookup.put(action, providers);
+        	}
+        	providers.add(name);
+        }
     }
 
+    /**
+     * Lookup what plugins are capable of responding to a given action.
+     * 
+     * @param action the action to respond to
+     * @return the list of plugins which recognise this command
+     */
+    public List<String> getReverse(String action) {
+    	List<String> actions = revLookup.get(action);
+    	if (actions == null) {
+    		return Collections.emptyList();
+    	} else {
+    		return Collections.unmodifiableList(actions);
+    	}
+    }
+    
     /**
      * Alias an existing module to a new name.
      * 

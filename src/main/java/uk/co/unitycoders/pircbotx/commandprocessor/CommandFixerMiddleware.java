@@ -1,5 +1,7 @@
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
+import java.util.List;
+
 import uk.co.unitycoders.pircbotx.middleware.AbstractMiddleware;
 import uk.co.unitycoders.pircbotx.middleware.BotMiddleware;
 import uk.co.unitycoders.pircbotx.modules.Module;
@@ -16,6 +18,13 @@ public class CommandFixerMiddleware extends AbstractMiddleware {
 		String moduleName = message.getArgument(Module.MODULE_ARG, null);
 		Module module = processor.getModule(moduleName);
 		if (module == null) {
+			
+			//we couldn't repair this module, maybe it's shorthand?
+			List<String> modules = processor.getReverse(moduleName);
+			if (modules.size() == 1) {
+				message.insertArgument(Module.MODULE_ARG, modules.get(0));
+			}
+			
 			return message;
 		}
 		

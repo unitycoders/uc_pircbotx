@@ -84,6 +84,11 @@ public abstract class BasicMessage implements Message {
     }
     
     @Override
+    public void respondSuccess() {
+    	respond("The operation was successful.");
+    }
+    
+    @Override
     public String getMessage() {
     	return this.getArguments();
     }

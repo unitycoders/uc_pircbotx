@@ -110,6 +110,12 @@ public interface Message {
     public void respond(String message);
     
     /**
+     * Respond that an operation was successful.
+     */
+    public void respondSuccess();
+    
+    
+    /**
      * Send an action to the user.
      * 
      * This will use /me to send an action to the target. If the message is a 

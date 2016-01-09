@@ -79,4 +79,9 @@ public class MessageStub implements Message {
 	public String getRawMessage() {
 		return null;
 	}
+
+	@Override
+	public void respondSuccess() {
+		
+	}
 }

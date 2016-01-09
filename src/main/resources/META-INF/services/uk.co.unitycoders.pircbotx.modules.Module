@@ -7,3 +7,4 @@ uk.co.unitycoders.pircbotx.commands.LartCommand
 uk.co.unitycoders.pircbotx.commands.NickCommand
 uk.co.unitycoders.pircbotx.commands.KarmaCommand
 uk.co.unitycoders.pircbotx.commands.IRCCommands
+uk.co.unitycoders.pircbotx.commands.GamesCommand
