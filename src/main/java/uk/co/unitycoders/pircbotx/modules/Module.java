@@ -52,5 +52,7 @@ public interface Module {
 
 	public String getHelp(String command);
 	public String getModuleHelp();
+
+	public String[] getArgumentsFor(String action);
 	
 }

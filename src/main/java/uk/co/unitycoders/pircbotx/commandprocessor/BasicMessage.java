@@ -70,7 +70,6 @@ public abstract class BasicMessage implements Message {
     	args.add(pos, arg);
     }
     
-    
     public String getArgument(int id) {
     	if (args == null || args.size() <= id){
     		throw new IllegalArgumentException("missing required argument");

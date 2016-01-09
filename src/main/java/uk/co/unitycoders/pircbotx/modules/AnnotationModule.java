@@ -142,6 +142,7 @@ public class AnnotationModule implements Module {
 		protected Method method;
 		protected String[] permissions;
 		protected String helpText;
+		protected String[] usage;
 	}
 
 	@Override
@@ -167,5 +168,15 @@ public class AnnotationModule implements Module {
 	@Override
 	public String getModuleHelp() {
 		return helpText;
+	}
+
+	@Override
+	public String[] getArgumentsFor(String action) {
+		Node node = nodes.get(action);
+		if (node == null) {
+			return null;
+		}
+
+		return node.usage;
 	}
 }

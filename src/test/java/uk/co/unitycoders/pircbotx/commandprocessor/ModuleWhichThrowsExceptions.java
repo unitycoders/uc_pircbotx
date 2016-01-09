@@ -9,7 +9,7 @@ public class ModuleWhichThrowsExceptions implements Module {
 
 	@Override
 	public void fire(Message message) throws Exception {
-		throw new CommandNotFoundException("TEST");
+		throw new NullPointerException("TEST");
 	}
 
 	@Override
@@ -40,6 +40,11 @@ public class ModuleWhichThrowsExceptions implements Module {
 	@Override
 	public String getModuleHelp() {
 		return "";
+	}
+
+	@Override
+	public String[] getArgumentsFor(String action) {
+		return new String[0];
 	}
 
 }

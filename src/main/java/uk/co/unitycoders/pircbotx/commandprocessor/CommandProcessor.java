@@ -196,7 +196,12 @@ public class CommandProcessor {
     		message.respond("That's not a valid command");
     		throw ex;
     	} catch (IllegalArgumentException ex) {
-    		message.respond(String.format(USE_FORMAT, module, action, ex.getMessage()));
+    		String[] args = node.getArgumentsFor(action);
+    		if (args == null) {
+    			message.respond("You did not supply the correct arguments");
+    		} else {
+    			message.respond(String.format(USE_FORMAT, module, action, args));
+    		}
     	} catch (Exception ex) {
     		message.respond("Something has gone wrong, please let the developers know");
     		logger.error("Exception thrown", ex);
