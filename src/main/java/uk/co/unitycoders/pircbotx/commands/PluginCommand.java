@@ -91,8 +91,7 @@ public class PluginCommand extends AnnotationModule {
     public void onReverse(Message message) {
     	String action = message.getArgument(2, null);
     	if (action == null) {
-    		message.respond("usage: reverse [message]");
-    		return;
+        	throw new IllegalArgumentException("[message]");
     	}
     	
     	List<String> modules = processor.getReverse(action);

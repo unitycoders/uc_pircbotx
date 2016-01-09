@@ -63,11 +63,7 @@ public class IRCCommands extends AnnotationModule {
     @Secured
     public void onUnprotect(Message message){
     	if(BOT_OWNER.equals(message.getUser().getNick())) {
-    		String channel = message.getArgument(2, null);
-    		if (channel == null) {
-    			message.respond("usage: protect [channel]");
-    			return;
-    		}
+    		String channel = message.getArgument(2);
     		protectedChannels.remove(channel);
     		message.respond("unprotected channel");
     		return;
@@ -79,11 +75,7 @@ public class IRCCommands extends AnnotationModule {
 	@Command("join")
     @Secured
     public void onJoinRequest(Message message) {
-        String channel = message.getArgument(2, null);
-        
-        if (channel == null) {
-        	message.respond("you didn't supply a channel");
-        }
+        String channel = message.getArgument(2);
 
         PircBotX bot = message.getBot();
         bot.sendIRC().joinChannel(channel);
@@ -120,7 +112,7 @@ public class IRCCommands extends AnnotationModule {
 	@Command("mode")
 	@Secured
 	public void onMode(Message message){
-		String mode = message.getArgument(2, null);
+		String mode = message.getArgument(2);
 		String channelName = message.getArgument(3, message.getTargetName());
 		
 		if (protectedChannels.contains(channelName)) {
@@ -133,8 +125,8 @@ public class IRCCommands extends AnnotationModule {
 		Channel channel = getChannel(bot, channelName);
 		
 		//check we're in the channel and know the user
-		if (mode == null || channel == null) {
-			message.respond("I couldn't find that channel or invalid mode");
+		if (channel == null) {
+			message.respond("I couldn't find that channel");
 			return;
 		}
 		
@@ -300,7 +292,7 @@ public class IRCCommands extends AnnotationModule {
 	@Secured
 	public void onTopic(Message message){
 		String channelName = message.getArgument(3, message.getTargetName());
-		String topic = message.getArgument(2, null);
+		String topic = message.getArgument(2);
 		
 		if (protectedChannels.contains(channelName)) {
 			message.respond("That channel is protected.");
@@ -329,11 +321,7 @@ public class IRCCommands extends AnnotationModule {
     @Command("nick")
     @Secured
     public void onNickRequest(Message message) {
-        String newNick = message.getArgument(2, null);
-        
-        if (newNick == null) {
-        	message.respond("you didn't supply a new nick");
-        }
+        String newNick = message.getArgument(2);
 
         PircBotX bot = message.getBot();
         bot.sendIRC().changeNick(newNick);

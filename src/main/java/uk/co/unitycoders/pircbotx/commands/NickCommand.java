@@ -37,10 +37,7 @@ public class NickCommand extends AnnotationModule
 	@Command
 	@Secured
     public void onNick(Message event) {
-        String nick = event.getArgument(2, null);
-        if (nick == null) {
-        	event.respond("You didn't provide a new nickname");
-        }
+        String nick = event.getArgument(2);
         
         event.getBot().sendIRC().changeNick(nick);
         event.respond("Changed nick to " + nick);

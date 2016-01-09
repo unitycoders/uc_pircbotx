@@ -59,13 +59,8 @@ public class HelpCommand extends AnnotationModule {
     @Command("info")
     @HelpText("wrapper around mod-info and cmd-info for ease of use")
     public void onInfo(Message event) {
-    	String moduleName = event.getArgument(2, null);
+    	String moduleName = event.getArgument(2);
     	String commandName = event.getArgument(3, null);
-    	
-    	if (moduleName == null) {
-            event.respond("usage: help info [module] (command)");
-            return;
-    	}
     	
     	if (commandName == null) {
             onModuleHelp(event);
@@ -80,7 +75,7 @@ public class HelpCommand extends AnnotationModule {
     	String moduleName = event.getArgument(2, null);
 
         if (moduleName == null) {
-            event.respond("usage: help module [module]");
+        	throw new IllegalArgumentException("[module]");
         }
 
         Module module = processor.getModule(moduleName);
@@ -103,8 +98,7 @@ public class HelpCommand extends AnnotationModule {
     	String commandName = event.getArgument(3, null);
 
         if (moduleName == null || commandName == null) {
-            event.respond("usage: help command [module] [command]");
-            return;
+        	throw new IllegalArgumentException("[module] [command]");
         }
 
         Module module = processor.getModule(moduleName);
@@ -126,8 +120,7 @@ public class HelpCommand extends AnnotationModule {
     	String moduleName = event.getArgument(2, null);
     	
         if (moduleName == null) {
-            event.respond("usage: help commands [module]");
-            return;
+        	throw new IllegalArgumentException("[module]");
         }
         
         Collection<String> commands = processor.getCommands(moduleName);

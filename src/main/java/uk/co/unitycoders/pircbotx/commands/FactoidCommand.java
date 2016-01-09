@@ -37,13 +37,8 @@ public class FactoidCommand extends AnnotationModule {
 
     @Command("add")
     public void addFactoid(Message message) {
-        String name = message.getArgument(2, null);
-        String text = message.getArgument(3, null);
-
-        if (name == null || text == null) {
-            message.respond("usage: factoid add [name] [text]");
-            return;
-        }
+        String name = message.getArgument(2);
+        String text = message.getArgument(3);
 
         boolean status = model.addFactoid(name, text);
         String result = status?"Factoid added successfully":"factoid failed to get added";
@@ -52,12 +47,7 @@ public class FactoidCommand extends AnnotationModule {
 
     @Command("get")
     public void getFactoid(Message message) {
-    	String name = message.getArgument(2, null);
-
-        if (name == null) {
-            message.respond("usage: factoid get [name]");
-            return;
-        }
+    	String name = message.getArgument(2);
 
         String factoid = model.getFactoid(name);
         if (factoid == null) {
@@ -69,12 +59,8 @@ public class FactoidCommand extends AnnotationModule {
     
     @Command("search")
     public void onSearch(Message message) {
-    	String query = message.getArgument(2, null);
-    	if (query == null) {
-    		message.respond("Usage: factoid search [query]");
-    		return;
-    	}
-    	
+    	String query = message.getArgument(2);
+
     	List<Factoid> factoids = model.search(query);
     	if (factoids.isEmpty()) {
     		message.respond("That didn't match any results");
@@ -97,14 +83,9 @@ public class FactoidCommand extends AnnotationModule {
 
     @Command("edit")
     public void updateFactoid(Message message) {
-    	String name = message.getArgument(2, null);
-    	String text = message.getArgument(3, null);
+    	String name = message.getArgument(2);
+    	String text = message.getArgument(3);
         
-        if (name == null || text == null) {
-            message.respond("usage: factoid edit [name] [text]");
-            return;
-        }
-
         boolean result = model.editFactoid(name, text);
         if (result) {
         	message.respond("Factoid updated");
@@ -115,12 +96,7 @@ public class FactoidCommand extends AnnotationModule {
 
     @Command("remove")
     public void removeFactoid(Message message) {
-    	String name = message.getArgument(2, null);
-
-        if (name == null) {
-            message.respond("usage: factoid remove [name]");
-            return;
-        }
+    	String name = message.getArgument(2);
 
         boolean status = model.deleteFactoid(name);
         String result = status?"Factoid removed successfully":"factoid failed to get removed";

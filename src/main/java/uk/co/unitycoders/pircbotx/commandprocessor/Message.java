@@ -82,11 +82,29 @@ public interface Message {
      * In the event the user calls a command with an invalid subcommand, default
      * will be inserted as the subcommand.
      * 
+     * This is designed for optional arguments, for required arguments use getArgument(id).
+     * 
      * @param id the argument ID
      * @param defaultValue a value to return of the argument does not exist
      * @return the argument at position id, else defaultValue
      */
     public String getArgument(int id, String defaultValue);
+    
+    /**
+     * Get a tokenised argument.
+     * 
+     * The tokeniser will parse the message, extract quoted strings and then split
+     * by whitespace. Using this function you can extract arguments from a message.
+     * The zeroth argument is always the command name, the first is always the 
+     * subcommand and 2 onwards is always the arguments.
+     * 
+     * In the event the argument is missing, this method will throw an exception.
+     * 
+     * @param id the ID of the argument
+     * @throws IllegalArgumentException if the user didn't provide id
+     * @return the argument with the given ID
+     */
+    public String getArgument(int id);
     
     /**
      * Gets the target of the message.
@@ -112,8 +130,7 @@ public interface Message {
     /**
      * Respond that an operation was successful.
      */
-    public void respondSuccess();
-    
+    public void sendSuccess();
     
     /**
      * Send an action to the user.
