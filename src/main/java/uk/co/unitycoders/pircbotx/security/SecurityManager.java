@@ -20,6 +20,7 @@ package uk.co.unitycoders.pircbotx.security;
 
 import org.pircbotx.User;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -27,7 +28,7 @@ public class SecurityManager {
     private Map<String, Session> sessions;
 
     public SecurityManager() {
-        this.sessions = new TreeMap<String, Session>();
+        this.sessions = new HashMap<String, Session>();
     }
     
     public void startSession(User user) {

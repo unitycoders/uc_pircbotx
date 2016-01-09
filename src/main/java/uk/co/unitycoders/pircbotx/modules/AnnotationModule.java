@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Logger;
@@ -29,7 +30,7 @@ public class AnnotationModule implements Module {
 	 */
 	public AnnotationModule(String name) {
 		this.name = name;
-		this.nodes = new TreeMap<>();
+		this.nodes = new HashMap<>();
 		this.source = this;
 		processAnnotations();
 	}
@@ -44,7 +45,7 @@ public class AnnotationModule implements Module {
 	 */
 	public AnnotationModule(String name, Object source) {
 		this.name = name;
-		this.nodes = new TreeMap<>();
+		this.nodes = new HashMap<>();
 		this.source = source;
 		processAnnotations();
 	}
