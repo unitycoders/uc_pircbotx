@@ -126,6 +126,11 @@ public class AnnotationModule implements Module {
         	node.helpText = help.value();
         }
         
+        Usage usage = method.getAnnotation(Usage.class);
+        if (usage != null) {
+        	node.usage = usage.value();
+        }
+        
         //Permissions annotation
         Secured permissionsRequired = method.getAnnotation(Secured.class);
         if (permissionsRequired != null) {
