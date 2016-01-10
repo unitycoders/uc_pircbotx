@@ -3,8 +3,10 @@ uk.co.unitycoders.pircbotx.commands.RandCommand
 uk.co.unitycoders.pircbotx.commands.DateTimeCommand
 uk.co.unitycoders.pircbotx.commands.KillerTroutCommand
 uk.co.unitycoders.pircbotx.commands.JoinsCommand
+uk.co.unitycoders.pircbotx.commands.FactoidCommand
 uk.co.unitycoders.pircbotx.commands.LartCommand
 uk.co.unitycoders.pircbotx.commands.NickCommand
 uk.co.unitycoders.pircbotx.commands.KarmaCommand
-uk.co.unitycoders.pircbotx.commands.IRCCommands
 uk.co.unitycoders.pircbotx.commands.GamesCommand
+uk.co.unitycoders.pircbotx.commands.CompSciCommand
+uk.co.unitycoders.pircbotx.commandprocessor.irc.IRCCommands

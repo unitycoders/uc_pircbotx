@@ -18,23 +18,33 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
+import java.sql.SQLException;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.HelpText;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.commandprocessor.MessageUtils;
+import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.data.db.Factoid;
 import uk.co.unitycoders.pircbotx.data.db.FactoidModel;
 import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 import uk.co.unitycoders.pircbotx.modules.Usage;
 
 public class FactoidCommand extends AnnotationModule {
+	private final Logger logger = LoggerFactory.getLogger(FactoidCommand.class);
     private FactoidModel model;
 
-    public FactoidCommand(FactoidModel model) {
+    public FactoidCommand() {
     	super("factoid");
-        this.model = model;
+        try {
+            this.model = DBConnection.getFactoidModel();
+        } catch (ClassNotFoundException | SQLException ex) {
+            logger.error("Database error", ex);
+        }
     }
 
     @Command("add")
