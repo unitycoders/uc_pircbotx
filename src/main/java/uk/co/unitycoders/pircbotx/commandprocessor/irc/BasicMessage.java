@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package uk.co.unitycoders.pircbotx.commandprocessor;
+package uk.co.unitycoders.pircbotx.commandprocessor.irc;
 
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +25,8 @@ import org.pircbotx.Colors;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 import org.pircbotx.hooks.types.GenericMessageEvent;
+
+import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
 /**
  * Abstract message adapter for uc_pircbotx.

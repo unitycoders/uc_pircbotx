@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package uk.co.unitycoders.pircbotx.commands;
+package uk.co.unitycoders.pircbotx.commandprocessor.irc;
 
 import java.util.HashSet;
 import java.util.Set;
