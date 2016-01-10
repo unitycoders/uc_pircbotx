@@ -37,12 +37,16 @@ public class GamesCommand extends AnnotationModule {
 	};
 	
 	private Random random;
-	private int rouletteBullet = -1;
-	private int rouletteChamber = -1;
+	private int rouletteBullet;
+	private int rouletteChamber;
 
 	public GamesCommand() {
 		super("games");
 		this.random = new Random();
+		
+		//init roulette
+		this.rouletteBullet = random.nextInt(6);
+		this.rouletteChamber = random.nextInt(6);
 	}
 	
 	@Command("coin")
