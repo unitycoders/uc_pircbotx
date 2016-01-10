@@ -21,11 +21,13 @@ package uk.co.unitycoders.pircbotx.commands;
 import java.util.List;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
+import uk.co.unitycoders.pircbotx.commandprocessor.HelpText;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.commandprocessor.MessageUtils;
 import uk.co.unitycoders.pircbotx.data.db.Factoid;
 import uk.co.unitycoders.pircbotx.data.db.FactoidModel;
 import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
+import uk.co.unitycoders.pircbotx.modules.Usage;
 
 public class FactoidCommand extends AnnotationModule {
     private FactoidModel model;
@@ -36,6 +38,8 @@ public class FactoidCommand extends AnnotationModule {
     }
 
     @Command("add")
+    @Usage("[name] [text]")
+    @HelpText("add a factoid from the database")
     public void addFactoid(Message message) {
         String name = message.getArgument(2);
         String text = message.getArgument(3);
@@ -46,6 +50,8 @@ public class FactoidCommand extends AnnotationModule {
     }
 
     @Command("get")
+    @Usage("[name]")
+    @HelpText("get a factoid from the database by name")
     public void getFactoid(Message message) {
     	String name = message.getArgument(2);
 
@@ -58,6 +64,8 @@ public class FactoidCommand extends AnnotationModule {
     }
     
     @Command("search")
+    @Usage("[query]")
+    @HelpText("search the database for matching factoids (% is wildcard)")
     public void onSearch(Message message) {
     	String query = message.getArgument(2);
 
@@ -71,6 +79,7 @@ public class FactoidCommand extends AnnotationModule {
     }
     
     @Command("random")
+    @HelpText("get a random factoid from the database")
     public void getRandom(Message message) {
         Factoid factoid = model.getRandom();
         if (factoid == null) {
@@ -82,6 +91,8 @@ public class FactoidCommand extends AnnotationModule {
 
 
     @Command("edit")
+    @Usage("[name] [text]")
+    @HelpText("edit an existing factoid in the database")
     public void updateFactoid(Message message) {
     	String name = message.getArgument(2);
     	String text = message.getArgument(3);
@@ -95,6 +106,8 @@ public class FactoidCommand extends AnnotationModule {
     }
 
     @Command("remove")
+    @Usage("[name]")
+    @HelpText("remove an existing factoid from the database")
     public void removeFactoid(Message message) {
     	String name = message.getArgument(2);
 
