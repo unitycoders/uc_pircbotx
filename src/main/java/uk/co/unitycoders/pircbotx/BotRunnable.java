@@ -23,13 +23,10 @@ import java.util.Map;
 
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
-import org.pircbotx.cap.EnableCapHandler;
-import org.pircbotx.cap.SASLCapHandler;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
-import uk.co.unitycoders.pircbotx.commandprocessor.irc.CommandListener;
+import uk.co.unitycoders.pircbotx.commandprocessor.irc.IRCFactory;
 import uk.co.unitycoders.pircbotx.commands.*;
-import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
 import uk.co.unitycoders.pircbotx.listeners.LinesListener;
 import uk.co.unitycoders.pircbotx.middleware.BotMiddleware;
@@ -43,10 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
 
-import javax.net.ssl.SSLSocketFactory;
-
 public class BotRunnable implements Runnable {
-    private PircBotX instance;
+	private SecurityManager security;
     private CommandProcessor processor;
     private LocalConfiguration config;
 
@@ -54,72 +49,81 @@ public class BotRunnable implements Runnable {
         this.config = config;
     }
 
+    private void setupProcessor() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+    	List<BotMiddleware> middleware = new ArrayList<BotMiddleware>();
+        if (config.middleware != null) {
+            for (String middlewareClass : config.middleware) {
+            	BotMiddleware mw = ModuleUtils.loadMiddleware(middlewareClass);
+            	middleware.add(mw);
+            	mw.init(config);
+            }
+        }
+        
+        //legacy middleware
+        security = new SecurityManager();
+        middleware.add(new SecurityMiddleware(security));
+        processor = new CommandProcessor(middleware);
+    }
+    
+    private void loadPlugins() {
+    	Map<String, ModuleConfig> moduleConfigs = config.modules;
+        if (moduleConfigs == null) {
+        	moduleConfigs = Collections.emptyMap();
+        }
+        
+        //load in the modules
+        ServiceLoader<Module> modules = ServiceLoader.load(Module.class);
+        for (Module module : modules) {
+        	
+        	//module data
+        	String name = module.getName();
+        	processor.register(name, module);
+        	System.out.println("new module: "+module);
+        	
+        	//configuration items
+        	ModuleConfig config = moduleConfigs.get(name);
+        	if (config != null) {    		
+        		if (config.aliases != null) {
+        			for (String alias : config.aliases) {
+        				processor.alias(alias,module.getName());
+        			}
+        		}
+        	}
+        	
+        }
+        
+        //load in modules which require arguments
+        Module[] legacyModules = new Module[] {
+        	ModuleUtils.wrap("help", new HelpCommand(processor)),
+        	ModuleUtils.wrap("plugins", new PluginCommand(processor)),
+        	ModuleUtils.wrap("session", new SessionCommand(security))
+        };
+        
+        //register all legacy style modules
+        for (Module module : legacyModules) {
+        	processor.register(module.getName(), module);
+        }
+    }
+    
     @Override
     public void run() {
 
         try {
-            //load in middleware from configuration file
-            List<BotMiddleware> middleware = new ArrayList<BotMiddleware>();
-            if (config.middleware != null) {
-	            for (String middlewareClass : config.middleware) {
-	            	BotMiddleware mw = ModuleUtils.loadMiddleware(middlewareClass);
-	            	middleware.add(mw);
-	            	mw.init(config);
-	            }
-            }
-            
-            //legacy middleware
-            SecurityManager security = new SecurityManager();
-            middleware.add(new SecurityMiddleware(security));
 
-            //start building the bot
-            Configuration.Builder<PircBotX> cb = new Configuration.Builder<PircBotX>();
-            processor = buildProcessor(config.trigger, middleware, cb);
+            //This is out bits
+        	setupProcessor();
+        	loadPlugins();
             
-            Map<String, ModuleConfig> moduleConfigs = config.modules;
-            if (moduleConfigs == null) {
-            	moduleConfigs = Collections.emptyMap();
-            }
-            
-            //load in the modules
-            ServiceLoader<Module> modules = ServiceLoader.load(Module.class);
-            for (Module module : modules) {
-            	
-            	//module data
-            	String name = module.getName();
-            	processor.register(name, module);
-            	System.out.println("new module: "+module);
-            	
-            	//configuration items
-            	ModuleConfig config = moduleConfigs.get(name);
-            	if (config != null) {    		
-            		if (config.aliases != null) {
-            			for (String alias : config.aliases) {
-            				processor.alias(alias,module.getName());
-            			}
-            		}
-            	}
-            	
-            }
-            
-            //load in modules which require arguments
-            Module[] legacyModules = new Module[] {
-            	ModuleUtils.wrap("factoid", new FactoidCommand(DBConnection.getFactoidModel()) ),
-            	ModuleUtils.wrap("help", new HelpCommand(processor)),
-            	ModuleUtils.wrap("plugins", new PluginCommand(processor)),
-            	ModuleUtils.wrap("session", new SessionCommand(security))
-            };
-            
-            //register all legacy style modules
-            for (Module module : legacyModules) {
-            	processor.register(module.getName(), module);
-            }
+
+        	//this creates our host bot instance
+            Configuration.Builder<PircBotX> cb = IRCFactory.doConfig(config, processor);
 
 			cb.addListener(new JoinsListener());
             cb.addListener(new LinesListener());
-
-            buildBot(cb, config);
-            instance = createBot(cb);
+            
+            //build pircbotx
+            Configuration<PircBotX> configuration = cb.buildConfiguration();
+            PircBotX instance = new PircBotX(configuration);
             instance.startBot();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -127,61 +131,4 @@ public class BotRunnable implements Runnable {
         }
     }
 
-    /**
-     * Map our configuration file onto PIrcBotX's config builder
-     *
-     * @param cb PircBotX config builder
-     * @param config our configuration instance
-     */
-    private void buildBot(Configuration.Builder<PircBotX> cb, LocalConfiguration config) {
-        cb.setName(config.nick);
-        cb.setServer(config.host, config.port);
-        
-        if (config.sasl) {
-	        cb.setCapEnabled(true);
-	    	cb.addCapHandler(new SASLCapHandler(config.username, config.password));
-        }
-
-        if (config.ssl) {
-            cb.setSocketFactory(SSLSocketFactory.getDefault());
-        }
-
-        // setup automatic channel joins
-        for (String channel : config.channels) {
-            cb.addAutoJoinChannel(channel);
-        }
-
-        //Useful stuff to keep the bot running
-        cb.setAutoNickChange(true);
-        cb.setAutoReconnect(true);
-    }
-
-    /**
-     * Create the IRC bot from a complete PircBotX configuration
-     * @param cb the bot configuration
-     * @return a PircBotX instance
-     */
-    private PircBotX createBot(Configuration.Builder<PircBotX> cb) {
-        Configuration<PircBotX> configuration = cb.buildConfiguration();
-        return new PircBotX(configuration);
-    }
-
-    /**
-     * Create a CommandProcessor Instance and return it.
-     *
-     * This method builds a CommandProcessor instance which can be used to register commands with the bot. This will
-     * also register the command processor with the bot's configuration so it gets called when people send messages to
-     * the irc bot.
-     *
-     * @param trigger the trigger charicter the bot will respond to
-     * @param cb PircBotX configuration
-     * @return A constructed CommandProcessor instance
-     */
-    private CommandProcessor buildProcessor(char trigger, List<BotMiddleware> middleware, Configuration.Builder<PircBotX> cb) {
-
-        
-    	CommandProcessor processor = new CommandProcessor(middleware);
-        cb.addListener(new CommandListener(processor, trigger));
-        return processor;
-    }
 }
