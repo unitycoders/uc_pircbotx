@@ -1,8 +1,13 @@
 uk.co.unitycoders.pircbotx
 uk.co.unitycoders.pircbotx.commandprocessor
+uk.co.unitycoders.pircbotx.commandprocessor.irc
 uk.co.unitycoders.pircbotx.commands
-uk.co.unitycoders.pircbotx.data
 uk.co.unitycoders.pircbotx.data.db
 uk.co.unitycoders.pircbotx.listeners
+uk.co.unitycoders.pircbotx.middleware
+uk.co.unitycoders.pircbotx.modules
 uk.co.unitycoders.pircbotx.profile
+uk.co.unitycoders.pircbotx.security
 uk.co.unitycoders.pircbotx.types
+uk.co.unitycoders.pircbotx.webservices
+uk.co.unitycoders.pircbotx.webservices.github
