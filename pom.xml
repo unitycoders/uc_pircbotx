@@ -1,15 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<groupId>uk.co.unitycoders.pircbotx</groupId>
-	<artifactId>uc_pircbotx</artifactId>
+	<groupId>com.fossgalaxy.bot</groupId>
+	<artifactId>bot-core</artifactId>
 	<version>0.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<modelVersion>4.0.0</modelVersion>
 	<name>uc_pircbotx</name>
 	<description>A bot for #unity-coders using pircbotx</description>
-	<url>http://git.unitycoders.co.uk/uc_pircbotx/</url>
+	<url>http://gh.fossgalaxy.com/uc_pircbotx/</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
