@@ -54,6 +54,7 @@
 
 	<build>
 		<plugins>
+			<!-- we need java 1.7 to run -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -64,6 +65,7 @@
 				</configuration>
 			</plugin>
 
+			<!-- what should mvn site generate? -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
@@ -97,6 +99,7 @@
 				</configuration>
 			</plugin>
 
+			<!-- github site plugin -->
 			<plugin>
 				<groupId>com.github.github</groupId>
 				<artifactId>site-maven-plugin</artifactId>
@@ -113,6 +116,8 @@
 					</execution>
 				</executions>
 			</plugin>
+			
+			<!-- make thin jar runnable -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -126,6 +131,8 @@
 					</archive>
 				</configuration>
 			</plugin>
+			
+			<!-- generate fat (jar + deps) jar on package -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
