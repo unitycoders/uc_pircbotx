@@ -77,14 +77,16 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
-				<version>3.3</version>
+				<version>3.5</version>
 
 				<configuration>
+				
+					<!-- what reports should be on the website? -->
 					<reportPlugins>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-project-info-reports-plugin</artifactId>
-							<version>2.4</version>
+							<version>2.9</version>
 							<reports>
 								<report>index</report>
 								<report>summary</report>
@@ -103,7 +105,6 @@
 							<version>2.10.3</version>
 						</plugin>
 					</reportPlugins>
-
 				</configuration>
 			</plugin>
 			
