@@ -137,7 +137,7 @@ public class LartCommand extends AnnotationModule {
     /**
      * Insults someone.
      *
-     * @param event the event from {@link #onMessage(MessageEvent)}.
+     * @param event The bot's message event
      */
     @Command("default")
     public void insult(Message event) {

@@ -18,8 +18,8 @@ public class IRCFactory {
     /**
      * Map our configuration file onto PIrcBotX's config builder
      *
-     * @param cb PircBotX config builder
      * @param config our configuration instance
+     * @param processor the processor to bind to
      */
 	public static Configuration.Builder<PircBotX> doConfig(LocalConfiguration config, CommandProcessor processor) {
         Configuration.Builder<PircBotX> cb = new Configuration.Builder<PircBotX>();

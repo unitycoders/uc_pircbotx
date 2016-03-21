@@ -109,7 +109,7 @@ public class CommandProcessor {
      * 
      * @param name the new name to use as the alias
      * @param oldName the existing name of the module
-     * @throws IllegalArugmentException if module is not defined or alias already exists
+     * @throws IllegalArgumentException if module is not defined or alias already exists
      */
     public void alias(String name, String oldName) {
     	assert name != null : "name must not be null";

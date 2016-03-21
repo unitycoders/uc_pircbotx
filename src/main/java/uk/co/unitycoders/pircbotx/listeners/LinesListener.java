@@ -26,7 +26,7 @@ import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.data.db.LineModel;
 
 /**
- * A {@link ListenerAdapter} which keeps a log of all the lines said in a
+ * A ListenerAdapter which keeps a log of all the lines said in a
  * channel.
  *
  * @author Bruce Cowan

@@ -64,7 +64,7 @@ public interface Message {
      * getArgument is preferred as the parsing will have been done for you. You
      * can use this if you have a special case though.
      * 
-     * The string will always be of the form "module action [<args>]". If the user
+     * The string will always be of the form "module action [args]". If the user
      * provided no action the action then action will be set as default.
      * 
      * @return a reconstructed normalised string

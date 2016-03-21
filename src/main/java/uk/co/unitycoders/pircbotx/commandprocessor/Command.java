@@ -31,9 +31,7 @@ import uk.co.unitycoders.pircbotx.modules.Module;
  * This annotation is used to tag a method as being a command the bot should
  * recognise and call when certian words or phrases are mentioned in a channel.
  *
- * The method must take exactly 1 argument, of type MessageEvent<PircBotX>, this
- * will be passed directly from pircbotx and so will have all features which the
- * framework provides to it.
+ * The method must take exactly 1 argument, of {@link Message}
  *
  * @author webpigeon
  *
