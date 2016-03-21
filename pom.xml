@@ -52,6 +52,14 @@
 		</developer>
 	</developers>
 
+	<pluginRepositories>
+	    <pluginRepository>
+	        <id>sonatype-snapshots</id>
+	        <name>Sonatype Snapshots</name>
+	        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+	    </pluginRepository>
+	</pluginRepositories>
+
 	<build>
 		<plugins>
 			<!-- we need java 1.7 to run -->
@@ -98,6 +106,29 @@
 
 				</configuration>
 			</plugin>
+			
+			<!-- keep track of git commits inside jar files -->
+			<plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.2.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>revision</goal>
+                         </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <includeOnlyProperties>
+                      <includeOnlyProperty>^git.commit.id.full$</includeOnlyProperty>
+                    </includeOnlyProperties>
+                    <abbrevLength>7</abbrevLength>
+                    <commitIdGenerationMode>flat</commitIdGenerationMode>
+                </configuration>
+            </plugin>
 
 			<!-- github site plugin -->
 			<plugin>
