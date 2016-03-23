@@ -34,17 +34,19 @@ public class Issue extends GithubObject {
 	public Milestone milestone;
 	public int comments;
 	public User closed_by;
-	
+
+	@Override
 	public Collection<GithubObject> getChildren() {
 		GithubObject[] children = new GithubObject[]{
-			user,
-			assignee,
-			milestone,
-			closed_by
+				user,
+				assignee,
+				milestone,
+				closed_by
 		};
 		return Arrays.asList(children);
 	}
-	
+
+	@Override
 	public String toString() {
 		return "#"+number+": "+title;
 	}

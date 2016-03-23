@@ -26,36 +26,36 @@ import uk.co.unitycoders.pircbotx.middleware.AbstractMiddleware;
 
 public class RewriteEngine extends AbstractMiddleware {
 	private Map<String, String> rules;
-	
+
 	public RewriteEngine() {
 		this.rules = new TreeMap<String, String>();
 	}
-	
+
 	@Override
 	public void init(LocalConfiguration config) {
 		if (config.aliases == null) {
 			return;
 		}
-		
+
 		for (Map.Entry<String, String> rule : config.aliases.entrySet()) {
 			System.out.println(rule.getKey()+" is mapped to "+rule.getValue());
 			addRule(rule.getKey(), rule.getValue());
 		}
-		
+
 	}
-	
+
 	public void addRule(String regex, String replace) {
 		rules.put(regex, replace);
 	}
-	
+
 	public String process(String source) {
-		
+
 		String output = source;
 		for (Map.Entry<String, String> rule : rules.entrySet()) {
 			output = output.replaceAll(rule.getKey(), rule.getValue());
 		}
 		System.out.println(source+" "+output);
-		
+
 		return output;
 	}
 
@@ -63,10 +63,10 @@ public class RewriteEngine extends AbstractMiddleware {
 	public String preprocess(String text) {
 		return process(text);
 	}
-	
+
 	@Override
 	public Message process(CommandProcessor processor, Message message) {
 		return message;
 	}
-	
+
 }

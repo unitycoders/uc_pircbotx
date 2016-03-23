@@ -33,30 +33,33 @@ import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
  */
 public class JoinsCommand extends AnnotationModule {
 
-    private JoinModel model;
+	private JoinModel model;
 
-    /**
-     * Creates a {@link JoinsCommand}.
-     * @throws Exception if database connection failed
-     */
-    public JoinsCommand() throws Exception {
-    	super("joins");
-        this.model = DBConnection.getJoinModel();
-    }
+	/**
+	 * Creates a {@link JoinsCommand}.
+<<<<<<< HEAD
+=======
+	 * @throws Exception if database connection failed
+>>>>>>> master
+	 */
+	public JoinsCommand() throws Exception {
+		super("joins");
+		this.model = DBConnection.getJoinModel();
+	}
 
-    @Command
-    public void onJoins(Message event) {
-        StringBuilder builder = new StringBuilder();
+	@Command
+	public void onJoins(Message event) {
+		StringBuilder builder = new StringBuilder();
 
-        for (Map.Entry<String, Integer> entry : this.model.getAllJoins().entrySet()) {
-            String nick = entry.getKey();
-            String value = entry.getValue().toString();
-            builder.append(nick);
-            builder.append(" = ");
-            builder.append(value);
-            builder.append("; ");
-        }
+		for (Map.Entry<String, Integer> entry : this.model.getAllJoins().entrySet()) {
+			String nick = entry.getKey();
+			String value = entry.getValue().toString();
+			builder.append(nick);
+			builder.append(" = ");
+			builder.append(value);
+			builder.append("; ");
+		}
 
-        event.respond(builder.substring(0, builder.length() - 2));
-    }
+		event.respond(builder.substring(0, builder.length() - 2));
+	}
 }

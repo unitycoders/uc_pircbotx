@@ -24,21 +24,21 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
 
 public class ChannelMessage extends BasicMessage {
-    private final MessageEvent<PircBotX> event;
-    
-    public ChannelMessage(MessageEvent<PircBotX> event, List<String> args) {
-        super(event, args);
-        this.event = event;
-    }
-    
-    @Override
-    public void sendAction(String action) {
-        event.getChannel().send().action(action);
-    }
+	private final MessageEvent<PircBotX> event;
 
-    @Override
-    public String getTargetName() {
-        return event.getChannel().getName();
-    }
-    
+	public ChannelMessage(MessageEvent<PircBotX> event, List<String> args) {
+		super(event, args);
+		this.event = event;
+	}
+
+	@Override
+	public void sendAction(String action) {
+		event.getChannel().send().action(action);
+	}
+
+	@Override
+	public String getTargetName() {
+		return event.getChannel().getName();
+	}
+
 }

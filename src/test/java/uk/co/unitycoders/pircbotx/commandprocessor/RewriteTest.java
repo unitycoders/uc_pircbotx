@@ -21,7 +21,7 @@ package uk.co.unitycoders.pircbotx.commandprocessor;
 public class RewriteTest {
 
 	public static void main(String[] args) {
-		
+
 		//TODO make this into junit tests
 		RewriteEngine engine = new RewriteEngine();
 		engine.addRule("^([a-z0-9]+)\\+\\+$", "karma add $1");

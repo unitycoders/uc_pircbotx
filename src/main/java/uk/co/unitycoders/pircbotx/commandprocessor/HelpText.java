@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 
 /**
  * Help text annotation.
- * 
+ *
  * This is used by the bot in order to provide help to the user.
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -33,7 +33,18 @@ import java.lang.annotation.Target;
 public @interface HelpText {
 
 	/**
+<<<<<<< HEAD
+	 * Command trigger words.
+	 *
+	 * This is used to tell the bot what keywords it should respond to when
+	 * processing actions. The keyword "default" will be called automatically if
+	 * no keyword is specified. If an array of keywords is passed the bot will
+	 * register all keywords for this method.
+	 *
+	 * @return The keywords for this command
+=======
 	 * The message the bot should show if the user requests help.
+>>>>>>> master
 	 */
-    public String value();
+	public String value();
 }

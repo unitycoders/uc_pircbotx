@@ -18,14 +18,14 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
+import java.util.Collection;
+
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.HelpText;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 import uk.co.unitycoders.pircbotx.modules.Module;
-
-import java.util.Collection;
 
 /**
  * Displays information on other commands.
@@ -36,107 +36,100 @@ import java.util.Collection;
 @HelpText("Provides infomation about modules")
 public class HelpCommand extends AnnotationModule {
 
-    private final CommandProcessor processor;
+	private final CommandProcessor processor;
 
-    public HelpCommand(CommandProcessor processor) {
-    	super("help");
-        this.processor = processor;
-    }
+	public HelpCommand(CommandProcessor processor) {
+		super("help");
+		this.processor = processor;
+	}
 
-    @Command
-    @HelpText("Displays infomation how to use the bot")
-    public void onHelp(Message event) {
-    	event.respond("Type 'help modules' for a list of modules or 'help commands' to see valid commands for a module.");
-    }
-    
-    @Command("modules")
-    @HelpText("list all loaded modules")
-    public void onList(Message event) {
-        Collection<String> modules = processor.getModules();
-        event.respond("Loaded modules are: " + modules+" type 'help module <name>' for more infomation or 'help commands <module>' to see valid commands");
-    }
-    
-    @Command("info")
-    @HelpText("wrapper around mod-info and cmd-info for ease of use")
-    public void onInfo(Message event) {
-    	String moduleName = event.getArgument(2, null);
-    	String commandName = event.getArgument(3, null);
-    	
-    	if (moduleName == null) {
-            event.respond("usage: help info [module] (command)");
-            return;
-    	}
-    	
-    	if (commandName == null) {
-            onModuleHelp(event);
-    	} else {
-    		onCommandHelp(event);
-    	}
-    }
-    
-    @Command("module")
-    @HelpText("shows help on a module's description")
-    public void onModuleHelp(Message event) {
-    	String moduleName = event.getArgument(2, null);
+	@Command
+	@HelpText("Displays infomation how to use the bot")
+	public void onHelp(Message event) {
+		event.respond("Type 'help modules' for a list of modules or 'help commands' to see valid commands for a module.");
+	}
 
-        if (moduleName == null) {
-            event.respond("usage: help module [module]");
-        }
+	@Command("modules")
+	@HelpText("list all loaded modules")
+	public void onList(Message event) {
+		Collection<String> modules = processor.getModules();
+		event.respond("Loaded modules are: " + modules+" type 'help module <name>' for more infomation or 'help commands <module>' to see valid commands");
+	}
 
-        Module module = processor.getModule(moduleName);
-        if (module == null) {
-        	event.respond("Sorry, there isn't a module named "+moduleName);
-        }
-        
-        String moduleHelp = module.getModuleHelp();
-        if (moduleHelp == null) {
-        	event.respond("Sorry, looks like the developer hasn't provided HelpText");
-        } else {
-        	event.respond(moduleHelp);
-        }
-    }
-    
-    @Command("command")
-    @HelpText("shows a description of a command")
-    public void onCommandHelp(Message event) {
-    	String moduleName = event.getArgument(2, null);
-    	String commandName = event.getArgument(3, null);
+	@Command("info")
+	@HelpText("wrapper around mod-info and cmd-info for ease of use")
+	public void onInfo(Message event) {
+		String moduleName = event.getArgument(2);
+		String commandName = event.getArgument(3, null);
 
-        if (moduleName == null || commandName == null) {
-            event.respond("usage: help command [module] [command]");
-            return;
-        }
+		if (commandName == null) {
+			onModuleHelp(event);
+		} else {
+			onCommandHelp(event);
+		}
+	}
 
-        Module module = processor.getModule(moduleName);
-        if (module == null) {
-        	event.respond("Sorry, there isn't a module named "+moduleName);
-        }
-        
-        String moduleHelp = module.getHelp(commandName);
-        if (moduleHelp == null) {
-        	event.respond("Sorry, looks like the developer hasn't provided HelpText");
-        } else {
-        	event.respond(moduleHelp);
-        }
-    }
+	@Command("module")
+	@HelpText("shows help on a module's description")
+	public void onModuleHelp(Message event) {
+		String moduleName = event.getArgument(2, null);
 
-    @Command("commands")
-    @HelpText("Show a list of commands povided by a module")
-    public void onCommands(Message event) {
-    	String moduleName = event.getArgument(2, null);
-    	
-        if (moduleName == null) {
-            event.respond("usage: help commands [module]");
-            return;
-        }
-        
-        Collection<String> commands = processor.getCommands(moduleName);
+		if (moduleName == null) {
+			throw new IllegalArgumentException("[module]");
+		}
 
-        if (commands.isEmpty()) {
-            event.respond("Sorry, that module doesn't exist or has no commands");
-        } else {
-            event.respond(moduleName + " contains: " + commands+" type 'help command <module> <command>' for a description.");
-        }
-    }
+		Module module = processor.getModule(moduleName);
+		if (module == null) {
+			event.respond("Sorry, there isn't a module named "+moduleName);
+		}
+
+		String moduleHelp = module.getModuleHelp();
+		if (moduleHelp == null) {
+			event.respond("Sorry, looks like the developer hasn't provided HelpText");
+		} else {
+			event.respond(moduleHelp);
+		}
+	}
+
+	@Command("command")
+	@HelpText("shows a description of a command")
+	public void onCommandHelp(Message event) {
+		String moduleName = event.getArgument(2, null);
+		String commandName = event.getArgument(3, null);
+
+		if (moduleName == null || commandName == null) {
+			throw new IllegalArgumentException("[module] [command]");
+		}
+
+		Module module = processor.getModule(moduleName);
+		if (module == null) {
+			event.respond("Sorry, there isn't a module named "+moduleName);
+		}
+
+		String moduleHelp = module.getHelp(commandName);
+		if (moduleHelp == null) {
+			event.respond("Sorry, looks like the developer hasn't provided HelpText");
+		} else {
+			event.respond(moduleHelp);
+		}
+	}
+
+	@Command("commands")
+	@HelpText("Show a list of commands povided by a module")
+	public void onCommands(Message event) {
+		String moduleName = event.getArgument(2, null);
+
+		if (moduleName == null) {
+			throw new IllegalArgumentException("[module]");
+		}
+
+		Collection<String> commands = processor.getCommands(moduleName);
+
+		if (commands.isEmpty()) {
+			event.respond("Sorry, that module doesn't exist or has no commands");
+		} else {
+			event.respond(moduleName + " contains: " + commands+" type 'help command <module> <command>' for a description.");
+		}
+	}
 
 }

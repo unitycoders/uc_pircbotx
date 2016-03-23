@@ -9,7 +9,7 @@ public class ModuleWhichReportsNoCommands implements Module {
 
 	@Override
 	public void fire(Message message) throws Exception {
-		throw new IllegalArgumentException("nope");
+		throw new CommandNotFoundException("nope");
 	}
 
 	@Override
@@ -40,6 +40,11 @@ public class ModuleWhichReportsNoCommands implements Module {
 	@Override
 	public String getModuleHelp() {
 		return "";
+	}
+
+	@Override
+	public String[] getArgumentsFor(String action) {
+		return new String[0];
 	}
 
 }
