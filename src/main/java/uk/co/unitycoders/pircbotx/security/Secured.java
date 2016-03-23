@@ -27,6 +27,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD})
 public @interface Secured {
 
-    public String[] value() default "default";
+	public String[] value() default "default";
 
 }

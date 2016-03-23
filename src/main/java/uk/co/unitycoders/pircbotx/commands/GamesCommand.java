@@ -9,7 +9,7 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 
 /**
- * 
+ *
  * 8ball algorithm and responses stolen from supybot who stole
  * it from mozbot.
  */
@@ -30,12 +30,12 @@ public class GamesCommand extends AnnotationModule {
 	};
 	private final String[] unknown = {
 			"Maybe...", "No clue.", "_I_ don\'t know.",
-            "The outlook is hazy, please ask again later.",
-            "What are you asking me for?", "Come again?",
-            "You know the answer better than I.",
-            "The answer is def-- oooh! shiny thing!"
+			"The outlook is hazy, please ask again later.",
+			"What are you asking me for?", "Come again?",
+			"You know the answer better than I.",
+			"The answer is def-- oooh! shiny thing!"
 	};
-	
+
 	private Random random;
 	private int rouletteBullet;
 	private int rouletteChamber;
@@ -43,12 +43,12 @@ public class GamesCommand extends AnnotationModule {
 	public GamesCommand() {
 		super("games");
 		this.random = new Random();
-		
+
 		//init roulette
 		this.rouletteBullet = random.nextInt(6);
 		this.rouletteChamber = random.nextInt(6);
 	}
-	
+
 	@Command("coin")
 	public void onCoin(Message message) {
 		String trueMessage = message.getArgument(2, "heads");
@@ -56,7 +56,7 @@ public class GamesCommand extends AnnotationModule {
 		String option = random.nextBoolean() ? trueMessage:falseMessage;
 		message.respond(option);
 	}
-	
+
 	@Command("dice")
 	public void onDice(Message message) {
 		try {
@@ -67,11 +67,11 @@ public class GamesCommand extends AnnotationModule {
 			message.respond("Usage: games dice [sides]");
 		}
 	}
-	
+
 	@Command("8ball")
 	public void on8Ball(Message message) {
 		String question = message.getArgument(2, null);
-		
+
 		//consult the ball
 		Boolean result;
 		if (question != null) {
@@ -79,7 +79,7 @@ public class GamesCommand extends AnnotationModule {
 		} else {
 			result = checkTheBall(random.nextInt(3));
 		}
-		
+
 		//figure out what set we should use
 		String[] responses;
 		if (result == null) {
@@ -89,11 +89,11 @@ public class GamesCommand extends AnnotationModule {
 		} else {
 			responses = negative;
 		}
-		
+
 		String response = responses[random.nextInt(responses.length)];
 		message.respond(response);
 	}
-	
+
 	private Boolean checkTheBall(int length) {
 		if (length % 3 == 0) {
 			return true;
@@ -103,7 +103,7 @@ public class GamesCommand extends AnnotationModule {
 			return null;
 		}
 	}
-	
+
 	@Command("roulette")
 	public void onRoulette(Message message) {
 		String spin = message.getArgument(2, null);
@@ -112,11 +112,11 @@ public class GamesCommand extends AnnotationModule {
 			message.respond("*SPIN* Are you feeling lucky?");
 			return;
 		}
-		
+
 		if (rouletteBullet == rouletteChamber) {
 			this.rouletteBullet = random.nextInt(6);
 			this.rouletteChamber = random.nextInt(6);
-			
+
 			String channelName = message.getTargetName();
 			Channel channel = message.getBot().getUserChannelDao().getChannel(channelName);
 			if (channel.isOp(message.getBot().getUserBot())){
@@ -131,7 +131,7 @@ public class GamesCommand extends AnnotationModule {
 			this.rouletteChamber %= 6;
 		}
 	}
-	
-	
+
+
 
 }

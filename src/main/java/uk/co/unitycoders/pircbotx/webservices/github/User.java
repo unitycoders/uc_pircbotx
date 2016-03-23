@@ -34,7 +34,8 @@ public class User extends GithubObject {
 	public int public_gists;
 	public int followers;
 	public int following;
-	
+
+	@Override
 	public String toString() {
 		return name+" ("+login+")";
 	}

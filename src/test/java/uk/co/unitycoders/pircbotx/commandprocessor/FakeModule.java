@@ -26,41 +26,41 @@ package uk.co.unitycoders.pircbotx.commandprocessor;
  */
 public class FakeModule {
 
-    /**
-     * Default command
-     *
-     * @param ex
-     */
-    @Command
-    public void doStuff(Message ex) {
-    }
+	/**
+	 * Default command
+	 *
+	 * @param ex
+	 */
+	@Command
+	public void doStuff(Message ex) {
+	}
 
-    /**
-     * Single command
-     *
-     * @param ex
-     */
-    @Command("hello")
-    public void doStuffOnce(Message ex) {
-    }
-    
-    /**
-     * Single command
-     *
-     * @param ex
-     */
-    @Command("exception")
-    public void doBadThings(Message ex) {
-    	System.out.println("test");
-    	throw new NullPointerException();
-    }
+	/**
+	 * Single command
+	 *
+	 * @param ex
+	 */
+	@Command("hello")
+	public void doStuffOnce(Message ex) {
+	}
 
-    /**
-     * Double command
-     *
-     * @param ex
-     */
-    @Command({"goodbye", "bye"})
-    public void doStuffTwice(Message ex) {
-    }
+	/**
+	 * Single command
+	 *
+	 * @param ex
+	 */
+	@Command("exception")
+	public void doBadThings(Message ex) {
+		System.out.println("test");
+		throw new NullPointerException();
+	}
+
+	/**
+	 * Double command
+	 *
+	 * @param ex
+	 */
+	@Command({"goodbye", "bye"})
+	public void doStuffTwice(Message ex) {
+	}
 }

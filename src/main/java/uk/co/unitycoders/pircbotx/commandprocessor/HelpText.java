@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 
 /**
  * Help text annotation.
- * 
+ *
  * This is used by the bot in order to provide help to the user.
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -35,5 +35,5 @@ public @interface HelpText {
 	/**
 	 * The message the bot should show if the user requests help.
 	 */
-    public String value();
+	public String value();
 }

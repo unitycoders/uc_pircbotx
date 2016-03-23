@@ -33,97 +33,97 @@ import uk.co.unitycoders.pircbotx.types.Karma;
 
 public class KarmaModel {
 
-    private final Logger logger = LoggerFactory.getLogger(KarmaModel.class);
-    private final Connection conn;
+	private final Logger logger = LoggerFactory.getLogger(KarmaModel.class);
+	private final Connection conn;
 
-    private final PreparedStatement newKarma;
-    private final PreparedStatement getKarma;
-    private final PreparedStatement topKarma;
-    private final PreparedStatement incrementKarma;
-    private final PreparedStatement decrementKarma;
+	private final PreparedStatement newKarma;
+	private final PreparedStatement getKarma;
+	private final PreparedStatement topKarma;
+	private final PreparedStatement incrementKarma;
+	private final PreparedStatement decrementKarma;
 
-    public KarmaModel(Connection conn) throws SQLException {
-        this.conn = conn;
-        buildTable();
-        newKarma = conn.prepareStatement("INSERT INTO karma (target) VALUES (?)");
-        topKarma = conn.prepareStatement("SELECT target, karma FROM karma ORDER BY karma DESC LIMIT ?");
-        getKarma = conn.prepareStatement("SELECT karma FROM karma WHERE target = ?");
-        incrementKarma = conn.prepareStatement("UPDATE karma SET karma = karma + 1 WHERE target = ?");
-        decrementKarma = conn.prepareStatement("UPDATE karma SET karma = karma - 1 WHERE target = ?");
-    }
+	public KarmaModel(Connection conn) throws SQLException {
+		this.conn = conn;
+		buildTable();
+		newKarma = conn.prepareStatement("INSERT INTO karma (target) VALUES (?)");
+		topKarma = conn.prepareStatement("SELECT target, karma FROM karma ORDER BY karma DESC LIMIT ?");
+		getKarma = conn.prepareStatement("SELECT karma FROM karma WHERE target = ?");
+		incrementKarma = conn.prepareStatement("UPDATE karma SET karma = karma + 1 WHERE target = ?");
+		decrementKarma = conn.prepareStatement("UPDATE karma SET karma = karma - 1 WHERE target = ?");
+	}
 
-    private void buildTable() throws SQLException {
-        Statement stmt = conn.createStatement();
-        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS karma (target TEXT PRIMARY KEY, karma INTEGER DEFAULT 1)");
-    }
-    
-    public Collection<Karma> getTopKarma(int limit) {
-    	ArrayList<Karma> karmaList = new ArrayList<Karma>();
-    	
-    	try {
-    		topKarma.clearParameters();
-    		topKarma.setInt(1, limit);
-    		ResultSet rs = topKarma.executeQuery();
-    		
-    		while(rs.next()) {
-    			Karma karmaEntry = new Karma(rs.getString(1), rs.getInt(2));
-    			karmaList.add(karmaEntry);
-    		}
-    		
-    		rs.close();
-    		return karmaList;
-    	} catch (SQLException ex) {
-    	    logger.error("Database error", ex);
-    		return null;
-    	}
-    }
+	private void buildTable() throws SQLException {
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS karma (target TEXT PRIMARY KEY, karma INTEGER DEFAULT 1)");
+	}
 
-    public int getKarma(String target) {
-        try {
-            getKarma.clearParameters();
-            getKarma.setString(1, target);
-            getKarma.execute();
+	public Collection<Karma> getTopKarma(int limit) {
+		ArrayList<Karma> karmaList = new ArrayList<Karma>();
 
-            ResultSet rs = getKarma.getResultSet();
-            return rs.getInt(1);
-        } catch (SQLException ex) {
-            // Probably not in the database yet, so return 0
-            logger.warn("Database error", ex);
-            return 0;
-        }
-    }
+		try {
+			topKarma.clearParameters();
+			topKarma.setInt(1, limit);
+			ResultSet rs = topKarma.executeQuery();
 
-    private boolean newKarma(String target) throws SQLException {
-        newKarma.clearParameters();
-        newKarma.setString(1, target);
-        return newKarma.execute();
-    }
+			while(rs.next()) {
+				Karma karmaEntry = new Karma(rs.getString(1), rs.getInt(2));
+				karmaList.add(karmaEntry);
+			}
 
-    public int incrementKarma(String target) {
-        try {
-            incrementKarma.clearParameters();
-            incrementKarma.setString(1, target);
-            int rows = incrementKarma.executeUpdate();
+			rs.close();
+			return karmaList;
+		} catch (SQLException ex) {
+			logger.error("Database error", ex);
+			return null;
+		}
+	}
 
-            if (rows == 0) {
-                newKarma(target);
-            }
-        } catch (SQLException ex) {
-            logger.error("Database error", ex);
-            return 0;
-        }
-        return getKarma(target);
-    }
+	public int getKarma(String target) {
+		try {
+			getKarma.clearParameters();
+			getKarma.setString(1, target);
+			getKarma.execute();
 
-    public int decrementKarma(String target) {
-        try {
-            decrementKarma.clearParameters();
-            decrementKarma.setString(1, target);
-            decrementKarma.execute();
-        } catch (SQLException ex) {
-            logger.error("Database error", ex);
-            return 0;
-        }
-        return getKarma(target);
-    }
+			ResultSet rs = getKarma.getResultSet();
+			return rs.getInt(1);
+		} catch (SQLException ex) {
+			// Probably not in the database yet, so return 0
+			logger.warn("Database error", ex);
+			return 0;
+		}
+	}
+
+	private boolean newKarma(String target) throws SQLException {
+		newKarma.clearParameters();
+		newKarma.setString(1, target);
+		return newKarma.execute();
+	}
+
+	public int incrementKarma(String target) {
+		try {
+			incrementKarma.clearParameters();
+			incrementKarma.setString(1, target);
+			int rows = incrementKarma.executeUpdate();
+
+			if (rows == 0) {
+				newKarma(target);
+			}
+		} catch (SQLException ex) {
+			logger.error("Database error", ex);
+			return 0;
+		}
+		return getKarma(target);
+	}
+
+	public int decrementKarma(String target) {
+		try {
+			decrementKarma.clearParameters();
+			decrementKarma.setString(1, target);
+			decrementKarma.execute();
+		} catch (SQLException ex) {
+			logger.error("Database error", ex);
+			return 0;
+		}
+		return getKarma(target);
+	}
 }

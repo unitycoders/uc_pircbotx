@@ -33,62 +33,62 @@ import uk.co.unitycoders.pircbotx.security.Secured;
 public class IRCCommands extends AnnotationModule {
 	//TODO remove hack once security is secure
 	private static final String BOT_OWNER = "webpigeon";
-	
+
 	//Important channels to protect
 	private Set<String> protectedChannels;
 
-    public IRCCommands() {
+	public IRCCommands() {
 		super("irc");
-		
+
 		this.protectedChannels = new HashSet<String>();
 		this.protectedChannels.add("#unity-coders");
 	}
 
-    @Command("protect")
-    @Secured
-    public void onProtect(Message message){
-    	if(BOT_OWNER.equals(message.getUser().getNick())) {
-    		String channel = message.getArgument(2, null);
-    		if (channel == null) {
-    			message.respond("usage: protect [channel]");
-    			return;
-    		}
-    		protectedChannels.add(channel);
-    		return;
-    	}
-    	message.respond("only BOT_OWNER can use this command");
-    }
-    
-    @Command("unprotect")
-    @Secured
-    public void onUnprotect(Message message){
-    	if(BOT_OWNER.equals(message.getUser().getNick())) {
-    		String channel = message.getArgument(2, null);
-    		if (channel == null) {
-    			message.respond("usage: protect [channel]");
-    			return;
-    		}
-    		protectedChannels.remove(channel);
-    		message.respond("unprotected channel");
-    		return;
-    	}
-    	message.respond("only BOT_OWNER can use this command");
-    }
-    
-    
-	@Command("join")
-    @Secured
-    public void onJoinRequest(Message message) {
-        String channel = message.getArgument(2, null);
-        
-        if (channel == null) {
-        	message.respond("you didn't supply a channel");
-        }
+	@Command("protect")
+	@Secured
+	public void onProtect(Message message){
+		if(BOT_OWNER.equals(message.getUser().getNick())) {
+			String channel = message.getArgument(2, null);
+			if (channel == null) {
+				message.respond("usage: protect [channel]");
+				return;
+			}
+			protectedChannels.add(channel);
+			return;
+		}
+		message.respond("only BOT_OWNER can use this command");
+	}
 
-        PircBotX bot = message.getBot();
-        bot.sendIRC().joinChannel(channel);
-    }
-	
+	@Command("unprotect")
+	@Secured
+	public void onUnprotect(Message message){
+		if(BOT_OWNER.equals(message.getUser().getNick())) {
+			String channel = message.getArgument(2, null);
+			if (channel == null) {
+				message.respond("usage: protect [channel]");
+				return;
+			}
+			protectedChannels.remove(channel);
+			message.respond("unprotected channel");
+			return;
+		}
+		message.respond("only BOT_OWNER can use this command");
+	}
+
+
+	@Command("join")
+	@Secured
+	public void onJoinRequest(Message message) {
+		String channel = message.getArgument(2, null);
+
+		if (channel == null) {
+			message.respond("you didn't supply a channel");
+		}
+
+		PircBotX bot = message.getBot();
+		bot.sendIRC().joinChannel(channel);
+	}
+
 	private Channel getChannel(PircBotX bot, String channelName){
 		try {
 			Channel channel = bot.getUserChannelDao().getChannel(channelName);
@@ -100,12 +100,12 @@ public class IRCCommands extends AnnotationModule {
 			return null;
 		}
 	}
-	
+
 	private User getUser(PircBotX bot, Channel channel, String nick){
 		if (nick == null){
 			return null;
 		}
-		
+
 		try {
 			User user = bot.getUserChannelDao().getUser(nick);
 			if (user == null) {
@@ -116,234 +116,234 @@ public class IRCCommands extends AnnotationModule {
 			return null;
 		}
 	}
-	
+
 	@Command("mode")
 	@Secured
 	public void onMode(Message message){
 		String mode = message.getArgument(2, null);
 		String channelName = message.getArgument(3, message.getTargetName());
-		
+
 		if (protectedChannels.contains(channelName)) {
 			message.respond("That channel is protected.");
 			return;
 		}
-		
+
 		//WARNING: magic beyond this point
 		PircBotX bot = message.getBot();
 		Channel channel = getChannel(bot, channelName);
-		
+
 		//check we're in the channel and know the user
 		if (mode == null || channel == null) {
 			message.respond("I couldn't find that channel or invalid mode");
 			return;
 		}
-		
+
 		channel.send().setMode(mode);
 	}
-	
+
 	@Command("op")
 	@Secured
 	public void onOp(Message message){
 		String channelName = message.getArgument(3, message.getTargetName());
 		String userToOp = message.getArgument(2, message.getUser().getNick());
-		
+
 		if (protectedChannels.contains(channelName)) {
 			message.respond("That channel is protected.");
 			return;
 		}
-		
+
 		//WARNING: magic beyond this point
 		PircBotX bot = message.getBot();
 		Channel channel = getChannel(bot, channelName);
 		User user = getUser(bot, channel, userToOp);
-		
+
 		//check we're in the channel and know the user
 		if (user == null || channel == null) {
 			message.respond("I couldn't find that user or channel");
 			return;
 		}
-		
+
 		//check we are op in the channel
 		if (!channel.isOp(bot.getUserBot())) {
 			message.respond("I am not OP'd");
 			return;
 		}
-		
+
 		channel.send().op(user);
 	}
-	
+
 	@Command("deop")
 	@Secured
 	public void onDeop(Message message){
 		String channelName = message.getArgument(3, message.getTargetName());
 		String userToOp = message.getArgument(2, null);
-		
+
 		if (protectedChannels.contains(channelName)) {
 			message.respond("That channel is protected.");
 			return;
 		}
-		
+
 		//WARNING: magic beyond this point
 		PircBotX bot = message.getBot();
 		Channel channel = getChannel(bot, channelName);
 		User user = getUser(bot, channel, userToOp);
-		
+
 		//check we're in the channel and know the user
 		if (user == null || channel == null) {
 			message.respond("I couldn't find that user or channel");
 			return;
 		}
-		
+
 		//check we are op in the channel
 		if (!channel.isOp(bot.getUserBot())) {
 			message.respond("I am not OP'd");
 			return;
 		}
-		
+
 		channel.send().deOp(user);
 	}
-	
+
 	@Command("voice")
 	@Secured
 	public void onVoice(Message message){
 		String channelName = message.getArgument(3, message.getTargetName());
 		String userToOp = message.getArgument(2, null);
-		
+
 		if (protectedChannels.contains(channelName)) {
 			message.respond("That channel is protected.");
 			return;
 		}
-		
+
 		//WARNING: magic beyond this point
 		PircBotX bot = message.getBot();
 		Channel channel = getChannel(bot, channelName);
 		User user = getUser(bot, channel, userToOp);
-		
+
 		//check we're in the channel and know the user
 		if (user == null || channel == null) {
 			message.respond("I couldn't find that user or channel");
 			return;
 		}
-		
+
 		//check we are op in the channel
 		if (!channel.isOp(bot.getUserBot())) {
 			message.respond("I am not OP'd");
 			return;
 		}
-		
+
 		channel.send().voice(user);
 	}
-	
+
 	@Command("devoice")
 	@Secured
 	public void onDevoice(Message message){
 		String channelName = message.getArgument(3, message.getTargetName());
 		String userToOp = message.getArgument(2, null);
-		
+
 		if (protectedChannels.contains(channelName)) {
 			message.respond("That channel is protected.");
 			return;
 		}
-		
+
 		//WARNING: magic beyond this point
 		PircBotX bot = message.getBot();
 		Channel channel = getChannel(bot, channelName);
 		User user = getUser(bot, channel, userToOp);
-		
+
 		//check we're in the channel and know the user
 		if (user == null || channel == null) {
 			message.respond("I couldn't find that user or channel");
 			return;
 		}
-		
+
 		//check we are op in the channel
 		if (!channel.isOp(bot.getUserBot())) {
 			message.respond("I am not OP'd");
 			return;
 		}
-		
+
 		channel.send().deVoice(user);
 	}
-	
+
 	@Command("kick")
 	@Secured
 	public void onKick(Message message){
 		String channelName = message.getArgument(3, message.getTargetName());
 		String userToOp = message.getArgument(2, null);
-		
+
 		if (protectedChannels.contains(channelName)) {
 			message.respond("That channel is protected.");
 			return;
 		}
-		
+
 		//WARNING: magic beyond this point
 		PircBotX bot = message.getBot();
 		Channel channel = getChannel(bot, channelName);
 		User user = getUser(bot, channel, userToOp);
-		
+
 		//check we're in the channel and know the user
 		if (user == null || channel == null) {
 			message.respond("I couldn't find that user or channel");
 			return;
 		}
-		
+
 		//check we are op in the channel
 		if (!channel.isOp(bot.getUserBot())) {
 			message.respond("I am not OP'd");
 			return;
 		}
-		
+
 		channel.send().kick(user,"kicked by "+message.getUser().getNick());
 	}
-	
+
 	@Command("topic")
 	@Secured
 	public void onTopic(Message message){
 		String channelName = message.getArgument(3, message.getTargetName());
 		String topic = message.getArgument(2, null);
-		
+
 		if (protectedChannels.contains(channelName)) {
 			message.respond("That channel is protected.");
 			return;
 		}
-		
+
 		//WARNING: magic beyond this point
 		PircBotX bot = message.getBot();
 		Channel channel = getChannel(bot, channelName);
-		
+
 		//check we're in the channel and know the user
 		if (channel == null) {
 			message.respond("I couldn't find that channel");
 			return;
 		}
-		
+
 		//check we are op in the channel
 		if (!channel.isOp(bot.getUserBot())) {
 			message.respond("I am not OP'd");
 			return;
 		}
-		
+
 		channel.send().setTopic(topic);
 	}
 
-    @Command("nick")
-    @Secured
-    public void onNickRequest(Message message) {
-        String newNick = message.getArgument(2, null);
-        
-        if (newNick == null) {
-        	message.respond("you didn't supply a new nick");
-        }
+	@Command("nick")
+	@Secured
+	public void onNickRequest(Message message) {
+		String newNick = message.getArgument(2, null);
 
-        PircBotX bot = message.getBot();
-        bot.sendIRC().changeNick(newNick);
-    }
+		if (newNick == null) {
+			message.respond("you didn't supply a new nick");
+		}
 
-    @Command("quit")
-    @Secured
-    public void onQuitRequest(Message message) {
-        PircBotX bot = message.getBot();
-        bot.stopBotReconnect();
-        bot.sendIRC().quitServer(message.getUser().getNick()+" told me to quit");
-    }
+		PircBotX bot = message.getBot();
+		bot.sendIRC().changeNick(newNick);
+	}
+
+	@Command("quit")
+	@Secured
+	public void onQuitRequest(Message message) {
+		PircBotX bot = message.getBot();
+		bot.stopBotReconnect();
+		bot.sendIRC().quitServer(message.getUser().getNick()+" told me to quit");
+	}
 }

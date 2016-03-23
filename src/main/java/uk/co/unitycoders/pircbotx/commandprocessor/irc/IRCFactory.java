@@ -15,39 +15,39 @@ import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
  */
 public class IRCFactory {
 
-    /**
-     * Map our configuration file onto PIrcBotX's config builder
-     *
-     * @param config our configuration instance
-     * @param processor the processor to bind to
-     */
+	/**
+	 * Map our configuration file onto PIrcBotX's config builder
+	 *
+	 * @param config our configuration instance
+	 * @param processor the processor to bind to
+	 */
 	public static Configuration.Builder<PircBotX> doConfig(LocalConfiguration config, CommandProcessor processor) {
-        Configuration.Builder<PircBotX> cb = new Configuration.Builder<PircBotX>();
-        cb.addListener(new CommandListener(processor, config.trigger));
-        
-        //build the bot
-        cb.setName(config.nick);
-        cb.setServer(config.host, config.port);
-        
-        if (config.sasl) {
-	        cb.setCapEnabled(true);
-	    	cb.addCapHandler(new SASLCapHandler(config.username, config.password));
-        }
+		Configuration.Builder<PircBotX> cb = new Configuration.Builder<PircBotX>();
+		cb.addListener(new CommandListener(processor, config.trigger));
 
-        if (config.ssl) {
-            cb.setSocketFactory(SSLSocketFactory.getDefault());
-        }
+		//build the bot
+		cb.setName(config.nick);
+		cb.setServer(config.host, config.port);
 
-        // setup automatic channel joins
-        for (String channel : config.channels) {
-            cb.addAutoJoinChannel(channel);
-        }
+		if (config.sasl) {
+			cb.setCapEnabled(true);
+			cb.addCapHandler(new SASLCapHandler(config.username, config.password));
+		}
 
-        //Useful stuff to keep the bot running
-        cb.setAutoNickChange(true);
-        cb.setAutoReconnect(true);
-		
-        return cb;
+		if (config.ssl) {
+			cb.setSocketFactory(SSLSocketFactory.getDefault());
+		}
+
+		// setup automatic channel joins
+		for (String channel : config.channels) {
+			cb.addAutoJoinChannel(channel);
+		}
+
+		//Useful stuff to keep the bot running
+		cb.setAutoNickChange(true);
+		cb.setAutoReconnect(true);
+
+		return cb;
 	}
-	
+
 }

@@ -31,28 +31,28 @@ import com.google.gson.Gson;
  * bot.
  */
 public class ConfigurationManager {
-    public static final String JSON_FILE_NAME = "uc_pircbotx.json";
+	public static final String JSON_FILE_NAME = "uc_pircbotx.json";
 
-    // Default configuration values
-    public static final String DEFAULT_IRC_HOST = "irc.freenode.net";
-    public static final String DEFAULT_BOT_NAME = "uc_pircbotx";
-    public static final String DEFAULT_PORT = "6697";
-    public static final String DEFAULT_SSL = "true";
-    public static final String DEFAULT_CHANS = "#unity-coders";
-    public static final String DEFAULT_TRIGGER = "&";
+	// Default configuration values
+	public static final String DEFAULT_IRC_HOST = "irc.freenode.net";
+	public static final String DEFAULT_BOT_NAME = "uc_pircbotx";
+	public static final String DEFAULT_PORT = "6697";
+	public static final String DEFAULT_SSL = "true";
+	public static final String DEFAULT_CHANS = "#unity-coders";
+	public static final String DEFAULT_TRIGGER = "&";
 
-    private static Reader getFileReader(String file) throws IOException {
-        return new FileReader(file);
-    }
+	private static Reader getFileReader(String file) throws IOException {
+		return new FileReader(file);
+	}
 
-    public static LocalConfiguration loadConfig(String filePath) throws IOException {
-        Gson gson = new Gson();
-        return gson.fromJson(getFileReader(filePath), LocalConfiguration.class);
-    }
+	public static LocalConfiguration loadConfig(String filePath) throws IOException {
+		Gson gson = new Gson();
+		return gson.fromJson(getFileReader(filePath), LocalConfiguration.class);
+	}
 
-    public static LocalConfiguration loadConfig() throws IOException {
-        Gson gson = new Gson();
-        return gson.fromJson(getFileReader(JSON_FILE_NAME), LocalConfiguration.class);
-    }
+	public static LocalConfiguration loadConfig() throws IOException {
+		Gson gson = new Gson();
+		return gson.fromJson(getFileReader(JSON_FILE_NAME), LocalConfiguration.class);
+	}
 
 }

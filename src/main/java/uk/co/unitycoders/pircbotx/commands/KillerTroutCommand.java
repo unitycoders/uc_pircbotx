@@ -29,12 +29,12 @@ import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
  */
 public class KillerTroutCommand extends AnnotationModule {
 
-    public KillerTroutCommand() {
+	public KillerTroutCommand() {
 		super("killertrout");
 	}
 
 	@Command
-    public void onTrout(Message event) {
-        event.sendAction("would have been killed by a trout");
-    }
+	public void onTrout(Message event) {
+		event.sendAction("would have been killed by a trout");
+	}
 }

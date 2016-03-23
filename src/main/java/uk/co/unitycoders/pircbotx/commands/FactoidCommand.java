@@ -34,107 +34,107 @@ import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 
 public class FactoidCommand extends AnnotationModule {
 	private final Logger logger = LoggerFactory.getLogger(FactoidCommand.class);
-    private FactoidModel model;
+	private FactoidModel model;
 
-    public FactoidCommand() {
-    	super("factoid");
-        try {
-            this.model = DBConnection.getFactoidModel();
-        } catch (ClassNotFoundException | SQLException ex) {
-            logger.error("Database error", ex);
-        }
-    }
+	public FactoidCommand() {
+		super("factoid");
+		try {
+			this.model = DBConnection.getFactoidModel();
+		} catch (ClassNotFoundException | SQLException ex) {
+			logger.error("Database error", ex);
+		}
+	}
 
-    @Command("add")
-    public void addFactoid(Message message) {
-        String name = message.getArgument(2, null);
-        String text = message.getArgument(3, null);
+	@Command("add")
+	public void addFactoid(Message message) {
+		String name = message.getArgument(2, null);
+		String text = message.getArgument(3, null);
 
-        if (name == null || text == null) {
-            message.respond("usage: factoid add [name] [text]");
-            return;
-        }
+		if (name == null || text == null) {
+			message.respond("usage: factoid add [name] [text]");
+			return;
+		}
 
-        boolean status = model.addFactoid(name, text);
-        String result = status?"Factoid added successfully":"factoid failed to get added";
-        message.respond(result);
-    }
+		boolean status = model.addFactoid(name, text);
+		String result = status?"Factoid added successfully":"factoid failed to get added";
+		message.respond(result);
+	}
 
-    @Command("get")
-    public void getFactoid(Message message) {
-    	String name = message.getArgument(2, null);
+	@Command("get")
+	public void getFactoid(Message message) {
+		String name = message.getArgument(2, null);
 
-        if (name == null) {
-            message.respond("usage: factoid get [name]");
-            return;
-        }
+		if (name == null) {
+			message.respond("usage: factoid get [name]");
+			return;
+		}
 
-        String factoid = model.getFactoid(name);
-        if (factoid == null) {
-            message.respond("Sorry, unknown factoid.");
-        } else {
-            message.respond(factoid);
-        }
-    }
-    
-    @Command("search")
-    public void onSearch(Message message) {
-    	String query = message.getArgument(2, null);
-    	if (query == null) {
-    		message.respond("Usage: factoid search [query]");
-    		return;
-    	}
-    	
-    	List<Factoid> factoids = model.search(query);
-    	if (factoids.isEmpty()) {
-    		message.respond("That didn't match any results");
-    	} else {	
-    		String listStr = MessageUtils.buildList(factoids);
-    		message.respond(String.format("matching factoids: %s", listStr));
-    	}
-    }
-    
-    @Command("random")
-    public void getRandom(Message message) {
-        Factoid factoid = model.getRandom();
-        if (factoid == null) {
-            message.respond("Sorry, unknown factoid.");
-        } else {
-            message.respond(factoid.body);
-        }
-    }
+		String factoid = model.getFactoid(name);
+		if (factoid == null) {
+			message.respond("Sorry, unknown factoid.");
+		} else {
+			message.respond(factoid);
+		}
+	}
+
+	@Command("search")
+	public void onSearch(Message message) {
+		String query = message.getArgument(2, null);
+		if (query == null) {
+			message.respond("Usage: factoid search [query]");
+			return;
+		}
+
+		List<Factoid> factoids = model.search(query);
+		if (factoids.isEmpty()) {
+			message.respond("That didn't match any results");
+		} else {
+			String listStr = MessageUtils.buildList(factoids);
+			message.respond(String.format("matching factoids: %s", listStr));
+		}
+	}
+
+	@Command("random")
+	public void getRandom(Message message) {
+		Factoid factoid = model.getRandom();
+		if (factoid == null) {
+			message.respond("Sorry, unknown factoid.");
+		} else {
+			message.respond(factoid.body);
+		}
+	}
 
 
-    @Command("edit")
-    public void updateFactoid(Message message) {
-    	String name = message.getArgument(2, null);
-    	String text = message.getArgument(3, null);
-        
-        if (name == null || text == null) {
-            message.respond("usage: factoid edit [name] [text]");
-            return;
-        }
+	@Command("edit")
+	public void updateFactoid(Message message) {
+		String name = message.getArgument(2, null);
+		String text = message.getArgument(3, null);
 
-        boolean result = model.editFactoid(name, text);
-        if (result) {
-        	message.respond("Factoid updated");
-        } else {
-        	message.respond("factoid did not get updated");
-        }
-    }
+		if (name == null || text == null) {
+			message.respond("usage: factoid edit [name] [text]");
+			return;
+		}
 
-    @Command("remove")
-    public void removeFactoid(Message message) {
-    	String name = message.getArgument(2, null);
+		boolean result = model.editFactoid(name, text);
+		if (result) {
+			message.respond("Factoid updated");
+		} else {
+			message.respond("factoid did not get updated");
+		}
+	}
 
-        if (name == null) {
-            message.respond("usage: factoid remove [name]");
-            return;
-        }
+	@Command("remove")
+	public void removeFactoid(Message message) {
+		String name = message.getArgument(2, null);
 
-        boolean status = model.deleteFactoid(name);
-        String result = status?"Factoid removed successfully":"factoid failed to get removed";
-        message.respond(result);
-    }
+		if (name == null) {
+			message.respond("usage: factoid remove [name]");
+			return;
+		}
+
+		boolean status = model.deleteFactoid(name);
+		String result = status?"Factoid removed successfully":"factoid failed to get removed";
+		message.respond(result);
+	}
 
 }

@@ -36,42 +36,42 @@ import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
  */
 public class CommandListener extends ListenerAdapter<PircBotX> {
 
-    private final CommandProcessor processor;
-    private final String prefix;
+	private final CommandProcessor processor;
+	private final String prefix;
 
-    public CommandListener(CommandProcessor processor, char prefix) {
-        this.processor = processor;
-        this.prefix = ""+prefix;
-    }
+	public CommandListener(CommandProcessor processor, char prefix) {
+		this.processor = processor;
+		this.prefix = ""+prefix;
+	}
 
-    @Override
-    public void onMessage(MessageEvent<PircBotX> event) throws Exception {
-    	try{
-	        String messageText = event.getMessage();
-	
-	        if (messageText.startsWith(prefix)) {
-	        	List<String> args = extractMessage(messageText.substring(1));
-	        	
-	            BasicMessage message = new ChannelMessage(event, args);
-	            processor.invoke(message);
-	        }
-    	} catch (Exception ex) {
-    		event.respond("error: "+ex.getMessage());
-    	}
-    }
+	@Override
+	public void onMessage(MessageEvent<PircBotX> event) throws Exception {
+		try{
+			String messageText = event.getMessage();
 
-    @Override
-    public void onPrivateMessage(PrivateMessageEvent<PircBotX> event) throws Exception {
-    	try {
-    		List<String> messageText = extractMessage(event.getMessage());
-    		processor.invoke(new UserMessage(event, messageText));
-    	} catch(Exception ex) {
-    		event.respond("error:"+ex.getMessage());
-    	}
-    }
-    
-    private List<String> extractMessage(String raw) {
-    	String clean = Colors.removeFormattingAndColors(raw);
-    	return processor.processMessage(clean);
-    }
+			if (messageText.startsWith(prefix)) {
+				List<String> args = extractMessage(messageText.substring(1));
+
+				BasicMessage message = new ChannelMessage(event, args);
+				processor.invoke(message);
+			}
+		} catch (Exception ex) {
+			event.respond("error: "+ex.getMessage());
+		}
+	}
+
+	@Override
+	public void onPrivateMessage(PrivateMessageEvent<PircBotX> event) throws Exception {
+		try {
+			List<String> messageText = extractMessage(event.getMessage());
+			processor.invoke(new UserMessage(event, messageText));
+		} catch(Exception ex) {
+			event.respond("error:"+ex.getMessage());
+		}
+	}
+
+	private List<String> extractMessage(String raw) {
+		String clean = Colors.removeFormattingAndColors(raw);
+		return processor.processMessage(clean);
+	}
 }

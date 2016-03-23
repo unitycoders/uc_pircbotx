@@ -31,66 +31,66 @@ import org.slf4j.LoggerFactory;
 
 public class JoinModel {
 
-    private final Logger logger = LoggerFactory.getLogger(JoinModel.class);
-    private final Connection conn;
-    private final PreparedStatement newJoin;
-    private final PreparedStatement incrementJoin;
-    private final PreparedStatement readJoins;
+	private final Logger logger = LoggerFactory.getLogger(JoinModel.class);
+	private final Connection conn;
+	private final PreparedStatement newJoin;
+	private final PreparedStatement incrementJoin;
+	private final PreparedStatement readJoins;
 
-    /**
-     * Creates a new JoinModel.
-     *
-     * @param conn the database connection
-     * @throws SQLException if there was a database error
-     */
-    public JoinModel(Connection conn) throws SQLException {
-        this.conn = conn;
-        buildTable();
-        newJoin = conn.prepareStatement("INSERT INTO joins (nick) VALUES (?)");
-        incrementJoin = conn.prepareStatement("UPDATE joins SET joins = joins + 1 WHERE nick = ?");
-        readJoins = conn.prepareStatement("SELECT * FROM joins");
-    }
+	/**
+	 * Creates a new JoinModel.
+	 *
+	 * @param conn the database connection
+	 * @throws SQLException if there was a database error
+	 */
+	public JoinModel(Connection conn) throws SQLException {
+		this.conn = conn;
+		buildTable();
+		newJoin = conn.prepareStatement("INSERT INTO joins (nick) VALUES (?)");
+		incrementJoin = conn.prepareStatement("UPDATE joins SET joins = joins + 1 WHERE nick = ?");
+		readJoins = conn.prepareStatement("SELECT * FROM joins");
+	}
 
-    private void buildTable() throws SQLException {
-        Statement stmt = conn.createStatement();
-        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS joins (nick TEXT PRIMARY KEY, joins INTEGER DEFAULT 1)");
-    }
+	private void buildTable() throws SQLException {
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS joins (nick TEXT PRIMARY KEY, joins INTEGER DEFAULT 1)");
+	}
 
-    private boolean newJoin(String nick) throws SQLException {
-        newJoin.clearParameters();
-        newJoin.setString(1, nick);
-        return newJoin.execute();
-    }
+	private boolean newJoin(String nick) throws SQLException {
+		newJoin.clearParameters();
+		newJoin.setString(1, nick);
+		return newJoin.execute();
+	}
 
-    public boolean incrementJoin(String nick) {
-        int rows;
-        try {
-            incrementJoin.clearParameters();
-            incrementJoin.setString(1, nick);
-            rows = incrementJoin.executeUpdate();
-            if (rows == 0) {
-                return newJoin(nick);
-            } else {
-                return true;
-            }
-        } catch (SQLException ex) {
-            logger.error("Database error", ex);
-            return false;
-        }
-    }
+	public boolean incrementJoin(String nick) {
+		int rows;
+		try {
+			incrementJoin.clearParameters();
+			incrementJoin.setString(1, nick);
+			rows = incrementJoin.executeUpdate();
+			if (rows == 0) {
+				return newJoin(nick);
+			} else {
+				return true;
+			}
+		} catch (SQLException ex) {
+			logger.error("Database error", ex);
+			return false;
+		}
+	}
 
-    public Map<String, Integer> getAllJoins() {
-    	TreeMap<String, Integer> joins = new TreeMap<String, Integer>();
-        try {
-            ResultSet rs = readJoins.executeQuery();
-            while (rs.next()) {
-                joins.put(rs.getString(1), rs.getInt(2));
-            }
-            rs.close();
-        } catch (SQLException ex) {
-            logger.error("Database error", ex);
-        }
-        return joins;
-    }
+	public Map<String, Integer> getAllJoins() {
+		TreeMap<String, Integer> joins = new TreeMap<String, Integer>();
+		try {
+			ResultSet rs = readJoins.executeQuery();
+			while (rs.next()) {
+				joins.put(rs.getString(1), rs.getInt(2));
+			}
+			rs.close();
+		} catch (SQLException ex) {
+			logger.error("Database error", ex);
+		}
+		return joins;
+	}
 
 }
