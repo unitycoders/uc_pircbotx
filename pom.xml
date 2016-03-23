@@ -124,9 +124,9 @@
                 <configuration>
                     <dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
-                    <includeOnlyProperties>
+                    <!-- <includeOnlyProperties>
                       <includeOnlyProperty>^git.commit.id.full$</includeOnlyProperty>
-                    </includeOnlyProperties>
+                    </includeOnlyProperties>-->
                     <abbrevLength>7</abbrevLength>
                     <commitIdGenerationMode>flat</commitIdGenerationMode>
                 </configuration>
