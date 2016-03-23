@@ -25,7 +25,7 @@ import java.util.Collections;
 
 public class GithubObject {
 	public String url;
-	
+
 	public Collection<GithubObject> getChildren() {
 		return Collections.emptyList();
 	}

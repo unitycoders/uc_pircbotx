@@ -20,11 +20,11 @@ package uk.co.unitycoders.pircbotx.commandprocessor;
 
 public class TriggerModule {
 
-    int called = 0;
+	int called = 0;
 
-    @Command
-    public void onMessage(Message pircbox) {
-        called++;
-    }
+	@Command
+	public void onMessage(Message pircbox) {
+		called++;
+	}
 
 }

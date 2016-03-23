@@ -36,21 +36,21 @@ import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
  */
 public class RandCommand extends AnnotationModule {
 
-    private Logger logger = LoggerFactory.getLogger(RandCommand.class);
-    private LineModel lines;
+	private Logger logger = LoggerFactory.getLogger(RandCommand.class);
+	private LineModel lines;
 
-    public RandCommand() {
-    	super("rand");
-        try {
-            lines = DBConnection.getLineModel();
-        } catch (ClassNotFoundException | SQLException ex) {
-            logger.error("Database error", ex);
-        }
-    }
+	public RandCommand() {
+		super("rand");
+		try {
+			lines = DBConnection.getLineModel();
+		} catch (ClassNotFoundException | SQLException ex) {
+			logger.error("Database error", ex);
+		}
+	}
 
-    @Command
-    public void onRandom(Message event) {
-        String line = lines.getRandomLine();
-        event.respond(line);
-    }
+	@Command
+	public void onRandom(Message event) {
+		String line = lines.getRandomLine();
+		event.respond(line);
+	}
 }

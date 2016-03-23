@@ -18,6 +18,9 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
+import java.util.Collection;
+import java.util.List;
+
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
@@ -26,76 +29,73 @@ import uk.co.unitycoders.pircbotx.modules.Module;
 import uk.co.unitycoders.pircbotx.modules.ModuleUtils;
 import uk.co.unitycoders.pircbotx.security.Secured;
 
-import java.util.Collection;
-import java.util.List;
-
 public class PluginCommand extends AnnotationModule {
-    private CommandProcessor processor;
+	private CommandProcessor processor;
 
-    public PluginCommand(CommandProcessor processor) {
-    	super("plugin");
-        this.processor = processor;
-    }
+	public PluginCommand(CommandProcessor processor) {
+		super("plugin");
+		this.processor = processor;
+	}
 
-    @Command
-    public void onDefault(Message message) {
-        Collection<String> modules = processor.getModules();
-        message.respond("Loaded modules are: " + modules);
-    }
+	@Command
+	public void onDefault(Message message) {
+		Collection<String> modules = processor.getModules();
+		message.respond("Loaded modules are: " + modules);
+	}
 
-    // WARNING: this represents a massive security risk - ONLY USE FOR DEBUGGING
-    @Command("load")
-    @Secured
-    public void onLoad(Message message) {
-        String name = message.getArgument(2);
-        String className = message.getArgument(3);
+	// WARNING: this represents a massive security risk - ONLY USE FOR DEBUGGING
+	@Command("load")
+	@Secured
+	public void onLoad(Message message) {
+		String name = message.getArgument(2);
+		String className = message.getArgument(3);
 
-        try { 
-            Module module = ModuleUtils.loadModule(className);
-            processor.register(name, module);
-            message.respond("Class has been loaded");
-        } catch (IllegalAccessException ex) {
-            message.respond("No default no-arg constructor for class");
-        } catch (ClassNotFoundException ex) {
-            message.respond("Class could not be found");
-        } catch (InstantiationException ex) {
-            message.respond("Class could not be instantiated");
-        }
-    }
+		try {
+			Module module = ModuleUtils.loadModule(className);
+			processor.register(name, module);
+			message.respond("Class has been loaded");
+		} catch (IllegalAccessException ex) {
+			message.respond("No default no-arg constructor for class");
+		} catch (ClassNotFoundException ex) {
+			message.respond("Class could not be found");
+		} catch (InstantiationException ex) {
+			message.respond("Class could not be instantiated");
+		}
+	}
 
-    // WARNING: this represents a massive security risk - ONLY USE FOR DEBUGGING
-    @Command("alias")
-    @Secured
-    public void onAlias(Message message) {
+	// WARNING: this represents a massive security risk - ONLY USE FOR DEBUGGING
+	@Command("alias")
+	@Secured
+	public void onAlias(Message message) {
 
-        try {
-            String alias = message.getArgument(2);
-            String commandKeyword = message.getArgument(3);
-            processor.alias(alias, commandKeyword);
-            message.respond("Plugin is now aliased");
-        } catch (RuntimeException ex) {
-            message.respond("error: "+ex.getLocalizedMessage());
-        }
-    }
+		try {
+			String alias = message.getArgument(2);
+			String commandKeyword = message.getArgument(3);
+			processor.alias(alias, commandKeyword);
+			message.respond("Plugin is now aliased");
+		} catch (RuntimeException ex) {
+			message.respond("error: "+ex.getLocalizedMessage());
+		}
+	}
 
-    // WARNING: this represents a massive security risk - ONLY USE FOR DEBUGGING
-    @Command("unload")
-    @Secured
-    public void onUnload(Message message) {
-        String name = message.getArgument(2);
-        processor.remove(name);
-        message.respond("Plugin has been unloaded");
-    }
-    
-    @Command("reverse")
-    public void onReverse(Message message) {
-    	String action = message.getArgument(2);
-    	
-    	List<String> modules = processor.getReverse(action);
-    	if (!modules.isEmpty()) {
-    		message.respond(String.format("%s is provided by %s", action, modules)); 
-    	} else {
-    		message.respond("nothing provides that");
-    	}
-    }
+	// WARNING: this represents a massive security risk - ONLY USE FOR DEBUGGING
+	@Command("unload")
+	@Secured
+	public void onUnload(Message message) {
+		String name = message.getArgument(2);
+		processor.remove(name);
+		message.respond("Plugin has been unloaded");
+	}
+
+	@Command("reverse")
+	public void onReverse(Message message) {
+		String action = message.getArgument(2);
+
+		List<String> modules = processor.getReverse(action);
+		if (!modules.isEmpty()) {
+			message.respond(String.format("%s is provided by %s", action, modules));
+		} else {
+			message.respond("nothing provides that");
+		}
+	}
 }

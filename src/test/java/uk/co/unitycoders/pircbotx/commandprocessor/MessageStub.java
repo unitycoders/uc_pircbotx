@@ -26,47 +26,47 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 public class MessageStub implements Message {
-    private final List<String> args;
+	private final List<String> args;
 
-    public MessageStub(String ... message) {
-        this.args = new ArrayList<>();
-        args.addAll(Arrays.asList(message));
-    }
+	public MessageStub(String ... message) {
+		this.args = new ArrayList<>();
+		args.addAll(Arrays.asList(message));
+	}
 
-    @Override
-    public PircBotX getBot() {
-        return null;
-    }
+	@Override
+	public PircBotX getBot() {
+		return null;
+	}
 
-    @Override
-    public User getUser() {
-        return null;
-    }
+	@Override
+	public User getUser() {
+		return null;
+	}
 
-    @Override
-    public String getMessage() {
-        return null;
-    }
+	@Override
+	public String getMessage() {
+		return null;
+	}
 
-    @Override
-    public String getTargetName() {
-        return null;
-    }
+	@Override
+	public String getTargetName() {
+		return null;
+	}
 
-    @Override
-    public void respond(String message) {
-    }
+	@Override
+	public void respond(String message) {
+	}
 
-    @Override
-    public void sendAction(String action) {
-    }
+	@Override
+	public void sendAction(String action) {
+	}
 
 	@Override
 	public String getArgument(int id, String defaultValue) {
 		if (args.size() <= id) {
 			return defaultValue;
 		}
-		
+
 		return args.get(id);
 	}
 
@@ -82,7 +82,7 @@ public class MessageStub implements Message {
 
 	@Override
 	public void sendSuccess() {
-		
+
 	}
 
 	@Override

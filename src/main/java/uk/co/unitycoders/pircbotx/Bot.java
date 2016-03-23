@@ -26,16 +26,16 @@ package uk.co.unitycoders.pircbotx;
  */
 public class Bot {
 
-    public static void main(String[] args) throws Exception {
-        String configPath = ConfigurationManager.JSON_FILE_NAME;
-        if (args.length > 0) {
-            configPath = args[0];
-        }
+	public static void main(String[] args) throws Exception {
+		String configPath = ConfigurationManager.JSON_FILE_NAME;
+		if (args.length > 0) {
+			configPath = args[0];
+		}
 
-        BotRunnable runnable = new BotRunnable(ConfigurationManager.loadConfig(configPath));
-        Thread botThread = new Thread(runnable);
+		BotRunnable runnable = new BotRunnable(ConfigurationManager.loadConfig(configPath));
+		Thread botThread = new Thread(runnable);
 
-        botThread.start();
-        botThread.join();
-    }
+		botThread.start();
+		botThread.join();
+	}
 }

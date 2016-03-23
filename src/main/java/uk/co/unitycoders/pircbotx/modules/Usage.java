@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 public @interface Usage {
 
 	public String[] value();
-	
+
 }

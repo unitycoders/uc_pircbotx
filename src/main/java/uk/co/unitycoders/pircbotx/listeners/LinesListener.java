@@ -33,21 +33,21 @@ import uk.co.unitycoders.pircbotx.data.db.LineModel;
  */
 public class LinesListener extends ListenerAdapter<PircBotX> {
 
-    private LineModel model;
+	private LineModel model;
 
-    /**
-     * Creates a new {@link LinesListener}.
-     */
-    public LinesListener() {
-        try {
-            this.model = DBConnection.getLineModel();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+	/**
+	 * Creates a new {@link LinesListener}.
+	 */
+	public LinesListener() {
+		try {
+			this.model = DBConnection.getLineModel();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 
-    @Override
-    public void onMessage(MessageEvent<PircBotX> event) throws Exception {
-        model.storeLine(event.getMessage());
-    }
+	@Override
+	public void onMessage(MessageEvent<PircBotX> event) throws Exception {
+		model.storeLine(event.getMessage());
+	}
 }

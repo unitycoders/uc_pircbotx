@@ -18,41 +18,41 @@
  */
 package uk.co.unitycoders.pircbotx.security;
 
-import org.pircbotx.User;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import org.pircbotx.User;
+
 public class SecurityManager {
-    private Map<String, Session> sessions;
+	private Map<String, Session> sessions;
 
-    public SecurityManager() {
-        this.sessions = new HashMap<String, Session>();
-    }
-    
-    public void startSession(User user) {
-        String sessionKey = generateSessionKey(user);
-        Session session = new Session();
-        sessions.put(sessionKey, session);
-    }
-   
-    public void endSession(User user){
-        String sessionKey = generateSessionKey(user);
-        sessions.remove(sessionKey);
-    }
+	public SecurityManager() {
+		this.sessions = new HashMap<String, Session>();
+	}
 
-    public boolean hasActiveSession(User user) {
-        String sessionKey = generateSessionKey(user);
-        return sessions.containsKey(sessionKey);
-    }
+	public void startSession(User user) {
+		String sessionKey = generateSessionKey(user);
+		Session session = new Session();
+		sessions.put(sessionKey, session);
+	}
 
-    public Session getSession(User user) {
-        String sessionKey = generateSessionKey(user);
-        return sessions.get(sessionKey);
-    }
+	public void endSession(User user){
+		String sessionKey = generateSessionKey(user);
+		sessions.remove(sessionKey);
+	}
 
-    public String generateSessionKey(User user) {
-        return user.getNick() + "@" + user.getHostmask();
-    }
+	public boolean hasActiveSession(User user) {
+		String sessionKey = generateSessionKey(user);
+		return sessions.containsKey(sessionKey);
+	}
+
+	public Session getSession(User user) {
+		String sessionKey = generateSessionKey(user);
+		return sessions.get(sessionKey);
+	}
+
+	public String generateSessionKey(User user) {
+		return user.getNick() + "@" + user.getHostmask();
+	}
 
 }

@@ -40,15 +40,15 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface HelpText {
 
-    /**
-     * Command trigger words.
-     *
-     * This is used to tell the bot what keywords it should respond to when
-     * processing actions. The keyword "default" will be called automatically if
-     * no keyword is specified. If an array of keywords is passed the bot will
-     * register all keywords for this method.
-     *
-     * @return The keywords for this command
-     */
-    public String value();
+	/**
+	 * Command trigger words.
+	 *
+	 * This is used to tell the bot what keywords it should respond to when
+	 * processing actions. The keyword "default" will be called automatically if
+	 * no keyword is specified. If an array of keywords is passed the bot will
+	 * register all keywords for this method.
+	 *
+	 * @return The keywords for this command
+	 */
+	public String value();
 }

@@ -18,14 +18,14 @@
  */
 package uk.co.unitycoders.pircbotx.commands;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
 import uk.co.unitycoders.pircbotx.commandprocessor.HelpText;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
-
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * Outputs the formatted date or time.
@@ -36,66 +36,66 @@ import java.util.TimeZone;
 public class DateTimeCommand extends AnnotationModule {
 	private final static String DEFAULT_TIMEZONE = "UTC";
 	private final static String INVALID_TIMEZONE = "GMT";
-	
-    private final DateFormat dtformat;
-    private final DateFormat dformat;
-    private final DateFormat tformat;
 
-    public DateTimeCommand() {
-    	super("datetime");
-        this.dtformat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
-        this.dformat = DateFormat.getDateInstance(DateFormat.LONG);
-        this.tformat = DateFormat.getTimeInstance(DateFormat.LONG);
-    }
+	private final DateFormat dtformat;
+	private final DateFormat dformat;
+	private final DateFormat tformat;
 
-    @Command("date")
-    @HelpText("Display the current date")
-    public void onDate(Message message) { 	
-    	String tz = message.getArgument(2, DEFAULT_TIMEZONE);
-    	String fmt = "The date is %s";
-    	message.respond(handleRequest(fmt, tz, dformat));
-    }
-    
-    @Command("time")
-    @HelpText("Display the current time")
-    public void onTime(Message message) { 	
-    	String tz = message.getArgument(2, DEFAULT_TIMEZONE);
-    	String fmt = "The time is %s";
-    	message.respond(handleRequest(fmt, tz, tformat));
-    }
-    
-    @Command
-    @HelpText("Display time and date infomation")
-    public void onDateTime(Message message) { 	
-    	String tz = message.getArgument(2, DEFAULT_TIMEZONE);
-    	String fmt = "The date and time is %s";
-    	message.respond(handleRequest(fmt, tz, dtformat));
-    }
-    
-    private String handleRequest(String fmt, String tz, DateFormat format) {
-    	Date currTime = new Date();
-    	TimeZone timezone = TimeZone.getTimeZone(tz);
-    	
-    	TimeZone notFound = TimeZone.getTimeZone(INVALID_TIMEZONE);
-    	if (!tz.equals(INVALID_TIMEZONE) && notFound.equals(timezone)) {
-    		return "I don't know about that timezone";
-    	}
-    	
-    	format.setTimeZone(timezone);
-    	return String.format(fmt, format.format(currTime));
-    }
+	public DateTimeCommand() {
+		super("datetime");
+		this.dtformat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
+		this.dformat = DateFormat.getDateInstance(DateFormat.LONG);
+		this.tformat = DateFormat.getTimeInstance(DateFormat.LONG);
+	}
 
-    /**
-     * Display the current unix timestamp.
-     * 
-     * @param event the message event from the parser
-     */
-    @Command("unix")
-    @HelpText("Display the current unit timestamp")
-    public void unixToTime(Message event) {
-    	long unixTime = System.currentTimeMillis() / 1000L;
-    	
-        String fmt = String.format("The current unix timestamp is %s", unixTime);
-        event.respond(fmt);
-    }
+	@Command("date")
+	@HelpText("Display the current date")
+	public void onDate(Message message) {
+		String tz = message.getArgument(2, DEFAULT_TIMEZONE);
+		String fmt = "The date is %s";
+		message.respond(handleRequest(fmt, tz, dformat));
+	}
+
+	@Command("time")
+	@HelpText("Display the current time")
+	public void onTime(Message message) {
+		String tz = message.getArgument(2, DEFAULT_TIMEZONE);
+		String fmt = "The time is %s";
+		message.respond(handleRequest(fmt, tz, tformat));
+	}
+
+	@Command
+	@HelpText("Display time and date infomation")
+	public void onDateTime(Message message) {
+		String tz = message.getArgument(2, DEFAULT_TIMEZONE);
+		String fmt = "The date and time is %s";
+		message.respond(handleRequest(fmt, tz, dtformat));
+	}
+
+	private String handleRequest(String fmt, String tz, DateFormat format) {
+		Date currTime = new Date();
+		TimeZone timezone = TimeZone.getTimeZone(tz);
+
+		TimeZone notFound = TimeZone.getTimeZone(INVALID_TIMEZONE);
+		if (!tz.equals(INVALID_TIMEZONE) && notFound.equals(timezone)) {
+			return "I don't know about that timezone";
+		}
+
+		format.setTimeZone(timezone);
+		return String.format(fmt, format.format(currTime));
+	}
+
+	/**
+	 * Display the current unix timestamp.
+	 *
+	 * @param event the message event from the parser
+	 */
+	@Command("unix")
+	@HelpText("Display the current unit timestamp")
+	public void unixToTime(Message event) {
+		long unixTime = System.currentTimeMillis() / 1000L;
+
+		String fmt = String.format("The current unix timestamp is %s", unixTime);
+		event.respond(fmt);
+	}
 }

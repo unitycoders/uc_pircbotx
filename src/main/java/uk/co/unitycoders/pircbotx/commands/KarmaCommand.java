@@ -33,55 +33,55 @@ import uk.co.unitycoders.pircbotx.types.Karma;
 
 public class KarmaCommand extends AnnotationModule {
 
-    private final Logger logger = LoggerFactory.getLogger(KarmaCommand.class);
-    private KarmaModel model;
+	private final Logger logger = LoggerFactory.getLogger(KarmaCommand.class);
+	private KarmaModel model;
 
-    public KarmaCommand() {
-    	super("karma");
-        try {
-            this.model = DBConnection.getKarmaModel();
-        } catch (ClassNotFoundException | SQLException ex) {
-            logger.error("Database error", ex);
-        }
-    }
+	public KarmaCommand() {
+		super("karma");
+		try {
+			this.model = DBConnection.getKarmaModel();
+		} catch (ClassNotFoundException | SQLException ex) {
+			logger.error("Database error", ex);
+		}
+	}
 
-    @Command("default")
-    public void onKarma(Message event) {
-        String target = event.getArgument(2);
+	@Command("default")
+	public void onKarma(Message event) {
+		String target = event.getArgument(2);
 
-        int karma = this.model.getKarma(target);
-        event.respond("Karma for " + target + " = " + karma);
-    }
+		int karma = this.model.getKarma(target);
+		event.respond("Karma for " + target + " = " + karma);
+	}
 
-    @Command("top")
-    public void topKarma(Message event) {
-        Collection<Karma> karmaList = model.getTopKarma(5);
-        if (karmaList == null) {
-            event.respond("Could not get top 5");
-        } else {
-            StringBuilder builder = new StringBuilder();
-            for (Karma karma : karmaList) {
-                builder.append(karma.toString());
-                builder.append(" ");
-            }
+	@Command("top")
+	public void topKarma(Message event) {
+		Collection<Karma> karmaList = model.getTopKarma(5);
+		if (karmaList == null) {
+			event.respond("Could not get top 5");
+		} else {
+			StringBuilder builder = new StringBuilder();
+			for (Karma karma : karmaList) {
+				builder.append(karma.toString());
+				builder.append(" ");
+			}
 
-            event.respond(builder.toString());
-        }
-    }
+			event.respond(builder.toString());
+		}
+	}
 
-    @Command({ "increment", "add" })
-    public void incrementKarma(Message event) {
-        String target = event.getArgument(2);
+	@Command({ "increment", "add" })
+	public void incrementKarma(Message event) {
+		String target = event.getArgument(2);
 
-        int karma = this.model.incrementKarma(target);
-        event.respond("Karma for " + target + " is now " + karma);
-    }
+		int karma = this.model.incrementKarma(target);
+		event.respond("Karma for " + target + " is now " + karma);
+	}
 
-    @Command({ "decrement", "remove" })
-    public void decrementKarma(Message event) {
-        String target = event.getArgument(2);
+	@Command({ "decrement", "remove" })
+	public void decrementKarma(Message event) {
+		String target = event.getArgument(2);
 
-        int karma = this.model.decrementKarma(target);
-        event.respond("Karma for " + target + " is now " + karma);
-    }
+		int karma = this.model.decrementKarma(target);
+		event.respond("Karma for " + target + " is now " + karma);
+	}
 }

@@ -24,23 +24,23 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 
 public class UserMessage extends BasicMessage {
-    private final PrivateMessageEvent<PircBotX> event;
-    
-    public UserMessage(PrivateMessageEvent<PircBotX> event, List<String> args) {
-        super(event, args);
-        this.event = event;
-    }
+	private final PrivateMessageEvent<PircBotX> event;
 
-    @Override
-    public void sendAction(String action) {
-        event.getUser().send().action(action);
-    }
+	public UserMessage(PrivateMessageEvent<PircBotX> event, List<String> args) {
+		super(event, args);
+		this.event = event;
+	}
 
-    @Override
-    public String getTargetName() {
-        return event.getUser().getNick();
-    }
-    
-    
-    
+	@Override
+	public void sendAction(String action) {
+		event.getUser().send().action(action);
+	}
+
+	@Override
+	public String getTargetName() {
+		return event.getUser().getNick();
+	}
+
+
+
 }

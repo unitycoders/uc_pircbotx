@@ -27,18 +27,18 @@ import uk.co.unitycoders.pircbotx.data.db.JoinModel;
 
 public class JoinsListener extends ListenerAdapter<PircBotX> {
 
-    private JoinModel model;
+	private JoinModel model;
 
-    public JoinsListener() {
-        try {
-        	this.model = DBConnection.getJoinModel();
-        } catch (Exception ex) {
-        	ex.printStackTrace();
-        }
-    }
+	public JoinsListener() {
+		try {
+			this.model = DBConnection.getJoinModel();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 
-    @Override
-    public void onJoin(JoinEvent<PircBotX> event) throws Exception {
-    	model.incrementJoin(event.getUser().getNick());
-    }
+	@Override
+	public void onJoin(JoinEvent<PircBotX> event) throws Exception {
+		model.incrementJoin(event.getUser().getNick());
+	}
 }
