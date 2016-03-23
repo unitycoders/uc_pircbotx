@@ -81,6 +81,10 @@ public class MessageStub implements Message {
 	}
 
 	@Override
+	public String getArgument(int id) {
+		return getArgument(id, null);
+	}
+		
 	public void respondSuccess() {
 
 	}

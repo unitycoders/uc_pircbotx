@@ -152,8 +152,8 @@ public class CommandProcessorTest {
 		Assert.assertEquals(expected, result);
 	}
 
-	@Test(expected=CommandNotFoundException.class)
-	public void testCommandNotFound() throws Exception {
+	@Test(expected=NullPointerException.class)
+	public void testCommandThrowsException() throws Exception {
 		String name = "fake";
 		Module module = new ModuleWhichThrowsExceptions();
 		processor.register(name, module);
@@ -162,8 +162,8 @@ public class CommandProcessorTest {
 		processor.invoke(message);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
-	public void testCommandException() throws Exception {
+	@Test(expected=CommandNotFoundException.class)
+	public void testCommandNotFound() throws Exception {
 		String name = "fake";
 		Module module = new ModuleWhichReportsNoCommands();
 		processor.register(name, module);

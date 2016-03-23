@@ -19,6 +19,8 @@
 package uk.co.unitycoders.pircbotx.commandprocessor.irc;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.pircbotx.Colors;
 import org.pircbotx.PircBotX;
@@ -54,6 +56,15 @@ public class CommandListener extends ListenerAdapter<PircBotX> {
 
 				BasicMessage message = new ChannelMessage(event, args);
 				processor.invoke(message);
+			} else {
+				//check for someone trying to address the bot by name
+				Pattern pattern = Pattern.compile("^"+event.getBot().getUserBot().getNick()+".? (.*)$");
+				Matcher matcher = pattern.matcher(messageText);
+				if (matcher.matches()) {
+					List<String> args = extractMessage(matcher.group(1));
+					BasicMessage message = new ChannelMessage(event, args);
+					processor.invoke(message);
+				}
 			}
 		} catch (Exception ex) {
 			event.respond("error: "+ex.getMessage());

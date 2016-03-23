@@ -35,7 +35,11 @@ public class Lart {
 	 *
 	 * @param id the id of the lart in the database
 	 * @param channel the channel the lart belongs in
+<<<<<<< HEAD
+	 * @param user the creator of the lart
+=======
 	 * @param nick the creator of the lart
+>>>>>>> master
 	 * @param pattern the pattern of the lart, requires a $who part
 	 */
 	public Lart(int id, String channel, String nick, String pattern) {

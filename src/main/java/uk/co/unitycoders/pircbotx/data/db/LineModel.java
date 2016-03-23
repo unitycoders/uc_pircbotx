@@ -63,6 +63,10 @@ public class LineModel {
 	 * Store a line in the database.
 	 *
 	 * @param line the line to store
+<<<<<<< HEAD
+	 * @throws SQLException if there was a database error
+=======
+>>>>>>> master
 	 * @return if the storing was successful
 	 */
 	public boolean storeLine(String line) {
@@ -80,6 +84,10 @@ public class LineModel {
 	 * Get a random line from the database.
 	 *
 	 * @return the random line
+<<<<<<< HEAD
+	 * @throws SQLException if there was a database error
+=======
+>>>>>>> master
 	 */
 	public String getRandomLine() {
 		try {

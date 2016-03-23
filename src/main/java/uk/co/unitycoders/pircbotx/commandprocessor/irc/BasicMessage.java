@@ -73,6 +73,15 @@ public abstract class BasicMessage implements Message {
 	}
 
 	@Override
+	public String getArgument(int id) {
+		if (args == null || args.size() <= id){
+			throw new IllegalArgumentException("missing required argument");
+		}
+
+		return args.get(id);
+	}
+
+	@Override
 	public String getArgument(int id, String defaultValue) {
 		if (args == null || args.size() <= id){
 			return defaultValue;

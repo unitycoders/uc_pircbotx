@@ -105,25 +105,30 @@ public class AnnotationModule implements Module {
 				// check the class params match our spec
 				assert ModuleUtils.isValidParams(method) : "first parameter of a command must be Message";
 
-				HelpText help = method.getAnnotation(HelpText.class);
-				String helpText = null;
-				if (help != null) {
-					helpText = help.value();
-				}
-
 				String[] keywords = c.value();
 				for (String keyword : keywords) {
-					registerAction(keyword, method, helpText);
+					registerAction(keyword, method);
 				}
 			}
 		}
 	}
 
-	protected void registerAction(String action, Method method, String helpText) {
+	protected void registerAction(String action, Method method) {
 		Node node = new Node();
 		node.method = method;
-		node.helpText = helpText;
 		nodes.put(action, node);
+
+		//Deal with help text
+		HelpText help = method.getAnnotation(HelpText.class);
+		if (help != null) {
+			node.helpText = help.value();
+		}
+
+		//deal with usage annotations
+		Usage usage = method.getAnnotation(Usage.class);
+		if (usage != null) {
+			node.usage = usage.value();
+		}
 
 		//Permissions annotation
 		Secured permissionsRequired = method.getAnnotation(Secured.class);
@@ -141,6 +146,7 @@ public class AnnotationModule implements Module {
 		protected Method method;
 		protected String[] permissions;
 		protected String helpText;
+		protected String[] usage;
 	}
 
 	@Override
@@ -166,5 +172,15 @@ public class AnnotationModule implements Module {
 	@Override
 	public String getModuleHelp() {
 		return helpText;
+	}
+
+	@Override
+	public String[] getArgumentsFor(String action) {
+		Node node = nodes.get(action);
+		if (node == null) {
+			return null;
+		}
+
+		return node.usage;
 	}
 }

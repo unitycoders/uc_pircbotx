@@ -7,6 +7,7 @@ import uk.co.unitycoders.pircbotx.modules.Module;
 
 /**
  * Redirect non-existent actions to the module's default action.
+ * If the module is missing and we can guess it insert the module name
  */
 public class CommandFixerMiddleware extends AbstractMiddleware {
 

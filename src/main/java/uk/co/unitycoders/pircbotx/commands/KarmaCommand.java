@@ -47,7 +47,7 @@ public class KarmaCommand extends AnnotationModule {
 
 	@Command("default")
 	public void onKarma(Message event) {
-		String target = event.getArgument(2, null);
+		String target = event.getArgument(2);
 
 		int karma = this.model.getKarma(target);
 		event.respond("Karma for " + target + " = " + karma);
@@ -71,7 +71,7 @@ public class KarmaCommand extends AnnotationModule {
 
 	@Command({ "increment", "add" })
 	public void incrementKarma(Message event) {
-		String target = event.getArgument(2, null);
+		String target = event.getArgument(2);
 
 		int karma = this.model.incrementKarma(target);
 		event.respond("Karma for " + target + " is now " + karma);
@@ -79,7 +79,7 @@ public class KarmaCommand extends AnnotationModule {
 
 	@Command({ "decrement", "remove" })
 	public void decrementKarma(Message event) {
-		String target = event.getArgument(2, null);
+		String target = event.getArgument(2);
 
 		int karma = this.model.decrementKarma(target);
 		event.respond("Karma for " + target + " is now " + karma);

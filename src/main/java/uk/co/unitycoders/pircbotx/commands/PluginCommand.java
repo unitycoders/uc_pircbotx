@@ -47,8 +47,8 @@ public class PluginCommand extends AnnotationModule {
 	@Command("load")
 	@Secured
 	public void onLoad(Message message) {
-		String name = message.getArgument(2, null);
-		String className = message.getArgument(3, null);
+		String name = message.getArgument(2);
+		String className = message.getArgument(3);
 
 		try {
 			Module module = ModuleUtils.loadModule(className);
@@ -69,8 +69,8 @@ public class PluginCommand extends AnnotationModule {
 	public void onAlias(Message message) {
 
 		try {
-			String alias = message.getArgument(2, null);
-			String commandKeyword = message.getArgument(3, null);
+			String alias = message.getArgument(2);
+			String commandKeyword = message.getArgument(3);
 			processor.alias(alias, commandKeyword);
 			message.respond("Plugin is now aliased");
 		} catch (RuntimeException ex) {
@@ -82,18 +82,14 @@ public class PluginCommand extends AnnotationModule {
 	@Command("unload")
 	@Secured
 	public void onUnload(Message message) {
-		String name = message.getArgument(2, null);
+		String name = message.getArgument(2);
 		processor.remove(name);
 		message.respond("Plugin has been unloaded");
 	}
 
 	@Command("reverse")
 	public void onReverse(Message message) {
-		String action = message.getArgument(2, null);
-		if (action == null) {
-			message.respond("usage: reverse [message]");
-			return;
-		}
+		String action = message.getArgument(2);
 
 		List<String> modules = processor.getReverse(action);
 		if (!modules.isEmpty()) {

@@ -25,12 +25,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
+import uk.co.unitycoders.pircbotx.commandprocessor.HelpText;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.commandprocessor.MessageUtils;
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.data.db.Factoid;
 import uk.co.unitycoders.pircbotx.data.db.FactoidModel;
 import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
+import uk.co.unitycoders.pircbotx.modules.Usage;
 
 public class FactoidCommand extends AnnotationModule {
 	private final Logger logger = LoggerFactory.getLogger(FactoidCommand.class);
@@ -46,28 +48,22 @@ public class FactoidCommand extends AnnotationModule {
 	}
 
 	@Command("add")
+	@Usage("[name] [text]")
+	@HelpText("add a factoid from the database")
 	public void addFactoid(Message message) {
-		String name = message.getArgument(2, null);
-		String text = message.getArgument(3, null);
-
-		if (name == null || text == null) {
-			message.respond("usage: factoid add [name] [text]");
-			return;
-		}
-
+		String name = message.getArgument(2);
+		String text = message.getArgument(3);
+		
 		boolean status = model.addFactoid(name, text);
 		String result = status?"Factoid added successfully":"factoid failed to get added";
 		message.respond(result);
 	}
 
 	@Command("get")
+	@Usage("[name]")
+	@HelpText("get a factoid from the database by name")
 	public void getFactoid(Message message) {
-		String name = message.getArgument(2, null);
-
-		if (name == null) {
-			message.respond("usage: factoid get [name]");
-			return;
-		}
+		String name = message.getArgument(2);
 
 		String factoid = model.getFactoid(name);
 		if (factoid == null) {
@@ -78,12 +74,10 @@ public class FactoidCommand extends AnnotationModule {
 	}
 
 	@Command("search")
+	@Usage("[query]")
+	@HelpText("search the database for matching factoids (% is wildcard)")
 	public void onSearch(Message message) {
-		String query = message.getArgument(2, null);
-		if (query == null) {
-			message.respond("Usage: factoid search [query]");
-			return;
-		}
+		String query = message.getArgument(2);
 
 		List<Factoid> factoids = model.search(query);
 		if (factoids.isEmpty()) {
@@ -95,6 +89,7 @@ public class FactoidCommand extends AnnotationModule {
 	}
 
 	@Command("random")
+	@HelpText("get a random factoid from the database")
 	public void getRandom(Message message) {
 		Factoid factoid = model.getRandom();
 		if (factoid == null) {
@@ -106,14 +101,11 @@ public class FactoidCommand extends AnnotationModule {
 
 
 	@Command("edit")
+	@Usage("[name] [text]")
+	@HelpText("edit an existing factoid in the database")
 	public void updateFactoid(Message message) {
-		String name = message.getArgument(2, null);
-		String text = message.getArgument(3, null);
-
-		if (name == null || text == null) {
-			message.respond("usage: factoid edit [name] [text]");
-			return;
-		}
+		String name = message.getArgument(2);
+		String text = message.getArgument(3);
 
 		boolean result = model.editFactoid(name, text);
 		if (result) {
@@ -124,13 +116,10 @@ public class FactoidCommand extends AnnotationModule {
 	}
 
 	@Command("remove")
+	@Usage("[name]")
+	@HelpText("remove an existing factoid from the database")
 	public void removeFactoid(Message message) {
-		String name = message.getArgument(2, null);
-
-		if (name == null) {
-			message.respond("usage: factoid remove [name]");
-			return;
-		}
+		String name = message.getArgument(2);
 
 		boolean status = model.deleteFactoid(name);
 		String result = status?"Factoid removed successfully":"factoid failed to get removed";

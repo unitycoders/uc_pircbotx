@@ -44,6 +44,8 @@ import uk.co.unitycoders.pircbotx.modules.Module;
  *
  */
 public class CommandProcessor {
+	private final String USE_FORMAT = "usage: %s %s %s";
+
 	private final Logger logger = LoggerFactory.getLogger(CommandProcessor.class);
 	private final Pattern tokeniser;
 	private final Map<String, Module> commands;
@@ -187,10 +189,11 @@ public class CommandProcessor {
 			assert message != null : mw+" voilates contract";
 		}
 
-		String command = message.getArgument(Module.MODULE_ARG, null);
-		Module node = commands.get(command);
+		String module = message.getArgument(Module.MODULE_ARG, null);
+		String action = message.getArgument(Module.COMMAND_ARG, Module.DEFAULT_COMMAND);
+		Module node = commands.get(module);
 		if (node == null) {
-			throw new CommandNotFoundException(command);
+			throw new CommandNotFoundException(module);
 		}
 
 		try {
@@ -198,6 +201,13 @@ public class CommandProcessor {
 		} catch (CommandNotFoundException ex) {
 			message.respond("That's not a valid command");
 			throw ex;
+		} catch (IllegalArgumentException ex) {
+			String[] args = node.getArgumentsFor(action);
+			if (args == null) {
+				message.respond("You did not supply the correct arguments");
+			} else {
+				message.respond(String.format(USE_FORMAT, module, action, args));
+			}
 		} catch (Exception ex) {
 			message.respond("Something has gone wrong, please let the developers know");
 			logger.error("Exception thrown", ex);
