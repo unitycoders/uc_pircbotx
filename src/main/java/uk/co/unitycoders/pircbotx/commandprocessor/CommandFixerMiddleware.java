@@ -3,7 +3,6 @@ package uk.co.unitycoders.pircbotx.commandprocessor;
 import java.util.List;
 
 import uk.co.unitycoders.pircbotx.middleware.AbstractMiddleware;
-import uk.co.unitycoders.pircbotx.middleware.BotMiddleware;
 import uk.co.unitycoders.pircbotx.modules.Module;
 
 /**

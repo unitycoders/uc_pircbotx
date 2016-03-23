@@ -21,7 +21,6 @@ package uk.co.unitycoders.pircbotx.commandprocessor.irc;
 import java.util.Iterator;
 import java.util.List;
 
-import org.pircbotx.Colors;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 import org.pircbotx.hooks.types.GenericMessageEvent;

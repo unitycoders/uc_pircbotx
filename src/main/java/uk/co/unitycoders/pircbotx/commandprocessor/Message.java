@@ -18,8 +18,6 @@
  */
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
-import java.util.List;
-
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 

@@ -3,7 +3,6 @@ package uk.co.unitycoders.pircbotx.security;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 import uk.co.unitycoders.pircbotx.middleware.AbstractMiddleware;
-import uk.co.unitycoders.pircbotx.middleware.BotMiddleware;
 import uk.co.unitycoders.pircbotx.modules.Module;
 
 public class SecurityMiddleware extends AbstractMiddleware {

@@ -23,7 +23,6 @@ import java.util.TreeMap;
 
 import uk.co.unitycoders.pircbotx.LocalConfiguration;
 import uk.co.unitycoders.pircbotx.middleware.AbstractMiddleware;
-import uk.co.unitycoders.pircbotx.middleware.BotMiddleware;
 
 public class RewriteEngine extends AbstractMiddleware {
 	private Map<String, String> rules;
