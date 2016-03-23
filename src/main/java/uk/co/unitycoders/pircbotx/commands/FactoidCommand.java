@@ -53,7 +53,7 @@ public class FactoidCommand extends AnnotationModule {
 	public void addFactoid(Message message) {
 		String name = message.getArgument(2);
 		String text = message.getArgument(3);
-
+		
 		boolean status = model.addFactoid(name, text);
 		String result = status?"Factoid added successfully":"factoid failed to get added";
 		message.respond(result);

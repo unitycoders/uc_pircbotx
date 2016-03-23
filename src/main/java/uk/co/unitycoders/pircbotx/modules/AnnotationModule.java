@@ -116,7 +116,6 @@ public class AnnotationModule implements Module {
 	protected void registerAction(String action, Method method) {
 		Node node = new Node();
 		node.method = method;
-		node.helpText = helpText;
 		nodes.put(action, node);
 
 		//Deal with help text
@@ -125,6 +124,7 @@ public class AnnotationModule implements Module {
 			node.helpText = help.value();
 		}
 
+		//deal with usage annotations
 		Usage usage = method.getAnnotation(Usage.class);
 		if (usage != null) {
 			node.usage = usage.value();

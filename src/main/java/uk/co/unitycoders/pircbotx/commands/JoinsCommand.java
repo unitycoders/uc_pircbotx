@@ -37,6 +37,10 @@ public class JoinsCommand extends AnnotationModule {
 
 	/**
 	 * Creates a {@link JoinsCommand}.
+<<<<<<< HEAD
+=======
+	 * @throws Exception if database connection failed
+>>>>>>> master
 	 */
 	public JoinsCommand() throws Exception {
 		super("joins");

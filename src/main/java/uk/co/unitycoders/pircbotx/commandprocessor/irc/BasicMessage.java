@@ -96,7 +96,7 @@ public abstract class BasicMessage implements Message {
 	}
 
 	@Override
-	public void sendSuccess() {
+	public void respondSuccess() {
 		respond("The operation was successful.");
 	}
 

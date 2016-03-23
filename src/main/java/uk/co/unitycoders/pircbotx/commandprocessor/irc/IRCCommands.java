@@ -76,7 +76,6 @@ public class IRCCommands extends AnnotationModule {
 	@Secured
 	public void onJoinRequest(Message message) {
 		String channel = message.getArgument(2);
-
 		PircBotX bot = message.getBot();
 		bot.sendIRC().joinChannel(channel);
 	}

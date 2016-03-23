@@ -21,7 +21,6 @@ package uk.co.unitycoders.pircbotx.commands;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.pircbotx.hooks.events.MessageEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -137,7 +136,11 @@ public class LartCommand extends AnnotationModule {
 	/**
 	 * Insults someone.
 	 *
+<<<<<<< HEAD
 	 * @param event the event from {@link #onMessage(MessageEvent)}.
+=======
+	 * @param event The bot's message event
+>>>>>>> master
 	 */
 	@Command("default")
 	public void insult(Message event) {
