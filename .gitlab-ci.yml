@@ -1,4 +1,26 @@
 image: maven:3-jdk-7
 
-build:
-      script: "mvn install -B"
+stages:
+    - test
+    - deploy
+    - cleanup
+
+mvn_test:
+    stage: test
+    script: "mvn test -B -U"
+    except:
+        - tags
+
+mvn_package:
+    stage: deploy
+    script: "mvn package -B -U"
+    artifacts:
+        paths:
+        - target/*.jar
+    only:
+        - tags
+
+mvn_clean:
+    stage: cleanup
+    script: "mvn clean -B"
+    when: always
