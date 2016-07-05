@@ -11,6 +11,7 @@ uc_pircbotx.json
 #IDE Related
 ## Netbeans stuff
 nbactions.xml
+nb-configuration.xml
 
 ## Intellij IDEA stuff
 .idea/
