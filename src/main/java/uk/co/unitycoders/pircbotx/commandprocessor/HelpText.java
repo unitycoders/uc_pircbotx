@@ -33,7 +33,6 @@ import java.lang.annotation.Target;
 public @interface HelpText {
 
 	/**
-<<<<<<< HEAD
 	 * Command trigger words.
 	 *
 	 * This is used to tell the bot what keywords it should respond to when
@@ -42,9 +41,6 @@ public @interface HelpText {
 	 * register all keywords for this method.
 	 *
 	 * @return The keywords for this command
-=======
-	 * The message the bot should show if the user requests help.
->>>>>>> master
 	 */
 	public String value();
 }

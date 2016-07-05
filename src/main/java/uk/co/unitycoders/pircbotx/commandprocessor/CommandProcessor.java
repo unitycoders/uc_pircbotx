@@ -58,6 +58,7 @@ public class CommandProcessor {
 	 * This will create a new command processor and will initialise the regex
 	 * pattern the bot will use to match commands. It will also create the maps
 	 * needed to store information about the commands.
+	 * @param middleware the list of steps to process the message
 	 */
 	public CommandProcessor(List<BotMiddleware> middleware) {
 		assert middleware != null : "don't pass null as the middleware, use empty list instead";
@@ -180,7 +181,8 @@ public class CommandProcessor {
 	 * event.
 	 *
 	 * @param message the event to be processed
-	 * @throws Exception
+	 * @throws CommandNotFoundException if the command does not exist
+	 * @throws Exception if the method throws an exception
 	 */
 	public void invoke(Message message) throws Exception {
 		for (BotMiddleware mw : middleware) {
