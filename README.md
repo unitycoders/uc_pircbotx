@@ -1,5 +1,6 @@
 # uc_pircbotx - IRC Bot
-[![Build Status](https://travis-ci.org/unitycoders/uc_pircbotx.svg?branch=master)](https://travis-ci.org/unitycoders/uc_pircbotx)
+[![build
+status](https://git.fossgalaxy.com/open-source/irc-bot/badges/master/build.svg)](https://git.fossgalaxy.com/open-source/irc-bot/commits/master)
 
 This is a bot for #unity-coders, which uses [pircbotx][pircbotx]. Source available on
 [github](http://git.unitycoders.co.uk/uc_pircbotx).
