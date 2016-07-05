@@ -19,6 +19,7 @@ nb-configuration.xml
 
 ## Eclipse Stuff
 *.pydevproject
+.project
 .metadata
 .classpath
 .gradle
