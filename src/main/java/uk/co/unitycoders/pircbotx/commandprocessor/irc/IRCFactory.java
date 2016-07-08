@@ -3,7 +3,6 @@ package uk.co.unitycoders.pircbotx.commandprocessor.irc;
 import javax.net.ssl.SSLSocketFactory;
 
 import org.pircbotx.Configuration;
-import org.pircbotx.PircBotX;
 import org.pircbotx.cap.SASLCapHandler;
 
 import uk.co.unitycoders.pircbotx.LocalConfiguration;
@@ -21,13 +20,13 @@ public class IRCFactory {
 	 * @param config our configuration instance
 	 * @param processor the processor to bind to
 	 */
-	public static Configuration.Builder<PircBotX> doConfig(LocalConfiguration config, CommandProcessor processor) {
-		Configuration.Builder<PircBotX> cb = new Configuration.Builder<PircBotX>();
+	public static Configuration.Builder doConfig(LocalConfiguration config, CommandProcessor processor) {
+		Configuration.Builder cb = new Configuration.Builder();
 		cb.addListener(new CommandListener(processor, config.trigger));
 
 		//build the bot
 		cb.setName(config.nick);
-		cb.setServer(config.host, config.port);
+		cb.addServer(config.host, config.port);
 
 		if (config.sasl) {
 			cb.setCapEnabled(true);

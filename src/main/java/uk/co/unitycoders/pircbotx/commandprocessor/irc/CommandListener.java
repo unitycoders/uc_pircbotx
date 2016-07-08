@@ -23,7 +23,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.pircbotx.Colors;
-import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
@@ -36,7 +35,7 @@ import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
  * This class is notified by pircbotx when the bot gets a message. It's sole
  * purpose is to act as an adapter between the command processor and pircbotx.
  */
-public class CommandListener extends ListenerAdapter<PircBotX> {
+public class CommandListener extends ListenerAdapter {
 
 	private final CommandProcessor processor;
 	private final String prefix;
@@ -47,7 +46,7 @@ public class CommandListener extends ListenerAdapter<PircBotX> {
 	}
 
 	@Override
-	public void onMessage(MessageEvent<PircBotX> event) throws Exception {
+	public void onMessage(MessageEvent event) throws Exception {
 		try{
 			String messageText = event.getMessage();
 
@@ -72,7 +71,7 @@ public class CommandListener extends ListenerAdapter<PircBotX> {
 	}
 
 	@Override
-	public void onPrivateMessage(PrivateMessageEvent<PircBotX> event) throws Exception {
+	public void onPrivateMessage(PrivateMessageEvent event) throws Exception {
 		try {
 			List<String> messageText = extractMessage(event.getMessage());
 			processor.invoke(new UserMessage(event, messageText));

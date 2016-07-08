@@ -34,10 +34,10 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Message;
  * the common features which we can deal with for the child classes.
  */
 public abstract class BasicMessage implements Message {
-	private final GenericMessageEvent<PircBotX> event;
+	private final GenericMessageEvent event;
 	private final List<String> args;
 
-	public BasicMessage(GenericMessageEvent<PircBotX> message, List<String> args) {
+	public BasicMessage(GenericMessageEvent message, List<String> args) {
 		this.event = message;
 		this.args = args;
 	}

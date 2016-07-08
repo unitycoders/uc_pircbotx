@@ -117,13 +117,13 @@ public class BotRunnable implements Runnable {
 
 
 			//this creates our host bot instance
-			Configuration.Builder<PircBotX> cb = IRCFactory.doConfig(config, processor);
+			Configuration.Builder cb = IRCFactory.doConfig(config, processor);
 
 			cb.addListener(new JoinsListener());
 			cb.addListener(new LinesListener());
 
 			//build pircbotx
-			Configuration<PircBotX> configuration = cb.buildConfiguration();
+			Configuration configuration = cb.buildConfiguration();
 			PircBotX instance = new PircBotX(configuration);
 			instance.startBot();
 		} catch (Exception ex) {

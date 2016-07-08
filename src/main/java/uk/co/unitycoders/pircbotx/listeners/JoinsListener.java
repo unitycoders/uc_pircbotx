@@ -18,14 +18,13 @@
  */
 package uk.co.unitycoders.pircbotx.listeners;
 
-import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.JoinEvent;
 
 import uk.co.unitycoders.pircbotx.data.db.DBConnection;
 import uk.co.unitycoders.pircbotx.data.db.JoinModel;
 
-public class JoinsListener extends ListenerAdapter<PircBotX> {
+public class JoinsListener extends ListenerAdapter {
 
 	private JoinModel model;
 
@@ -38,7 +37,7 @@ public class JoinsListener extends ListenerAdapter<PircBotX> {
 	}
 
 	@Override
-	public void onJoin(JoinEvent<PircBotX> event) throws Exception {
+	public void onJoin(JoinEvent event) throws Exception {
 		model.incrementJoin(event.getUser().getNick());
 	}
 }

@@ -20,13 +20,12 @@ package uk.co.unitycoders.pircbotx.commandprocessor.irc;
 
 import java.util.List;
 
-import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 
 public class UserMessage extends BasicMessage {
-	private final PrivateMessageEvent<PircBotX> event;
+	private final PrivateMessageEvent event;
 
-	public UserMessage(PrivateMessageEvent<PircBotX> event, List<String> args) {
+	public UserMessage(PrivateMessageEvent event, List<String> args) {
 		super(event, args);
 		this.event = event;
 	}

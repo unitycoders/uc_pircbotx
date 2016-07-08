@@ -20,7 +20,6 @@ package uk.co.unitycoders.pircbotx.profile;
 
 import java.sql.SQLException;
 
-import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.Command;
@@ -42,7 +41,7 @@ public class ProfileCommand {
 	}
 
 	@Command("register")
-	public void register(MessageEvent<PircBotX> event) throws Exception {
+	public void register(MessageEvent event) throws Exception {
 		try {
 			manager.register("demo123");
 			event.respond("Created new profile for you");
@@ -52,19 +51,19 @@ public class ProfileCommand {
 	}
 
 	@Command("login")
-	public void login(MessageEvent<PircBotX> event) throws Exception {
+	public void login(MessageEvent event) throws Exception {
 		manager.login(event.getUser(), "demo123");
 		event.respond("you are now logged in");
 	}
 
 	@Command("logoff")
-	public void logoff(MessageEvent<PircBotX> event) throws Exception {
+	public void logoff(MessageEvent event) throws Exception {
 		manager.logoff(event.getUser());
 		event.respond("you have been logged out");
 	}
 
 	@Command("addperm")
-	public void addPerm(MessageEvent<PircBotX> event) throws Exception {
+	public void addPerm(MessageEvent event) throws Exception {
 		Profile profile = manager.getProfile(event.getUser());
 		if (profile == null) {
 			event.respond("you are not logged in.");
@@ -76,7 +75,7 @@ public class ProfileCommand {
 	}
 
 	@Command("rmperm")
-	public void removePerm(MessageEvent<PircBotX> event) throws Exception {
+	public void removePerm(MessageEvent event) throws Exception {
 		Profile profile = manager.getProfile(event.getUser());
 		if (profile == null) {
 			event.respond("you are not logged in.");
@@ -88,7 +87,7 @@ public class ProfileCommand {
 	}
 
 	@Command("hasperm")
-	public void hasPerm(MessageEvent<PircBotX> event) throws Exception {
+	public void hasPerm(MessageEvent event) throws Exception {
 		Profile profile = manager.getProfile(event.getUser());
 		if (profile == null) {
 			event.respond("you are not logged in.");
