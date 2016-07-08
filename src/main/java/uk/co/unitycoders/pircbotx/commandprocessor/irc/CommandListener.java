@@ -35,7 +35,7 @@ import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
  * This class is notified by pircbotx when the bot gets a message. It's sole
  * purpose is to act as an adapter between the command processor and pircbotx.
  */
-public class CommandListener extends ListenerAdapter {
+class CommandListener extends ListenerAdapter {
 
 	private final CommandProcessor processor;
 	private final String prefix;

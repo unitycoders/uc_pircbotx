@@ -33,7 +33,7 @@ import uk.co.unitycoders.pircbotx.commandprocessor.Message;
  * An abstract version of the Bot Message interface which deals with some of
  * the common features which we can deal with for the child classes.
  */
-public abstract class BasicMessage implements Message {
+abstract class BasicMessage implements Message {
 	private final GenericMessageEvent event;
 	private final List<String> args;
 
