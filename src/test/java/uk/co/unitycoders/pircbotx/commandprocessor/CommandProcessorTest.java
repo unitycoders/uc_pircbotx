@@ -121,7 +121,7 @@ public class CommandProcessorTest {
 		Assert.assertEquals(module, result);
 
 		processor.remove(name);
-		Assert.assertEquals(null, processor.getModule(name));
+		Assert.assertNull(processor.getModule(name));
 	}
 
 	@Test
@@ -147,9 +147,8 @@ public class CommandProcessorTest {
 	@Test
 	public void testGetModuleNull() {
 		String moduleName = null;
-		Module expected = null;
 		Module result = processor.getModule(moduleName);
-		Assert.assertEquals(expected, result);
+		Assert.assertNull(result);
 	}
 
 	@Test(expected=NullPointerException.class)

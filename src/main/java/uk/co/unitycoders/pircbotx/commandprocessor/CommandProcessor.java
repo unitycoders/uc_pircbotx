@@ -19,6 +19,7 @@
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,7 +45,7 @@ import uk.co.unitycoders.pircbotx.modules.Module;
  *
  */
 public class CommandProcessor {
-	private final String USE_FORMAT = "usage: %s %s %s";
+	private static final String USE_FORMAT = "usage: %s %s %s";
 
 	private final Logger logger = LoggerFactory.getLogger(CommandProcessor.class);
 	private final Pattern tokeniser;
@@ -208,7 +209,7 @@ public class CommandProcessor {
 			if (args == null) {
 				message.respond("You did not supply the correct arguments");
 			} else {
-				message.respond(String.format(USE_FORMAT, module, action, args));
+				message.respond(String.format(USE_FORMAT, module, action, Arrays.toString(args)));
 			}
 		} catch (Exception ex) {
 			message.respond("Something has gone wrong, please let the developers know");

@@ -33,7 +33,7 @@ import uk.co.unitycoders.pircbotx.types.Karma;
 
 public class KarmaCommand extends AnnotationModule {
 
-	private final Logger logger = LoggerFactory.getLogger(KarmaCommand.class);
+	private static final Logger logger = LoggerFactory.getLogger(KarmaCommand.class);
 	private KarmaModel model;
 
 	public KarmaCommand() {

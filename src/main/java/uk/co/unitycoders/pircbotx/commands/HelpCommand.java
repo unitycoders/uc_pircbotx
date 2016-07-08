@@ -81,6 +81,7 @@ public class HelpCommand extends AnnotationModule {
 		Module module = processor.getModule(moduleName);
 		if (module == null) {
 			event.respond("Sorry, there isn't a module named "+moduleName);
+			return;
 		}
 
 		String moduleHelp = module.getModuleHelp();
@@ -104,6 +105,7 @@ public class HelpCommand extends AnnotationModule {
 		Module module = processor.getModule(moduleName);
 		if (module == null) {
 			event.respond("Sorry, there isn't a module named "+moduleName);
+			return;
 		}
 
 		String moduleHelp = module.getHelp(commandName);

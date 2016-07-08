@@ -126,6 +126,7 @@ public class BotRunnable implements Runnable {
 			Configuration configuration = cb.buildConfiguration();
 			PircBotX instance = new PircBotX(configuration);
 			instance.startBot();
+			instance.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			throw new RuntimeException(ex);

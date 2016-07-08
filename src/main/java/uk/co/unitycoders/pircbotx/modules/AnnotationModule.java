@@ -83,7 +83,7 @@ public class AnnotationModule implements Module {
 		return nodes.containsKey(action);
 	}
 
-	protected void processAnnotations() {
+	protected final void processAnnotations() {
 		Class<?> clazz = source.getClass();
 
 		//take the HelpText annotation from the class (if exists)
