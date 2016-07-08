@@ -26,6 +26,8 @@ import java.util.ServiceLoader;
 
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 import uk.co.unitycoders.pircbotx.commandprocessor.irc.IRCFactory;
@@ -42,6 +44,7 @@ import uk.co.unitycoders.pircbotx.security.SecurityMiddleware;
 import uk.co.unitycoders.pircbotx.security.SessionCommand;
 
 public class BotRunnable implements Runnable {
+	private static final Logger LOG = LoggerFactory.getLogger(BotRunnable.class);
 	private SecurityManager security;
 	private CommandProcessor processor;
 	private LocalConfiguration config;
@@ -79,7 +82,7 @@ public class BotRunnable implements Runnable {
 			//module data
 			String name = module.getName();
 			processor.register(name, module);
-			System.out.println("new module: "+module);
+			LOG.info("new module: {} ", module);
 
 			//configuration items
 			ModuleConfig config = moduleConfigs.get(name);
