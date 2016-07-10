@@ -13,6 +13,9 @@ If you would like documentation on how to use the bot, please consult the
 
 ### Compiling and running with maven
     $ mvn package
+    $ mkdir target/config
+    $ cp src/main/resources/uc_pircbotx.json.example target/config/bot.json
+    # edit config in target/config/bot.json
     $ java -jar target/uc_pircbotx-0.1-SNAPSHOT-jar-with-dependencies.jar
 
 ### Running as a service (demo, not a real system service yet)
@@ -30,10 +33,7 @@ This is the way we are currently using the bot for our needs. There is a
 public docker image on [docker hub](https://hub.docker.com/r/webpigeon/uc_pircbotx/).
 
 There are however a few issues needing to be fixed:
-* Config file is baked into the build, you need to modify this before
-  running the bot.
 * Plugins directory is not a thing yet
-* Database is not stored on a volume (data gets nuked with the volume)
 
 #### running the image
 ```
@@ -52,7 +52,6 @@ This is mostly for webpigeon incase he forgets
 sudo docker build -t webpigeon/uc_pircbotx .
 sudo docker push webpigeon/uc_pircbotx
 ```
-
 
 ### Maven With IDEs
 #### Maven With Eclipse

@@ -31,7 +31,7 @@ import com.google.gson.Gson;
  * bot.
  */
 public class ConfigurationManager {
-	public static final String JSON_FILE_NAME = "uc_pircbotx.json";
+	public static final String JSON_FILE_NAME = "config/bot.json";
 
 	// Default configuration values
 	public static final String DEFAULT_IRC_HOST = "irc.freenode.net";
