@@ -193,18 +193,19 @@ public class CommandProcessor {
 		}
 
 		String module = message.getArgument(Module.MODULE_ARG, null);
-		String action = message.getArgument(Module.COMMAND_ARG, Module.DEFAULT_COMMAND);
 		Module node = commands.get(module);
 		if (node == null) {
 			throw new CommandNotFoundException(module);
 		}
-
+		
 		try {
 			node.fire(message);
 		} catch (CommandNotFoundException ex) {
-			message.respond("That's not a valid command");
+			String action = message.getArgument(Module.COMMAND_ARG, Module.DEFAULT_COMMAND);
+			logger.warn("module {} reported invalid command for action {}", module, action);
 			throw ex;
 		} catch (IllegalArgumentException ex) {
+			String action = message.getArgument(Module.COMMAND_ARG, Module.DEFAULT_COMMAND);
 			String[] args = node.getArgumentsFor(action);
 			if (args == null) {
 				message.respond("You did not supply the correct arguments");
