@@ -25,6 +25,17 @@ Warning: This is **very** experimental. It /should/ work on debian based distrib
     $ vim /etc/uc_pircbotx.json # edit to suit your needs
     $ sudo ucbot-ctl
 
+### Running as a docker image
+This is the way we are currently using the bot for our needs. There is a
+public docker image on [docker hub](https://hub.docker.com/r/webpigeon/uc_pircbotx/).
+
+There are however a few issues needing to be fixed:
+* Config file is baked into the build, you need to modify this before
+  running the bot.
+* Plugins directory is not a thing yet
+* Database is not stored on a volume (data gets nuked with the volume)
+
+
 ### Maven With IDEs
 #### Maven With Eclipse
 The maven website has tutorials on using maven with eclipse. You can see them at http://maven.apache.org/guides/mini/guide-ide-eclipse.html.
