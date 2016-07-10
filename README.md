@@ -35,6 +35,24 @@ There are however a few issues needing to be fixed:
 * Plugins directory is not a thing yet
 * Database is not stored on a volume (data gets nuked with the volume)
 
+#### running the image
+```
+mkdir config plugins
+wget https://raw.githubusercontent.com/unitycoders/uc_pircbotx/master/src/main/resources/uc_pircbotx.json.example -O config/bot.json
+# edit config file
+sudo docker run -d --name ircbot -v `pwd`/config:/home/uc_pircbotx/config -v `pwd`/plugins:/home/uc_pircbotx/plugins webpigeon/uc_pircbotx
+```
+
+
+#### building the docker image
+This is mostly for webpigeon incase he forgets
+
+```
+# sudo docker login
+sudo docker build -t webpigeon/uc_pircbotx .
+sudo docker push webpigeon/uc_pircbotx
+```
+
 
 ### Maven With IDEs
 #### Maven With Eclipse
