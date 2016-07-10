@@ -16,30 +16,28 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package uk.co.unitycoders.pircbotx.commandprocessor.irc;
+package uk.co.unitycoders.pircbotx.backends.irc;
 
 import java.util.List;
 
-import org.pircbotx.hooks.events.PrivateMessageEvent;
+import org.pircbotx.hooks.events.MessageEvent;
 
-class UserMessage extends BasicMessage {
-	private final PrivateMessageEvent event;
+class ChannelMessage extends BasicMessage {
+	private final MessageEvent event;
 
-	public UserMessage(PrivateMessageEvent event, List<String> args) {
+	public ChannelMessage(MessageEvent event, List<String> args) {
 		super(event, args);
 		this.event = event;
 	}
 
 	@Override
 	public void sendAction(String action) {
-		event.getUser().send().action(action);
+		event.getChannel().send().action(action);
 	}
 
 	@Override
 	public String getTargetName() {
-		return event.getUser().getNick();
+		return event.getChannel().getName();
 	}
-
-
 
 }
