@@ -57,7 +57,7 @@ public class AnnotationModule implements Module {
 
 		Node node = nodes.get(action);
 		if (node == null) {
-			throw new CommandNotFoundException(name+" "+action);
+			throw new CommandNotFoundException(name, action);
 		}
 
 		try {

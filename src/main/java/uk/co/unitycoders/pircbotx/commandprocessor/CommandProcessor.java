@@ -193,6 +193,10 @@ public class CommandProcessor {
 		}
 
 		String module = message.getArgument(Module.MODULE_ARG, null);
+		if (module == null) {
+			throw new CommandNotFoundException();
+		}
+		
 		Module node = commands.get(module);
 		if (node == null) {
 			throw new CommandNotFoundException(module);
