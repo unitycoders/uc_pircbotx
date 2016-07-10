@@ -18,7 +18,6 @@
  */
 package uk.co.unitycoders.pircbotx.backends.irc;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.pircbotx.PircBotX;
@@ -26,7 +25,6 @@ import org.pircbotx.User;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 
 import uk.co.unitycoders.pircbotx.backends.AbstractMessage;
-import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
 /**
  * Abstract message adapter for uc_pircbotx.
