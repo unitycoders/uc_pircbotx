@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 
-class UserMessage extends BasicMessage {
+class UserMessage extends IRCMessage {
 	private final PrivateMessageEvent event;
 
 	public UserMessage(PrivateMessageEvent event, List<String> args) {

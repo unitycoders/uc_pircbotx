@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.pircbotx.hooks.events.MessageEvent;
 
-class ChannelMessage extends BasicMessage {
+class ChannelMessage extends IRCMessage {
 	private final MessageEvent event;
 
 	public ChannelMessage(MessageEvent event, List<String> args) {

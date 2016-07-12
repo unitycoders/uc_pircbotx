@@ -53,7 +53,7 @@ class CommandListener extends ListenerAdapter {
 			if (messageText.startsWith(prefix)) {
 				List<String> args = extractMessage(messageText.substring(1));
 
-				BasicMessage message = new ChannelMessage(event, args);
+				IRCMessage message = new ChannelMessage(event, args);
 				processor.invoke(message);
 			} else {
 				//check for someone trying to address the bot by name
@@ -61,7 +61,7 @@ class CommandListener extends ListenerAdapter {
 				Matcher matcher = pattern.matcher(messageText);
 				if (matcher.matches()) {
 					List<String> args = extractMessage(matcher.group(1));
-					BasicMessage message = new ChannelMessage(event, args);
+					IRCMessage message = new ChannelMessage(event, args);
 					processor.invoke(message);
 				}
 			}

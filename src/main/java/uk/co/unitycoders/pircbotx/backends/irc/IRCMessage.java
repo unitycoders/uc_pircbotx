@@ -32,10 +32,10 @@ import uk.co.unitycoders.pircbotx.backends.AbstractMessage;
  * An abstract version of the Bot Message interface which deals with some of
  * the common features which we can deal with for the child classes.
  */
-abstract class BasicMessage extends AbstractMessage {
+abstract class IRCMessage extends AbstractMessage {
 	private final GenericMessageEvent event;
 
-	public BasicMessage(GenericMessageEvent message, List<String> args) {
+	public IRCMessage(GenericMessageEvent message, List<String> args) {
 		super(args);
 		this.event = message;
 	}
