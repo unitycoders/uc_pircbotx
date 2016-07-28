@@ -25,10 +25,10 @@ import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
-import uk.co.unitycoders.pircbotx.commandprocessor.Command;
-import uk.co.unitycoders.pircbotx.commandprocessor.Message;
-import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
-import uk.co.unitycoders.pircbotx.security.Secured;
+import com.fossgalaxy.pircbotx.commandprocessor.Command;
+import com.fossgalaxy.pircbotx.commandprocessor.Message;
+import com.fossgalaxy.pircbotx.modules.AnnotationModule;
+import com.fossgalaxy.pircbotx.security.Secured;
 
 public class IRCCommands extends AnnotationModule {
 	//TODO remove hack once security is secure

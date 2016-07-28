@@ -24,8 +24,8 @@
     	"factoid": {}
     },
     "middleware": [
-    	"uk.co.unitycoders.pircbotx.commandprocessor.CommandFixerMiddleware",
-    	"uk.co.unitycoders.pircbotx.commandprocessor.RewriteEngine"
+    	"com.fossgalaxy.pircbotx.commandprocessor.CommandFixerMiddleware",
+    	"com.fossgalaxy.pircbotx.commandprocessor.RewriteEngine"
     ],
     "aliases": {
     	"^([a-zA-Z0-9]+)\\+\\+$": "karma add $1",
