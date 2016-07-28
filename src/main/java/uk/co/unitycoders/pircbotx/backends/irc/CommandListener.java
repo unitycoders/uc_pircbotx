@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package uk.co.unitycoders.pircbotx.commandprocessor.irc;
+package uk.co.unitycoders.pircbotx.backends.irc;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -53,7 +53,7 @@ class CommandListener extends ListenerAdapter {
 			if (messageText.startsWith(prefix)) {
 				List<String> args = extractMessage(messageText.substring(1));
 
-				BasicMessage message = new ChannelMessage(event, args);
+				IRCMessage message = new ChannelMessage(event, args);
 				processor.invoke(message);
 			} else {
 				//check for someone trying to address the bot by name
@@ -61,7 +61,7 @@ class CommandListener extends ListenerAdapter {
 				Matcher matcher = pattern.matcher(messageText);
 				if (matcher.matches()) {
 					List<String> args = extractMessage(matcher.group(1));
-					BasicMessage message = new ChannelMessage(event, args);
+					IRCMessage message = new ChannelMessage(event, args);
 					processor.invoke(message);
 				}
 			}

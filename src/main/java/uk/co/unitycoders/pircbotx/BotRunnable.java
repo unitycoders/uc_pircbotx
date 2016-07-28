@@ -29,8 +29,8 @@ import org.pircbotx.PircBotX;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import uk.co.unitycoders.pircbotx.backends.irc.IRCFactory;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
-import uk.co.unitycoders.pircbotx.commandprocessor.irc.IRCFactory;
 import uk.co.unitycoders.pircbotx.commands.HelpCommand;
 import uk.co.unitycoders.pircbotx.commands.PluginCommand;
 import uk.co.unitycoders.pircbotx.listeners.JoinsListener;

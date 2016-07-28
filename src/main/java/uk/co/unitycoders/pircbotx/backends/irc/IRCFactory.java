@@ -1,4 +1,4 @@
-package uk.co.unitycoders.pircbotx.commandprocessor.irc;
+package uk.co.unitycoders.pircbotx.backends.irc;
 
 import javax.net.ssl.SSLSocketFactory;
 
