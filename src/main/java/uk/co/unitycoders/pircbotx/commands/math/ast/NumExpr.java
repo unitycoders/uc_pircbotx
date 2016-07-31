@@ -24,6 +24,10 @@ public class NumExpr extends Expr {
         this.num = num;
     }
 
+    public double eval(){
+        return Double.parseDouble(num);
+    }
+
     @Override
     public String toString() {
         return "NumExpr{" +

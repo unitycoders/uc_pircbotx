@@ -26,6 +26,10 @@ public class SubExpr extends Expr{
         this.left = left;
     }
 
+    public double eval(){
+        return left.eval() - right.eval();
+    }
+
     @Override
     public String toString() {
         return "SubExpr{" +

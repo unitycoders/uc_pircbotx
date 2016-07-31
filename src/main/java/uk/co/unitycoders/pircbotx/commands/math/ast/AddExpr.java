@@ -26,6 +26,10 @@ public class AddExpr extends Expr {
         this.right = right;
     }
 
+    public double eval() {
+        return left.eval() + right.eval();
+    }
+
     @Override
     public String toString() {
         return "AddExpr{" +

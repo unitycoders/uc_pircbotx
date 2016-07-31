@@ -18,4 +18,6 @@ package uk.co.unitycoders.pircbotx.commands.math.ast;
  * @author leon on 16-1-1
  */
 public abstract class Expr {
+
+    public abstract double eval();
 }

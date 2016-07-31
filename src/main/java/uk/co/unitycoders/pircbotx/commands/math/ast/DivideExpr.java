@@ -26,6 +26,15 @@ public class DivideExpr extends Expr{
         this.right = right;
     }
 
+    public double eval() {
+        //protected division to prevent math errors
+        if (right.eval() == 0) {
+            return 0;
+        }
+
+        return left.eval() / right.eval();
+    }
+
     @Override
     public String toString() {
         return "DivideExpr{" +

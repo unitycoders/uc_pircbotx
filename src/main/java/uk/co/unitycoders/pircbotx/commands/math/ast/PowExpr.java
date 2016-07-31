@@ -26,6 +26,10 @@ public class PowExpr extends Expr {
         this.right = right;
     }
 
+    public double eval() {
+        return Math.pow(left.eval(), right.eval());
+    }
+
     @Override
     public String toString() {
         return "PowExpr{" +

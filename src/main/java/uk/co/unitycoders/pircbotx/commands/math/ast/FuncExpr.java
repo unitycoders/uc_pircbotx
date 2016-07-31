@@ -26,6 +26,25 @@ public class FuncExpr extends Expr {
         this.funcName = funcName;
     }
 
+    public double eval() {
+        String funcNameNorm = funcName.toUpperCase();
+        switch (funcNameNorm) {
+            case "SIN":
+                return Math.sin(epxr.eval());
+            case "COS":
+                return Math.cos(epxr.eval());
+            case "TAN":
+                return Math.tan(epxr.eval());
+            case "RAD":
+                return Math.toRadians(epxr.eval());
+            case "DEG":
+                return Math.toDegrees(epxr.eval());
+            default:
+                System.err.println("unknown function, " + funcName);
+                return -1;
+        }
+    }
+
     @Override
     public String toString() {
         return "FuncExpr{" +

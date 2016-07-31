@@ -6,11 +6,11 @@ import org.junit.Test;
 
 public class BasicMathTests {
 	private static final Double ERROR_MARGIN = 0.00000000001; //something really small
-	private MathParser parser;
+	private MathCommand parser;
 	
 	@Before
 	public void setup() {
-		this.parser = MathParser.build();
+		this.parser = new MathCommand();
 	}
 	
 	
@@ -18,7 +18,7 @@ public class BasicMathTests {
 	public void testTwoNumbersWorks() {
 		
 		double expected = 10;
-		double result = parser.evalInfix("5+5");
+		double result = parser.eval("5+5");
 		
 	 	Assert.assertEquals(expected, result, ERROR_MARGIN);
 	}
@@ -27,7 +27,7 @@ public class BasicMathTests {
 	public void testOneFuctionWorks() {
 		
 		double expected = Math.toRadians(90);
-		double result = parser.evalInfix("RAD(90)");
+		double result = parser.eval("RAD(90)");
 		
 	 	Assert.assertEquals(expected, result, ERROR_MARGIN);
 	}
@@ -36,7 +36,7 @@ public class BasicMathTests {
 	public void testTwoFuctionsWorks() {
 		
 		double expected = Math.toRadians(90) * 2;
-		double result = parser.evalInfix("RAD(90)+RAD(90)");
+		double result = parser.eval("RAD(90)+RAD(90)");
 		
 	 	Assert.assertEquals(expected, result, ERROR_MARGIN);
 	}
