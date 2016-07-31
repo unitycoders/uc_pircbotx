@@ -1,3 +1,6 @@
+/**
+ * Example of scripting system
+ */
 
 function test() {
     return "Hello, from script file!";

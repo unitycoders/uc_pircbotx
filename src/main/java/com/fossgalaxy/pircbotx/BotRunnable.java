@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
+import com.fossgalaxy.pircbotx.commands.script.ScriptConfig;
+import com.fossgalaxy.pircbotx.commands.script.ScriptModule;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 import org.slf4j.Logger;
@@ -43,6 +45,8 @@ import com.fossgalaxy.pircbotx.security.SecurityManager;
 import com.fossgalaxy.pircbotx.security.SecurityMiddleware;
 import com.fossgalaxy.pircbotx.security.SessionCommand;
 import com.fossgalaxy.pircbotx.backends.irc.IRCFactory;
+
+import javax.script.ScriptException;
 
 public class BotRunnable implements Runnable {
 	private static final Logger LOG = LoggerFactory.getLogger(BotRunnable.class);
@@ -110,6 +114,23 @@ public class BotRunnable implements Runnable {
 		}
 	}
 
+	public void loadScripts(){
+		if (config.scripts == null) {
+			return;
+		}
+
+		Map<String,ScriptConfig> scripts = config.scripts;
+		for (Map.Entry<String,ScriptConfig> configEntry : scripts.entrySet()) {
+			try {
+				String name = configEntry.getKey();
+				ScriptConfig config = configEntry.getValue();
+				processor.register(name, new ScriptModule(name, config.filename));
+			} catch (ScriptException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+
 	@Override
 	public void run() {
 
@@ -118,7 +139,7 @@ public class BotRunnable implements Runnable {
 			//This is out bits
 			setupProcessor();
 			loadPlugins();
-
+			loadScripts();
 
 			//this creates our host bot instance
 			Configuration.Builder cb = IRCFactory.doConfig(config, processor);

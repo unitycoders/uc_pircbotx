@@ -20,6 +20,9 @@ import java.util.List;
  * Created by webpigeon on 31/07/16.
  */
 public class ScriptModule implements Module {
+    private static final String RELOAD_COMMAND = "reload";
+    private static final String SCRIPT_ENGINE = "nashhorn";
+
     private final String name;
     private final List<String> actions;
     private final String filename;
@@ -40,7 +43,7 @@ public class ScriptModule implements Module {
 
     private ScriptEngine buildScript()  {
         ScriptEngineManager sem = new ScriptEngineManager();
-        ScriptEngine engine = sem.getEngineByName("nashorn");
+        ScriptEngine engine = sem.getEngineByName(SCRIPT_ENGINE);
 
         return engine;
     }
@@ -68,7 +71,7 @@ public class ScriptModule implements Module {
     public void fire(Message message) throws Exception {
         String actionName = message.getArgument(Module.COMMAND_ARG, Module.DEFAULT_COMMAND);
 
-        if ("reload".equals(actionName)) {
+        if (RELOAD_COMMAND.equals(actionName)) {
             loadScript(filename);
             message.respond("Your plugin was reloaded");
             return;
