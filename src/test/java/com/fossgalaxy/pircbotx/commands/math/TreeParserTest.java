@@ -1,14 +1,13 @@
-package uk.co.unitycoders.pircbotx.commands.math;
+package com.fossgalaxy.pircbotx.commands.math;
 
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.TreeMap;
 
-import org.junit.Assert;
+import com.fossgalaxy.pircbotx.commands.math.ast.Expr;
 import org.junit.Before;
 import org.junit.Test;
-import uk.co.unitycoders.pircbotx.commands.math.ast.Expr;
 
 public class TreeParserTest {
 	private static final Double ERROR_MARGIN = 0.00000000001; //something really small

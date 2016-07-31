@@ -1,10 +1,10 @@
-package uk.co.unitycoders.pircbotx.commands.math;
+package com.fossgalaxy.pircbotx.commands.math;
 
-import uk.co.unitycoders.pircbotx.commands.math.ast.*;
+import com.fossgalaxy.pircbotx.commands.math.ast.*;
 
 import java.util.*;
 
-import static uk.co.unitycoders.pircbotx.commands.math.TokenType.*;
+import static com.fossgalaxy.pircbotx.commands.math.TokenType.*;
 
 /**
  * see https://www.engr.mun.ca/~theo/Misc/exp_parsing.htm (Thanks leonchen83)

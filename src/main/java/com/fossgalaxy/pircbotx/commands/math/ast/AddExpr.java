@@ -1,4 +1,4 @@
-package uk.co.unitycoders.pircbotx.commands.math.ast;
+package com.fossgalaxy.pircbotx.commands.math.ast;
 
 /**
  * Copyright leon

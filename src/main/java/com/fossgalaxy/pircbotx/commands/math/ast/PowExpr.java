@@ -1,4 +1,4 @@
-package uk.co.unitycoders.pircbotx.commands.math.ast;
+package com.fossgalaxy.pircbotx.commands.math.ast;
 
 /**
  * Copyright leon
@@ -17,7 +17,24 @@ package uk.co.unitycoders.pircbotx.commands.math.ast;
  *
  * @author leon on 16-1-1
  */
-public abstract class Expr {
+public class PowExpr extends Expr {
+    public Expr left;
+    public Expr right;
 
-    public abstract double eval();
+    public PowExpr(Expr left, Expr right) {
+        this.left = left;
+        this.right = right;
+    }
+
+    public double eval() {
+        return Math.pow(left.eval(), right.eval());
+    }
+
+    @Override
+    public String toString() {
+        return "PowExpr{" +
+                "left=" + left +
+                ", right=" + right +
+                '}';
+    }
 }

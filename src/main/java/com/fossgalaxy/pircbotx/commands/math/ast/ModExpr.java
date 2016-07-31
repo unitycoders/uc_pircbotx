@@ -1,4 +1,4 @@
-package uk.co.unitycoders.pircbotx.commands.math.ast;
+package com.fossgalaxy.pircbotx.commands.math.ast;
 
 /**
  * Copyright leon
@@ -17,22 +17,22 @@ package uk.co.unitycoders.pircbotx.commands.math.ast;
  *
  * @author leon on 16-1-1
  */
-public class SubExpr extends Expr{
+public class ModExpr extends Expr {
     public Expr left;
     public Expr right;
 
-    public SubExpr(Expr right, Expr left) {
-        this.right = right;
+    public ModExpr(Expr left, Expr right) {
         this.left = left;
+        this.right = right;
     }
 
-    public double eval(){
-        return left.eval() - right.eval();
+    public double eval() {
+        return left.eval() % right.eval();
     }
 
     @Override
     public String toString() {
-        return "SubExpr{" +
+        return "ModExpr{" +
                 "left=" + left +
                 ", right=" + right +
                 '}';

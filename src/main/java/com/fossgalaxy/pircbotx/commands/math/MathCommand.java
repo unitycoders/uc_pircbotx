@@ -1,10 +1,10 @@
-package uk.co.unitycoders.pircbotx.commands.math;
+package com.fossgalaxy.pircbotx.commands.math;
 
 
 import com.fossgalaxy.pircbotx.commandprocessor.Command;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
 import com.fossgalaxy.pircbotx.modules.AnnotationModule;
-import uk.co.unitycoders.pircbotx.commands.math.ast.Expr;
+import com.fossgalaxy.pircbotx.commands.math.ast.Expr;
 
 import java.util.HashMap;
 import java.util.Map;

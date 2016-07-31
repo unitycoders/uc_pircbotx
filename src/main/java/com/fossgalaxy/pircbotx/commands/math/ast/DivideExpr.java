@@ -1,4 +1,4 @@
-package uk.co.unitycoders.pircbotx.commands.math.ast;
+package com.fossgalaxy.pircbotx.commands.math.ast;
 
 /**
  * Copyright leon
@@ -17,21 +17,29 @@ package uk.co.unitycoders.pircbotx.commands.math.ast;
  *
  * @author leon on 16-1-1
  */
-public class NumExpr extends Expr {
-    public String num;
+public class DivideExpr extends Expr{
+    public Expr left;
+    public Expr right;
 
-    public NumExpr(String num) {
-        this.num = num;
+    public DivideExpr(Expr left, Expr right) {
+        this.left = left;
+        this.right = right;
     }
 
-    public double eval(){
-        return Double.parseDouble(num);
+    public double eval() {
+        //protected division to prevent math errors
+        if (right.eval() == 0) {
+            return 0;
+        }
+
+        return left.eval() / right.eval();
     }
 
     @Override
     public String toString() {
-        return "NumExpr{" +
-                "num='" + num + '\'' +
+        return "DivideExpr{" +
+                "left=" + left +
+                ", right=" + right +
                 '}';
     }
 }
