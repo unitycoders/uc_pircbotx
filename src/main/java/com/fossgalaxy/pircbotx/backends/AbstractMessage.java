@@ -1,4 +1,4 @@
-package uk.co.unitycoders.pircbotx.backends;
+package com.fossgalaxy.pircbotx.backends;
 
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
 

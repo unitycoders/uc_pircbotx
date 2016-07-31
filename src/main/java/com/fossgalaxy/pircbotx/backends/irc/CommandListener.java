@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package uk.co.unitycoders.pircbotx.backends.irc;
+package com.fossgalaxy.pircbotx.backends.irc;
 
 import java.util.List;
 import java.util.regex.Matcher;

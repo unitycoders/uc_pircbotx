@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package uk.co.unitycoders.pircbotx.backends.irc;
+package com.fossgalaxy.pircbotx.backends.irc;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 
-import uk.co.unitycoders.pircbotx.backends.AbstractMessage;
+import com.fossgalaxy.pircbotx.backends.AbstractMessage;
 
 /**
  * Abstract message adapter for uc_pircbotx.

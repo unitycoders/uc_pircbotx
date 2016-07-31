@@ -1,4 +1,4 @@
-package uk.co.unitycoders.pircbotx.backends.console;
+package com.fossgalaxy.pircbotx.backends.console;
 
 import java.io.PrintStream;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
-import uk.co.unitycoders.pircbotx.backends.AbstractMessage;
+import com.fossgalaxy.pircbotx.backends.AbstractMessage;
 
 public class InteractiveMessage extends AbstractMessage {
 	private final PrintStream out;

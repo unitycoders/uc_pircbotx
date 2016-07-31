@@ -1,4 +1,4 @@
-package uk.co.unitycoders.pircbotx.backends.irc;
+package com.fossgalaxy.pircbotx.backends.irc;
 
 import javax.net.ssl.SSLSocketFactory;
 

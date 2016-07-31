@@ -42,7 +42,7 @@ import com.fossgalaxy.pircbotx.modules.ModuleUtils;
 import com.fossgalaxy.pircbotx.security.SecurityManager;
 import com.fossgalaxy.pircbotx.security.SecurityMiddleware;
 import com.fossgalaxy.pircbotx.security.SessionCommand;
-import uk.co.unitycoders.pircbotx.backends.irc.IRCFactory;
+import com.fossgalaxy.pircbotx.backends.irc.IRCFactory;
 
 public class BotRunnable implements Runnable {
 	private static final Logger LOG = LoggerFactory.getLogger(BotRunnable.class);

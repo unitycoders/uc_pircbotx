@@ -9,4 +9,4 @@ com.fossgalaxy.pircbotx.commands.NickCommand
 com.fossgalaxy.pircbotx.commands.KarmaCommand
 com.fossgalaxy.pircbotx.commands.GamesCommand
 com.fossgalaxy.pircbotx.commands.CompSciCommand
-uk.co.unitycoders.pircbotx.commands.IRCCommands
+com.fossgalaxy.pircbotx.commands.IRCCommands
