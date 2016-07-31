@@ -13,7 +13,7 @@ public class Tokeniser {
 	private final Integer BRACKET = 4;
 	
 	public Tokeniser() {
-		this.regex = Pattern.compile("([0-9]+\\.[0-9]+|[0-9]+)|([\\Q+/*%-^\\E])|([A-Z]{1,4})|(\\(|\\))");
+		this.regex = Pattern.compile("([0-9]+\\.[0-9]+|[0-9]+)|([\\Q+/*%-^\\E])|([A-Za-z]{1,4})|(\\(|\\))");
 	}
 	
 	public Queue<Token> process(String input) {
