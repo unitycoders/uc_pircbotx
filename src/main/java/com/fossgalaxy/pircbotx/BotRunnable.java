@@ -31,7 +31,6 @@ import org.slf4j.LoggerFactory;
 
 
 import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
-import com.fossgalaxy.pircbotx.commandprocessor.irc.IRCFactory;
 import com.fossgalaxy.pircbotx.commands.HelpCommand;
 import com.fossgalaxy.pircbotx.commands.PluginCommand;
 import com.fossgalaxy.pircbotx.listeners.JoinsListener;
@@ -42,7 +41,8 @@ import com.fossgalaxy.pircbotx.modules.ModuleConfig;
 import com.fossgalaxy.pircbotx.modules.ModuleUtils;
 import com.fossgalaxy.pircbotx.security.SecurityManager;
 import com.fossgalaxy.pircbotx.security.SecurityMiddleware;
-import com.fossgalaxy.pircbotx.security.SessionCommand;git
+import com.fossgalaxy.pircbotx.security.SessionCommand;
+import uk.co.unitycoders.pircbotx.backends.irc.IRCFactory;
 
 public class BotRunnable implements Runnable {
 	private static final Logger LOG = LoggerFactory.getLogger(BotRunnable.class);

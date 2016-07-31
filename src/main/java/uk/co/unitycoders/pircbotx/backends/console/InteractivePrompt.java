@@ -1,12 +1,14 @@
 package uk.co.unitycoders.pircbotx.backends.console;
 
+import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
+import com.fossgalaxy.pircbotx.commandprocessor.Message;
+import com.fossgalaxy.pircbotx.middleware.BotMiddleware;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
-import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
-import uk.co.unitycoders.pircbotx.commandprocessor.Message;
-import uk.co.unitycoders.pircbotx.middleware.BotMiddleware;
+
 
 /**
  * This emulates the bot as in interactive prompt on the terminal.

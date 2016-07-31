@@ -1,14 +1,12 @@
 package uk.co.unitycoders.pircbotx.backends.console;
 
 import java.io.PrintStream;
-import java.util.Iterator;
 import java.util.List;
 
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 import uk.co.unitycoders.pircbotx.backends.AbstractMessage;
-import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
 public class InteractiveMessage extends AbstractMessage {
 	private final PrintStream out;

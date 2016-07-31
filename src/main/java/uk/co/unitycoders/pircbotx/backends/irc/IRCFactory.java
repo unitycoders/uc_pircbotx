@@ -2,11 +2,11 @@ package uk.co.unitycoders.pircbotx.backends.irc;
 
 import javax.net.ssl.SSLSocketFactory;
 
+import com.fossgalaxy.pircbotx.LocalConfiguration;
+import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
 import org.pircbotx.Configuration;
 import org.pircbotx.cap.SASLCapHandler;
 
-import uk.co.unitycoders.pircbotx.LocalConfiguration;
-import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 
 /**
  * Build IRC bot components

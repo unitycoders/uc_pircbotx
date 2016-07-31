@@ -1,9 +1,10 @@
 package uk.co.unitycoders.pircbotx.backends;
 
+import com.fossgalaxy.pircbotx.commandprocessor.Message;
+
 import java.util.Iterator;
 import java.util.List;
 
-import uk.co.unitycoders.pircbotx.commandprocessor.Message;
 
 /**
  * Things common to messages regardless of the backend.

@@ -22,12 +22,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
 import org.pircbotx.Colors;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 
-import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
 
 /**
  * Command Processor wrapper class.
