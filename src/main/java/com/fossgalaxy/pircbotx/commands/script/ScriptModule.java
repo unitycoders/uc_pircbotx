@@ -49,6 +49,8 @@ public class ScriptModule implements Module {
     }
 
     private void loadScript(String filename) {
+        //TODO ensure that actions are kept up to date with the action list.
+
         try (
                 InputStream is = ScriptModule.class.getClassLoader().getResourceAsStream(filename);
                 Reader r = new InputStreamReader(is);
@@ -103,16 +105,19 @@ public class ScriptModule implements Module {
 
     @Override
     public String getHelp(String command) {
+        //TODO expose this via the script
         return null;
     }
 
     @Override
     public String getModuleHelp() {
+        //TODO expose this via the script
         return null;
     }
 
     @Override
     public String[] getArgumentsFor(String action) {
+        //TODO expose this via the script
         return new String[0];
     }
 }
