@@ -10,5 +10,5 @@ RUN mkdir /home/uc_pircbotx/plugins/ /home/uc_pircbotx/config/ && chown -R uc_pi
 VOLUME ["/home/uc_pircbotx/plugins/", "/home/uc_pircbotx/config/"]
 
 # copy the bot into the user's home dir
-ADD target/uc_pircbotx-0.3-SNAPSHOT-jar-with-dependencies.jar .
-CMD ["java", "-jar", "uc_pircbotx-0.3-SNAPSHOT-jar-with-dependencies.jar", "config/bot.json"]
+ADD target/bot-core-0.3-SNAPSHOT-jar-with-dependencies.jar .
+CMD ["java", "-jar", "bot-core-0.3-SNAPSHOT-jar-with-dependencies.jar", "config/bot.json"]
