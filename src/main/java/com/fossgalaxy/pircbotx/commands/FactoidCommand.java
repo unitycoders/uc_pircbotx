@@ -18,9 +18,10 @@
  */
 package com.fossgalaxy.pircbotx.commands;
 
-import java.sql.SQLException;
 import java.util.List;
 
+import com.fossgalaxy.pircbotx.data.db.JoinModel;
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +29,6 @@ import com.fossgalaxy.pircbotx.commandprocessor.Command;
 import com.fossgalaxy.pircbotx.commandprocessor.HelpText;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
 import com.fossgalaxy.pircbotx.commandprocessor.MessageUtils;
-import com.fossgalaxy.pircbotx.data.db.DBConnection;
 import com.fossgalaxy.pircbotx.data.db.Factoid;
 import com.fossgalaxy.pircbotx.data.db.FactoidModel;
 import com.fossgalaxy.pircbotx.modules.AnnotationModule;
@@ -38,13 +38,19 @@ public class FactoidCommand extends AnnotationModule {
 	private static final Logger logger = LoggerFactory.getLogger(FactoidCommand.class);
 	private FactoidModel model;
 
-	public FactoidCommand() {
+	@Inject
+	public FactoidCommand(FactoidModel model) {
+		this();
+		this.model = model;
+	}
+
+	public FactoidCommand(){
 		super("factoid");
-		try {
-			this.model = DBConnection.getFactoidModel();
-		} catch (ClassNotFoundException | SQLException ex) {
-			logger.error("Database error", ex);
-		}
+	}
+
+	@Inject
+	public void onModel(FactoidModel model){
+		this.model = model;
 	}
 
 	@Command("add")

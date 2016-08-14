@@ -18,15 +18,15 @@
  */
 package com.fossgalaxy.pircbotx.commands;
 
-import java.sql.SQLException;
 import java.util.List;
 
+import com.fossgalaxy.pircbotx.data.db.LineModel;
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fossgalaxy.pircbotx.commandprocessor.Command;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
-import com.fossgalaxy.pircbotx.data.db.DBConnection;
 import com.fossgalaxy.pircbotx.data.db.LartModel;
 import com.fossgalaxy.pircbotx.modules.AnnotationModule;
 import com.fossgalaxy.pircbotx.types.Lart;
@@ -43,13 +43,18 @@ public class LartCommand extends AnnotationModule {
 	/**
 	 * Creates a {@link LartCommand}.
 	 */
-	public LartCommand() {
+	public LartCommand(LartModel model) {
+		this();
+		this.model = model;
+	}
+
+	public LartCommand(){
 		super("lart");
-		try {
-			this.model = DBConnection.getLartModel();
-		} catch (ClassNotFoundException | SQLException ex) {
-			logger.error("Database error", ex);
-		}
+	}
+
+	@Inject
+	public void onModel(LartModel model){
+		this.model = model;
 	}
 
 	@Command("add")

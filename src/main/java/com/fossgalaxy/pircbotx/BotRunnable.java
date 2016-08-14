@@ -24,6 +24,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
+import com.fossgalaxy.pircbotx.data.db.DatabaseModule;
+import com.fossgalaxy.pircbotx.data.db.JoinModel;
+import com.fossgalaxy.pircbotx.data.db.LineModel;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 import org.slf4j.Logger;
@@ -44,6 +50,8 @@ import com.fossgalaxy.pircbotx.security.SecurityMiddleware;
 import com.fossgalaxy.pircbotx.security.SessionCommand;
 import com.fossgalaxy.pircbotx.backends.irc.IRCFactory;
 
+import javax.sound.sampled.Line;
+
 public class BotRunnable implements Runnable {
 	private static final Logger LOG = LoggerFactory.getLogger(BotRunnable.class);
 	private SecurityManager security;
@@ -54,11 +62,12 @@ public class BotRunnable implements Runnable {
 		this.config = config;
 	}
 
-	private void setupProcessor() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		List<BotMiddleware> middleware = new ArrayList<BotMiddleware>();
+	private void setupProcessor(Injector injector) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		List<BotMiddleware> middleware = new ArrayList<>();
 		if (config.middleware != null) {
 			for (String middlewareClass : config.middleware) {
 				BotMiddleware mw = ModuleUtils.loadMiddleware(middlewareClass);
+				injector.injectMembers(mw);
 				middleware.add(mw);
 				mw.init(config);
 			}
@@ -70,7 +79,7 @@ public class BotRunnable implements Runnable {
 		processor = new CommandProcessor(middleware);
 	}
 
-	private void loadPlugins() {
+	private void loadPlugins(Injector injector) {
 		Map<String, ModuleConfig> moduleConfigs = config.modules;
 		if (moduleConfigs == null) {
 			moduleConfigs = Collections.emptyMap();
@@ -79,6 +88,8 @@ public class BotRunnable implements Runnable {
 		//load in the modules
 		ServiceLoader<Module> modules = ServiceLoader.load(Module.class);
 		for (Module module : modules) {
+
+			injector.injectMembers(module);
 
 			//module data
 			String name = module.getName();
@@ -115,16 +126,18 @@ public class BotRunnable implements Runnable {
 
 		try {
 
+			Injector injector = Guice.createInjector(new DatabaseModule());
+
 			//This is out bits
-			setupProcessor();
-			loadPlugins();
+			setupProcessor(injector);
+			loadPlugins(injector);
 
 
 			//this creates our host bot instance
 			Configuration.Builder cb = IRCFactory.doConfig(config, processor);
 
-			cb.addListener(new JoinsListener());
-			cb.addListener(new LinesListener());
+			cb.addListener(injector.getInstance(JoinsListener.class));
+			cb.addListener(injector.getInstance(LinesListener.class));
 
 			//build pircbotx
 			Configuration configuration = cb.buildConfiguration();

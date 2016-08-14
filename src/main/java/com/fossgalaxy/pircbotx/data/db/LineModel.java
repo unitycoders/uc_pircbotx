@@ -26,6 +26,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +47,7 @@ public class LineModel {
 	 * @param conn the database connection
 	 * @throws SQLException if there was a database error
 	 */
+	@Inject
 	public LineModel(Connection conn) throws SQLException {
 		this.conn = conn;
 		buildTable();

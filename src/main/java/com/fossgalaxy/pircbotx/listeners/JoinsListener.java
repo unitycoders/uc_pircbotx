@@ -18,22 +18,19 @@
  */
 package com.fossgalaxy.pircbotx.listeners;
 
+import com.google.inject.Inject;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.JoinEvent;
 
-import com.fossgalaxy.pircbotx.data.db.DBConnection;
 import com.fossgalaxy.pircbotx.data.db.JoinModel;
 
 public class JoinsListener extends ListenerAdapter {
 
-	private JoinModel model;
+	private final JoinModel model;
 
-	public JoinsListener() {
-		try {
-			this.model = DBConnection.getJoinModel();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+	@Inject
+	public JoinsListener(JoinModel model) {
+		this.model = model;
 	}
 
 	@Override

@@ -22,9 +22,10 @@ import java.util.Map;
 
 import com.fossgalaxy.pircbotx.commandprocessor.Command;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
-import com.fossgalaxy.pircbotx.data.db.DBConnection;
 import com.fossgalaxy.pircbotx.data.db.JoinModel;
+import com.fossgalaxy.pircbotx.data.db.LineModel;
 import com.fossgalaxy.pircbotx.modules.AnnotationModule;
+import com.google.inject.Inject;
 
 /**
  * Keeps a list of joins, and gives a list of nicks and number of joins.
@@ -39,9 +40,18 @@ public class JoinsCommand extends AnnotationModule {
 	 * Creates a {@link JoinsCommand}.
 	 * @throws Exception if database connection failed
 	 */
+	public JoinsCommand(JoinModel model) throws Exception {
+		this();
+		this.model = model;
+	}
+
 	public JoinsCommand() throws Exception {
 		super("joins");
-		this.model = DBConnection.getJoinModel();
+	}
+
+	@Inject
+	public void onModel(JoinModel model){
+		this.model = model;
 	}
 
 	@Command

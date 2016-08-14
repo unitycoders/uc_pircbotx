@@ -21,12 +21,13 @@ package com.fossgalaxy.pircbotx.commands;
 import java.sql.SQLException;
 import java.util.Collection;
 
+import com.fossgalaxy.pircbotx.data.db.LartModel;
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fossgalaxy.pircbotx.commandprocessor.Command;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
-import com.fossgalaxy.pircbotx.data.db.DBConnection;
 import com.fossgalaxy.pircbotx.data.db.KarmaModel;
 import com.fossgalaxy.pircbotx.modules.AnnotationModule;
 import com.fossgalaxy.pircbotx.types.Karma;
@@ -36,13 +37,19 @@ public class KarmaCommand extends AnnotationModule {
 	private static final Logger logger = LoggerFactory.getLogger(KarmaCommand.class);
 	private KarmaModel model;
 
+	@Inject
+	public KarmaCommand(KarmaModel model) {
+		this();
+		this.model = model;
+	}
+
 	public KarmaCommand() {
 		super("karma");
-		try {
-			this.model = DBConnection.getKarmaModel();
-		} catch (ClassNotFoundException | SQLException ex) {
-			logger.error("Database error", ex);
-		}
+	}
+
+	@Inject
+	public void onModel(KarmaModel model){
+		this.model = model;
 	}
 
 	@Command("default")

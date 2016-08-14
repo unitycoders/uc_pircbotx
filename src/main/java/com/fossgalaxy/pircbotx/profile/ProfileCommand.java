@@ -20,10 +20,10 @@ package com.fossgalaxy.pircbotx.profile;
 
 import java.sql.SQLException;
 
+import com.google.inject.Inject;
 import org.pircbotx.hooks.events.MessageEvent;
 
 import com.fossgalaxy.pircbotx.commandprocessor.Command;
-import com.fossgalaxy.pircbotx.data.db.DBConnection;
 import com.fossgalaxy.pircbotx.data.db.ProfileModel;
 
 /**
@@ -32,12 +32,13 @@ import com.fossgalaxy.pircbotx.data.db.ProfileModel;
  */
 public class ProfileCommand {
 
-	private ProfileManager manager;
-	private ProfileModel model;
+	private final ProfileManager manager;
+	private final ProfileModel model;
 
-	public ProfileCommand(ProfileManager manager) throws ClassNotFoundException, SQLException {
+	@Inject
+	public ProfileCommand(ProfileManager manager, ProfileModel model) throws ClassNotFoundException, SQLException {
 		this.manager = manager;
-		this.model = DBConnection.getProfileModel();
+		this.model = model;
 	}
 
 	@Command("register")

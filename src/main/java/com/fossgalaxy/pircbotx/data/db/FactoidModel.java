@@ -26,6 +26,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +48,7 @@ public class FactoidModel {
 	private PreparedStatement updateStmt;
 	private PreparedStatement deleteStmt;
 
+	@Inject
 	public FactoidModel(Connection connection) throws SQLException {
 		this.connection = connection;
 		buildTable();
