@@ -4,10 +4,12 @@ import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
 import com.fossgalaxy.pircbotx.middleware.AbstractMiddleware;
 import com.fossgalaxy.pircbotx.modules.Module;
+import com.google.inject.Inject;
 
 public class SecurityMiddleware extends AbstractMiddleware {
 	private final SecurityManager security;
 
+	@Inject
 	public SecurityMiddleware(SecurityManager security) {
 		this.security = security;
 	}

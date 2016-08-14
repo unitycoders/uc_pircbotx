@@ -29,6 +29,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.fossgalaxy.pircbotx.security.SecurityMiddleware;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +47,7 @@ import com.fossgalaxy.pircbotx.modules.Module;
  * Command Processor in order for the processor to recognise them as commands.
  *
  */
+@Singleton
 public class CommandProcessor {
 	private static final String USE_FORMAT = "usage: %s %s %s";
 
@@ -62,11 +66,23 @@ public class CommandProcessor {
 	 * @param middleware the list of steps to process the message
 	 */
 	public CommandProcessor(List<BotMiddleware> middleware) {
-		assert middleware != null : "don't pass null as the middleware, use empty list instead";
+		this();
+		this.middleware.addAll(middleware);
+	}
+
+	/**
+	 * Create a new command processor.
+	 *
+	 * This will create a new command processor and will initialise the regex
+	 * pattern the bot will use to match commands. It will also create the maps
+	 * needed to store information about the commands.
+	 */
+	@Inject
+	public CommandProcessor() {
 		this.tokeniser = Pattern.compile("([^\\s\"']+)|\"([^\"]*)\"|'([^']*)'");
-		this.commands = new LinkedHashMap<String, Module>();
-		this.revLookup = new HashMap<String, List<String>>();
-		this.middleware = middleware;
+		this.commands = new LinkedHashMap<>();
+		this.revLookup = new HashMap<>();
+		this.middleware = new ArrayList<>();
 	}
 
 	/**
@@ -259,5 +275,9 @@ public class CommandProcessor {
 		}
 
 		return commands.get(moduleName);
+	}
+
+	public void addMiddleware(BotMiddleware instance) {
+		middleware.add(instance);
 	}
 }

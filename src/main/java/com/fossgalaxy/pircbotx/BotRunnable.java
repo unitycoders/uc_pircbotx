@@ -24,17 +24,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
+import com.fossgalaxy.pircbotx.commandprocessor.CommandModule;
 import com.fossgalaxy.pircbotx.data.db.DatabaseModule;
-import com.fossgalaxy.pircbotx.data.db.JoinModel;
-import com.fossgalaxy.pircbotx.data.db.LineModel;
 import com.google.inject.Guice;
-import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
 import com.fossgalaxy.pircbotx.commands.HelpCommand;
@@ -49,8 +46,6 @@ import com.fossgalaxy.pircbotx.security.SecurityManager;
 import com.fossgalaxy.pircbotx.security.SecurityMiddleware;
 import com.fossgalaxy.pircbotx.security.SessionCommand;
 import com.fossgalaxy.pircbotx.backends.irc.IRCFactory;
-
-import javax.sound.sampled.Line;
 
 public class BotRunnable implements Runnable {
 	private static final Logger LOG = LoggerFactory.getLogger(BotRunnable.class);
@@ -73,10 +68,10 @@ public class BotRunnable implements Runnable {
 			}
 		}
 
-		//legacy middleware
-		security = new SecurityManager();
-		middleware.add(new SecurityMiddleware(security));
-		processor = new CommandProcessor(middleware);
+		security = injector.getInstance(SecurityManager.class);
+		processor = injector.getInstance(CommandProcessor.class);
+
+		processor.addMiddleware(injector.getInstance(SecurityMiddleware.class));
 	}
 
 	private void loadPlugins(Injector injector) {
@@ -126,7 +121,7 @@ public class BotRunnable implements Runnable {
 
 		try {
 
-			Injector injector = Guice.createInjector(new DatabaseModule());
+			Injector injector = Guice.createInjector(new DatabaseModule(), new CommandModule());
 
 			//This is out bits
 			setupProcessor(injector);
