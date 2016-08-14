@@ -50,9 +50,4 @@ abstract class IRCMessage extends AbstractMessage {
 		return event.getUser();
 	}
 
-	@Override
-	public PircBotX getBot() {
-		return event.getBot();
-	}
-
 }

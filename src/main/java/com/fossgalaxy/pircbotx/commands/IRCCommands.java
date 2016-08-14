@@ -21,6 +21,10 @@ package com.fossgalaxy.pircbotx.commands;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fossgalaxy.pircbotx.backends.BotService;
+import com.fossgalaxy.pircbotx.backends.ChannelService;
+import com.fossgalaxy.pircbotx.backends.UserService;
+import com.google.inject.Inject;
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
@@ -37,12 +41,32 @@ public class IRCCommands extends AnnotationModule {
 	//Important channels to protect
 	private Set<String> protectedChannels;
 
+	private BotService bot;
+	private UserService users;
+	private ChannelService service;
+
 	public IRCCommands() {
 		super("irc");
 
-		this.protectedChannels = new HashSet<String>();
+		this.protectedChannels = new HashSet<>();
 		this.protectedChannels.add("#unity-coders");
 	}
+
+	@Inject
+	protected void setBot(BotService service) {
+		this.bot = service;
+	}
+
+	@Inject
+	protected void setUsers(UserService service) {
+		this.users = service;
+	}
+
+	@Inject
+	protected void setChannels(ChannelService service) {
+		this.service = service;
+	}
+
 
 	@Command("protect")
 	@Secured
@@ -76,36 +100,7 @@ public class IRCCommands extends AnnotationModule {
 	@Secured
 	public void onJoinRequest(Message message) {
 		String channel = message.getArgument(2);
-		PircBotX bot = message.getBot();
-		bot.sendIRC().joinChannel(channel);
-	}
-
-	private Channel getChannel(PircBotX bot, String channelName){
-		try {
-			Channel channel = bot.getUserChannelDao().getChannel(channelName);
-			if (channel == null) {
-				return null;
-			}
-			return channel;
-		} catch (IllegalArgumentException ex) {
-			return null;
-		}
-	}
-
-	private User getUser(PircBotX bot, Channel channel, String nick){
-		if (nick == null){
-			return null;
-		}
-
-		try {
-			User user = bot.getUserChannelDao().getUser(nick);
-			if (user == null) {
-				return null;
-			}
-			return user;
-		} catch (IllegalArgumentException ex) {
-			return null;
-		}
+		service.join(channel);
 	}
 
 	@Command("mode")
@@ -120,8 +115,7 @@ public class IRCCommands extends AnnotationModule {
 		}
 
 		//WARNING: magic beyond this point
-		PircBotX bot = message.getBot();
-		Channel channel = getChannel(bot, channelName);
+		Channel channel = service.getChannel(channelName);
 
 		//check we're in the channel and know the user
 		if (channel == null) {
@@ -144,9 +138,8 @@ public class IRCCommands extends AnnotationModule {
 		}
 
 		//WARNING: magic beyond this point
-		PircBotX bot = message.getBot();
-		Channel channel = getChannel(bot, channelName);
-		User user = getUser(bot, channel, userToOp);
+		Channel channel = service.getChannel(channelName);
+		User user = users.getUser(userToOp);
 
 		//check we're in the channel and know the user
 		if (user == null || channel == null) {
@@ -155,7 +148,7 @@ public class IRCCommands extends AnnotationModule {
 		}
 
 		//check we are op in the channel
-		if (!channel.isOp(bot.getUserBot())) {
+		if (!channel.isOp(users.getBotUser())) {
 			message.respond("I am not OP'd");
 			return;
 		}
@@ -175,9 +168,8 @@ public class IRCCommands extends AnnotationModule {
 		}
 
 		//WARNING: magic beyond this point
-		PircBotX bot = message.getBot();
-		Channel channel = getChannel(bot, channelName);
-		User user = getUser(bot, channel, userToOp);
+		Channel channel = service.getChannel(channelName);
+		User user = users.getUser(userToOp);
 
 		//check we're in the channel and know the user
 		if (user == null || channel == null) {
@@ -186,7 +178,7 @@ public class IRCCommands extends AnnotationModule {
 		}
 
 		//check we are op in the channel
-		if (!channel.isOp(bot.getUserBot())) {
+		if (!channel.isOp(users.getBotUser())) {
 			message.respond("I am not OP'd");
 			return;
 		}
@@ -206,9 +198,8 @@ public class IRCCommands extends AnnotationModule {
 		}
 
 		//WARNING: magic beyond this point
-		PircBotX bot = message.getBot();
-		Channel channel = getChannel(bot, channelName);
-		User user = getUser(bot, channel, userToOp);
+		Channel channel = service.getChannel(channelName);
+		User user = users.getUser(userToOp);
 
 		//check we're in the channel and know the user
 		if (user == null || channel == null) {
@@ -217,7 +208,7 @@ public class IRCCommands extends AnnotationModule {
 		}
 
 		//check we are op in the channel
-		if (!channel.isOp(bot.getUserBot())) {
+		if (!channel.isOp(users.getBotUser())) {
 			message.respond("I am not OP'd");
 			return;
 		}
@@ -237,9 +228,8 @@ public class IRCCommands extends AnnotationModule {
 		}
 
 		//WARNING: magic beyond this point
-		PircBotX bot = message.getBot();
-		Channel channel = getChannel(bot, channelName);
-		User user = getUser(bot, channel, userToOp);
+		Channel channel = service.getChannel(channelName);
+		User user = users.getUser(userToOp);
 
 		//check we're in the channel and know the user
 		if (user == null || channel == null) {
@@ -248,7 +238,7 @@ public class IRCCommands extends AnnotationModule {
 		}
 
 		//check we are op in the channel
-		if (!channel.isOp(bot.getUserBot())) {
+		if (!channel.isOp(users.getBotUser())) {
 			message.respond("I am not OP'd");
 			return;
 		}
@@ -268,9 +258,8 @@ public class IRCCommands extends AnnotationModule {
 		}
 
 		//WARNING: magic beyond this point
-		PircBotX bot = message.getBot();
-		Channel channel = getChannel(bot, channelName);
-		User user = getUser(bot, channel, userToOp);
+		Channel channel = service.getChannel(channelName);
+		User user = users.getUser(userToOp);
 
 		//check we're in the channel and know the user
 		if (user == null || channel == null) {
@@ -279,7 +268,7 @@ public class IRCCommands extends AnnotationModule {
 		}
 
 		//check we are op in the channel
-		if (!channel.isOp(bot.getUserBot())) {
+		if (!channel.isOp(users.getBotUser())) {
 			message.respond("I am not OP'd");
 			return;
 		}
@@ -299,8 +288,7 @@ public class IRCCommands extends AnnotationModule {
 		}
 
 		//WARNING: magic beyond this point
-		PircBotX bot = message.getBot();
-		Channel channel = getChannel(bot, channelName);
+		Channel channel = service.getChannel(channelName);
 
 		//check we're in the channel and know the user
 		if (channel == null) {
@@ -309,7 +297,7 @@ public class IRCCommands extends AnnotationModule {
 		}
 
 		//check we are op in the channel
-		if (!channel.isOp(bot.getUserBot())) {
+		if (!channel.isOp(users.getBotUser())) {
 			message.respond("I am not OP'd");
 			return;
 		}
@@ -321,16 +309,12 @@ public class IRCCommands extends AnnotationModule {
 	@Secured
 	public void onNickRequest(Message message) {
 		String newNick = message.getArgument(2);
-
-		PircBotX bot = message.getBot();
-		bot.sendIRC().changeNick(newNick);
+		bot.setName(newNick);
 	}
 
 	@Command("quit")
 	@Secured
 	public void onQuitRequest(Message message) {
-		PircBotX bot = message.getBot();
-		bot.stopBotReconnect();
-		bot.sendIRC().quitServer(message.getUser().getNick()+" told me to quit");
+		bot.quit(String.format("%s told me to quit", message.getUser().getNick()));
 	}
 }

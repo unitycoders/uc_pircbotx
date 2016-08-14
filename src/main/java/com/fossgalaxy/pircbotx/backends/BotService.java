@@ -12,4 +12,11 @@ public interface BotService {
 
     void start(LocalConfiguration configuration, CommandProcessor processor) throws Exception;
     void stop();
+
+    void quit(String message);
+
+    ChannelService getChannels();
+    UserService getUsers();
+
+    void setName(String newNick);
 }

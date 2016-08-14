@@ -2,6 +2,8 @@ package com.fossgalaxy.pircbotx.backends.irc;
 
 import com.fossgalaxy.pircbotx.LocalConfiguration;
 import com.fossgalaxy.pircbotx.backends.BotService;
+import com.fossgalaxy.pircbotx.backends.ChannelService;
+import com.fossgalaxy.pircbotx.backends.UserService;
 import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
 import com.fossgalaxy.pircbotx.listeners.JoinsListener;
 import com.fossgalaxy.pircbotx.listeners.LinesListener;
@@ -47,5 +49,26 @@ public class IrcService implements BotService {
             return;
         }
         instance.close();
+    }
+
+    @Override
+    public void quit(String quitMessage) {
+        instance.stopBotReconnect();
+        instance.sendIRC().quitServer(quitMessage);
+    }
+
+    @Override
+    public ChannelService getChannels() {
+        return new IrcChannelService(instance);
+    }
+
+    @Override
+    public UserService getUsers() {
+        return new IrcUserService(instance);
+    }
+
+    @Override
+    public void setName(String newNick) {
+        instance.sendIRC().changeNick(newNick);
     }
 }

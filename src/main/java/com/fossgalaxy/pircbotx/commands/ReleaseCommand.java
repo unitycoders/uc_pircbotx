@@ -8,7 +8,6 @@ import java.util.Properties;
 import com.fossgalaxy.pircbotx.commandprocessor.Command;
 import com.fossgalaxy.pircbotx.commandprocessor.HelpText;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
-import com.fossgalaxy.pircbotx.debug.DummyMessage;
 import com.fossgalaxy.pircbotx.modules.AnnotationModule;
 import com.fossgalaxy.pircbotx.security.Secured;
 
@@ -112,15 +111,6 @@ public class ReleaseCommand extends AnnotationModule {
 		}
 		
 		message.respond(b.toString());
-	}
-	
-	
-	public static void main(String[] args) {
-		ReleaseCommand rc = new ReleaseCommand();
-		rc.getRelease(new DummyMessage("release", "commit"));
-		rc.getDescribe(new DummyMessage("release", "description"));
-		rc.listProperties(new DummyMessage("release", "list"));
-		rc.getProperty(new DummyMessage("release", "get", "git.remote.origin.url"));
 	}
 	
 }

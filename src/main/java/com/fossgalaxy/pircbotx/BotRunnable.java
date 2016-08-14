@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.ServiceLoader;
 
 import com.fossgalaxy.pircbotx.backends.BotService;
+import com.fossgalaxy.pircbotx.backends.irc.IrcModule;
 import com.fossgalaxy.pircbotx.backends.irc.IrcService;
 import com.fossgalaxy.pircbotx.commandprocessor.CommandModule;
 import com.fossgalaxy.pircbotx.data.db.DatabaseModule;
@@ -117,13 +118,13 @@ public class BotRunnable implements Runnable {
 	public void run() {
 
 		try {
-			Injector injector = Guice.createInjector(new DatabaseModule(), new CommandModule());
+			Injector injector = Guice.createInjector(new DatabaseModule(), new CommandModule(), new IrcModule());
 
 			//This is out bits
 			setupProcessor(injector);
 			loadPlugins(injector);
 
-			BotService service = injector.getInstance(IrcService.class);
+			BotService service = injector.getInstance(BotService.class);
 			service.start(config, processor);
 			service.stop();
 		} catch (Exception ex) {
