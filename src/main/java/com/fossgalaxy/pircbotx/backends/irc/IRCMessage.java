@@ -20,7 +20,6 @@ package com.fossgalaxy.pircbotx.backends.irc;
 
 import java.util.List;
 
-import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 
