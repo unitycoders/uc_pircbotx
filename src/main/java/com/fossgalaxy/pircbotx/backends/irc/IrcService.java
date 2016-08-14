@@ -9,6 +9,7 @@ import com.fossgalaxy.pircbotx.listeners.JoinsListener;
 import com.fossgalaxy.pircbotx.listeners.LinesListener;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
@@ -20,7 +21,7 @@ import java.io.IOException;
  *
  */
 @Singleton
-public class IrcService implements BotService {
+public class IrcService implements BotService, Provider<PircBotX> {
     private PircBotX instance;
 
     @Inject
@@ -59,16 +60,21 @@ public class IrcService implements BotService {
 
     @Override
     public ChannelService getChannels() {
-        return new IrcChannelService(instance);
+        return new IrcChannelService(this);
     }
 
     @Override
     public UserService getUsers() {
-        return new IrcUserService(instance);
+        return new IrcUserService(this);
     }
 
     @Override
     public void setName(String newNick) {
         instance.sendIRC().changeNick(newNick);
+    }
+
+    @Override
+    public PircBotX get() {
+        return instance;
     }
 }

@@ -26,7 +26,6 @@ import java.util.ServiceLoader;
 
 import com.fossgalaxy.pircbotx.backends.BotService;
 import com.fossgalaxy.pircbotx.backends.irc.IrcModule;
-import com.fossgalaxy.pircbotx.backends.irc.IrcService;
 import com.fossgalaxy.pircbotx.commandprocessor.CommandModule;
 import com.fossgalaxy.pircbotx.data.db.DatabaseModule;
 import com.google.inject.Guice;
@@ -35,19 +34,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
-import com.fossgalaxy.pircbotx.commands.HelpCommand;
-import com.fossgalaxy.pircbotx.commands.PluginCommand;
 import com.fossgalaxy.pircbotx.middleware.BotMiddleware;
 import com.fossgalaxy.pircbotx.modules.Module;
 import com.fossgalaxy.pircbotx.modules.ModuleConfig;
 import com.fossgalaxy.pircbotx.modules.ModuleUtils;
-import com.fossgalaxy.pircbotx.security.SecurityManager;
 import com.fossgalaxy.pircbotx.security.SecurityMiddleware;
-import com.fossgalaxy.pircbotx.security.SessionCommand;
 
 public class BotRunnable implements Runnable {
 	private static final Logger LOG = LoggerFactory.getLogger(BotRunnable.class);
-	private SecurityManager security;
 	private CommandProcessor processor;
 	private LocalConfiguration config;
 
@@ -66,7 +60,6 @@ public class BotRunnable implements Runnable {
 			}
 		}
 
-		security = injector.getInstance(SecurityManager.class);
 		processor = injector.getInstance(CommandProcessor.class);
 
 		processor.addMiddleware(injector.getInstance(SecurityMiddleware.class));
@@ -100,18 +93,6 @@ public class BotRunnable implements Runnable {
 			}
 
 		}
-
-		//load in modules which require arguments
-		Module[] legacyModules = new Module[] {
-				ModuleUtils.wrap("help", new HelpCommand(processor)),
-				ModuleUtils.wrap("plugins", new PluginCommand(processor)),
-				ModuleUtils.wrap("session", new SessionCommand(security))
-		};
-
-		//register all legacy style modules
-		for (Module module : legacyModules) {
-			processor.register(module.getName(), module);
-		}
 	}
 
 	@Override
@@ -120,7 +101,7 @@ public class BotRunnable implements Runnable {
 		try {
 			Injector injector = Guice.createInjector(new DatabaseModule(), new CommandModule(), new IrcModule());
 
-			//This is out bits
+			//This is our bits
 			setupProcessor(injector);
 			loadPlugins(injector);
 

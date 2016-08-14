@@ -7,10 +7,10 @@ import com.fossgalaxy.pircbotx.modules.Module;
 import com.google.inject.Inject;
 
 public class SecurityMiddleware extends AbstractMiddleware {
-	private final SecurityManager security;
+	private SecurityManager security;
 
 	@Inject
-	public SecurityMiddleware(SecurityManager security) {
+	protected void inject(SecurityManager security) {
 		this.security = security;
 	}
 

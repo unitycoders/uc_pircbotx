@@ -26,6 +26,7 @@ import com.fossgalaxy.pircbotx.commandprocessor.HelpText;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
 import com.fossgalaxy.pircbotx.modules.AnnotationModule;
 import com.fossgalaxy.pircbotx.modules.Module;
+import com.google.inject.Inject;
 
 /**
  * Displays information on other commands.
@@ -36,10 +37,14 @@ import com.fossgalaxy.pircbotx.modules.Module;
 @HelpText("Provides infomation about modules")
 public class HelpCommand extends AnnotationModule {
 
-	private final CommandProcessor processor;
+	private CommandProcessor processor;
 
-	public HelpCommand(CommandProcessor processor) {
+	public HelpCommand() {
 		super("help");
+	}
+
+	@Inject
+	protected void inject(CommandProcessor processor) {
 		this.processor = processor;
 	}
 

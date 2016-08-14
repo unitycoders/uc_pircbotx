@@ -1,40 +1,40 @@
 package com.fossgalaxy.pircbotx.backends.irc;
 
 import com.fossgalaxy.pircbotx.backends.ChannelService;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
-import org.pircbotx.UserChannelDao;
 
 /**
  * Created by webpigeon on 14/08/16.
  */
 class IrcChannelService implements ChannelService {
-    private PircBotX bot;
-    private UserChannelDao channelDao;
+    private Provider<PircBotX> bot;
 
-    public IrcChannelService(PircBotX bot) {
+    @Inject
+    public IrcChannelService(Provider<PircBotX> bot) {
         this.bot = bot;
-        this.channelDao = bot.getUserChannelDao();
     }
 
     @Override
     public void join(String channel) {
-        bot.sendIRC().joinChannel(channel);
+        bot.get().sendIRC().joinChannel(channel);
     }
 
     @Override
     public void join(String channel, String key) {
-        bot.sendIRC().joinChannel(channel, key);
+        bot.get().sendIRC().joinChannel(channel, key);
     }
 
     @Override
     public Channel getChannel(String name) {
-        return channelDao.getChannel(name);
+        return bot.get().getUserChannelDao().getChannel(name);
     }
 
     @Override
     public void leave(String channelName) {
-        Channel channel = channelDao.getChannel(channelName);
+        Channel channel = bot.get().getUserChannelDao().getChannel(channelName);
         if (channel == null) {
             return;
         }
