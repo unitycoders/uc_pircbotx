@@ -18,10 +18,10 @@
  */
 package com.fossgalaxy.pircbotx.listeners;
 
+import com.google.inject.Inject;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
-import com.fossgalaxy.pircbotx.data.db.DBConnection;
 import com.fossgalaxy.pircbotx.data.db.LineModel;
 
 /**
@@ -32,17 +32,14 @@ import com.fossgalaxy.pircbotx.data.db.LineModel;
  */
 public class LinesListener extends ListenerAdapter {
 
-	private LineModel model;
+	private final LineModel model;
 
 	/**
 	 * Creates a new {@link LinesListener}.
 	 */
-	public LinesListener() {
-		try {
-			this.model = DBConnection.getLineModel();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+	@Inject
+	public LinesListener(LineModel model) {
+		this.model = model;
 	}
 
 	@Override

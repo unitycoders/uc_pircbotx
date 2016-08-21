@@ -18,7 +18,6 @@
  */
 package com.fossgalaxy.pircbotx.commandprocessor;
 
-import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 
 /**
@@ -28,13 +27,6 @@ import org.pircbotx.User;
  * or being a private message, but  simply treat both the same.
  */
 public interface Message {
-
-	/**
-	 * Get the bot this message was sent to.
-	 *
-	 * @return the instance of the bot which received the message
-	 */
-	public PircBotX getBot();
 
 	/**
 	 * Get the user which sent this message.

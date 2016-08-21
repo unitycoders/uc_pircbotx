@@ -25,7 +25,8 @@
     },
     "middleware": [
     	"com.fossgalaxy.pircbotx.commandprocessor.CommandFixerMiddleware",
-    	"com.fossgalaxy.pircbotx.commandprocessor.RewriteEngine"
+    	"com.fossgalaxy.pircbotx.commandprocessor.RewriteEngine",
+    	"com.fossgalaxy.pircbotx.security.SecurityMiddleware"
     ],
     "aliases": {
     	"^([a-zA-Z0-9]+)\\+\\+$": "karma add $1",

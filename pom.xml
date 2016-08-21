@@ -280,6 +280,13 @@
             <version>1.7.9</version>
         </dependency>
 
+        <!-- Google guice (Dependency Injection) -->
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+
         <!-- test dependencies -->
         <dependency>
             <groupId>junit</groupId>

@@ -21,7 +21,7 @@ package com.fossgalaxy.pircbotx;
 import org.apache.commons.daemon.Daemon;
 import org.apache.commons.daemon.DaemonContext;
 
-public class BotService implements Daemon {
+public class BotDaemon implements Daemon {
 	private Thread botThread;
 
 	@Override

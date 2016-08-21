@@ -19,15 +19,23 @@
 package com.fossgalaxy.pircbotx.security;
 
 import com.fossgalaxy.pircbotx.commandprocessor.Command;
+import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
+import com.fossgalaxy.pircbotx.modules.AnnotationModule;
+import com.google.inject.Inject;
 
-public class SessionCommand {
+public class SessionCommand extends AnnotationModule {
 	// TODO replace this with a database/net lookup
 	private final static String MAGIC_WORDS = "LlamaLlamaDuck";
 	private SecurityManager securityManager;
 
-	public SessionCommand(SecurityManager manager) {
-		this.securityManager = manager;
+	public SessionCommand() {
+		super("session");
+	}
+
+	@Inject
+	protected void inject(SecurityManager securityManager) {
+		this.securityManager = securityManager;
 	}
 
 	@Command

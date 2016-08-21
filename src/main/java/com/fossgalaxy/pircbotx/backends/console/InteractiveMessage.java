@@ -15,11 +15,6 @@ public class InteractiveMessage extends AbstractMessage {
 		super(args);
 		this.out = out;
 	}
-	
-	@Override
-	public PircBotX getBot() {
-		return null;
-	}
 
 	@Override
 	public User getUser() {

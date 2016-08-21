@@ -24,29 +24,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
-import org.pircbotx.Configuration;
-import org.pircbotx.PircBotX;
+import com.fossgalaxy.pircbotx.backends.BotService;
+import com.fossgalaxy.pircbotx.backends.irc.IrcModule;
+import com.fossgalaxy.pircbotx.commandprocessor.CommandModule;
+import com.fossgalaxy.pircbotx.data.db.DatabaseModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
-import com.fossgalaxy.pircbotx.commands.HelpCommand;
-import com.fossgalaxy.pircbotx.commands.PluginCommand;
-import com.fossgalaxy.pircbotx.listeners.JoinsListener;
-import com.fossgalaxy.pircbotx.listeners.LinesListener;
 import com.fossgalaxy.pircbotx.middleware.BotMiddleware;
 import com.fossgalaxy.pircbotx.modules.Module;
 import com.fossgalaxy.pircbotx.modules.ModuleConfig;
 import com.fossgalaxy.pircbotx.modules.ModuleUtils;
-import com.fossgalaxy.pircbotx.security.SecurityManager;
 import com.fossgalaxy.pircbotx.security.SecurityMiddleware;
-import com.fossgalaxy.pircbotx.security.SessionCommand;
-import com.fossgalaxy.pircbotx.backends.irc.IRCFactory;
 
 public class BotRunnable implements Runnable {
 	private static final Logger LOG = LoggerFactory.getLogger(BotRunnable.class);
-	private SecurityManager security;
 	private CommandProcessor processor;
 	private LocalConfiguration config;
 
@@ -54,23 +49,23 @@ public class BotRunnable implements Runnable {
 		this.config = config;
 	}
 
-	private void setupProcessor() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		List<BotMiddleware> middleware = new ArrayList<BotMiddleware>();
+	private void setupProcessor(Injector injector) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		List<BotMiddleware> middleware = new ArrayList<>();
 		if (config.middleware != null) {
 			for (String middlewareClass : config.middleware) {
 				BotMiddleware mw = ModuleUtils.loadMiddleware(middlewareClass);
+				injector.injectMembers(mw);
 				middleware.add(mw);
 				mw.init(config);
 			}
 		}
 
-		//legacy middleware
-		security = new SecurityManager();
-		middleware.add(new SecurityMiddleware(security));
-		processor = new CommandProcessor(middleware);
+		processor = injector.getInstance(CommandProcessor.class);
+
+		processor.addMiddleware(injector.getInstance(SecurityMiddleware.class));
 	}
 
-	private void loadPlugins() {
+	private void loadPlugins(Injector injector) {
 		Map<String, ModuleConfig> moduleConfigs = config.modules;
 		if (moduleConfigs == null) {
 			moduleConfigs = Collections.emptyMap();
@@ -79,6 +74,8 @@ public class BotRunnable implements Runnable {
 		//load in the modules
 		ServiceLoader<Module> modules = ServiceLoader.load(Module.class);
 		for (Module module : modules) {
+
+			injector.injectMembers(module);
 
 			//module data
 			String name = module.getName();
@@ -96,41 +93,21 @@ public class BotRunnable implements Runnable {
 			}
 
 		}
-
-		//load in modules which require arguments
-		Module[] legacyModules = new Module[] {
-				ModuleUtils.wrap("help", new HelpCommand(processor)),
-				ModuleUtils.wrap("plugins", new PluginCommand(processor)),
-				ModuleUtils.wrap("session", new SessionCommand(security))
-		};
-
-		//register all legacy style modules
-		for (Module module : legacyModules) {
-			processor.register(module.getName(), module);
-		}
 	}
 
 	@Override
 	public void run() {
 
 		try {
+			Injector injector = Guice.createInjector(new DatabaseModule(), new CommandModule(), new IrcModule());
 
-			//This is out bits
-			setupProcessor();
-			loadPlugins();
+			//This is our bits
+			setupProcessor(injector);
+			loadPlugins(injector);
 
-
-			//this creates our host bot instance
-			Configuration.Builder cb = IRCFactory.doConfig(config, processor);
-
-			cb.addListener(new JoinsListener());
-			cb.addListener(new LinesListener());
-
-			//build pircbotx
-			Configuration configuration = cb.buildConfiguration();
-			PircBotX instance = new PircBotX(configuration);
-			instance.startBot();
-			instance.close();
+			BotService service = injector.getInstance(BotService.class);
+			service.start(config, processor);
+			service.stop();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			throw new RuntimeException(ex);

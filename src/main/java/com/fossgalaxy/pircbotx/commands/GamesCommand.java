@@ -2,6 +2,10 @@ package com.fossgalaxy.pircbotx.commands;
 
 import java.util.Random;
 
+import com.fossgalaxy.pircbotx.backends.BotService;
+import com.fossgalaxy.pircbotx.backends.ChannelService;
+import com.fossgalaxy.pircbotx.backends.UserService;
+import com.google.inject.Inject;
 import org.pircbotx.Channel;
 
 import com.fossgalaxy.pircbotx.commandprocessor.Command;
@@ -40,6 +44,10 @@ public class GamesCommand extends AnnotationModule {
 	private int rouletteBullet;
 	private int rouletteChamber;
 
+	private ChannelService channels;
+	private UserService users;
+
+
 	public GamesCommand() {
 		super("games");
 		this.random = new Random();
@@ -47,6 +55,12 @@ public class GamesCommand extends AnnotationModule {
 		//init roulette
 		this.rouletteBullet = random.nextInt(6);
 		this.rouletteChamber = random.nextInt(6);
+	}
+
+	@Inject
+	protected void inject(UserService users, ChannelService channels) {
+		this.users = users;
+		this.channels = channels;
 	}
 
 	@Command("coin")
@@ -118,8 +132,9 @@ public class GamesCommand extends AnnotationModule {
 			this.rouletteChamber = random.nextInt(6);
 
 			String channelName = message.getTargetName();
-			Channel channel = message.getBot().getUserChannelDao().getChannel(channelName);
-			if (channel.isOp(message.getBot().getUserBot())){
+			Channel channel = channels.getChannel(channelName);
+
+			if (channel.isOp(users.getBotUser())){
 				channel.send().kick(message.getUser(), "BANG!");
 			} else {
 				message.respond("*BANG* Hey, who put a blank in here?!");

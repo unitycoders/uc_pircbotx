@@ -20,7 +20,6 @@ package com.fossgalaxy.pircbotx.backends.irc;
 
 import java.util.List;
 
-import org.pircbotx.PircBotX;
 import org.pircbotx.User;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 
@@ -48,11 +47,6 @@ abstract class IRCMessage extends AbstractMessage {
 	@Override
 	public User getUser() {
 		return event.getUser();
-	}
-
-	@Override
-	public PircBotX getBot() {
-		return event.getBot();
 	}
 
 }

@@ -18,14 +18,12 @@
  */
 package com.fossgalaxy.pircbotx.commands;
 
-import java.sql.SQLException;
-
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fossgalaxy.pircbotx.commandprocessor.Command;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
-import com.fossgalaxy.pircbotx.data.db.DBConnection;
 import com.fossgalaxy.pircbotx.data.db.LineModel;
 import com.fossgalaxy.pircbotx.modules.AnnotationModule;
 
@@ -39,13 +37,19 @@ public class RandCommand extends AnnotationModule {
 	private static final Logger logger = LoggerFactory.getLogger(RandCommand.class);
 	private LineModel lines;
 
+	@Inject
+	public RandCommand(LineModel model) {
+		this();
+		this.lines = model;
+	}
+
 	public RandCommand() {
 		super("rand");
-		try {
-			lines = DBConnection.getLineModel();
-		} catch (ClassNotFoundException | SQLException ex) {
-			logger.error("Database error", ex);
-		}
+	}
+
+	@Inject
+	public void onModel(LineModel model){
+		this.lines = model;
 	}
 
 	@Command

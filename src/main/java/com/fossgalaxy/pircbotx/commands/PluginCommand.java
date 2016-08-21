@@ -28,12 +28,17 @@ import com.fossgalaxy.pircbotx.modules.AnnotationModule;
 import com.fossgalaxy.pircbotx.modules.Module;
 import com.fossgalaxy.pircbotx.modules.ModuleUtils;
 import com.fossgalaxy.pircbotx.security.Secured;
+import com.google.inject.Inject;
 
 public class PluginCommand extends AnnotationModule {
 	private CommandProcessor processor;
 
-	public PluginCommand(CommandProcessor processor) {
+	public PluginCommand() {
 		super("plugin");
+	}
+
+	@Inject
+	protected void inject(CommandProcessor processor) {
 		this.processor = processor;
 	}
 

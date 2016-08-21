@@ -26,6 +26,7 @@ import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +46,7 @@ public class ProfileModel {
 	private final PreparedStatement getProfile;
 	private final PreparedStatement getPerms;
 
+	@Inject
 	public ProfileModel(Connection conn) throws SQLException {
 		this.conn = conn;
 		buildTable();

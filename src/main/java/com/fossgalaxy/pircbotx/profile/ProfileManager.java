@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.inject.Inject;
 import org.pircbotx.User;
 
 import com.fossgalaxy.pircbotx.data.db.ProfileModel;
@@ -35,6 +36,7 @@ public class ProfileManager {
 	private ProfileModel model;
 	private Map<User, Profile> sessions;
 
+	@Inject
 	public ProfileManager(ProfileModel profileModel) {
 		this.model = profileModel;
 		this.sessions = new HashMap<User, Profile>();

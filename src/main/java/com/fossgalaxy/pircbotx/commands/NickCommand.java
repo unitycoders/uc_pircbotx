@@ -18,10 +18,12 @@
  */
 package com.fossgalaxy.pircbotx.commands;
 
+import com.fossgalaxy.pircbotx.backends.BotService;
 import com.fossgalaxy.pircbotx.commandprocessor.Command;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
 import com.fossgalaxy.pircbotx.modules.AnnotationModule;
 import com.fossgalaxy.pircbotx.security.Secured;
+import com.google.inject.Inject;
 
 
 /**
@@ -30,8 +32,15 @@ import com.fossgalaxy.pircbotx.security.Secured;
  */
 public class NickCommand extends AnnotationModule
 {
+	private BotService bot;
+
 	public NickCommand() {
 		super("nick");
+	}
+
+	@Inject
+	protected void inject(BotService bot){
+		this.bot = bot;
 	}
 
 	@Command
@@ -39,7 +48,7 @@ public class NickCommand extends AnnotationModule
 	public void onNick(Message event) {
 		String nick = event.getArgument(2);
 
-		event.getBot().sendIRC().changeNick(nick);
+		bot.setName(nick);
 		event.respond("Changed nick to " + nick);
 	}
 }

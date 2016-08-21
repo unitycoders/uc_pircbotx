@@ -36,11 +36,6 @@ public class MessageStub implements Message {
 	}
 
 	@Override
-	public PircBotX getBot() {
-		return null;
-	}
-
-	@Override
 	public User getUser() {
 		return null;
 	}

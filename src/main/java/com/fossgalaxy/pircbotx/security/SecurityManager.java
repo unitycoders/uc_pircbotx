@@ -21,8 +21,10 @@ package com.fossgalaxy.pircbotx.security;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.inject.Singleton;
 import org.pircbotx.User;
 
+@Singleton
 public class SecurityManager {
 	private Map<String, Session> sessions;
 
