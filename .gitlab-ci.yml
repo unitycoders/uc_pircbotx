@@ -2,12 +2,19 @@ image: maven:3-jdk-7
 
 stages:
     - test
+    - report
     - deploy
     - cleanup
 
 mvn_test:
     stage: test
     script: "mvn test -B -U"
+    except:
+        - tags
+
+mvn_sonar:
+    stage: report
+    script: "mvn sonar:sonar -Dsonar.host.url=$SONARQUBE_HOST -Dsonar.login=$SONARQUBE_KEY -B -U"
     except:
         - tags
 
