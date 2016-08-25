@@ -111,10 +111,10 @@ public class BotRunnable implements Runnable {
 			service.start(config, processor);
 		} catch (ReflectiveOperationException ex) {
 			LOG.error("could not setup bot", ex);
-			throw new RuntimeException(ex);
+			throw new BotException(ex);
 		} catch (IOException | BackendException ex) {
 			LOG.error("bot failed to start", ex);
-			throw new RuntimeException(ex);
+			throw new BotException(ex);
 		}
 	}
 
