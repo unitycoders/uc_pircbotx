@@ -22,11 +22,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.fossgalaxy.pircbotx.commandprocessor.Command;
 import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
 import org.pircbotx.Colors;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -36,7 +39,7 @@ import org.pircbotx.hooks.events.PrivateMessageEvent;
  * purpose is to act as an adapter between the command processor and pircbotx.
  */
 class CommandListener extends ListenerAdapter {
-
+	private final static Logger LOG = LoggerFactory.getLogger(CommandListener.class);
 	private final CommandProcessor processor;
 	private final String prefix;
 
@@ -67,6 +70,7 @@ class CommandListener extends ListenerAdapter {
 			}
 		} catch (Exception ex) {
 			event.respond("error: "+ex.getMessage());
+			LOG.error("error processing message", ex);
 		}
 	}
 
@@ -77,6 +81,7 @@ class CommandListener extends ListenerAdapter {
 			processor.invoke(new UserMessage(event, messageText));
 		} catch(Exception ex) {
 			event.respond("error:"+ex.getMessage());
+			LOG.error("error processing private message", ex);
 		}
 	}
 
