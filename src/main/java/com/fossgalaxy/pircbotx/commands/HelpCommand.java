@@ -64,7 +64,6 @@ public class HelpCommand extends AnnotationModule {
     @Command("info")
     @HelpText("wrapper around mod-info and cmd-info for ease of use")
     public void onInfo(Message event) {
-        String moduleName = event.getArgument(2);
         String commandName = event.getArgument(3, null);
 
         if (commandName == null) {
