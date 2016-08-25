@@ -1,8 +1,6 @@
 package com.fossgalaxy.pircbotx.commands.math;
 
-import java.util.Map;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class PostfixEvaulator {
 	private Map<String, Function> functions;
@@ -11,10 +9,10 @@ public class PostfixEvaulator {
 		this.functions = functions;
 	}
 
-    public double evaluate(Queue<Token> input) {    	
+    public double evaluate(Deque<Token> input) {
     	System.out.println(input);
-    	
-            	Stack<Double> stack = new Stack<Double>();
+
+				Deque<Double> stack = new LinkedList<Double>();
             	
             	Token token = input.poll();
             	while (token != null) {

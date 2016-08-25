@@ -27,15 +27,15 @@ public class ASTParser {
 
     private final List<List<Object>> suffixExprListSupply = new ArrayList<>();
 
-    private final List<Stack<Function>> opStackSupply = new ArrayList<>();
+    private final List<Deque<Function>> opStackSupply = new ArrayList<>();
 
     private List<Object> newSuffixExprList() {
         suffixExprListSupply.add(new ArrayList<>());
         return suffixExprListSupply.get(suffixExprListSupply.size() - 1);
     }
 
-    private Stack<Function> newOpStack() {
-        opStackSupply.add(new Stack<Function>());
+    private Deque<Function> newOpStack() {
+        opStackSupply.add(new LinkedList<Function>());
         return opStackSupply.get(opStackSupply.size() - 1);
     }
 
@@ -173,7 +173,7 @@ public class ASTParser {
     }
 
     private void pushOp(OperatorFunction function) {
-        Stack<Function> opStack = opStackSupply.get(opStackSupply.size() - 1);
+        Deque<Function> opStack = opStackSupply.get(opStackSupply.size() - 1);
         String o1 = function.getName();
         if (functions.get(o1) != null) {
             if (opStack.isEmpty()) {
