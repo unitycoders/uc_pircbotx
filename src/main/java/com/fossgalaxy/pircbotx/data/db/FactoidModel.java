@@ -29,6 +29,7 @@ import java.util.List;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.rmi.runtime.Log;
 
 public class FactoidModel {
 	private static final String CREATE_SQL = "INSERT INTO factoid VALUES (?,?);";
@@ -64,6 +65,7 @@ public class FactoidModel {
 	private void buildTable() throws SQLException {
 		Statement stmt = connection.createStatement();
 		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS factoid (name TEXT PRIMARY KEY, body TEXT)");
+		stmt.close();
 	}
 
 	public boolean addFactoid(String factoid, String text) {
@@ -71,6 +73,7 @@ public class FactoidModel {
 			try {
 				createStmt = connection.prepareStatement(CREATE_SQL);
 			} catch (SQLException ex) {
+				logger.warn("database error", ex);
 				createStmt = null;
 				return false;
 			}
@@ -158,6 +161,7 @@ public class FactoidModel {
 				updateStmt = connection.prepareStatement(UPDATE_SQL);
 			} catch (SQLException ex) {
 				updateStmt = null;
+				logger.warn("database error", ex);
 				return false;
 			}
 		}
@@ -190,8 +194,15 @@ public class FactoidModel {
 	private void killConnection(PreparedStatement stmt) {
 		try {
 			stmt.close();
+			createStmt.closeOnCompletion();
+			searchStmt.closeOnCompletion();
+			readStmt.closeOnCompletion();
+			updateStmt.closeOnCompletion();
+			deleteStmt.closeOnCompletion();
+			randStmt.closeOnCompletion();
 		} catch (SQLException ex) {
 			//it's probably dead
+			logger.warn("database had a problem closing statements", ex);
 		}
 	}
 }

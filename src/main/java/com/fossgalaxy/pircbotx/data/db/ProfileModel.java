@@ -61,6 +61,7 @@ public class ProfileModel {
 		Statement stmt = conn.createStatement();
 		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS permissions (user TEXT, name TEXT)");
 		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS profiles (user TEXT)");
+		stmt.close();
 	}
 
 	public boolean createProfile(String name) {

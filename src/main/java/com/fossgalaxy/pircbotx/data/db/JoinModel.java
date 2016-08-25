@@ -56,6 +56,7 @@ public class JoinModel {
 	private void buildTable() throws SQLException {
 		Statement stmt = conn.createStatement();
 		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS joins (nick TEXT PRIMARY KEY, joins INTEGER DEFAULT 1)");
+		stmt.close();
 	}
 
 	private boolean newJoin(String nick) throws SQLException {

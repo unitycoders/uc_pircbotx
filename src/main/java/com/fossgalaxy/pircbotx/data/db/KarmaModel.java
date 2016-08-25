@@ -57,6 +57,7 @@ public class KarmaModel {
 	private void buildTable() throws SQLException {
 		Statement stmt = conn.createStatement();
 		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS karma (target TEXT PRIMARY KEY, karma INTEGER DEFAULT 1)");
+		stmt.close();
 	}
 
 	public Collection<Karma> getTopKarma(int limit) {
