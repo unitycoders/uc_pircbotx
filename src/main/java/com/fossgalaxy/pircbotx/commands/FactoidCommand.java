@@ -33,7 +33,6 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 public class FactoidCommand extends AnnotationModule {
-    private static final Logger logger = LoggerFactory.getLogger(FactoidCommand.class);
     private FactoidModel model;
 
     @Inject
