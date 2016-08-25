@@ -28,11 +28,11 @@ public class DivideExpr extends Expr{
 
     public double eval() {
         //protected division to prevent math errors
-        if (right.eval() == 0) {
+        double result = left.eval() / right.eval();
+        if (Double.isNaN(result)) {
             return 0;
         }
-
-        return left.eval() / right.eval();
+        return result;
     }
 
     @Override
