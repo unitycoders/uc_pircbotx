@@ -3,14 +3,13 @@ package com.fossgalaxy.pircbotx.commandprocessor;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.fossgalaxy.pircbotx.commandprocessor.CommandNotFoundException;
-import com.fossgalaxy.pircbotx.commandprocessor.Message;
 import com.fossgalaxy.pircbotx.modules.Module;
+import com.fossgalaxy.pircbotx.modules.ModuleException;
 
 public class ModuleWhichReportsNoCommands implements Module {
 
 	@Override
-	public void fire(Message message) throws Exception {
+	public void fire(Message message) throws ModuleException, CommandNotFoundException {
 		throw new CommandNotFoundException("nope");
 	}
 

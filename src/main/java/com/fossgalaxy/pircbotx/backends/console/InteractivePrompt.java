@@ -1,8 +1,10 @@
 package com.fossgalaxy.pircbotx.backends.console;
 
+import com.fossgalaxy.pircbotx.commandprocessor.CommandNotFoundException;
 import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
 import com.fossgalaxy.pircbotx.middleware.BotMiddleware;
+import com.fossgalaxy.pircbotx.modules.ModuleException;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,9 +32,10 @@ public class InteractivePrompt {
 		while(scanner.hasNextLine()) {
 			try {
 				processor.invoke(buildMessage(processor, scanner.nextLine()));
-			} catch (Exception ex) {
-				System.err.println(String.format("[error] %s", ex));
-				ex.printStackTrace();
+			} catch (ModuleException ex) {
+				System.err.println("something went wrong: "+ex);
+			} catch (CommandNotFoundException ex) {
+				System.out.println("Sorry, that's not a valid command");
 			}
 		}
 		

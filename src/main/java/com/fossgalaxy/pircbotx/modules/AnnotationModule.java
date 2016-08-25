@@ -52,7 +52,7 @@ public class AnnotationModule implements Module {
 	}
 
 	@Override
-	public void fire(Message message) throws Exception {
+	public void fire(Message message) throws ModuleException, CommandNotFoundException {
 		String action = message.getArgument(Module.COMMAND_ARG, Module.DEFAULT_COMMAND);
 
 		Node node = nodes.get(action);
@@ -63,8 +63,8 @@ public class AnnotationModule implements Module {
 		try {
 			Method method = node.method;
 			method.invoke(source, message);
-		} catch (InvocationTargetException ex) {
-			throw (Exception)ex.getTargetException();
+		} catch (ReflectiveOperationException ex) {
+			throw new ModuleException(ex);
 		}
 	}
 

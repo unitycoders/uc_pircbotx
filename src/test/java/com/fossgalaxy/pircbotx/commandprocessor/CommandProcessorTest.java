@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.fossgalaxy.pircbotx.modules.ModuleException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -155,7 +156,7 @@ public class CommandProcessorTest {
 		Assert.assertNull(result);
 	}
 
-	@Test(expected=NullPointerException.class)
+	@Test(expected=ModuleException.class)
 	public void testCommandThrowsException() throws Exception {
 		String name = "fake";
 		Module module = new ModuleWhichThrowsExceptions();

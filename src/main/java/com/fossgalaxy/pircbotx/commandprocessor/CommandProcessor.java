@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.fossgalaxy.pircbotx.modules.ModuleException;
 import com.fossgalaxy.pircbotx.security.SecurityMiddleware;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -201,7 +202,7 @@ public class CommandProcessor {
 	 * @throws CommandNotFoundException if the command does not exist
 	 * @throws Exception if the method throws an exception
 	 */
-	public void invoke(Message message) throws Exception {
+	public void invoke(Message message) throws CommandNotFoundException, ModuleException {
 		for (BotMiddleware mw : middleware) {
 			message = mw.process(this, message);
 
@@ -232,7 +233,8 @@ public class CommandProcessor {
 			} else {
 				message.respond(String.format(USE_FORMAT, module, action, Arrays.toString(args)));
 			}
-		} catch (Exception ex) {
+			logger.info("Incorrect arguments provided for command", ex);
+		} catch (ModuleException ex) {
 			message.respond("Something has gone wrong, please let the developers know");
 			logger.error("Exception thrown", ex);
 			throw ex;

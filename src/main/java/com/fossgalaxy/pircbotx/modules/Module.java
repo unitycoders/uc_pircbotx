@@ -2,6 +2,7 @@ package com.fossgalaxy.pircbotx.modules;
 
 import java.util.Collection;
 
+import com.fossgalaxy.pircbotx.commandprocessor.CommandNotFoundException;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
 
 /**
@@ -18,7 +19,7 @@ public interface Module {
 	 * @param message the message which caused the invocation
 	 * @throws Exception in the event of failure.
 	 */
-	public void fire(Message message) throws Exception;
+	public void fire(Message message) throws ModuleException, CommandNotFoundException;
 
 	/**
 	 * Check if an action is known to the module.
