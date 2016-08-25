@@ -17,7 +17,7 @@ package com.fossgalaxy.pircbotx.commands.math.ast;
  *
  * @author leon on 16-1-1
  */
-public class DivideExpr extends Expr{
+public class DivideExpr extends Expr {
     public Expr left;
     public Expr right;
 

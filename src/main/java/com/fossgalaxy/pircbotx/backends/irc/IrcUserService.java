@@ -1,12 +1,10 @@
 package com.fossgalaxy.pircbotx.backends.irc;
 
 import com.fossgalaxy.pircbotx.backends.UserService;
-import com.fossgalaxy.pircbotx.profile.Profile;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.pircbotx.PircBotX;
 import org.pircbotx.User;
-import org.pircbotx.UserChannelDao;
 
 /**
  * Created by webpigeon on 14/08/16.

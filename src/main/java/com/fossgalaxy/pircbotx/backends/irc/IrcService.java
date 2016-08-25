@@ -51,7 +51,7 @@ public class IrcService implements BotService, Provider<PircBotX> {
 
     @Override
     public void stop() {
-        if(instance == null) {
+        if (instance == null) {
             return;
         }
         instance.close();

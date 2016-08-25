@@ -10,61 +10,61 @@ import java.util.List;
  * Things common to messages regardless of the backend.
  */
 public abstract class AbstractMessage implements Message {
-	private final List<String> args;
-	
-	public AbstractMessage(List<String> args) {
-		this.args = args;
-	}
+    private final List<String> args;
 
-	@Override
-	public String getMessage() {
-		if (args.size() <= 2) {
-			return "";
-		}
+    public AbstractMessage(List<String> args) {
+        this.args = args;
+    }
 
-		// get the argument list
-		List<String> cmdArgs = args.subList(2, args.size());
+    @Override
+    public String getMessage() {
+        if (args.size() <= 2) {
+            return "";
+        }
 
-		//emulate String.join in java 1.7
-		StringBuilder argStr = new StringBuilder();
-		Iterator<String> argItr = cmdArgs.iterator();
-		while(argItr.hasNext()) {
-			argStr.append(argItr.next());
-			if (argItr.hasNext()) {
-				argStr.append(" ");
-			}
-		}
+        // get the argument list
+        List<String> cmdArgs = args.subList(2, args.size());
 
-		return argStr.toString();
-	}
+        //emulate String.join in java 1.7
+        StringBuilder argStr = new StringBuilder();
+        Iterator<String> argItr = cmdArgs.iterator();
+        while (argItr.hasNext()) {
+            argStr.append(argItr.next());
+            if (argItr.hasNext()) {
+                argStr.append(" ");
+            }
+        }
 
-	@Override
-	public  String getRawMessage() {
-		return getMessage();
-	}
+        return argStr.toString();
+    }
 
-	@Override
-	public String getArgument(int id, String defaultValue) {
-		if (args == null || args.size() <= id){
-			return defaultValue;
-		}
+    @Override
+    public String getRawMessage() {
+        return getMessage();
+    }
 
-		return args.get(id);
-	}
+    @Override
+    public String getArgument(int id, String defaultValue) {
+        if (args == null || args.size() <= id) {
+            return defaultValue;
+        }
 
-	@Override
-	public String getArgument(int id) {
-		return args.get(id);
-	}
+        return args.get(id);
+    }
 
-	@Override
-	public void insertArgument(int i, String arg) {
-		args.add(i, arg);	
-	}
-	
-	@Override
-	public void respondSuccess() {
-		respond("The operation was successful.");
-	}
-	
+    @Override
+    public String getArgument(int id) {
+        return args.get(id);
+    }
+
+    @Override
+    public void insertArgument(int i, String arg) {
+        args.add(i, arg);
+    }
+
+    @Override
+    public void respondSuccess() {
+        respond("The operation was successful.");
+    }
+
 }

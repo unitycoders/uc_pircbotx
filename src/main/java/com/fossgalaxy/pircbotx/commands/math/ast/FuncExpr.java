@@ -21,7 +21,7 @@ public class FuncExpr extends Expr {
     public String funcName;
     public Expr epxr;
 
-    public FuncExpr(String funcName,Expr epxr) {
+    public FuncExpr(String funcName, Expr epxr) {
         this.epxr = epxr;
         this.funcName = funcName;
     }

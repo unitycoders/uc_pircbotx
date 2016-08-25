@@ -24,7 +24,7 @@ public class NumExpr extends Expr {
         this.num = num;
     }
 
-    public double eval(){
+    public double eval() {
         return Double.parseDouble(num);
     }
 

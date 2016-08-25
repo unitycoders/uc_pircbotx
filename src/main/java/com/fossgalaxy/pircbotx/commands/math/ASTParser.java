@@ -13,10 +13,10 @@ import static com.fossgalaxy.pircbotx.commands.math.TokenType.*;
  */
 public class ASTParser {
 
+    private final List<List<Object>> suffixExprListSupply = new ArrayList<>();
+    private final List<Deque<Function>> opStackSupply = new ArrayList<>();
     private Map<String, Function> functions;
-
     private Queue<Token> input;
-
     private Token curr;
 
     public ASTParser(Queue<Token> input, Map<String, Function> functions) {
@@ -24,10 +24,6 @@ public class ASTParser {
         this.functions = functions;
         next();
     }
-
-    private final List<List<Object>> suffixExprListSupply = new ArrayList<>();
-
-    private final List<Deque<Function>> opStackSupply = new ArrayList<>();
 
     private List<Object> newSuffixExprList() {
         suffixExprListSupply.add(new ArrayList<>());

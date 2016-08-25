@@ -17,7 +17,7 @@ package com.fossgalaxy.pircbotx.commands.math.ast;
  *
  * @author leon on 16-1-1
  */
-public class SubExpr extends Expr{
+public class SubExpr extends Expr {
     public Expr left;
     public Expr right;
 
@@ -26,7 +26,7 @@ public class SubExpr extends Expr{
         this.left = left;
     }
 
-    public double eval(){
+    public double eval() {
         return left.eval() - right.eval();
     }
 
