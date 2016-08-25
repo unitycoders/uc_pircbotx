@@ -9,6 +9,7 @@ import com.fossgalaxy.pircbotx.commandprocessor.Command;
 import com.fossgalaxy.pircbotx.commandprocessor.HelpText;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
 import com.fossgalaxy.pircbotx.modules.AnnotationModule;
+import com.fossgalaxy.pircbotx.modules.ModuleException;
 import com.fossgalaxy.pircbotx.security.Secured;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,17 +49,17 @@ public class ReleaseCommand extends AnnotationModule {
 		}
 	}
 	
-	private String getProp(String prop) {
+	private String getProp(String prop) throws ModuleException {
 		String answer = properties.getProperty(prop);
 		if (answer == null) {
-			throw new RuntimeException(GIT_ERROR);
+			throw new ModuleException(GIT_ERROR);
 		}
 		return answer;
 	}
 	
 	@Command("commit")
 	@HelpText("print the last git commit before this was generated")
-	public void getRelease(Message message) {
+	public void getRelease(Message message) throws ModuleException {
 		String commit = getProp(PROP_COMMIT);
 		String dirty = getProp(PROP_DIRTY);
 		
@@ -72,14 +73,14 @@ public class ReleaseCommand extends AnnotationModule {
 	
 	@Command("version")
 	@HelpText("print the git description from when this jar was generated")
-	public void getDescribe(Message message) {
+	public void getDescribe(Message message) throws ModuleException {
 		String commit = getProp(PROP_DESCRIBE);
 		message.respond(String.format("description: %s", commit));
 	}
 	
 	@Command("version")
 	@HelpText("print the version of the framework this bot was created from")
-	public void getVersion(Message message) {
+	public void getVersion(Message message) throws ModuleException {
 		String commit = getProp(PROP_VERSION);
 		message.respond(String.format("version: %s", commit));
 	}
@@ -87,7 +88,7 @@ public class ReleaseCommand extends AnnotationModule {
 	@Command("get")
 	@HelpText("get a property based on it's ID")
 	@Secured
-	public void getProperty(Message message) {
+	public void getProperty(Message message) throws ModuleException {
 		String property = properties.getProperty(message.getArgument(2, null));
 		
 		//TODO use usage when merged with master

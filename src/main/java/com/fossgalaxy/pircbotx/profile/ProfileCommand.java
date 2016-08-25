@@ -20,6 +20,7 @@ package com.fossgalaxy.pircbotx.profile;
 
 import java.sql.SQLException;
 
+import com.fossgalaxy.pircbotx.modules.ModuleException;
 import com.google.inject.Inject;
 import org.pircbotx.hooks.events.MessageEvent;
 
@@ -42,29 +43,33 @@ public class ProfileCommand {
 	}
 
 	@Command("register")
-	public void register(MessageEvent event) throws Exception {
+	public void register(MessageEvent event) throws ModuleException {
 		try {
 			manager.register("demo123");
 			event.respond("Created new profile for you");
 		} catch (SQLException ex) {
-			event.respond("error: " + ex);
+			throw new ModuleException(ex);
 		}
 	}
 
 	@Command("login")
-	public void login(MessageEvent event) throws Exception {
-		manager.login(event.getUser(), "demo123");
-		event.respond("you are now logged in");
+	public void login(MessageEvent event) throws ModuleException {
+		try {
+			manager.login(event.getUser(), "demo123");
+			event.respond("you are now logged in");
+		} catch (SQLException ex) {
+			throw new ModuleException(ex);
+		}
 	}
 
 	@Command("logoff")
-	public void logoff(MessageEvent event) throws Exception {
+	public void logoff(MessageEvent event) throws ModuleException {
 		manager.logoff(event.getUser());
 		event.respond("you have been logged out");
 	}
 
 	@Command("addperm")
-	public void addPerm(MessageEvent event) throws Exception {
+	public void addPerm(MessageEvent event) throws ModuleException {
 		Profile profile = manager.getProfile(event.getUser());
 		if (profile == null) {
 			event.respond("you are not logged in.");
@@ -76,7 +81,7 @@ public class ProfileCommand {
 	}
 
 	@Command("rmperm")
-	public void removePerm(MessageEvent event) throws Exception {
+	public void removePerm(MessageEvent event) throws ModuleException {
 		Profile profile = manager.getProfile(event.getUser());
 		if (profile == null) {
 			event.respond("you are not logged in.");
@@ -88,7 +93,7 @@ public class ProfileCommand {
 	}
 
 	@Command("hasperm")
-	public void hasPerm(MessageEvent event) throws Exception {
+	public void hasPerm(MessageEvent event) throws ModuleException {
 		Profile profile = manager.getProfile(event.getUser());
 		if (profile == null) {
 			event.respond("you are not logged in.");
