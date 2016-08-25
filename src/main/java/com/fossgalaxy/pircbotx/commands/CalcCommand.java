@@ -63,7 +63,6 @@ public class CalcCommand extends AnnotationModule {
 
     private int doStmt(Deque<Token> input) throws ModuleException {
         Token t = input.pop();
-        System.out.println("token = " + t.data);
 
         if (t.type == NUM_TOKEN) {
             return doNum(t);
