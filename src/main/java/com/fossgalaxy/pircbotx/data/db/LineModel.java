@@ -96,7 +96,7 @@ public class LineModel {
      * @return a list of all lines
      */
     public List<String> getAllLines() {
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
         try {
             ResultSet rs = readLines.executeQuery();
             while (rs.next()) {

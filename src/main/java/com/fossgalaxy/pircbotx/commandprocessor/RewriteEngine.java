@@ -31,7 +31,7 @@ public class RewriteEngine extends AbstractMiddleware {
     private Map<String, String> rules;
 
     public RewriteEngine() {
-        this.rules = new TreeMap<String, String>();
+        this.rules = new TreeMap<>();
     }
 
     @Override

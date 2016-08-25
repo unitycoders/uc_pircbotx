@@ -171,7 +171,7 @@ public class LartModel {
      * @return a list of all the larts
      */
     public List<Lart> getAllLarts() {
-        List<Lart> larts = new ArrayList<Lart>();
+        List<Lart> larts = new ArrayList<>();
 
         try {
             ResultSet rs = readLarts.executeQuery();

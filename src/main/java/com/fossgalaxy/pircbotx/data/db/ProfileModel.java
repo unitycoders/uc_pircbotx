@@ -95,7 +95,7 @@ public class ProfileModel {
     }
 
     public String[] getPerms(String user) {
-        Set<String> perms = new HashSet<String>();
+        Set<String> perms = new HashSet<>();
 
         try {
             getPerms.clearParameters();

@@ -97,7 +97,7 @@ public class CommandProcessor {
         for (String action : target.getActions()) {
             List<String> providers = revLookup.get(action);
             if (providers == null) {
-                providers = new ArrayList<String>();
+                providers = new ArrayList<>();
                 revLookup.put(action, providers);
             }
             providers.add(name);
@@ -154,7 +154,7 @@ public class CommandProcessor {
 
     protected List<String> tokenise(String message) {
 
-        List<String> arguments = new ArrayList<String>();
+        List<String> arguments = new ArrayList<>();
 
         Matcher matcher = tokeniser.matcher(message);
         while (matcher.find()) {

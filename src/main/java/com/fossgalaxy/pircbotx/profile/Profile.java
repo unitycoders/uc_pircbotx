@@ -32,7 +32,7 @@ public class Profile {
 
     public Profile(String name) {
         this.name = name;
-        this.permissions = new HashSet<String>();
+        this.permissions = new HashSet<>();
     }
 
     public void addPermission(String perm) {

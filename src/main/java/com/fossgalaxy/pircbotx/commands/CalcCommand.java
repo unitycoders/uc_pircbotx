@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class CalcCommand extends AnnotationModule {
     private static final Integer OP_TOKEN = 1;
@@ -64,9 +65,9 @@ public class CalcCommand extends AnnotationModule {
     private int doStmt(Deque<Token> input) throws ModuleException {
         Token t = input.pop();
 
-        if (t.type == NUM_TOKEN) {
+        if (Objects.equals(t.type, NUM_TOKEN)) {
             return doNum(t);
-        } else if (t.type == OP_TOKEN) {
+        } else if (Objects.equals(t.type, OP_TOKEN)) {
             char op = doOp(t);
             int right = doStmt(input);
             int left = doStmt(input);
@@ -78,7 +79,7 @@ public class CalcCommand extends AnnotationModule {
 
     private Deque<Token> tokenise(String input) throws ModuleException {
         String[] tokens = input.split(" ");
-        Deque<Token> stack = new LinkedList<Token>();
+        Deque<Token> stack = new LinkedList<>();
 
         for (int i = 0; i < tokens.length; i++) {
             Token t = new Token();

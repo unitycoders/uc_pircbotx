@@ -79,7 +79,7 @@ public class JoinModel {
     }
 
     public Map<String, Integer> getAllJoins() {
-        TreeMap<String, Integer> joins = new TreeMap<String, Integer>();
+        TreeMap<String, Integer> joins = new TreeMap<>();
         try {
             ResultSet rs = readJoins.executeQuery();
             while (rs.next()) {

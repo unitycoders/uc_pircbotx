@@ -29,7 +29,7 @@ public class SecurityManager {
     private Map<String, Session> sessions;
 
     public SecurityManager() {
-        this.sessions = new HashMap<String, Session>();
+        this.sessions = new HashMap<>();
     }
 
     public void startSession(User user) {

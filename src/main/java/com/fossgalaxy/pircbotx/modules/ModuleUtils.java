@@ -39,7 +39,7 @@ public class ModuleUtils {
 
     public static List<Module> loadModules() {
         ServiceLoader<Module> moduleLoader = ServiceLoader.load(Module.class);
-        List<Module> modules = new ArrayList<Module>();
+        List<Module> modules = new ArrayList<>();
 
         for (Module m : moduleLoader) {
             modules.add(m);

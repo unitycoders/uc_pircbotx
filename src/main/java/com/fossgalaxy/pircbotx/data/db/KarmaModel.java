@@ -56,7 +56,7 @@ public class KarmaModel {
     }
 
     public Collection<Karma> getTopKarma(int limit) {
-        ArrayList<Karma> karmaList = new ArrayList<Karma>();
+        ArrayList<Karma> karmaList = new ArrayList<>();
 
         try {
             topKarma.clearParameters();

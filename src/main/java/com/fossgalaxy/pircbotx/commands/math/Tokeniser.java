@@ -17,7 +17,7 @@ public class Tokeniser {
     }
 
     public Queue<Token> process(String input) {
-        Queue<Token> tokens = new LinkedList<Token>();
+        Queue<Token> tokens = new LinkedList<>();
 
         Matcher matcher = regex.matcher(input);
         while (matcher.find()) {

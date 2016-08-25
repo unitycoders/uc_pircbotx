@@ -20,6 +20,7 @@ package com.fossgalaxy.pircbotx.listeners;
 
 import com.fossgalaxy.pircbotx.data.db.JoinModel;
 import com.google.inject.Inject;
+import org.pircbotx.User;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.JoinEvent;
 
@@ -34,6 +35,10 @@ public class JoinsListener extends ListenerAdapter {
 
     @Override
     public void onJoin(JoinEvent event) throws Exception {
-        model.incrementJoin(event.getUser().getNick());
+        User user = event.getUser();
+        if (user == null) {
+            return;
+        }
+        model.incrementJoin(user.getNick());
     }
 }

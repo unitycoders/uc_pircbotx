@@ -38,7 +38,7 @@ public class ProfileManager {
     @Inject
     public ProfileManager(ProfileModel profileModel) {
         this.model = profileModel;
-        this.sessions = new HashMap<User, Profile>();
+        this.sessions = new HashMap<>();
     }
 
     public void login(User user, String profileName) throws SQLException {

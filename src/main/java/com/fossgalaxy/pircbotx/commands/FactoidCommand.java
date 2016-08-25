@@ -27,8 +27,6 @@ import com.fossgalaxy.pircbotx.data.db.FactoidModel;
 import com.fossgalaxy.pircbotx.modules.AnnotationModule;
 import com.fossgalaxy.pircbotx.modules.Usage;
 import com.google.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 

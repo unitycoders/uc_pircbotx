@@ -47,7 +47,7 @@ public class CommandProcessorTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		List<BotMiddleware> middleware = new ArrayList<BotMiddleware>();
+		List<BotMiddleware> middleware = new ArrayList<>();
 		middleware.add(new CommandFixerMiddleware());
 
 		processor = new CommandProcessor(middleware);
@@ -59,7 +59,7 @@ public class CommandProcessorTest {
 	 */
 	@Test
 	public void testEmptyModules() {
-		Collection<String> expected = new LinkedList<String>();
+		Collection<String> expected = new LinkedList<>();
 		Collection<String> result = processor.getModules();
 
 		Assert.assertTrue(hasTheSameContents(result, expected));
@@ -72,7 +72,7 @@ public class CommandProcessorTest {
 	@Test
 	public void testInvalidModuleCommands() {
 		String fakeModuleName = "fakemodule";
-		Collection<String> expected = new LinkedList<String>();
+		Collection<String> expected = new LinkedList<>();
 		Collection<String> result = processor.getCommands(fakeModuleName);
 
 		Assert.assertTrue(hasTheSameContents(result, expected));
@@ -87,7 +87,7 @@ public class CommandProcessorTest {
 		Module module = ModuleUtils.wrap(name, new FakeModule());
 		processor.register(name, module);
 
-		Collection<String> expected = new ArrayList<String>();
+		Collection<String> expected = new ArrayList<>();
 		expected.add(name);
 
 		Collection<String> result = processor.getModules();
@@ -104,7 +104,7 @@ public class CommandProcessorTest {
 		Module module = ModuleUtils.wrap(name, new FakeModule());
 		processor.register(name, module);
 
-		Collection<String> expected = new ArrayList<String>();
+		Collection<String> expected = new ArrayList<>();
 		expected.add("default");
 		expected.add("goodbye");
 		expected.add("bye");
@@ -151,7 +151,7 @@ public class CommandProcessorTest {
 
 	@Test
 	public void testGetModuleNull() {
-		String moduleName = null;
+		final String moduleName = null;
 		Module result = processor.getModule(moduleName);
 		Assert.assertNull(result);
 	}
@@ -178,7 +178,7 @@ public class CommandProcessorTest {
 
 	@Test
 	public void testNullModule() throws Exception {
-		String name = null;
+		final String name = null;
 
 		Collection<String> expected = Collections.emptyList();
 		Collection<String> result = processor.getCommands(name);

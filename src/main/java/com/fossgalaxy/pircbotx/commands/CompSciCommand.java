@@ -95,7 +95,7 @@ public class CompSciCommand extends AnnotationModule {
         String text = message.getArgument(2, null);
         int chars = text.length();
 
-        List<Integer> values = new ArrayList<Integer>();
+        List<Integer> values = new ArrayList<>();
         for (int i = 0; i < chars; i++) {
             values.add((int) text.charAt(i));
         }

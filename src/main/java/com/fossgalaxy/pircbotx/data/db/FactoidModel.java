@@ -112,7 +112,7 @@ public class FactoidModel {
 
             ResultSet rs = searchStmt.executeQuery();
 
-            List<Factoid> factoids = new ArrayList<Factoid>();
+            List<Factoid> factoids = new ArrayList<>();
 
             while (rs.next()) {
                 Factoid factoid = new Factoid();

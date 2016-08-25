@@ -18,6 +18,7 @@
  */
 package com.fossgalaxy.pircbotx.backends.irc;
 
+import org.pircbotx.User;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 
 import java.util.List;
@@ -32,12 +33,22 @@ class UserMessage extends IRCMessage {
 
     @Override
     public void sendAction(String action) {
-        event.getUser().send().action(action);
+        User user = event.getUser();
+        if (user == null) {
+            return;
+        }
+
+        user.send().action(action);
     }
 
     @Override
     public String getTargetName() {
-        return event.getUser().getNick();
+        User user = event.getUser();
+        if (user == null) {
+            return null;
+        }
+
+        return user.getNick();
     }
 
 }

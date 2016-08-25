@@ -14,7 +14,7 @@ public class PostfixEvaulator {
     public double evaluate(Deque<Token> input) {
         System.out.println(input);
 
-        Deque<Double> stack = new LinkedList<Double>();
+        Deque<Double> stack = new LinkedList<>();
 
         Token token = input.poll();
         while (token != null) {
