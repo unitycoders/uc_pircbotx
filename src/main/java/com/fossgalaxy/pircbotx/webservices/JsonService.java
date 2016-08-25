@@ -39,7 +39,7 @@ public class JsonService<T> {
     public T makeRequest(URL url, Class<? extends T> responseClass) throws IOException {
         try (
                 InputStream stream = url.openStream();
-                Reader reader = new InputStreamReader(stream);
+                Reader reader = new InputStreamReader(stream)
         ) {
             Gson gson = new Gson();
             return gson.fromJson(reader, responseClass);

@@ -20,7 +20,7 @@ public interface BotMiddleware {
      *
      * @param config the bot's configuration
      */
-    public void init(LocalConfiguration config);
+    void init(LocalConfiguration config);
 
     /**
      * Pre-process a message before it is tokenised.
@@ -35,7 +35,7 @@ public interface BotMiddleware {
      * @param text the request at present
      * @return the modified request (or text if no modification needed)
      */
-    public String preprocess(String text);
+    String preprocess(String text);
 
     /**
      * Process a parsed message.
@@ -51,6 +51,6 @@ public interface BotMiddleware {
      * @param message   the message being processed
      * @return the modified message (or message if no modification needed).
      */
-    public Message process(CommandProcessor processor, Message message);
+    Message process(CommandProcessor processor, Message message);
 
 }

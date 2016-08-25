@@ -50,5 +50,5 @@ public @interface Command {
      *
      * @return The keywords for this command
      */
-    public String[] value() default Module.DEFAULT_COMMAND;
+    String[] value() default Module.DEFAULT_COMMAND;
 }

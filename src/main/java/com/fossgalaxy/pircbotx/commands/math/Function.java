@@ -2,14 +2,14 @@ package com.fossgalaxy.pircbotx.commands.math;
 
 public interface Function {
 
-    public String getName();
+    String getName();
 
-    public int getArity();
+    int getArity();
 
-    public double evaulate(double... args);
+    double evaulate(double... args);
 
-    public boolean isLeftAssoc();
+    boolean isLeftAssoc();
 
-    public int getPrecidence();
+    int getPrecidence();
 
 }

@@ -33,7 +33,7 @@ public interface Message {
      *
      * @return the user which sent the message
      */
-    public User getUser();
+    User getUser();
 
     /**
      * Get the message the bot received.
@@ -45,7 +45,7 @@ public interface Message {
      *
      * @return the cleaned message
      */
-    public String getRawMessage();
+    String getRawMessage();
 
     /**
      * Get a representation of the message as it arrived to the command.
@@ -59,7 +59,7 @@ public interface Message {
      *
      * @return a reconstructed normalised string
      */
-    public String getMessage();
+    String getMessage();
 
     /**
      * Get a tokenised argument.
@@ -78,7 +78,7 @@ public interface Message {
      * @param defaultValue a value to return of the argument does not exist
      * @return the argument at position id, else defaultValue
      */
-    public String getArgument(int id, String defaultValue);
+    String getArgument(int id, String defaultValue);
 
     /**
      * Get a tokenised argument.
@@ -94,7 +94,7 @@ public interface Message {
      * @throws IllegalArgumentException if the user didn't provide id
      * @return the argument with the given ID
      */
-    public String getArgument(int id);
+    String getArgument(int id);
 
     /**
      * Gets the target of the message.
@@ -104,7 +104,7 @@ public interface Message {
      *
      * @return a channel name or user name
      */
-    public String getTargetName();
+    String getTargetName();
 
     /**
      * Send a response to the user.
@@ -115,12 +115,12 @@ public interface Message {
      *
      * @param message the message to send
      */
-    public void respond(String message);
+    void respond(String message);
 
     /**
      * Respond that an operation was successful.
      */
-    public void respondSuccess();
+    void respondSuccess();
 
     /**
      * Send an action to the user.
@@ -131,7 +131,7 @@ public interface Message {
      *
      * @param action the action to perform
      */
-    public void sendAction(String action);
+    void sendAction(String action);
 
     /**
      * Insert an argument into the message.
@@ -139,5 +139,5 @@ public interface Message {
      * @param i position of the new argument
      * @param arg the argument to insert
      */
-    public void insertArgument(int i, String arg);
+    void insertArgument(int i, String arg);
 }

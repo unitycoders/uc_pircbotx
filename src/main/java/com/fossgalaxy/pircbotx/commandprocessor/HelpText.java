@@ -42,5 +42,5 @@ public @interface HelpText {
      *
      * @return The keywords for this command
      */
-    public String value();
+    String value();
 }
