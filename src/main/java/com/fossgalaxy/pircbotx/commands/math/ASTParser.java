@@ -103,7 +103,7 @@ public class ASTParser {
             accept(NUMBER);
             return exprRest();
         } else {
-            throw new RuntimeException("Expected ['(','func','num'] but actual " + curr.getType());
+            throw new ASTException("Expected ['(','func','num'] but actual " + curr.getType());
         }
     }
 
@@ -195,7 +195,7 @@ public class ASTParser {
         if (curr.isType(type)) {
             next();
         } else {
-            throw new RuntimeException("Expected " + type + " but actual " + curr);
+            throw new ASTException("Expected " + type + " but actual " + curr);
         }
     }
 
