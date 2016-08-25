@@ -117,7 +117,7 @@ public class CalcCommand extends AnnotationModule {
 			LOG.info("Too few arguments when processing calculation", ex);
 		} catch (ModuleException ex) {
 			event.respond("Sorry, I didn't understand that");
-			LOG.info("failed to correctly parse input: {} ", msg);
+			LOG.info("failed to correctly parse input: {} ", ex);
 		}
 	}
 

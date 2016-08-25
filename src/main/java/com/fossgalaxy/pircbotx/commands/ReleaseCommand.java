@@ -10,11 +10,15 @@ import com.fossgalaxy.pircbotx.commandprocessor.HelpText;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
 import com.fossgalaxy.pircbotx.modules.AnnotationModule;
 import com.fossgalaxy.pircbotx.security.Secured;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Command relating to release management.
  */
 public class ReleaseCommand extends AnnotationModule {
+	private static final Logger LOG = LoggerFactory.getLogger(ReleaseCommand.class);
+
 	private static final String GIT_FILENAME = "git.properties";
 	private static final String GIT_ERROR = "Unable to get git data";
 	
@@ -40,7 +44,7 @@ public class ReleaseCommand extends AnnotationModule {
 			properties.load(loader);
 			loader.close();
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			LOG.error("unable to load git properties", ex);
 		}
 	}
 	
