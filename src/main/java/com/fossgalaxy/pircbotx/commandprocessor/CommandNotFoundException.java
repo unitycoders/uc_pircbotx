@@ -18,7 +18,7 @@
  */
 package com.fossgalaxy.pircbotx.commandprocessor;
 
-public class CommandNotFoundException extends RuntimeException {
+public class CommandNotFoundException extends Exception {
 	private static final long serialVersionUID = 1L;
 	private final String module;
 	private final String command;
