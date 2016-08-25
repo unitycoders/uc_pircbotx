@@ -18,8 +18,8 @@ package com.fossgalaxy.pircbotx.commands.math.ast;
  * @author leon on 16-1-1
  */
 public class FuncExpr extends Expr {
-    public String funcName;
-    public Expr epxr;
+    private final String funcName;
+    private final Expr epxr;
 
     public FuncExpr(String funcName, Expr epxr) {
         this.epxr = epxr;

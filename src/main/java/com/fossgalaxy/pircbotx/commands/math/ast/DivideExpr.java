@@ -18,8 +18,8 @@ package com.fossgalaxy.pircbotx.commands.math.ast;
  * @author leon on 16-1-1
  */
 public class DivideExpr extends Expr {
-    public Expr left;
-    public Expr right;
+    private final Expr left;
+    private final Expr right;
 
     public DivideExpr(Expr left, Expr right) {
         this.left = left;

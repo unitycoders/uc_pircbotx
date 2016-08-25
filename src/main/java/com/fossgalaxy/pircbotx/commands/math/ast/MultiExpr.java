@@ -18,8 +18,8 @@ package com.fossgalaxy.pircbotx.commands.math.ast;
  * @author leon on 16-1-1
  */
 public class MultiExpr extends Expr {
-    public Expr left;
-    public Expr right;
+    private final Expr left;
+    private final Expr right;
 
     public MultiExpr(Expr left, Expr right) {
         this.left = left;
