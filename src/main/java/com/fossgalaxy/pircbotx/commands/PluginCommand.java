@@ -21,6 +21,7 @@ package com.fossgalaxy.pircbotx.commands;
 import java.util.Collection;
 import java.util.List;
 
+
 import com.fossgalaxy.pircbotx.commandprocessor.Command;
 import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
@@ -29,8 +30,11 @@ import com.fossgalaxy.pircbotx.modules.Module;
 import com.fossgalaxy.pircbotx.modules.ModuleUtils;
 import com.fossgalaxy.pircbotx.security.Secured;
 import com.google.inject.Inject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PluginCommand extends AnnotationModule {
+	private final Logger LOG = LoggerFactory.getLogger(PluginCommand.class);
 	private CommandProcessor processor;
 
 	public PluginCommand() {
@@ -61,10 +65,13 @@ public class PluginCommand extends AnnotationModule {
 			message.respond("Class has been loaded");
 		} catch (IllegalAccessException ex) {
 			message.respond("No default no-arg constructor for class");
+			LOG.warn("No default no-arg constructor for class", ex);
 		} catch (ClassNotFoundException ex) {
 			message.respond("Class could not be found");
+			LOG.warn("Class could not be found", ex);
 		} catch (InstantiationException ex) {
 			message.respond("Class could not be instantiated");
+			LOG.warn("Class could not be instantiated", ex);
 		}
 	}
 
@@ -80,6 +87,7 @@ public class PluginCommand extends AnnotationModule {
 			message.respond("Plugin is now aliased");
 		} catch (RuntimeException ex) {
 			message.respond("error: "+ex.getLocalizedMessage());
+			LOG.warn("could not create alias: ", ex);
 		}
 	}
 

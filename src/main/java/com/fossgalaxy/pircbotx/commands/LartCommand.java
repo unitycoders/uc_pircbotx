@@ -70,6 +70,7 @@ public class LartCommand extends AnnotationModule {
 			event.respond("Lart # " + num + " added");
 		} catch (IllegalArgumentException ex) {
 			event.respond("No $who section given");
+			logger.debug("No $who section given", ex);
 		}
 	}
 
@@ -135,6 +136,7 @@ public class LartCommand extends AnnotationModule {
 			event.respond("Lart #" + id + " altered");
 		} catch (IllegalArgumentException ex) {
 			event.respond("No $who section given");
+			logger.debug("No $who section given", ex);
 		}
 	}
 

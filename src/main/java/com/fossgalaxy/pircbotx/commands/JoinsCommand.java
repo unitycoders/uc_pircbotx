@@ -40,12 +40,12 @@ public class JoinsCommand extends AnnotationModule {
 	 * Creates a {@link JoinsCommand}.
 	 * @throws Exception if database connection failed
 	 */
-	public JoinsCommand(JoinModel model) throws Exception {
+	public JoinsCommand(JoinModel model) {
 		this();
 		this.model = model;
 	}
 
-	public JoinsCommand() throws Exception {
+	public JoinsCommand() {
 		super("joins");
 	}
 

@@ -18,13 +18,19 @@
  */
 package com.fossgalaxy.pircbotx.commands;
 
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Stack;
 
 import com.fossgalaxy.pircbotx.commandprocessor.Command;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
 import com.fossgalaxy.pircbotx.modules.AnnotationModule;
+import com.fossgalaxy.pircbotx.modules.ModuleException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CalcCommand extends AnnotationModule {
+	private final Logger LOG = LoggerFactory.getLogger(CalcCommand.class);
 
 	public CalcCommand() {
 		super("calc");
@@ -58,7 +64,7 @@ public class CalcCommand extends AnnotationModule {
 		return op.data.charAt(0);
 	}
 
-	private int doStmt(Stack<Token> input) {
+	private int doStmt(Deque<Token> input) {
 		Token t = input.pop();
 		System.out.println("token = " + t.data);
 
@@ -74,9 +80,9 @@ public class CalcCommand extends AnnotationModule {
 		return -1;
 	}
 
-	private Stack<Token> tokenise(String input) {
+	private Deque<Token> tokenise(String input) throws ModuleException {
 		String[] tokens = input.split(" ");
-		Stack<Token> stack = new Stack<Token>();
+		Deque<Token> stack = new LinkedList<Token>();
 
 		for (int i = 0; i < tokens.length; i++) {
 			Token t = new Token();
@@ -91,7 +97,7 @@ public class CalcCommand extends AnnotationModule {
 			}
 
 			if (t.type == null) {
-				throw new RuntimeException("illegal token " + tokens[i]);
+				throw new ModuleException("illegal token " + tokens[i]);
 			}
 
 			stack.push(t);
@@ -101,21 +107,22 @@ public class CalcCommand extends AnnotationModule {
 	}
 
 	@Command
-	public void onCalc(Message event) {
+	public void onCalc(Message event) throws ModuleException {
 		String msg = event.getArgument(2, null);
 
 		try {
 			event.respond(msg + " = " + parse(msg));
 		} catch (IndexOutOfBoundsException ex) {
 			event.respond(ex.getLocalizedMessage());
-		} catch (RuntimeException ex) {
-			//TODO add an exception type for Parsing math errors
+			LOG.info("Too few arguments when processing calcuation");
+		} catch (ModuleException ex) {
 			event.respond("Sorry, I didn't understand that");
+			LOG.info("failed to correctly parse input: {} ", msg);
 		}
 	}
 
-	public int parse(String input) {
-		Stack<Token> tokens = tokenise(input);
+	public int parse(String input) throws ModuleException {
+		Deque<Token> tokens = tokenise(input);
 		return doStmt(tokens);
 	}
 

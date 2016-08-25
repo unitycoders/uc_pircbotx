@@ -40,7 +40,6 @@ public class IrcService implements BotService, Provider<PircBotX> {
         cb.addListener(injector.getInstance(LinesListener.class));
 
         try {
-
             //build pircbotx
             Configuration configuration = cb.buildConfiguration();
             instance = new PircBotX(configuration);

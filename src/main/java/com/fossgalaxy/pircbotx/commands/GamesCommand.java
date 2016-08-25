@@ -11,6 +11,8 @@ import org.pircbotx.Channel;
 import com.fossgalaxy.pircbotx.commandprocessor.Command;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
 import com.fossgalaxy.pircbotx.modules.AnnotationModule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -18,6 +20,8 @@ import com.fossgalaxy.pircbotx.modules.AnnotationModule;
  * it from mozbot.
  */
 public class GamesCommand extends AnnotationModule {
+	private final Logger LOG = LoggerFactory.getLogger(GamesCommand.class);
+
 	private final String[] positive = {
 			"It is possible", "Yes!", "Of course.",
 			"Naturally.", "Obviously.", "It shall be.",
@@ -79,6 +83,7 @@ public class GamesCommand extends AnnotationModule {
 			message.respond(String.format("I rolled %d", roll));
 		} catch (IllegalArgumentException ex) {
 			message.respond("Usage: games dice [sides]");
+			LOG.debug("did not understand user input for dice command", ex);
 		}
 	}
 
