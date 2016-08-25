@@ -127,7 +127,7 @@ public class ASTParser {
     }
 
     private Expr ast(List<Object> suffixExpr) {
-        Stack<Object> stack = new Stack<>();
+        Deque<Object> stack = new LinkedList<>();
         for (int i = 0; i < suffixExpr.size(); i++) {
             if (suffixExpr.get(i) instanceof OperatorFunction) {
                 OperatorFunction op = (OperatorFunction) suffixExpr.get(i);
