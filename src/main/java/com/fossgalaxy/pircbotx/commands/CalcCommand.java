@@ -114,7 +114,7 @@ public class CalcCommand extends AnnotationModule {
 			event.respond(msg + " = " + parse(msg));
 		} catch (IndexOutOfBoundsException ex) {
 			event.respond(ex.getLocalizedMessage());
-			LOG.info("Too few arguments when processing calcuation");
+			LOG.info("Too few arguments when processing calculation", ex);
 		} catch (ModuleException ex) {
 			event.respond("Sorry, I didn't understand that");
 			LOG.info("failed to correctly parse input: {} ", msg);
