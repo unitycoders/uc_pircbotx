@@ -5,17 +5,18 @@ import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
 import com.fossgalaxy.pircbotx.middleware.BotMiddleware;
 import com.fossgalaxy.pircbotx.modules.ModuleException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
-
-
 /**
  * This emulates the bot as in interactive prompt on the terminal.
  */
 public class InteractivePrompt {
+	private final static Logger LOG = LoggerFactory.getLogger(InteractivePrompt.class);
 
 	public static void main(String[] args) {
 		List<BotMiddleware> middleware = Collections.emptyList();
@@ -33,9 +34,10 @@ public class InteractivePrompt {
 			try {
 				processor.invoke(buildMessage(processor, scanner.nextLine()));
 			} catch (ModuleException ex) {
-				System.err.println("something went wrong: "+ex);
+				LOG.error("Something went wrong,", ex);
 			} catch (CommandNotFoundException ex) {
 				System.out.println("Sorry, that's not a valid command");
+				LOG.debug("command was not found by processor", ex);
 			}
 		}
 		
