@@ -36,7 +36,7 @@ public class CalcCommand extends AnnotationModule {
         super("calc");
     }
 
-    private int doExpr(int left, char op, int right) {
+    private int doExpr(int left, char op, int right) throws ModuleException {
         switch (op) {
             case '*':
                 return left * right;
@@ -48,9 +48,9 @@ public class CalcCommand extends AnnotationModule {
                 return left - right;
             case '%':
                 return left % right;
+            default:
+                throw new ModuleException("Unrecognised character for expression");
         }
-
-        return -1;
     }
 
     private int doNum(Token num) {
@@ -61,7 +61,7 @@ public class CalcCommand extends AnnotationModule {
         return op.data.charAt(0);
     }
 
-    private int doStmt(Deque<Token> input) {
+    private int doStmt(Deque<Token> input) throws ModuleException {
         Token t = input.pop();
         System.out.println("token = " + t.data);
 
