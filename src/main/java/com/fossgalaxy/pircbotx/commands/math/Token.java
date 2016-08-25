@@ -28,18 +28,29 @@ public class Token {
 	
 	@Override
 	public boolean equals(Object object) {
-		try {
-			Token other = (Token)object;
-			if (!type.equals(other.type)){
-				return false;
-			}
-			
-			//This might not work if other.value != null && value == null
-			//that shouldn't happen
-			return value != null && value.equals(other.value);
-		} catch (ClassCastException ex) {
+		if (object == null) {
 			return false;
 		}
+
+		if (getClass() != object.getClass()) {
+			return false;
+		}
+
+		Token other = (Token)object;
+		if (!type.equals(other.type)){
+			return false;
+		}
+			
+		//This might not work if other.value != null && value == null
+		//that shouldn't happen
+		return value != null && value.equals(other.value);
+	}
+
+	@Override
+	public int hashCode() {
+		int result = type.hashCode();
+		result = 31 * result + value.hashCode();
+		return result;
 	}
 
 	public TokenType getType() {
