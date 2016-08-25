@@ -18,12 +18,14 @@
  */
 package com.fossgalaxy.pircbotx;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
+import com.fossgalaxy.pircbotx.backends.BackendException;
 import com.fossgalaxy.pircbotx.backends.BotService;
 import com.fossgalaxy.pircbotx.backends.irc.IrcModule;
 import com.fossgalaxy.pircbotx.commandprocessor.CommandModule;
@@ -107,9 +109,11 @@ public class BotRunnable implements Runnable {
 
 			BotService service = injector.getInstance(BotService.class);
 			service.start(config, processor);
-			service.stop();
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (ReflectiveOperationException ex) {
+			LOG.error("could not setup bot", ex);
+			throw new RuntimeException(ex);
+		} catch (IOException | BackendException ex) {
+			LOG.error("bot failed to start", ex);
 			throw new RuntimeException(ex);
 		}
 	}

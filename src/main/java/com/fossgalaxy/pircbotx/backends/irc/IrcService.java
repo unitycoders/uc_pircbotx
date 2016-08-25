@@ -1,6 +1,7 @@
 package com.fossgalaxy.pircbotx.backends.irc;
 
 import com.fossgalaxy.pircbotx.LocalConfiguration;
+import com.fossgalaxy.pircbotx.backends.BackendException;
 import com.fossgalaxy.pircbotx.backends.BotService;
 import com.fossgalaxy.pircbotx.backends.ChannelService;
 import com.fossgalaxy.pircbotx.backends.UserService;
@@ -31,17 +32,22 @@ public class IrcService implements BotService, Provider<PircBotX> {
     }
 
     @Override
-    public void start(LocalConfiguration config, CommandProcessor processor) throws IOException, IrcException {
+    public void start(LocalConfiguration config, CommandProcessor processor) throws IOException, BackendException {
         //this creates our host bot instance
         Configuration.Builder cb = IRCFactory.doConfig(config, processor);
 
         cb.addListener(injector.getInstance(JoinsListener.class));
         cb.addListener(injector.getInstance(LinesListener.class));
 
-        //build pircbotx
-        Configuration configuration = cb.buildConfiguration();
-        instance = new PircBotX(configuration);
-        instance.startBot();
+        try {
+
+            //build pircbotx
+            Configuration configuration = cb.buildConfiguration();
+            instance = new PircBotX(configuration);
+            instance.startBot();
+        } catch (IrcException ex) {
+            throw new BackendException(ex);
+        }
     }
 
     @Override
