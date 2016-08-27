@@ -16,13 +16,11 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.fossgalaxy.pircbotx.commands;
+package com.fossgalaxy.pircbotx.commands.karma;
 
 import com.fossgalaxy.pircbotx.commandprocessor.Command;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
-import com.fossgalaxy.pircbotx.data.db.KarmaModel;
 import com.fossgalaxy.pircbotx.modules.AnnotationModule;
-import com.fossgalaxy.pircbotx.types.Karma;
 import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

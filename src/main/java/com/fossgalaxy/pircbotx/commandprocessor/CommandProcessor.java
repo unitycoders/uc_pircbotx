@@ -32,12 +32,11 @@ import java.util.regex.Pattern;
 
 /**
  * centrally managed command parsing.
- *
+ * <p>
  * This class is responsible to breaking IRC messages into commands which the
  * bot can understand. It contains a list of modules and the methods which are
  * tagged with the command annotation. Classes must be registered with the
  * Command Processor in order for the processor to recognise them as commands.
- *
  */
 @Singleton
 public class CommandProcessor {
@@ -51,10 +50,11 @@ public class CommandProcessor {
 
     /**
      * Create a new command processor.
-     *
+     * <p>
      * This will create a new command processor and will initialise the regex
      * pattern the bot will use to match commands. It will also create the maps
      * needed to store information about the commands.
+     *
      * @param middleware the list of steps to process the message
      */
     public CommandProcessor(List<BotMiddleware> middleware) {
@@ -64,7 +64,7 @@ public class CommandProcessor {
 
     /**
      * Create a new command processor.
-     *
+     * <p>
      * This will create a new command processor and will initialise the regex
      * pattern the bot will use to match commands. It will also create the maps
      * needed to store information about the commands.
@@ -79,15 +79,15 @@ public class CommandProcessor {
 
     /**
      * Register a new module and extract it's commands.
-     *
+     * <p>
      * This method will look at target and process any method which has been
      * annotated with the command annotation. It will then remember the module
      * and command names for use when processing messages.
-     *
+     * <p>
      * The module's name will need to be put before any command. This is to
      * prevent two modules conflicting with the same named commands.
      *
-     * @param name the name of the module
+     * @param name   the name of the module
      * @param target the module object
      */
     public void register(String name, Module target) {
@@ -121,11 +121,11 @@ public class CommandProcessor {
 
     /**
      * Alias an existing module to a new name.
-     *
+     * <p>
      * This function will let you define an alias for an existing module.
      * Passing null as either argument is not permitted.
      *
-     * @param name the new name to use as the alias
+     * @param name    the new name to use as the alias
      * @param oldName the existing name of the module
      * @throws IllegalArgumentException if module is not defined or alias already exists
      */
@@ -184,14 +184,14 @@ public class CommandProcessor {
 
     /**
      * Process an IRC message to see if the bot needs to respond.
-     *
+     * <p>
      * This method takes an IRC message and splits it into it's component parts.
      * if the action is valid it will then call the call method to process the
      * event.
      *
      * @param message the event to be processed
      * @throws CommandNotFoundException if the command does not exist
-     * @throws Exception if the method throws an exception
+     * @throws Exception                if the method throws an exception
      */
     public void invoke(Message message) throws CommandNotFoundException, ModuleException {
         for (BotMiddleware mw : middleware) {

@@ -22,7 +22,7 @@ import org.pircbotx.User;
 
 /**
  * Expose a common set of methods for all message types.
- *
+ * <p>
  * This allows us to code modules which don't rely on being a channel message
  * or being a private message, but  simply treat both the same.
  */
@@ -37,7 +37,7 @@ public interface Message {
 
     /**
      * Get the message the bot received.
-     *
+     * <p>
      * This is mostly of use for the parsing function but may be useful
      * to some commands. Previously, this was the only way to access message
      * contents. Formatting will have been removed to make processing easier.
@@ -49,11 +49,11 @@ public interface Message {
 
     /**
      * Get a representation of the message as it arrived to the command.
-     *
+     * <p>
      * This is identical to asking for all arguments using getArgument. Using
      * getArgument is preferred as the parsing will have been done for you. You
      * can use this if you have a special case though.
-     *
+     * <p>
      * The string will always be of the form "module action [args]". If the user
      * provided no action the action then action will be set as default.
      *
@@ -63,18 +63,18 @@ public interface Message {
 
     /**
      * Get a tokenised argument.
-     *
+     * <p>
      * The tokeniser will parse the message, extract quoted strings and then split
      * by whitespace. Using this function you can extract arguments from a message.
      * The zeroth argument is always the command name, the first is always the
      * subcommand and 2 onwards is always the arguments.
-     *
+     * <p>
      * In the event the user calls a command with an invalid subcommand, default
      * will be inserted as the subcommand.
-     *
+     * <p>
      * This is designed for optional arguments, for required arguments use getArgument(id).
      *
-     * @param id the argument ID
+     * @param id           the argument ID
      * @param defaultValue a value to return of the argument does not exist
      * @return the argument at position id, else defaultValue
      */
@@ -82,23 +82,23 @@ public interface Message {
 
     /**
      * Get a tokenised argument.
-     *
+     * <p>
      * The tokeniser will parse the message, extract quoted strings and then split
      * by whitespace. Using this function you can extract arguments from a message.
      * The zeroth argument is always the command name, the first is always the
      * subcommand and 2 onwards is always the arguments.
-     *
+     * <p>
      * In the event the argument is missing, this method will throw an exception.
      *
      * @param id the ID of the argument
-     * @throws IllegalArgumentException if the user didn't provide id
      * @return the argument with the given ID
+     * @throws IllegalArgumentException if the user didn't provide id
      */
     String getArgument(int id);
 
     /**
      * Gets the target of the message.
-     *
+     * <p>
      * If this is a channel message, this is the name of the channel. If this is
      * a private message, this is the name of the user which sent the message.
      *
@@ -108,7 +108,7 @@ public interface Message {
 
     /**
      * Send a response to the user.
-     *
+     * <p>
      * This will send a response to the user highlighting them. If the message is a
      * channel message, this will respond in the channel, if this message was a
      * private message the bot will respond in a private message.
@@ -124,7 +124,7 @@ public interface Message {
 
     /**
      * Send an action to the user.
-     *
+     * <p>
      * This will use /me to send an action to the target. If the message is a
      * channel message, this will respond in the channel, if this message was a
      * private message the bot will respond in a private message.
@@ -136,7 +136,7 @@ public interface Message {
     /**
      * Insert an argument into the message.
      *
-     * @param i position of the new argument
+     * @param i   position of the new argument
      * @param arg the argument to insert
      */
     void insertArgument(int i, String arg);

@@ -1,5 +1,5 @@
 /**
- * Copyright © 2013-2014 Unity Coders
+ * Copyright © 2012-2015 Unity Coders
  * <p>
  * This file is part of uc_pircbotx.
  * <p>
@@ -16,38 +16,43 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.fossgalaxy.pircbotx.commands;
+package com.fossgalaxy.pircbotx.commands.lines;
 
-import com.fossgalaxy.pircbotx.backends.BotService;
 import com.fossgalaxy.pircbotx.commandprocessor.Command;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
 import com.fossgalaxy.pircbotx.modules.AnnotationModule;
-import com.fossgalaxy.pircbotx.security.Secured;
 import com.google.inject.Inject;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * @author Bruce Cowan
+ * Keeps a log of all the lines said, and randomly speaks one.
  *
+ * @author Bruce Cowan
  */
-public class NickCommand extends AnnotationModule {
-    private BotService bot;
+public class RandCommand extends AnnotationModule {
 
-    public NickCommand() {
-        super("nick");
+    private static final Logger logger = LoggerFactory.getLogger(RandCommand.class);
+    private LineModel lines;
+
+    @Inject
+    public RandCommand(LineModel model) {
+        this();
+        this.lines = model;
+    }
+
+    public RandCommand() {
+        super("rand");
     }
 
     @Inject
-    protected void inject(BotService bot) {
-        this.bot = bot;
+    public void onModel(LineModel model) {
+        this.lines = model;
     }
 
     @Command
-    @Secured
-    public void onNick(Message event) {
-        String nick = event.getArgument(2);
-
-        bot.setName(nick);
-        event.respond("Changed nick to " + nick);
+    public void onRandom(Message event) {
+        String line = lines.getRandomLine();
+        event.respond(line);
     }
 }

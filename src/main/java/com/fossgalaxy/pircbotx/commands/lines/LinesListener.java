@@ -1,5 +1,5 @@
 /**
- * Copyright © 2015 Unity Coders
+ * Copyright © 2012-2013 Unity Coders
  * <p>
  * This file is part of uc_pircbotx.
  * <p>
@@ -16,10 +16,32 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.fossgalaxy.pircbotx.webservices.github;
+package com.fossgalaxy.pircbotx.commands.lines;
 
-public class Label extends GithubObject {
-    public String name;
-    public String color;
+import com.google.inject.Inject;
+import org.pircbotx.hooks.ListenerAdapter;
+import org.pircbotx.hooks.events.MessageEvent;
 
+/**
+ * A ListenerAdapter which keeps a log of all the lines said in a
+ * channel.
+ *
+ * @author Bruce Cowan
+ */
+public class LinesListener extends ListenerAdapter {
+
+    private final LineModel model;
+
+    /**
+     * Creates a new {@link LinesListener}.
+     */
+    @Inject
+    public LinesListener(LineModel model) {
+        this.model = model;
+    }
+
+    @Override
+    public void onMessage(MessageEvent event) throws Exception {
+        model.storeLine(event.getMessage());
+    }
 }

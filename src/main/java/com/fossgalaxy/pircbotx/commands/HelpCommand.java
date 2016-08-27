@@ -30,7 +30,7 @@ import java.util.Collection;
 
 /**
  * Displays information on other commands.
- *
+ * <p>
  * This plug in helps users find information about the bot's capabilties and how
  * to use the bot.
  */

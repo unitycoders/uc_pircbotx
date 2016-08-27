@@ -1,4 +1,4 @@
-package com.fossgalaxy.pircbotx.data.db;
+package com.fossgalaxy.pircbotx.commands.factoid;
 
 public class Factoid {
     public String name;

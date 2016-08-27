@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.fossgalaxy.pircbotx.types;
+package com.fossgalaxy.pircbotx.commands.lart;
 
 /**
  * Represents a lart (Luser Attitude Readjustment Tool), or an insult
@@ -33,9 +33,9 @@ public class Lart {
     /**
      * Creates a new lart.
      *
-     * @param id the id of the lart in the database
+     * @param id      the id of the lart in the database
      * @param channel the channel the lart belongs in
-     * @param nick the creator of the lart
+     * @param nick    the creator of the lart
      * @param pattern the pattern of the lart, requires a $who part
      */
     public Lart(int id, String channel, String nick, String pattern) {

@@ -33,6 +33,7 @@ public class CalcCommand extends AnnotationModule {
     private static final Integer OP_TOKEN = 1;
     private static final Integer NUM_TOKEN = 2;
     private final Logger LOG = LoggerFactory.getLogger(CalcCommand.class);
+
     public CalcCommand() {
         super("calc");
     }

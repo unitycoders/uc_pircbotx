@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.fossgalaxy.pircbotx.types;
+package com.fossgalaxy.pircbotx.commands.karma;
 
 /**
  * Represents a "thing" and an integer score associated with it
@@ -29,6 +29,7 @@ public class Karma {
 
     /**
      * Creates a new "thing" with no score
+     *
      * @param target the "thing"
      */
     public Karma(String target) {
@@ -37,8 +38,9 @@ public class Karma {
 
     /**
      * Creates a new "thing" with a score
+     *
      * @param target the "thing"
-     * @param karma the score
+     * @param karma  the score
      */
     public Karma(String target, int karma) {
         this.target = target;
@@ -47,6 +49,7 @@ public class Karma {
 
     /**
      * Gets the name of the "thing" represented
+     *
      * @return the thing
      */
     public String getTarget() {
@@ -55,6 +58,7 @@ public class Karma {
 
     /**
      * Gets the score associated to the "thing"
+     *
      * @return the score
      */
     public int getKarma() {

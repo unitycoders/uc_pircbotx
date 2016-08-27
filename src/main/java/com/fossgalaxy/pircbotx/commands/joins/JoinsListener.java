@@ -1,5 +1,5 @@
 /**
- * Copyright © 2015 Unity Coders
+ * Copyright © 2012-2015 Unity Coders
  * <p>
  * This file is part of uc_pircbotx.
  * <p>
@@ -16,27 +16,28 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.fossgalaxy.pircbotx.webservices.github;
+package com.fossgalaxy.pircbotx.commands.joins;
 
+import com.google.inject.Inject;
+import org.pircbotx.User;
+import org.pircbotx.hooks.ListenerAdapter;
+import org.pircbotx.hooks.events.JoinEvent;
 
-public class User extends GithubObject {
-    public String login;
-    public int id;
-    public String html_url;
-    public String name;
-    public String company;
-    public String blog;
-    public String location;
-    public String email;
-    public boolean hireable;
-    public String bio;
-    public int public_repos;
-    public int public_gists;
-    public int followers;
-    public int following;
+public class JoinsListener extends ListenerAdapter {
+
+    private final JoinModel model;
+
+    @Inject
+    public JoinsListener(JoinModel model) {
+        this.model = model;
+    }
 
     @Override
-    public String toString() {
-        return name + " (" + login + ")";
+    public void onJoin(JoinEvent event) throws Exception {
+        User user = event.getUser();
+        if (user == null) {
+            return;
+        }
+        model.incrementJoin(user.getNick());
     }
 }

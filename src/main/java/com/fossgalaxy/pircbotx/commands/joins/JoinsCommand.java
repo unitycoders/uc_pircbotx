@@ -16,44 +16,56 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.fossgalaxy.pircbotx.commands;
+package com.fossgalaxy.pircbotx.commands.joins;
 
 import com.fossgalaxy.pircbotx.commandprocessor.Command;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
-import com.fossgalaxy.pircbotx.data.db.LineModel;
 import com.fossgalaxy.pircbotx.modules.AnnotationModule;
 import com.google.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 /**
- * Keeps a log of all the lines said, and randomly speaks one.
+ * Keeps a list of joins, and gives a list of nicks and number of joins.
  *
  * @author Bruce Cowan
  */
-public class RandCommand extends AnnotationModule {
+public class JoinsCommand extends AnnotationModule {
 
-    private static final Logger logger = LoggerFactory.getLogger(RandCommand.class);
-    private LineModel lines;
+    private JoinModel model;
 
-    @Inject
-    public RandCommand(LineModel model) {
+    /**
+     * Creates a {@link JoinsCommand}.
+     *
+     * @throws Exception if database connection failed
+     */
+    public JoinsCommand(JoinModel model) {
         this();
-        this.lines = model;
+        this.model = model;
     }
 
-    public RandCommand() {
-        super("rand");
+    public JoinsCommand() {
+        super("joins");
     }
 
     @Inject
-    public void onModel(LineModel model) {
-        this.lines = model;
+    public void onModel(JoinModel model) {
+        this.model = model;
     }
 
     @Command
-    public void onRandom(Message event) {
-        String line = lines.getRandomLine();
-        event.respond(line);
+    public void onJoins(Message event) {
+        StringBuilder builder = new StringBuilder();
+
+        for (Map.Entry<String, Integer> entry : this.model.getAllJoins().entrySet()) {
+            String nick = entry.getKey();
+            String value = entry.getValue().toString();
+            builder.append(nick);
+            builder.append(" = ");
+            builder.append(value);
+            builder.append("; ");
+        }
+
+        event.respond(builder.substring(0, builder.length() - 2));
     }
 }

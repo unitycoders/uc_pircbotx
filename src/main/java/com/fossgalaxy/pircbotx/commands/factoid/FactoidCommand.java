@@ -16,14 +16,12 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.fossgalaxy.pircbotx.commands;
+package com.fossgalaxy.pircbotx.commands.factoid;
 
 import com.fossgalaxy.pircbotx.commandprocessor.Command;
 import com.fossgalaxy.pircbotx.commandprocessor.HelpText;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
 import com.fossgalaxy.pircbotx.commandprocessor.MessageUtils;
-import com.fossgalaxy.pircbotx.data.db.Factoid;
-import com.fossgalaxy.pircbotx.data.db.FactoidModel;
 import com.fossgalaxy.pircbotx.modules.AnnotationModule;
 import com.fossgalaxy.pircbotx.modules.Usage;
 import com.google.inject.Inject;

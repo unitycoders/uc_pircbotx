@@ -1,5 +1,5 @@
 /**
- * Copyright © 2015 Unity Coders
+ * Copyright © 2012-2013 Unity Coders
  * <p>
  * This file is part of uc_pircbotx.
  * <p>
@@ -16,23 +16,39 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.fossgalaxy.pircbotx.webservices.github;
+package com.fossgalaxy.pircbotx.commands.profile;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
-public class GithubObject {
-    public String url;
+/**
+ *
+ *
+ */
+public class Profile {
 
-    public Collection<GithubObject> getChildren() {
-        return Collections.emptyList();
+    private final String name;
+    private final Set<String> permissions;
+
+    public Profile(String name) {
+        this.name = name;
+        this.permissions = new HashSet<>();
     }
 
-    public URL getURL() throws MalformedURLException {
-        // TODO Auto-generated method stub
-        return new URL(url);
+    public void addPermission(String perm) {
+        this.permissions.add(perm);
+    }
+
+    public void removePermission(String perm) {
+        this.permissions.remove(perm);
+    }
+
+    public boolean hasPermission(String perm) {
+        return this.permissions.contains(perm);
+    }
+
+    public String getName() {
+        return name;
     }
 
 }

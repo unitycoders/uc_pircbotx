@@ -16,9 +16,8 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.fossgalaxy.pircbotx.data.db;
+package com.fossgalaxy.pircbotx.commands.lart;
 
-import com.fossgalaxy.pircbotx.types.Lart;
 import com.google.inject.Inject;
 import org.pircbotx.User;
 import org.slf4j.Logger;
@@ -76,8 +75,8 @@ public class LartModel {
     /**
      * Stores a lart in the database.
      *
-     * @param target the channel where the lart belongs to, or name if in PM
-     * @param user the user who created the lart
+     * @param target  the channel where the lart belongs to, or name if in PM
+     * @param user    the user who created the lart
      * @param pattern the pattern of the lart
      * @return the ID of the newly-created lart
      * @throws IllegalArgumentException if no $who section is given

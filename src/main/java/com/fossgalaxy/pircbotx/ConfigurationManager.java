@@ -26,7 +26,7 @@ import java.io.Reader;
 
 /**
  * Static Utility class to deal with configuration files.
- *
+ * <p>
  * This class can be used to read/write configuration files as required by the
  * bot.
  */

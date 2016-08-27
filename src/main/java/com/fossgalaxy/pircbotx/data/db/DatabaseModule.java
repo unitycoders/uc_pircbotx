@@ -1,5 +1,8 @@
 package com.fossgalaxy.pircbotx.data.db;
 
+import com.fossgalaxy.pircbotx.commands.factoid.FactoidModel;
+import com.fossgalaxy.pircbotx.commands.joins.JoinModel;
+import com.fossgalaxy.pircbotx.commands.karma.KarmaModel;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import org.slf4j.Logger;

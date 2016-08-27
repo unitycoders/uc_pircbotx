@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * Abstract message adapter for uc_pircbotx.
- *
+ * <p>
  * An abstract version of the Bot Message interface which deals with some of
  * the common features which we can deal with for the child classes.
  */
