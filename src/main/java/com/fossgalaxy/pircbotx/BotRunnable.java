@@ -50,18 +50,16 @@ public class BotRunnable implements Runnable {
     }
 
     private void setupProcessor(Injector injector) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        List<BotMiddleware> middleware = new ArrayList<>();
+        processor = injector.getInstance(CommandProcessor.class);
+
         if (config.middleware != null) {
             for (String middlewareClass : config.middleware) {
                 BotMiddleware mw = ModuleUtils.loadMiddleware(middlewareClass);
                 injector.injectMembers(mw);
-                middleware.add(mw);
+                processor.addMiddleware(mw);
                 mw.init(config);
             }
         }
-
-        processor = injector.getInstance(CommandProcessor.class);
-
         processor.addMiddleware(injector.getInstance(SecurityMiddleware.class));
     }
 
