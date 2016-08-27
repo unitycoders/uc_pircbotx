@@ -7,7 +7,7 @@ import com.fossgalaxy.pircbotx.backends.ChannelService;
 import com.fossgalaxy.pircbotx.backends.UserService;
 import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
 import com.fossgalaxy.pircbotx.commands.joins.JoinsListener;
-import com.fossgalaxy.pircbotx.listeners.LinesListener;
+import com.fossgalaxy.pircbotx.commands.lines.LinesListener;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
