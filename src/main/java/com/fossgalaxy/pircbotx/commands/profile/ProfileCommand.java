@@ -16,10 +16,9 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.fossgalaxy.pircbotx.profile;
+package com.fossgalaxy.pircbotx.commands.profile;
 
 import com.fossgalaxy.pircbotx.commandprocessor.Command;
-import com.fossgalaxy.pircbotx.data.db.ProfileModel;
 import com.fossgalaxy.pircbotx.modules.ModuleException;
 import com.google.inject.Inject;
 import org.pircbotx.hooks.events.MessageEvent;

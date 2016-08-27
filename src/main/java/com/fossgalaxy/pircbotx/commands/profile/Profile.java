@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.fossgalaxy.pircbotx.profile;
+package com.fossgalaxy.pircbotx.commands.profile;
 
 import java.util.HashSet;
 import java.util.Set;
