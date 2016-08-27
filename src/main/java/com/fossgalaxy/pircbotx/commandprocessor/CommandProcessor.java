@@ -108,6 +108,14 @@ public class CommandProcessor {
         providers.add(module);
     }
 
+    public void rmReverseLookup(String module, String action) {
+        Set<String> providers = revLookup.get(action);
+        if (providers == null) {
+            return;
+        }
+        providers.remove(module);
+    }
+
     /**
      * Lookup what plugins are capable of responding to a given action.
      *
@@ -277,4 +285,5 @@ public class CommandProcessor {
     public void addMiddleware(BotMiddleware instance) {
         middleware.add(instance);
     }
+
 }

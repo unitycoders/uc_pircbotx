@@ -14,9 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 /**
  * Created by webpigeon on 31/07/16.
@@ -27,7 +25,7 @@ public class ScriptModule implements Module {
     private static final String SCRIPT_ENGINE = "nashorn";
 
     private final String name;
-    private final Collection<String> actions;
+    private final Set<String> actions;
     private final String filename;
 
     private String helpText;
@@ -39,7 +37,7 @@ public class ScriptModule implements Module {
 
     public ScriptModule(String name, String filename) throws ScriptException {
         this.name = name;
-        this.actions = new ArrayList<>();
+        this.actions = new HashSet<>();
         this.filename = filename;
 
         this.engine = buildScript();
@@ -63,7 +61,7 @@ public class ScriptModule implements Module {
         loadScript(filename);
     }
 
-    private void loadScript(String filename) {
+    void loadScript(String filename) {
         //TODO ensure that actions are kept up to date with the action list.
 
         try (
@@ -76,11 +74,22 @@ public class ScriptModule implements Module {
 
             helpText = ((Bindings)engine.get("metadata")).get("help").toString(); //XXX deal with npe
 
-            Bindings actionsObject = (Bindings)engine.get("actions");
-            if (actionsObject != null) {
-                for (String action : actionsObject.keySet()) {
-                    commandProcessor.addReverseLookup(getName(), action);
-                    actions.add(action);
+            Set<String> previousActions = new HashSet<>(actions);
+
+            if (commandProcessor != null) {
+                actions.clear();
+                actions.add(RELOAD_COMMAND);
+                Bindings actionsObject = (Bindings) engine.get("actions");
+                if (actionsObject != null) {
+                    for (String action : actionsObject.keySet()) {
+                        commandProcessor.addReverseLookup(getName(), action);
+                        actions.add(action);
+                    }
+                }
+
+                previousActions.removeAll(actions);
+                for (String action : previousActions) {
+                    commandProcessor.rmReverseLookup(getName(), action);
                 }
             }
         } catch (IOException e) {
@@ -115,7 +124,7 @@ public class ScriptModule implements Module {
             throw new ModuleException(e);
         } catch (NoSuchMethodException e) {
             LOG.warn("could not find method", e);
-            throw new CommandNotFoundException(actionName);
+            throw new CommandNotFoundException(getName(), actionName);
         }
     }
 
@@ -143,6 +152,10 @@ public class ScriptModule implements Module {
     public String getHelp(String command) {
         if (moduleHelp == null) {
             return null;
+        }
+
+        if (RELOAD_COMMAND.equals(command)) {
+            return "reload this module from disk";
         }
 
         Object o = moduleHelp.get(command);
