@@ -45,7 +45,7 @@ public class CommandProcessor {
     private final Logger logger = LoggerFactory.getLogger(CommandProcessor.class);
     private final Pattern tokeniser;
     private final Map<String, Module> commands;
-    private final Map<String, List<String>> revLookup;
+    private final Map<String, Set<String>> revLookup;
     private final List<BotMiddleware> middleware;
 
     /**
@@ -95,13 +95,25 @@ public class CommandProcessor {
 
         //create a reverse lookup for all commands
         for (String action : target.getActions()) {
-            List<String> providers = revLookup.get(action);
-            if (providers == null) {
-                providers = new ArrayList<>();
-                revLookup.put(action, providers);
-            }
-            providers.add(name);
+            addReverseLookup(name, action);
         }
+    }
+
+    public void addReverseLookup(String module, String action) {
+        Set<String> providers = revLookup.get(action);
+        if (providers == null) {
+            providers = new HashSet<>();
+            revLookup.put(action, providers);
+        }
+        providers.add(module);
+    }
+
+    public void rmReverseLookup(String module, String action) {
+        Set<String> providers = revLookup.get(action);
+        if (providers == null) {
+            return;
+        }
+        providers.remove(module);
     }
 
     /**
@@ -110,12 +122,12 @@ public class CommandProcessor {
      * @param action the action to respond to
      * @return the list of plugins which recognise this command
      */
-    public List<String> getReverse(String action) {
-        List<String> actions = revLookup.get(action);
+    public Set<String> getReverse(String action) {
+        Set<String> actions = revLookup.get(action);
         if (actions == null) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         } else {
-            return Collections.unmodifiableList(actions);
+            return Collections.unmodifiableSet(actions);
         }
     }
 
@@ -273,4 +285,5 @@ public class CommandProcessor {
     public void addMiddleware(BotMiddleware instance) {
         middleware.add(instance);
     }
+
 }

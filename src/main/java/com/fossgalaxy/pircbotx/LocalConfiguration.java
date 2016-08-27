@@ -18,6 +18,7 @@
  */
 package com.fossgalaxy.pircbotx;
 
+import com.fossgalaxy.pircbotx.commands.script.ScriptConfig;
 import com.fossgalaxy.pircbotx.modules.ModuleConfig;
 
 import java.util.Map;
@@ -41,5 +42,6 @@ public class LocalConfiguration {
     //Stuff to autoload
     public String[] middleware;
     public Map<String, ModuleConfig> modules;
+    public Map<String, ScriptConfig> scripts;
     public Map<String, String> aliases;
 }

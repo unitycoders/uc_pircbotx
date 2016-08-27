@@ -23,6 +23,8 @@ import com.fossgalaxy.pircbotx.backends.BotService;
 import com.fossgalaxy.pircbotx.backends.irc.IrcModule;
 import com.fossgalaxy.pircbotx.commandprocessor.CommandModule;
 import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
+import com.fossgalaxy.pircbotx.commands.script.ScriptConfig;
+import com.fossgalaxy.pircbotx.commands.script.ScriptModule;
 import com.fossgalaxy.pircbotx.data.db.DatabaseModule;
 import com.fossgalaxy.pircbotx.middleware.BotMiddleware;
 import com.fossgalaxy.pircbotx.modules.Module;
@@ -34,6 +36,7 @@ import com.google.inject.Injector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.script.ScriptException;
 import java.io.IOException;
 import java.util.*;
 
@@ -47,18 +50,16 @@ public class BotRunnable implements Runnable {
     }
 
     private void setupProcessor(Injector injector) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        List<BotMiddleware> middleware = new ArrayList<>();
+        processor = injector.getInstance(CommandProcessor.class);
+
         if (config.middleware != null) {
             for (String middlewareClass : config.middleware) {
                 BotMiddleware mw = ModuleUtils.loadMiddleware(middlewareClass);
                 injector.injectMembers(mw);
-                middleware.add(mw);
+                processor.addMiddleware(mw);
                 mw.init(config);
             }
         }
-
-        processor = injector.getInstance(CommandProcessor.class);
-
         processor.addMiddleware(injector.getInstance(SecurityMiddleware.class));
     }
 
@@ -92,6 +93,27 @@ public class BotRunnable implements Runnable {
         }
     }
 
+    public void loadScripts(Injector injector) {
+        if (config.scripts == null) {
+            return;
+        }
+
+        Map<String, ScriptConfig> scripts = config.scripts;
+        for (Map.Entry<String, ScriptConfig> configEntry : scripts.entrySet()) {
+            try {
+                String name = configEntry.getKey();
+                ScriptConfig config = configEntry.getValue();
+                ScriptModule sm = new ScriptModule(name, config.filename);
+                injector.injectMembers(sm);
+                sm.init();
+
+                processor.register(name, sm);
+            } catch (ScriptException ex) {
+                LOG.warn("failed to load script: ", ex);
+            }
+        }
+    }
+
     @Override
     public void run() {
 
@@ -101,6 +123,7 @@ public class BotRunnable implements Runnable {
             //This is our bits
             setupProcessor(injector);
             loadPlugins(injector);
+            loadScripts(injector);
 
             BotService service = injector.getInstance(BotService.class);
             service.start(config, processor);
