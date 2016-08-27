@@ -17,9 +17,9 @@ package com.fossgalaxy.pircbotx.commands.math.ast;
  *
  * @author leon on 16-1-1
  */
-public class DivideExpr extends Expr{
-    public Expr left;
-    public Expr right;
+public class DivideExpr extends Expr {
+    private final Expr left;
+    private final Expr right;
 
     public DivideExpr(Expr left, Expr right) {
         this.left = left;
@@ -28,11 +28,11 @@ public class DivideExpr extends Expr{
 
     public double eval() {
         //protected division to prevent math errors
-        if (right.eval() == 0) {
+        double result = left.eval() / right.eval();
+        if (Double.isNaN(result)) {
             return 0;
         }
-
-        return left.eval() / right.eval();
+        return result;
     }
 
     @Override

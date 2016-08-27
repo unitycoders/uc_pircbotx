@@ -138,8 +138,8 @@ public class AnnotationModuleTests {
 	public void TestValidAction() {
 		String action = "default";
 
-		boolean expected = true;
-		boolean result = object.isValidAction(action);
+		final boolean expected = true;
+		final boolean result = object.isValidAction(action);
 
 		Assert.assertEquals(expected, result);
 	}

@@ -2,6 +2,9 @@ package com.fossgalaxy.pircbotx.commands.script;
 
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
 import com.fossgalaxy.pircbotx.modules.Module;
+import com.fossgalaxy.pircbotx.modules.ModuleException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -20,6 +23,7 @@ import java.util.List;
  * Created by webpigeon on 31/07/16.
  */
 public class ScriptModule implements Module {
+    private static final Logger LOG = LoggerFactory.getLogger(ScriptModule.class);
     private static final String RELOAD_COMMAND = "reload";
     private static final String SCRIPT_ENGINE = "nashhorn";
 
@@ -36,12 +40,12 @@ public class ScriptModule implements Module {
         this.filename = filename;
 
         this.engine = buildScript();
-        this.invocable = (Invocable)engine;
+        this.invocable = (Invocable) engine;
 
         loadScript(filename);
     }
 
-    private ScriptEngine buildScript()  {
+    private ScriptEngine buildScript() {
         ScriptEngineManager sem = new ScriptEngineManager();
         ScriptEngine engine = sem.getEngineByName(SCRIPT_ENGINE);
 
@@ -56,10 +60,11 @@ public class ScriptModule implements Module {
                 Reader r = new InputStreamReader(is);
         ) {
             engine.eval(r);
-        } catch (IOException ex) {
-            System.err.println("error: "+ex);
+        } catch (IOException e) {
+            System.err.println("error: " + e);
+            LOG.error("could not init script", e);
         } catch (ScriptException e) {
-            e.printStackTrace();
+            LOG.warn("could not init script", e);
         }
     }
 
@@ -70,7 +75,7 @@ public class ScriptModule implements Module {
     }
 
     @Override
-    public void fire(Message message) throws Exception {
+    public void fire(Message message) throws ModuleException {
         String actionName = message.getArgument(Module.COMMAND_ARG, Module.DEFAULT_COMMAND);
 
         if (RELOAD_COMMAND.equals(actionName)) {
@@ -79,8 +84,16 @@ public class ScriptModule implements Module {
             return;
         }
 
-        Object retVal = invocable.invokeFunction(actionName, message);
-        message.respond(retVal.toString());
+        try {
+            Object retVal = invocable.invokeFunction(actionName, message);
+            message.respond(retVal.toString());
+        } catch (ScriptException e) {
+            LOG.warn("error running script", e);
+            throw new ModuleException(e);
+        } catch (NoSuchMethodException e) {
+            LOG.warn("could not find method", e);
+            throw new ModuleException(e);
+        }
     }
 
     @Override

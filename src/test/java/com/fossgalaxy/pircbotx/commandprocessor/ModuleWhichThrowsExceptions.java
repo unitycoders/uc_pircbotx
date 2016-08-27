@@ -5,12 +5,13 @@ import java.util.Collections;
 
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
 import com.fossgalaxy.pircbotx.modules.Module;
+import com.fossgalaxy.pircbotx.modules.ModuleException;
 
 public class ModuleWhichThrowsExceptions implements Module {
 
 	@Override
-	public void fire(Message message) throws Exception {
-		throw new NullPointerException("TEST");
+	public void fire(Message message) throws ModuleException {
+		throw new ModuleException(new NullPointerException("TEST"));
 	}
 
 	@Override

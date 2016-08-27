@@ -17,7 +17,7 @@ public class TreeParserTest {
 
 	@Before
 	public void setup() {
-		functions = new TreeMap<String, Function>();
+		functions = new TreeMap<>();
         functions.put("+", new OperatorFunction("+", true, 2));
         functions.put("-", new OperatorFunction("-", true, 2));
         functions.put("/", new OperatorFunction("/", true, 3));

@@ -18,13 +18,13 @@ package com.fossgalaxy.pircbotx.commands.math.ast;
  * @author leon on 16-1-1
  */
 public class NumExpr extends Expr {
-    public String num;
+    private final String num;
 
     public NumExpr(String num) {
         this.num = num;
     }
 
-    public double eval(){
+    public double eval() {
         return Double.parseDouble(num);
     }
 
