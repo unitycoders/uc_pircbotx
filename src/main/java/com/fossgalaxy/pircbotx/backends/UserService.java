@@ -10,6 +10,7 @@ public interface UserService {
 
 
     User getBotUser();
+
     User getUser(String name);
 
 }

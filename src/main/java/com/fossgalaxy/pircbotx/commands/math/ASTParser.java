@@ -13,10 +13,10 @@ import static com.fossgalaxy.pircbotx.commands.math.TokenType.*;
  */
 public class ASTParser {
 
+    private final List<List<Object>> suffixExprListSupply = new ArrayList<>();
+    private final List<Deque<Function>> opStackSupply = new ArrayList<>();
     private Map<String, Function> functions;
-
     private Queue<Token> input;
-
     private Token curr;
 
     public ASTParser(Queue<Token> input, Map<String, Function> functions) {
@@ -25,17 +25,13 @@ public class ASTParser {
         next();
     }
 
-    private final List<List<Object>> suffixExprListSupply = new ArrayList<>();
-
-    private final List<Stack<Function>> opStackSupply = new ArrayList<>();
-
     private List<Object> newSuffixExprList() {
         suffixExprListSupply.add(new ArrayList<>());
         return suffixExprListSupply.get(suffixExprListSupply.size() - 1);
     }
 
-    private Stack<Function> newOpStack() {
-        opStackSupply.add(new Stack<Function>());
+    private Deque<Function> newOpStack() {
+        opStackSupply.add(new LinkedList<Function>());
         return opStackSupply.get(opStackSupply.size() - 1);
     }
 
@@ -103,7 +99,7 @@ public class ASTParser {
             accept(NUMBER);
             return exprRest();
         } else {
-            throw new RuntimeException("Expected ['(','func','num'] but actual " + curr.getType());
+            throw new ASTException("Expected ['(','func','num'] but actual " + curr.getType());
         }
     }
 
@@ -127,7 +123,7 @@ public class ASTParser {
     }
 
     private Expr ast(List<Object> suffixExpr) {
-        Stack<Object> stack = new Stack<>();
+        Deque<Object> stack = new LinkedList<>();
         for (int i = 0; i < suffixExpr.size(); i++) {
             if (suffixExpr.get(i) instanceof OperatorFunction) {
                 OperatorFunction op = (OperatorFunction) suffixExpr.get(i);
@@ -173,7 +169,7 @@ public class ASTParser {
     }
 
     private void pushOp(OperatorFunction function) {
-        Stack<Function> opStack = opStackSupply.get(opStackSupply.size() - 1);
+        Deque<Function> opStack = opStackSupply.get(opStackSupply.size() - 1);
         String o1 = function.getName();
         if (functions.get(o1) != null) {
             if (opStack.isEmpty()) {
@@ -195,7 +191,7 @@ public class ASTParser {
         if (curr.isType(type)) {
             next();
         } else {
-            throw new RuntimeException("Expected " + type + " but actual " + curr);
+            throw new ASTException("Expected " + type + " but actual " + curr);
         }
     }
 

@@ -8,6 +8,7 @@ import org.pircbotx.Channel;
 public interface ChannelService {
 
     void join(String channel);
+
     void join(String channel, String key);
 
     Channel getChannel(String name);

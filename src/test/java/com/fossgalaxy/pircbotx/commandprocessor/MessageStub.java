@@ -22,10 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.pircbotx.PircBotX;
 import org.pircbotx.User;
-
-import com.fossgalaxy.pircbotx.commandprocessor.Message;
 
 public class MessageStub implements Message {
 	private final List<String> args;

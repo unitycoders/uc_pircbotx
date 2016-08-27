@@ -17,16 +17,16 @@ package com.fossgalaxy.pircbotx.commands.math.ast;
  *
  * @author leon on 16-1-1
  */
-public class SubExpr extends Expr{
-    public Expr left;
-    public Expr right;
+public class SubExpr extends Expr {
+    private final Expr left;
+    private final Expr right;
 
     public SubExpr(Expr right, Expr left) {
         this.right = right;
         this.left = left;
     }
 
-    public double eval(){
+    public double eval() {
         return left.eval() - right.eval();
     }
 
