@@ -105,6 +105,7 @@ public class BotRunnable implements Runnable {
                 ScriptConfig config = configEntry.getValue();
                 ScriptModule sm = new ScriptModule(name, config.filename);
                 injector.injectMembers(sm);
+                sm.init();
 
                 processor.register(name, sm);
             } catch (ScriptException ex) {

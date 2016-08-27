@@ -1,15 +1,15 @@
 package com.fossgalaxy.pircbotx.commands.script;
 
+import com.fossgalaxy.pircbotx.commandprocessor.CommandNotFoundException;
+import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
 import com.fossgalaxy.pircbotx.commandprocessor.Message;
 import com.fossgalaxy.pircbotx.modules.Module;
 import com.fossgalaxy.pircbotx.modules.ModuleException;
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
+import javax.script.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,7 +17,6 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by webpigeon on 31/07/16.
@@ -25,14 +24,18 @@ import java.util.List;
 public class ScriptModule implements Module {
     private static final Logger LOG = LoggerFactory.getLogger(ScriptModule.class);
     private static final String RELOAD_COMMAND = "reload";
-    private static final String SCRIPT_ENGINE = "nashhorn";
+    private static final String SCRIPT_ENGINE = "nashorn";
 
     private final String name;
-    private final List<String> actions;
+    private final Collection<String> actions;
     private final String filename;
+
+    private String helpText;
+    private Bindings moduleHelp;
 
     private ScriptEngine engine;
     private Invocable invocable;
+    private CommandProcessor commandProcessor;
 
     public ScriptModule(String name, String filename) throws ScriptException {
         this.name = name;
@@ -41,8 +44,6 @@ public class ScriptModule implements Module {
 
         this.engine = buildScript();
         this.invocable = (Invocable) engine;
-
-        loadScript(filename);
     }
 
     private ScriptEngine buildScript() {
@@ -50,6 +51,16 @@ public class ScriptModule implements Module {
         ScriptEngine engine = sem.getEngineByName(SCRIPT_ENGINE);
 
         return engine;
+    }
+
+    @Inject
+    public void onBind(CommandProcessor cp) {
+        this.commandProcessor = cp;
+    }
+
+
+    public void init() {
+        loadScript(filename);
     }
 
     private void loadScript(String filename) {
@@ -60,6 +71,18 @@ public class ScriptModule implements Module {
                 Reader r = new InputStreamReader(is);
         ) {
             engine.eval(r);
+
+            moduleHelp = (Bindings)engine.get("helpText");
+
+            helpText = ((Bindings)engine.get("metadata")).get("help").toString(); //XXX deal with npe
+
+            Bindings actionsObject = (Bindings)engine.get("actions");
+            if (actionsObject != null) {
+                for (String action : actionsObject.keySet()) {
+                    commandProcessor.addReverseLookup(getName(), action);
+                    actions.add(action);
+                }
+            }
         } catch (IOException e) {
             System.err.println("error: " + e);
             LOG.error("could not init script", e);
@@ -75,7 +98,7 @@ public class ScriptModule implements Module {
     }
 
     @Override
-    public void fire(Message message) throws ModuleException {
+    public void fire(Message message) throws ModuleException, CommandNotFoundException {
         String actionName = message.getArgument(Module.COMMAND_ARG, Module.DEFAULT_COMMAND);
 
         if (RELOAD_COMMAND.equals(actionName)) {
@@ -92,7 +115,7 @@ public class ScriptModule implements Module {
             throw new ModuleException(e);
         } catch (NoSuchMethodException e) {
             LOG.warn("could not find method", e);
-            throw new ModuleException(e);
+            throw new CommandNotFoundException(actionName);
         }
     }
 
@@ -118,14 +141,20 @@ public class ScriptModule implements Module {
 
     @Override
     public String getHelp(String command) {
-        //TODO expose this via the script
-        return null;
+        if (moduleHelp == null) {
+            return null;
+        }
+
+        Object o = moduleHelp.get(command);
+        if (o == null) {
+            return null;
+        }
+        return o.toString();
     }
 
     @Override
     public String getModuleHelp() {
-        //TODO expose this via the script
-        return null;
+        return helpText;
     }
 
     @Override

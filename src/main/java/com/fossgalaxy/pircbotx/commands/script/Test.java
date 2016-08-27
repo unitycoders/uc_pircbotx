@@ -13,9 +13,6 @@ public class Test {
 
         ScriptModule sm = new ScriptModule("test", "scripts/test.js");
 
-        //sm.addCommand("hello", "function hello() { return \"Hello, world!\"; }");
-        //sm.addCommand("hello", "var i=0; function hello() { i++; return \"I have been called \"+i+\" times!\"; }");
-
         InteractiveMessage message = new InteractiveMessage(Arrays.asList("test", "test"), System.out);
         sm.fire(message);
 
@@ -26,6 +23,9 @@ public class Test {
 
         sm.fire(new InteractiveMessage(Arrays.asList("test", "hello"), System.out));
         sm.fire(new InteractiveMessage(Arrays.asList("test", "respond", "something!"), System.out));
+
+        System.out.println(sm.getModuleHelp());
+        System.out.println(sm.getHelp("respond"));
     }
 
 }
