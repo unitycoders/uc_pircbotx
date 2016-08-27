@@ -23,6 +23,14 @@
     	"irc": {},
     	"factoid": {}
     },
+    "scripts": {
+        "test": {
+            "filename": "scripts/test.js"
+        },
+        "test2": {
+            "filename": "scripts/test2.js"
+        }
+    },
     "middleware": [
     	"com.fossgalaxy.pircbotx.commandprocessor.CommandFixerMiddleware",
     	"com.fossgalaxy.pircbotx.commandprocessor.RewriteEngine",
