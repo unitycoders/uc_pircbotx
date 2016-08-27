@@ -93,7 +93,7 @@ public class BotRunnable implements Runnable {
         }
     }
 
-    public void loadScripts() {
+    public void loadScripts(Injector injector) {
         if (config.scripts == null) {
             return;
         }
@@ -103,7 +103,10 @@ public class BotRunnable implements Runnable {
             try {
                 String name = configEntry.getKey();
                 ScriptConfig config = configEntry.getValue();
-                processor.register(name, new ScriptModule(name, config.filename));
+                ScriptModule sm = new ScriptModule(name, config.filename);
+                injector.injectMembers(sm);
+
+                processor.register(name, sm);
             } catch (ScriptException ex) {
                 ex.printStackTrace();
             }
@@ -119,7 +122,7 @@ public class BotRunnable implements Runnable {
             //This is our bits
             setupProcessor(injector);
             loadPlugins(injector);
-            loadScripts();
+            loadScripts(injector);
 
             BotService service = injector.getInstance(BotService.class);
             service.start(config, processor);
