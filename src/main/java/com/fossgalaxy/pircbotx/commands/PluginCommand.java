@@ -103,7 +103,7 @@ public class PluginCommand extends AnnotationModule {
     public void onReverse(Message message) {
         String action = message.getArgument(2);
 
-        List<String> modules = processor.getReverse(action);
+        Collection<String> modules = processor.getReverse(action);
         if (!modules.isEmpty()) {
             message.respond(String.format("%s is provided by %s", action, modules));
         } else {
