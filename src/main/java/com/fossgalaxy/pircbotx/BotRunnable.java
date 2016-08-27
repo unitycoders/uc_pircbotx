@@ -109,7 +109,7 @@ public class BotRunnable implements Runnable {
 
                 processor.register(name, sm);
             } catch (ScriptException ex) {
-                ex.printStackTrace();
+                LOG.warn("failed to load script: ", ex);
             }
         }
     }
