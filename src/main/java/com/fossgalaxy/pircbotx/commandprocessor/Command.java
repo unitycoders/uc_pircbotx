@@ -27,14 +27,13 @@ import java.lang.annotation.Target;
 
 /**
  * Command annotation.
- *
+ * <p>
  * This annotation is used to tag a method as being a command the bot should
  * recognise and call when certian words or phrases are mentioned in a channel.
- *
+ * <p>
  * The method must take exactly 1 argument, of {@link Message}
  *
  * @author webpigeon
- *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
@@ -42,7 +41,7 @@ public @interface Command {
 
     /**
      * Command trigger words.
-     *
+     * <p>
      * This is used to tell the bot what keywords it should respond to when
      * processing actions. The keyword "default" will be called automatically if
      * no keyword is specified. If an array of keywords is passed the bot will

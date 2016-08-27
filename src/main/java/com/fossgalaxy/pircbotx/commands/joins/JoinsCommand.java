@@ -36,6 +36,7 @@ public class JoinsCommand extends AnnotationModule {
 
     /**
      * Creates a {@link JoinsCommand}.
+     *
      * @throws Exception if database connection failed
      */
     public JoinsCommand(JoinModel model) {

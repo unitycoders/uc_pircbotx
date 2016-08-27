@@ -29,6 +29,7 @@ public class Karma {
 
     /**
      * Creates a new "thing" with no score
+     *
      * @param target the "thing"
      */
     public Karma(String target) {
@@ -37,8 +38,9 @@ public class Karma {
 
     /**
      * Creates a new "thing" with a score
+     *
      * @param target the "thing"
-     * @param karma the score
+     * @param karma  the score
      */
     public Karma(String target, int karma) {
         this.target = target;
@@ -47,6 +49,7 @@ public class Karma {
 
     /**
      * Gets the name of the "thing" represented
+     *
      * @return the thing
      */
     public String getTarget() {
@@ -55,6 +58,7 @@ public class Karma {
 
     /**
      * Gets the score associated to the "thing"
+     *
      * @return the score
      */
     public int getKarma() {

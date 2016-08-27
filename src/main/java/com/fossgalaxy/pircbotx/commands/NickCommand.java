@@ -28,7 +28,6 @@ import com.google.inject.Inject;
 
 /**
  * @author Bruce Cowan
- *
  */
 public class NickCommand extends AnnotationModule {
     private BotService bot;
