@@ -5,7 +5,7 @@ com.fossgalaxy.pircbotx.commands.KillerTroutCommand
 com.fossgalaxy.pircbotx.commands.joins.JoinsCommand
 com.fossgalaxy.pircbotx.commands.factoid.FactoidCommand
 com.fossgalaxy.pircbotx.commands.lart.LartCommand
-com.fossgalaxy.pircbotx.commands.NickCommand
+com.fossgalaxy.pircbotx.commands.UnicodeCommand
 com.fossgalaxy.pircbotx.commands.karma.KarmaCommand
 com.fossgalaxy.pircbotx.commands.GamesCommand
 com.fossgalaxy.pircbotx.commands.CompSciCommand
