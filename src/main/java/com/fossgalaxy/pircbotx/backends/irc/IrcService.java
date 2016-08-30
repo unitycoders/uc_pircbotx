@@ -1,12 +1,13 @@
 package com.fossgalaxy.pircbotx.backends.irc;
 
 import com.fossgalaxy.pircbotx.LocalConfiguration;
+import com.fossgalaxy.pircbotx.backends.BackendException;
 import com.fossgalaxy.pircbotx.backends.BotService;
 import com.fossgalaxy.pircbotx.backends.ChannelService;
 import com.fossgalaxy.pircbotx.backends.UserService;
 import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
-import com.fossgalaxy.pircbotx.listeners.JoinsListener;
-import com.fossgalaxy.pircbotx.listeners.LinesListener;
+import com.fossgalaxy.pircbotx.commands.joins.JoinsListener;
+import com.fossgalaxy.pircbotx.commands.lines.LinesListener;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
@@ -31,22 +32,26 @@ public class IrcService implements BotService, Provider<PircBotX> {
     }
 
     @Override
-    public void start(LocalConfiguration config, CommandProcessor processor) throws IOException, IrcException {
+    public void start(LocalConfiguration config, CommandProcessor processor) throws IOException, BackendException {
         //this creates our host bot instance
         Configuration.Builder cb = IRCFactory.doConfig(config, processor);
 
         cb.addListener(injector.getInstance(JoinsListener.class));
         cb.addListener(injector.getInstance(LinesListener.class));
 
-        //build pircbotx
-        Configuration configuration = cb.buildConfiguration();
-        instance = new PircBotX(configuration);
-        instance.startBot();
+        try {
+            //build pircbotx
+            Configuration configuration = cb.buildConfiguration();
+            instance = new PircBotX(configuration);
+            instance.startBot();
+        } catch (IrcException ex) {
+            throw new BackendException(ex);
+        }
     }
 
     @Override
     public void stop() {
-        if(instance != null) {
+        if (instance == null) {
             return;
         }
         instance.close();

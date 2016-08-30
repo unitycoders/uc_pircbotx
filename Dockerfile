@@ -1,4 +1,4 @@
-FROM java:openjdk-7-jre
+FROM java:openjdk-8-jre
 
 # Create a user for the bot
 RUN adduser --disabled-password --gecos "" uc_pircbotx

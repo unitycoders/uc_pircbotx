@@ -1,12 +1,11 @@
 com.fossgalaxy.pircbotx.commands.CalcCommand
-com.fossgalaxy.pircbotx.commands.RandCommand
+com.fossgalaxy.pircbotx.commands.lines.RandCommand
 com.fossgalaxy.pircbotx.commands.DateTimeCommand
 com.fossgalaxy.pircbotx.commands.KillerTroutCommand
-com.fossgalaxy.pircbotx.commands.JoinsCommand
-com.fossgalaxy.pircbotx.commands.FactoidCommand
-com.fossgalaxy.pircbotx.commands.LartCommand
-com.fossgalaxy.pircbotx.commands.NickCommand
-com.fossgalaxy.pircbotx.commands.KarmaCommand
+com.fossgalaxy.pircbotx.commands.joins.JoinsCommand
+com.fossgalaxy.pircbotx.commands.factoid.FactoidCommand
+com.fossgalaxy.pircbotx.commands.lart.LartCommand
+com.fossgalaxy.pircbotx.commands.karma.KarmaCommand
 com.fossgalaxy.pircbotx.commands.GamesCommand
 com.fossgalaxy.pircbotx.commands.CompSciCommand
 com.fossgalaxy.pircbotx.commands.IRCCommands
