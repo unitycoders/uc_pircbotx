@@ -1,9 +1,11 @@
 package com.fossgalaxy.bot.api.command;
 
+import java.io.Serializable;
+
 /**
  * A request represents an attempt for a user to perform a task.
  */
-public interface Request {
+public interface Request extends Serializable {
 
     /**
      * Get the controller associated with this users request.
