@@ -6,7 +6,9 @@ import com.fossgalaxy.bot.api.command.Request;
 import com.fossgalaxy.bot.api.command.chain.Preprocessor;
 import com.fossgalaxy.bot.impl.command.chain.Catalogue;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
 
 /**
  * Attempt to insert missing controllers.
@@ -41,7 +43,7 @@ public class InferControllerPreprocessor implements Preprocessor {
         }
 
         //we need to do a reverse lookup to find matching controllers
-        List<String> matchedControllers = catalogue.findByAction(name);
+        SortedSet<String> matchedControllers = catalogue.findByAction(name);
         if (matchedControllers.isEmpty()) {
             return request;
         }
@@ -53,8 +55,13 @@ public class InferControllerPreprocessor implements Preprocessor {
             }
         }
 
+        List<String> args = new ArrayList<>(request.getArguments());
+        if (request.getAction() != null) {
+            args.add(0, request.getAction());
+        }
+
         //either the action was ambiguous and we don't care or only one controller matched.
-        return new PatchedRequest(request, matchedControllers.get(0), name, request.getArguments());
+        return new PatchedRequest(request, matchedControllers.first(), name, args);
     }
 
 

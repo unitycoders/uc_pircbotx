@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class Catalogue {
     private final Map<String, Controller> controllers;
-    private final Map<String, Set<String>> reverseMap;
+    private final Map<String, SortedSet<String>> reverseMap;
 
     public Catalogue(){
         this.controllers = new HashMap<>();
@@ -29,8 +29,12 @@ public class Catalogue {
         return controllers.containsKey(name);
     }
 
-    public List<String> findByAction(String name) {
-        return Collections.emptyList();
+    public SortedSet<String> findByAction(String name) {
+        SortedSet<String> args = reverseMap.get(name);
+        if (args == null) {
+            return Collections.emptySortedSet();
+        }
+        return Collections.unmodifiableSortedSet(args);
     }
 
     public void register(String name, Controller controller) {
@@ -41,10 +45,10 @@ public class Catalogue {
     }
 
     public void addReverse(String name, String action) {
-        Set<String> reverse = reverseMap.get(action);
+        SortedSet<String> reverse = reverseMap.get(action);
         if (reverse == null) {
             reverse = new TreeSet<>();
-            reverseMap.put(name, reverse);
+            reverseMap.put(action, reverse);
         }
         reverse.add(name);
     }

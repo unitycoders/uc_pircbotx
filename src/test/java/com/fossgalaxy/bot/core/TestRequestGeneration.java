@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(Parameterized.class)
 public class TestRequestGeneration {
 
-    @Parameters(name="{index}: {0} -> {1} {2} {3}")
+    @Parameters(name="{index}: {0} -> {1}")
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
                 {"controller", "controller", "default", Collections.emptyList()},

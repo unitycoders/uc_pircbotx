@@ -1,12 +1,13 @@
 package com.fossgalaxy.bot.core;
 
+import com.fossgalaxy.bot.api.command.MissingArgumentException;
 import com.fossgalaxy.bot.api.command.Request;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by webpigeon on 10/09/16.
+ * A simple kind of request.
  */
 public class SimpleRequest implements Request {
     private final String controller;
@@ -35,7 +36,7 @@ public class SimpleRequest implements Request {
     @Override
     public String getArgument(int pos, String defaultValue) {
         assert pos >= 0 : "pos must be positive or zero";
-        if (arguments.size() <= pos || pos >= 0) {
+        if (arguments.size() <= pos || pos < 0) {
             return defaultValue;
         }
         return arguments.get(pos);
@@ -44,8 +45,8 @@ public class SimpleRequest implements Request {
     @Override
     public String getArgument(int pos) {
         assert pos >= 0 : "pos must be positive or zero";
-        if (arguments.size() <= pos || pos >= 0) {
-            return null;
+        if (arguments.size() <= pos || pos < 0) {
+            throw new MissingArgumentException(this, pos);
         }
         return arguments.get(pos);
     }

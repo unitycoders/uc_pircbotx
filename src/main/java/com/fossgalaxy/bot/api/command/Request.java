@@ -46,9 +46,9 @@ public interface Request extends Serializable {
      *
      * @param pos the position of the argument
      * @return the argument at position pos
-     * @throws RuntimeException if there is no argument at position pos
+     * @throws MissingArgumentException if there is no argument at position pos
      */
-    String getArgument(int pos);
+    String getArgument(int pos) throws MissingArgumentException;
 
     /**
      * Get a list of all positional arguments.
