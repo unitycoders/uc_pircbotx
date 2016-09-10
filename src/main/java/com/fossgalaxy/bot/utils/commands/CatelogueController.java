@@ -6,6 +6,7 @@ import com.fossgalaxy.bot.core.command.annotation.AnnotationController;
 import com.fossgalaxy.pircbotx.commandprocessor.HelpText;
 import com.google.inject.Inject;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.SortedSet;
 
@@ -90,6 +91,20 @@ public class CatelogueController extends AnnotationController {
             info = "developer did not provide HelpInfo";
         }
         return Response.respond(String.format("%s %s - %s", controllerName, actionName, info));
+    }
+
+    @Action({"actions", "commands", "plugin"})
+    @HelpText("Provide a list of actions that a controller provides")
+    public Response actions(Context ctx, Request request) {
+        String controllerName = request.getArgument(0);
+
+        Controller controller = catalogue.get(controllerName);
+        if (controller == null) {
+            return Response.respond(String.format("%s is not a loaded controller", controllerName));
+        }
+
+        Collection<String> actions = controller.getActions();
+        return Response.respond(String.format("%s provides %s", controllerName, String.join(", ", actions)));
     }
 
 }
