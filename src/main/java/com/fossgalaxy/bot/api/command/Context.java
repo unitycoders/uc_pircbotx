@@ -8,4 +8,5 @@ import java.util.Map;
  * This could include user-specific information and request specific information.
  */
 public interface Context extends Map {
+    String MESSAGE_TARGET = "messageTarget";
 }

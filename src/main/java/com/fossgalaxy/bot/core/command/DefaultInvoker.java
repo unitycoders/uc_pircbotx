@@ -45,7 +45,7 @@ public class DefaultInvoker implements Invoker {
     public static void main(String[] args) {
 
         //setup our dependency injection framework and get the stuff we're going to need
-        Injector injector = Guice.createInjector(new CommandModule());
+        Injector injector = Guice.createInjector(new ApiCommandModule());
         Invoker invoker = injector.getInstance(Invoker.class);
         Catalogue catalogue = injector.getInstance(Catalogue.class);
 

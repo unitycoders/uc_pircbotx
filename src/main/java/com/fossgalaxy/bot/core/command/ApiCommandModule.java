@@ -7,7 +7,7 @@ import com.google.inject.AbstractModule;
 /**
  * Google Gson module for dealing with the command processing pipeline.
  */
-public class CommandModule extends AbstractModule {
+public class ApiCommandModule extends AbstractModule {
 
     @Override
     protected void configure() {

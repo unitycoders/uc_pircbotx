@@ -18,6 +18,7 @@
  */
 package com.fossgalaxy.pircbotx;
 
+import com.fossgalaxy.bot.core.command.ApiCommandModule;
 import com.fossgalaxy.pircbotx.backends.BackendException;
 import com.fossgalaxy.pircbotx.backends.BotService;
 import com.fossgalaxy.pircbotx.backends.irc.IrcModule;
@@ -118,7 +119,7 @@ public class BotRunnable implements Runnable {
     public void run() {
 
         try {
-            Injector injector = Guice.createInjector(new DatabaseModule(), new CommandModule(), new IrcModule());
+            Injector injector = Guice.createInjector(new DatabaseModule(), new CommandModule(), new ApiCommandModule(), new IrcModule());
 
             //This is our bits
             setupProcessor(injector);
