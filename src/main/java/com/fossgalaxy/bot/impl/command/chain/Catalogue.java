@@ -5,9 +5,7 @@ import com.fossgalaxy.bot.api.command.Controller;
 import com.fossgalaxy.bot.api.command.Request;
 import com.fossgalaxy.bot.api.command.Response;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by webpigeon on 10/09/16.
@@ -37,4 +35,7 @@ public class Catalogue {
         return controller.execute(context, request);
     }
 
+    public List<String> findByAction(String name) {
+        return Collections.emptyList();
+    }
 }

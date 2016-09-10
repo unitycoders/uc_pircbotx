@@ -1,6 +1,7 @@
 package com.fossgalaxy.bot.api.command;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * A request represents an attempt for a user to perform a task.
@@ -49,4 +50,10 @@ public interface Request extends Serializable {
      */
     String getArgument(int pos);
 
+    /**
+     * Get a list of all positional arguments.
+     *
+     * @return an array containing all of the positional arguments for this request.
+     */
+    List<String> getArguments();
 }
