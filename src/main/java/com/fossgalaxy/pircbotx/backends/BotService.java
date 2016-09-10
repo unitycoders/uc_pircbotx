@@ -1,5 +1,6 @@
 package com.fossgalaxy.pircbotx.backends;
 
+import com.fossgalaxy.bot.api.command.Invoker;
 import com.fossgalaxy.pircbotx.LocalConfiguration;
 import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
 
@@ -13,6 +14,7 @@ import java.io.IOException;
 public interface BotService {
 
     void start(LocalConfiguration configuration, CommandProcessor processor) throws IOException, BackendException;
+    void start(LocalConfiguration configuration, Invoker invoker) throws IOException, BackendException;
 
     void stop();
 

@@ -132,7 +132,7 @@ public class AnnotationModule implements Module {
             node.usage = usage.value();
         }
 
-        //Permissions annotation
+        //Session annotation
         Secured permissionsRequired = method.getAnnotation(Secured.class);
         if (permissionsRequired != null) {
             node.permissions = permissionsRequired.value();

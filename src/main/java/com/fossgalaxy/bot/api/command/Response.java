@@ -1,6 +1,7 @@
 package com.fossgalaxy.bot.api.command;
 
-import com.fossgalaxy.bot.impl.command.chain.StringResponse;
+
+import com.fossgalaxy.bot.core.command.StringResponse;
 
 /**
  * Created by webpigeon on 09/09/16.

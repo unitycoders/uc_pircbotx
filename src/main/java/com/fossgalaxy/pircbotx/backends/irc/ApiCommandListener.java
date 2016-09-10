@@ -33,15 +33,16 @@ public class ApiCommandListener extends ListenerAdapter {
     public void onMessage(MessageEvent event) throws Exception {
         try {
             String messageText = event.getMessage();
+            String target = event.getChannel().getName();
 
             if (messageText.startsWith(prefix)) {
-                fire(event, messageText.substring(1));
+                fire(event, target, messageText.substring(1));
             } else {
                 //check for someone trying to address the bot by name
                 Pattern pattern = Pattern.compile("^" + event.getBot().getUserBot().getNick() + ".? (.*)$");
                 Matcher matcher = pattern.matcher(messageText);
                 if (matcher.matches()) {
-                    fire(event, matcher.group(1));
+                    fire(event, target, matcher.group(1));
                 }
             }
         } catch (Exception ex) {
@@ -50,8 +51,12 @@ public class ApiCommandListener extends ListenerAdapter {
         }
     }
 
-    protected void fire(GenericMessageEvent event, String message) {
+    protected void fire(GenericMessageEvent event, String target, String message) {
         Context context = new DefaultContext();
+        context.put(Context.SESSION_KEY, "pircbotx:irc:"+event.getUser().getHostmask());
+        context.put(Context.MESSAGE_TARGET, target);
+        context.put(Context.PROTOCOL, "irc");
+
         Response r = processor.apply(context, message);
         String output = r.toString();
         event.respondWith(output);
@@ -60,7 +65,7 @@ public class ApiCommandListener extends ListenerAdapter {
     @Override
     public void onPrivateMessage(PrivateMessageEvent event) throws Exception {
         try {
-            fire(event, event.getMessage());
+            fire(event, event.getUser().getNick(), event.getMessage());
         } catch (Exception ex) {
             event.respond("error:" + ex.getMessage());
             LOG.error("error processing private message", ex);
