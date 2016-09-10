@@ -61,4 +61,9 @@ public class SimpleCatalogue implements Catalogue {
         }
         controllers.put(alias, controller);
     }
+
+    @Override
+    public Set<String> getKeywords() {
+        return Collections.unmodifiableSet(controllers.keySet());
+    }
 }

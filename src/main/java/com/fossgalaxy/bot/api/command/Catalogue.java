@@ -1,6 +1,7 @@
 package com.fossgalaxy.bot.api.command;
 
 
+import java.util.Set;
 import java.util.SortedSet;
 
 /**
@@ -19,4 +20,6 @@ public interface Catalogue {
     void addReverse(String name, String action);
 
     void alias(String alias, String name);
+
+    Set<String> getKeywords();
 }
