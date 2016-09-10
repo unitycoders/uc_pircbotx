@@ -19,20 +19,16 @@
 package com.fossgalaxy.pircbotx;
 
 import com.fossgalaxy.bot.api.command.Catalogue;
-import com.fossgalaxy.bot.api.command.Context;
 import com.fossgalaxy.bot.api.command.Invoker;
-import com.fossgalaxy.bot.api.command.MissingArgumentException;
 import com.fossgalaxy.bot.core.command.ApiCommandModule;
 import com.fossgalaxy.bot.core.command.InferControllerPreprocessor;
 import com.fossgalaxy.bot.core.command.InsertMissingDefaultPreprocessor;
 import com.fossgalaxy.bot.core.command.RequestProcessor;
 import com.fossgalaxy.bot.core.command.compat.ModuleController;
-import com.fossgalaxy.bot.utils.commands.CatelogueController;
-import com.fossgalaxy.bot.utils.session.SessionPreprocessor;
+import com.fossgalaxy.bot.utils.commands.CatalogueController;
 import com.fossgalaxy.pircbotx.backends.BackendException;
 import com.fossgalaxy.pircbotx.backends.BotService;
 import com.fossgalaxy.pircbotx.backends.irc.IrcModule;
-import com.fossgalaxy.pircbotx.commandprocessor.CommandModule;
 import com.fossgalaxy.pircbotx.commands.script.ScriptConfig;
 import com.fossgalaxy.pircbotx.commands.script.ScriptModule;
 import com.fossgalaxy.pircbotx.data.db.DatabaseModule;
@@ -128,7 +124,7 @@ public class BotRunnable implements Runnable {
             loadScripts(injector);
 
             Catalogue catalogue = injector.getInstance(Catalogue.class);
-            catalogue.register("catalogue", new CatelogueController(catalogue));
+            catalogue.register("catalogue", new CatalogueController(catalogue));
 
             BotService service = injector.getInstance(BotService.class);
             service.start(config, injector.getInstance(Invoker.class));

@@ -15,12 +15,12 @@ import java.util.SortedSet;
  *
  * This allows users to see what the bot has to offer and allows them to find out information about a particular action.
  */
-public class CatelogueController extends AnnotationController {
+public class CatalogueController extends AnnotationController {
 
     private Catalogue catalogue;
 
     @Inject
-    public CatelogueController(Catalogue catalogue) {
+    public CatalogueController(Catalogue catalogue) {
         this.catalogue = catalogue;
         this.process();
     }
