@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,6 +38,8 @@ public class ApiCommandListener extends ListenerAdapter {
 
             if (messageText.startsWith(prefix)) {
                 fire(event, target, messageText.substring(1));
+            } else if(messageText.startsWith("$")) {
+                chain(event, target, messageText.substring(1));
             } else {
                 //check for someone trying to address the bot by name
                 Pattern pattern = Pattern.compile("^" + event.getBot().getUserBot().getNick() + ".? (.*)$");
@@ -58,6 +61,20 @@ public class ApiCommandListener extends ListenerAdapter {
         context.put(Context.PROTOCOL, "irc");
 
         Response r = processor.apply(context, message);
+        String output = r.toString();
+        event.respondWith(output);
+    }
+
+    protected void chain(GenericMessageEvent event, String target, String message) {
+        Context context = new DefaultContext();
+        context.put(Context.SESSION_KEY, "pircbotx:irc:"+event.getUser().getHostmask());
+        context.put(Context.MESSAGE_TARGET, target);
+        context.put(Context.PROTOCOL, "irc");
+
+        String[] messages = message.split("\\|");
+        System.out.println(Arrays.toString(messages));
+
+        Response r = processor.doChain(context, messages);
         String output = r.toString();
         event.respondWith(output);
     }

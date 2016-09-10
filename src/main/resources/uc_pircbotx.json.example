@@ -8,7 +8,7 @@
     "username": "sasl_username",
     "password": "sasl_password",
     "channels": [
-        "#unity-coders-bots"
+        "#unity-coders"
     ],
     "modules": {
     	"datetime":{"aliases": ["dt"]},

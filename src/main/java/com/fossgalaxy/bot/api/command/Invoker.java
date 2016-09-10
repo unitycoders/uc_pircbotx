@@ -6,4 +6,6 @@ import java.util.function.BiFunction;
  * Created by webpigeon on 10/09/16.
  */
 public interface Invoker extends BiFunction<Context, String, Response> {
+
+    Response doChain(Context context, String[] commands);
 }

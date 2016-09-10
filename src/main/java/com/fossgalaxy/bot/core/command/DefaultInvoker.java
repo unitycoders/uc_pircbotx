@@ -34,6 +34,19 @@ public class DefaultInvoker implements Invoker {
         return processor.process(context, request);
     }
 
+    @Override
+    public Response doChain(Context context, String[] commands) {
+
+        Response response = apply(context, commands[0]);
+
+        // respond for all other phases
+        for (int i=1; i<commands.length; i++) {
+            response = apply(context, commands[i]+" "+response.toString());
+        }
+
+        return response;
+    }
+
     /**
      * Debug method for default invoker.
      *
@@ -82,4 +95,5 @@ public class DefaultInvoker implements Invoker {
         System.out.println(invoker.apply(null, "length Found"));
 
     }
+
 }
