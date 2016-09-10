@@ -51,6 +51,7 @@ public class MessageRequest extends AbstractMessage {
         List<String> args = new ArrayList<>(request.getArguments());
         args.add(0, request.getController());
         args.add(1, request.getAction());
+        System.out.println(args);
         return new MessageRequest(request, context, args);
     }
 }

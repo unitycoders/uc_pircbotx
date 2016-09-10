@@ -26,12 +26,17 @@ public class ModuleController implements Controller {
         } catch(CommandNotFoundException ex) {
             throw new MissingRequestException(request, request.getController(), request.getAction());
         } catch (ModuleException ex) {
-            throw new ControllerException(request, " "+ex.getCause().getCause());
+            throw new ControllerException(request, " "+ex.getCause());
         }
     }
 
     @Override
     public Collection<String> getActions() {
         return module.getActions();
+    }
+
+    @Override
+    public String getInfo(String actionName) {
+        return module.getHelp(actionName);
     }
 }

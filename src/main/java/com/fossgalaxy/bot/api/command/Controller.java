@@ -28,4 +28,8 @@ public interface Controller {
             catalogue.addReverse(name, action);
         }
     }
+
+    default String getInfo(String actionName) {
+        return null;
+    }
 }
