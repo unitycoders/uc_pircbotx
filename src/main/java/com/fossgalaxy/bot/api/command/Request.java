@@ -7,6 +7,7 @@ import java.util.List;
  * A request represents an attempt for a user to perform a task.
  */
 public interface Request extends Serializable {
+    String DEFAULT_ACTION = "default";
 
     /**
      * Get the controller associated with this users request.
