@@ -39,7 +39,7 @@ public interface Message {
      * Get the message the bot received.
      * <p>
      * This is mostly of use for the parsing function but may be useful
-     * to some commands. Previously, this was the only way to access message
+     * to some command. Previously, this was the only way to access message
      * contents. Formatting will have been removed to make processing easier.
      * The trigger character (if present) will have also been removed.
      *

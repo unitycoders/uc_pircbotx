@@ -1,7 +1,6 @@
-package com.fossgalaxy.bot.core;
+package com.fossgalaxy.bot.core.command;
 
 import com.fossgalaxy.bot.api.command.Request;
-import com.fossgalaxy.bot.impl.command.chain.Catalogue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -10,7 +9,6 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -42,7 +40,7 @@ public class TestControllerInsert {
     private final InsertMissingDefaultPreprocessor fixer;
 
     public TestControllerInsert(Request input, Request expected) {
-        Catalogue catalogue = new Catalogue();
+        SimpleCatalogue catalogue = new SimpleCatalogue();
         catalogue.register("dummy", new DummyController("default", "test"));
         catalogue.register("nodefault", new DummyController("test"));
 

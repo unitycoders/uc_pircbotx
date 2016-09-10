@@ -1,20 +1,20 @@
-package com.fossgalaxy.bot.impl.command.chain;
+package com.fossgalaxy.bot.core.command;
 
-import com.fossgalaxy.bot.api.command.Context;
 import com.fossgalaxy.bot.api.command.Controller;
-import com.fossgalaxy.bot.api.command.Request;
-import com.fossgalaxy.bot.api.command.Response;
+import com.fossgalaxy.bot.api.command.Catalogue;
+import com.google.inject.Singleton;
 
 import java.util.*;
 
 /**
  * Created by webpigeon on 10/09/16.
  */
-public class Catalogue {
+@Singleton
+public class SimpleCatalogue implements Catalogue {
     private final Map<String, Controller> controllers;
     private final Map<String, SortedSet<String>> reverseMap;
 
-    public Catalogue(){
+    public SimpleCatalogue(){
         this.controllers = new HashMap<>();
         this.reverseMap = new HashMap<>();
     }
@@ -41,7 +41,7 @@ public class Catalogue {
         assert name != null;
         assert controller != null;
         controllers.put(name, controller);
-        controller.bindCatalogue(name,this);
+        controller.bindCatalogue(name, this);
     }
 
     public void addReverse(String name, String action) {

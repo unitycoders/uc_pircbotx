@@ -92,7 +92,7 @@ public class AnnotationModule implements Module {
             helpText = clazzHelp.value();
         }
 
-        //go though all class methods looking for commands
+        //go though all class methods looking for command
         for (Method method : clazz.getMethods()) {
 
             Command c = method.getAnnotation(Command.class);

@@ -33,10 +33,10 @@ import java.util.regex.Pattern;
 /**
  * centrally managed command parsing.
  * <p>
- * This class is responsible to breaking IRC messages into commands which the
+ * This class is responsible to breaking IRC messages into command which the
  * bot can understand. It contains a list of modules and the methods which are
  * tagged with the command annotation. Classes must be registered with the
- * Command RequestProcessor in order for the processor to recognise them as commands.
+ * Command RequestProcessor in order for the processor to recognise them as command.
  */
 @Singleton
 public class CommandProcessor {
@@ -52,8 +52,8 @@ public class CommandProcessor {
      * Create a new command processor.
      * <p>
      * This will create a new command processor and will initialise the regex
-     * pattern the bot will use to match commands. It will also create the maps
-     * needed to store information about the commands.
+     * pattern the bot will use to match command. It will also create the maps
+     * needed to store information about the command.
      *
      * @param middleware the list of steps to process the message
      */
@@ -66,8 +66,8 @@ public class CommandProcessor {
      * Create a new command processor.
      * <p>
      * This will create a new command processor and will initialise the regex
-     * pattern the bot will use to match commands. It will also create the maps
-     * needed to store information about the commands.
+     * pattern the bot will use to match command. It will also create the maps
+     * needed to store information about the command.
      */
     @Inject
     public CommandProcessor() {
@@ -78,14 +78,14 @@ public class CommandProcessor {
     }
 
     /**
-     * Register a new module and extract it's commands.
+     * Register a new module and extract it's command.
      * <p>
      * This method will look at target and process any method which has been
      * annotated with the command annotation. It will then remember the module
      * and command names for use when processing messages.
      * <p>
      * The module's name will need to be put before any command. This is to
-     * prevent two modules conflicting with the same named commands.
+     * prevent two modules conflicting with the same named command.
      *
      * @param name   the name of the module
      * @param target the module object
@@ -93,7 +93,7 @@ public class CommandProcessor {
     public void register(String name, Module target) {
         commands.put(name, target);
 
-        //create a reverse lookup for all commands
+        //create a reverse lookup for all command
         for (String action : target.getActions()) {
             addReverseLookup(name, action);
         }
@@ -255,9 +255,9 @@ public class CommandProcessor {
 
 
     /**
-     * Gets a list of commands which are registered with the command processor
+     * Gets a list of command which are registered with the command processor
      *
-     * @param moduleName the name of the module to get the commands from.
+     * @param moduleName the name of the module to get the command from.
      * @return the list of command names, or null if command doesn't exist.
      */
     public Collection<String> getCommands(String moduleName) {

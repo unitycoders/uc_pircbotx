@@ -1,10 +1,11 @@
-package com.fossgalaxy.bot.core;
+package com.fossgalaxy.bot.core.command;
 
+import com.fossgalaxy.bot.api.command.Catalogue;
 import com.fossgalaxy.bot.api.command.Context;
 import com.fossgalaxy.bot.api.command.Controller;
 import com.fossgalaxy.bot.api.command.Request;
 import com.fossgalaxy.bot.api.command.chain.Preprocessor;
-import com.fossgalaxy.bot.impl.command.chain.Catalogue;
+import com.google.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 public class InsertMissingDefaultPreprocessor implements Preprocessor {
     private final Catalogue catalogue;
 
+    @Inject
     public InsertMissingDefaultPreprocessor(Catalogue catalogue) {
         this.catalogue = catalogue;
     }

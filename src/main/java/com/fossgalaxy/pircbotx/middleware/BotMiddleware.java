@@ -7,7 +7,7 @@ import com.fossgalaxy.pircbotx.commandprocessor.Message;
 /**
  * A plugin which lets developers hook into command processing.
  * <p>
- * This allows additional steps for processing commands at two key stages:
+ * This allows additional steps for processing command at two key stages:
  * 1. when the message is first received
  * 2. when the message has been tokenized
  * <p>

@@ -1,7 +1,6 @@
-package com.fossgalaxy.bot.core;
+package com.fossgalaxy.bot.core.command;
 
 import com.fossgalaxy.bot.api.command.Request;
-import com.fossgalaxy.bot.impl.command.chain.Catalogue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -44,7 +43,7 @@ public class TestReverseInsert {
     private final InferControllerPreprocessor fixer2;
 
     public TestReverseInsert(Request input, Request expected, boolean shouldFail) {
-        Catalogue catalogue = new Catalogue();
+        SimpleCatalogue catalogue = new SimpleCatalogue();
         catalogue.register("dummy", new DummyController("default", "test", "unique"));
         catalogue.register("duplicate", new DummyController("default", "test"));
         catalogue.register("actionMatchesController", new DummyController("duplicate"));

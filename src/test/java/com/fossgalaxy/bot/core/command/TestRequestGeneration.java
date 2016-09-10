@@ -1,6 +1,7 @@
-package com.fossgalaxy.bot.core;
+package com.fossgalaxy.bot.core.command;
 
 import com.fossgalaxy.bot.api.command.Request;
+import com.fossgalaxy.bot.core.command.RequestParser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

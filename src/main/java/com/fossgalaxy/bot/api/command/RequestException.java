@@ -4,6 +4,8 @@ import com.fossgalaxy.bot.api.command.Request;
 
 /**
  * Something that goes wrong processing a request.
+ *
+ * This is the Command API's equalivent of a HTTP 400
  */
 public class RequestException extends RuntimeException {
     private final Request request;

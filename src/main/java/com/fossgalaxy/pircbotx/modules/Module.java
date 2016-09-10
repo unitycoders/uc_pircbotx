@@ -6,7 +6,7 @@ import com.fossgalaxy.pircbotx.commandprocessor.Message;
 import java.util.Collection;
 
 /**
- * A set of commands which can be run by the bot.
+ * A set of command which can be run by the bot.
  */
 public interface Module {
     Integer MODULE_ARG = 0;
@@ -14,7 +14,7 @@ public interface Module {
     String DEFAULT_COMMAND = "default";
 
     /**
-     * Inform the module one if it's commands has been invoked.
+     * Inform the module one if it's command has been invoked.
      *
      * @param message the message which caused the invocation
      * @throws Exception in the event of failure.

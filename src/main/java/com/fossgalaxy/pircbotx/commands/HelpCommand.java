@@ -29,7 +29,7 @@ import com.google.inject.Inject;
 import java.util.Collection;
 
 /**
- * Displays information on other commands.
+ * Displays information on other command.
  * <p>
  * This plug in helps users find information about the bot's capabilties and how
  * to use the bot.
@@ -51,14 +51,14 @@ public class HelpCommand extends AnnotationModule {
     @Command
     @HelpText("Displays infomation how to use the bot")
     public void onHelp(Message event) {
-        event.respond("Type 'help modules' for a list of modules or 'help commands' to see valid commands for a module.");
+        event.respond("Type 'help modules' for a list of modules or 'help command' to see valid command for a module.");
     }
 
     @Command("modules")
     @HelpText("list all loaded modules")
     public void onList(Message event) {
         Collection<String> modules = processor.getModules();
-        event.respond("Loaded modules are: " + modules + " type 'help module <name>' for more infomation or 'help commands <module>' to see valid commands");
+        event.respond("Loaded modules are: " + modules + " type 'help module <name>' for more infomation or 'help command <module>' to see valid command");
     }
 
     @Command("info")
@@ -120,8 +120,8 @@ public class HelpCommand extends AnnotationModule {
         }
     }
 
-    @Command("commands")
-    @HelpText("Show a list of commands povided by a module")
+    @Command("command")
+    @HelpText("Show a list of command povided by a module")
     public void onCommands(Message event) {
         String moduleName = event.getArgument(2, null);
 
@@ -132,7 +132,7 @@ public class HelpCommand extends AnnotationModule {
         Collection<String> commands = processor.getCommands(moduleName);
 
         if (commands.isEmpty()) {
-            event.respond("Sorry, that module doesn't exist or has no commands");
+            event.respond("Sorry, that module doesn't exist or has no command");
         } else {
             event.respond(moduleName + " contains: " + commands + " type 'help command <module> <command>' for a description.");
         }

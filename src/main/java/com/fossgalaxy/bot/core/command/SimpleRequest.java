@@ -1,4 +1,4 @@
-package com.fossgalaxy.bot.core;
+package com.fossgalaxy.bot.core.command;
 
 import com.fossgalaxy.bot.api.command.MissingArgumentException;
 import com.fossgalaxy.bot.api.command.Request;

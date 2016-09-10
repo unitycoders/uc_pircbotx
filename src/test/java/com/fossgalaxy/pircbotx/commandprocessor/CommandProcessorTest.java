@@ -79,7 +79,7 @@ public class CommandProcessorTest {
 	}
 
 	/**
-	 * Check that if a module is registered then all module commands show up
+	 * Check that if a module is registered then all module command show up
 	 */
 	@Test
 	public void testModuleExists() {
@@ -96,7 +96,7 @@ public class CommandProcessorTest {
 	}
 
 	/**
-	 * Check that if a module is registered then all module commands show up
+	 * Check that if a module is registered then all module command show up
 	 */
 	@Test
 	public void testCommandsExists() {

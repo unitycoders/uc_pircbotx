@@ -58,7 +58,7 @@ public class AnnotationModuleTests {
 
 
 	@Test(expected=IllegalArgumentException.class)
-	public void testFirCommandException() throws Exception {
+	public void testFireCommandException() throws Exception {
 		Message message = new MessageStub("mock");
 		Module m = new MockAnnotationModuleThrowsException();
 		m.fire(message);

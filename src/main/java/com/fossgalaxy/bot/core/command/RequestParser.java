@@ -1,4 +1,4 @@
-package com.fossgalaxy.bot.core;
+package com.fossgalaxy.bot.core.command;
 
 import com.fossgalaxy.bot.api.command.Request;
 import com.google.inject.Inject;
@@ -13,15 +13,15 @@ import java.util.regex.Pattern;
 /**
  * Converts a string into a request.
  */
-public class RequestParser implements Function<String, Request> {
+class RequestParser implements Function<String, Request> {
     private final Pattern tokeniser;
 
     /**
      * Create a new command processor.
      * <p>
      * This will create a new command processor and will initialise the regex
-     * pattern the bot will use to match commands. It will also create the maps
-     * needed to store information about the commands.
+     * pattern the bot will use to match command. It will also create the maps
+     * needed to store information about the command.
      */
     @Inject
     public RequestParser() {
