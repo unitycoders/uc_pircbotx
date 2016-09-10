@@ -52,4 +52,13 @@ public class SimpleCatalogue implements Catalogue {
         }
         reverse.add(name);
     }
+
+    @Override
+    public void alias(String alias, String name) {
+        Controller controller = controllers.get(name);
+        if (controller == null) {
+            return;
+        }
+        controllers.put(alias, controller);
+    }
 }

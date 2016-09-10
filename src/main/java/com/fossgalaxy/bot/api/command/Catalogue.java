@@ -17,4 +17,6 @@ public interface Catalogue {
     void register(String name, Controller controller);
 
     void addReverse(String name, String action);
+
+    void alias(String alias, String name);
 }

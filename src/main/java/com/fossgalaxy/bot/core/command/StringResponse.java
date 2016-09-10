@@ -11,4 +11,8 @@ public class StringResponse implements Response {
     public StringResponse(String text) {
         this.text = text;
     }
+
+    public String toString() {
+        return text;
+    }
 }

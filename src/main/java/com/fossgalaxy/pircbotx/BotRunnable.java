@@ -18,21 +18,24 @@
  */
 package com.fossgalaxy.pircbotx;
 
+import com.fossgalaxy.bot.api.command.Catalogue;
 import com.fossgalaxy.bot.api.command.Invoker;
+import com.fossgalaxy.bot.api.command.MissingArgumentException;
 import com.fossgalaxy.bot.core.command.ApiCommandModule;
+import com.fossgalaxy.bot.core.command.InferControllerPreprocessor;
+import com.fossgalaxy.bot.core.command.InsertMissingDefaultPreprocessor;
+import com.fossgalaxy.bot.core.command.RequestProcessor;
+import com.fossgalaxy.bot.core.command.compat.ModuleController;
+import com.fossgalaxy.bot.utils.session.SessionPreprocessor;
 import com.fossgalaxy.pircbotx.backends.BackendException;
 import com.fossgalaxy.pircbotx.backends.BotService;
 import com.fossgalaxy.pircbotx.backends.irc.IrcModule;
 import com.fossgalaxy.pircbotx.commandprocessor.CommandModule;
-import com.fossgalaxy.pircbotx.commandprocessor.CommandProcessor;
 import com.fossgalaxy.pircbotx.commands.script.ScriptConfig;
 import com.fossgalaxy.pircbotx.commands.script.ScriptModule;
 import com.fossgalaxy.pircbotx.data.db.DatabaseModule;
-import com.fossgalaxy.pircbotx.middleware.BotMiddleware;
 import com.fossgalaxy.pircbotx.modules.Module;
 import com.fossgalaxy.pircbotx.modules.ModuleConfig;
-import com.fossgalaxy.pircbotx.modules.ModuleUtils;
-import com.fossgalaxy.pircbotx.security.SecurityMiddleware;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.slf4j.Logger;
@@ -44,28 +47,16 @@ import java.util.*;
 
 public class BotRunnable implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(BotRunnable.class);
-    private CommandProcessor processor;
     private LocalConfiguration config;
 
     public BotRunnable(LocalConfiguration config) {
         this.config = config;
     }
 
-    private void setupProcessor(Injector injector) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        processor = injector.getInstance(CommandProcessor.class);
-
-        if (config.middleware != null) {
-            for (String middlewareClass : config.middleware) {
-                BotMiddleware mw = ModuleUtils.loadMiddleware(middlewareClass);
-                injector.injectMembers(mw);
-                processor.addMiddleware(mw);
-                mw.init(config);
-            }
-        }
-        processor.addMiddleware(injector.getInstance(SecurityMiddleware.class));
-    }
 
     private void loadPlugins(Injector injector) {
+        Catalogue catalogue = injector.getInstance(Catalogue.class);
+
         Map<String, ModuleConfig> moduleConfigs = config.modules;
         if (moduleConfigs == null) {
             moduleConfigs = Collections.emptyMap();
@@ -79,15 +70,15 @@ public class BotRunnable implements Runnable {
 
             //module data
             String name = module.getName();
-            processor.register(name, module);
-            LOG.info("new module: {} ", module);
+            catalogue.register(name, new ModuleController(module));
+            LOG.info("module {} has been loaded though compatibility layer.", module);
 
             //configuration items
             ModuleConfig config = moduleConfigs.get(name);
             if (config != null) {
                 if (config.aliases != null) {
                     for (String alias : config.aliases) {
-                        processor.alias(alias, module.getName());
+                        catalogue.alias(alias, name);
                     }
                 }
             }
@@ -100,6 +91,8 @@ public class BotRunnable implements Runnable {
             return;
         }
 
+        Catalogue catalogue = injector.getInstance(Catalogue.class);
+
         Map<String, ScriptConfig> scripts = config.scripts;
         for (Map.Entry<String, ScriptConfig> configEntry : scripts.entrySet()) {
             try {
@@ -109,7 +102,7 @@ public class BotRunnable implements Runnable {
                 injector.injectMembers(sm);
                 sm.init();
 
-                processor.register(name, sm);
+                catalogue.register(name, new ModuleController(sm));
             } catch (ScriptException ex) {
                 LOG.warn("failed to load script: ", ex);
             }
@@ -120,19 +113,20 @@ public class BotRunnable implements Runnable {
     public void run() {
 
         try {
-            Injector injector = Guice.createInjector(new DatabaseModule(), new CommandModule(), new ApiCommandModule(), new IrcModule());
-            Invoker invoker = injector.getInstance(Invoker.class);
+            Injector injector = Guice.createInjector(new DatabaseModule(), new ApiCommandModule(), new IrcModule());
+
+            //get out pipelines sorted
+            RequestProcessor processor = injector.getInstance(RequestProcessor.class);
+            processor.addLast(injector.getInstance(InferControllerPreprocessor.class));
+            processor.addLast(injector.getInstance(InsertMissingDefaultPreprocessor.class));
+            //processor.addLast(injector.getInstance(SessionPreprocessor.class));
 
             //This is our bits
-            setupProcessor(injector);
             loadPlugins(injector);
             loadScripts(injector);
 
             BotService service = injector.getInstance(BotService.class);
-            service.start(config, invoker);
-        } catch (ReflectiveOperationException ex) {
-            LOG.error("could not setup bot", ex);
-            throw new BotException(ex);
+            service.start(config, injector.getInstance(Invoker.class));
         } catch (IOException | BackendException ex) {
             LOG.error("bot failed to start", ex);
             throw new BotException(ex);

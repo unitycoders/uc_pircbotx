@@ -15,7 +15,7 @@ import java.util.Objects;
  * Class responsible for delegating requests to the appropriate place and dealing with the responses.
  */
 @Singleton
-class RequestProcessor {
+public class RequestProcessor {
     private final Logger LOG = LoggerFactory.getLogger(RequestProcessor.class);
     private final Catalogue catalogue;
     private Preprocessor pre;
