@@ -59,7 +59,12 @@ public abstract class AnnotationController implements Controller {
             throw new ControllerException(request, "error attempting to access requested method");
         } catch (InvocationTargetException e) {
             LOG.warning("got exception from annotation action", e);
-            throw new ControllerException(request, "annotation action throw exception: "+e.getCause());
+            Throwable cause = e.getCause();
+            if (cause instanceof RequestException) {
+                throw (RequestException)cause;
+            } else {
+                throw new ControllerException(request, "annotation action throw exception: " + e.getCause());
+            }
         } catch (ClassCastException e) {
             LOG.warning("annotation action caused class cast exception", e);
             throw new ControllerException(request, "an action should return a response");

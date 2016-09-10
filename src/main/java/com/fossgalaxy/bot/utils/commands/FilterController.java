@@ -1,9 +1,6 @@
 package com.fossgalaxy.bot.utils.commands;
 
-import com.fossgalaxy.bot.api.command.Context;
-import com.fossgalaxy.bot.api.command.Controller;
-import com.fossgalaxy.bot.api.command.Request;
-import com.fossgalaxy.bot.api.command.Response;
+import com.fossgalaxy.bot.api.command.*;
 import com.fossgalaxy.bot.core.command.annotation.Action;
 import com.fossgalaxy.bot.core.command.annotation.AnnotationController;
 
@@ -24,6 +21,41 @@ public class FilterController extends AnnotationController {
         return Response.respond(str.toUpperCase());
     }
 
+    @Action("lower")
+    public Response toLower(Context ctx, Request request) {
+        String str = String.join(" ", request.getArguments());
+        return Response.respond(str.toLowerCase());
+    }
+
+    @Action("extract")
+    public Response extract(Context ctx, Request request) {
+        List<String> args = request.getArguments();
+
+        try {
+            Integer n = Integer.parseInt(request.getArgument(0));
+            if (n < 0 || n >= args.size()) {
+                throw new RequestException(request, "first argument must be a positive number less than total args");
+            }
+
+            return Response.respond(request.getArgument(n));
+        } catch (NumberFormatException ex) {
+            throw new RequestException(request, "The first argument to extract must be a number");
+        }
+    }
+
+    @Action("find")
+    public Response find(Context ctx, Request request) {
+        String needle = request.getArgument(0);
+
+        List<String> args = request.getArguments();
+        for (int i=1; i<args.size(); i++) {
+            if (args.get(i).contains(needle)) {
+                return Response.respond(""+i);
+            }
+        }
+
+        return Response.respond("-1");
+    }
 
     @Action("join")
     public Response doJoin(Context ctx, Request request) {
