@@ -28,6 +28,7 @@ import com.fossgalaxy.bot.core.command.compat.ModuleController;
 import com.fossgalaxy.bot.utils.commands.CatalogueController;
 import com.fossgalaxy.bot.utils.commands.FilterController;
 import com.fossgalaxy.bot.utils.commands.JustForFunController;
+import com.fossgalaxy.bot.utils.commands.QuestionController;
 import com.fossgalaxy.pircbotx.backends.BackendException;
 import com.fossgalaxy.pircbotx.backends.BotService;
 import com.fossgalaxy.pircbotx.backends.irc.IrcModule;
@@ -129,6 +130,7 @@ public class BotRunnable implements Runnable {
             catalogue.register("catalogue", new CatalogueController(catalogue));
             catalogue.register("filters", new FilterController());
             catalogue.register("misc", new JustForFunController());
+            catalogue.register("ask", new QuestionController());
 
             BotService service = injector.getInstance(BotService.class);
             service.start(config, injector.getInstance(Invoker.class));
