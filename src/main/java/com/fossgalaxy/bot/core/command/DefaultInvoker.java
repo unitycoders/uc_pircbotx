@@ -21,12 +21,27 @@ public class DefaultInvoker implements Invoker {
         this.processor = Objects.requireNonNull(processor);
     }
 
+    /**
+     * Process a request and generate a response.
+     *
+     * @param context
+     * @param input
+     * @return
+     */
     @Override
     public Response apply(Context context, String input) {
         Request request = parser.apply(input);
         return processor.process(context, request);
     }
 
+    /**
+     * Debug method for default invoker.
+     *
+     * This will create a command processor and output some expected values using the whole command processing system.
+     * It also provides a minimal example for getting the command processing engine working.
+     *
+     * @param args ignored
+     */
     public static void main(String[] args) {
 
         //setup our dependency injection framework and get the stuff we're going to need
