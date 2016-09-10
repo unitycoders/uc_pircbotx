@@ -1,5 +1,7 @@
 package com.fossgalaxy.bot.api.command;
 
+import com.fossgalaxy.bot.impl.command.chain.Catalogue;
+
 import java.util.Collection;
 
 /**
@@ -20,4 +22,10 @@ public interface Controller {
     }
 
     Collection<String> getActions();
+
+    default void bindCatalogue(String name, Catalogue catalogue) {
+        for (String action : getActions()) {
+            catalogue.addReverse(name, action);
+        }
+    }
 }

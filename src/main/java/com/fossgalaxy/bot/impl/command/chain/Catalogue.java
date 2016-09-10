@@ -12,9 +12,11 @@ import java.util.*;
  */
 public class Catalogue {
     private final Map<String, Controller> controllers;
+    private final Map<String, Set<String>> reverseMap;
 
     public Catalogue(){
         this.controllers = new HashMap<>();
+        this.reverseMap = new HashMap<>();
     }
 
     public Controller get(String name) {
@@ -27,15 +29,23 @@ public class Catalogue {
         return controllers.containsKey(name);
     }
 
-    public Response execute(Context context, Request request) {
-        Controller controller = controllers.get(request.getController());
-        if (controller == null) {
-            //TODO handle non-existant controllers
-        }
-        return controller.execute(context, request);
-    }
-
     public List<String> findByAction(String name) {
         return Collections.emptyList();
+    }
+
+    public void register(String name, Controller controller) {
+        assert name != null;
+        assert controller != null;
+        controllers.put(name, controller);
+        controller.bindCatalogue(name,this);
+    }
+
+    public void addReverse(String name, String action) {
+        Set<String> reverse = reverseMap.get(action);
+        if (reverse == null) {
+            reverse = new TreeSet<>();
+            reverseMap.put(name, reverse);
+        }
+        reverse.add(name);
     }
 }

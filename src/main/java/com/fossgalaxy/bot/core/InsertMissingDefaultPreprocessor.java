@@ -6,6 +6,9 @@ import com.fossgalaxy.bot.api.command.Request;
 import com.fossgalaxy.bot.api.command.chain.Preprocessor;
 import com.fossgalaxy.bot.impl.command.chain.Catalogue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Attempt to insert missing default actions.
  *
@@ -29,7 +32,11 @@ public class InsertMissingDefaultPreprocessor implements Preprocessor {
             return request;
         }
 
-        return new PatchedRequest(request.getController(), name, request.getArguments());
+        //we need to patch the arguments to fix the request
+        List<String> args = new ArrayList<>(request.getArguments());
+        args.add(name);
+
+        return new PatchedRequest(request, request.getController(), PatchedRequest.DEFAULT_ACTION, args);
     }
 
 

@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  * This class is responsible to breaking IRC messages into commands which the
  * bot can understand. It contains a list of modules and the methods which are
  * tagged with the command annotation. Classes must be registered with the
- * Command Processor in order for the processor to recognise them as commands.
+ * Command RequestProcessor in order for the processor to recognise them as commands.
  */
 @Singleton
 public class CommandProcessor {

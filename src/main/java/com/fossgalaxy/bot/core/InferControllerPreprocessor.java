@@ -54,7 +54,7 @@ public class InferControllerPreprocessor implements Preprocessor {
         }
 
         //either the action was ambiguous and we don't care or only one controller matched.
-        return new PatchedRequest(matchedControllers.get(0), name, request.getArguments());
+        return new PatchedRequest(request, matchedControllers.get(0), name, request.getArguments());
     }
 
 

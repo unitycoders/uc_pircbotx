@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
 
 
 /**
- * Command Processor wrapper class.
+ * Command RequestProcessor wrapper class.
  * <p>
  * This class is notified by pircbotx when the bot gets a message. It's sole
  * purpose is to act as an adapter between the command processor and pircbotx.
