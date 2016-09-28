@@ -44,7 +44,7 @@ public class DBConnection {
 	public static Connection getInstance() throws ClassNotFoundException, SQLException {
 		if (instance == null) {
 			Class.forName("org.sqlite.JDBC");
-			instance = DriverManager.getConnection("jdbc:sqlite:bot.db");
+			instance = DriverManager.getConnection("jdbc:sqlite:config/bot.db");
 		}
 
 		return instance;

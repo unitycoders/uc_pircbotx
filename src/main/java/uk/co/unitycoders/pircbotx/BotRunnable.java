@@ -26,9 +26,11 @@ import java.util.ServiceLoader;
 
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import uk.co.unitycoders.pircbotx.backends.irc.IRCFactory;
 import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
-import uk.co.unitycoders.pircbotx.commandprocessor.irc.IRCFactory;
 import uk.co.unitycoders.pircbotx.commands.HelpCommand;
 import uk.co.unitycoders.pircbotx.commands.PluginCommand;
 import uk.co.unitycoders.pircbotx.listeners.JoinsListener;
@@ -42,6 +44,7 @@ import uk.co.unitycoders.pircbotx.security.SecurityMiddleware;
 import uk.co.unitycoders.pircbotx.security.SessionCommand;
 
 public class BotRunnable implements Runnable {
+	private static final Logger LOG = LoggerFactory.getLogger(BotRunnable.class);
 	private SecurityManager security;
 	private CommandProcessor processor;
 	private LocalConfiguration config;
@@ -79,7 +82,7 @@ public class BotRunnable implements Runnable {
 			//module data
 			String name = module.getName();
 			processor.register(name, module);
-			System.out.println("new module: "+module);
+			LOG.info("new module: {} ", module);
 
 			//configuration items
 			ModuleConfig config = moduleConfigs.get(name);
@@ -117,15 +120,16 @@ public class BotRunnable implements Runnable {
 
 
 			//this creates our host bot instance
-			Configuration.Builder<PircBotX> cb = IRCFactory.doConfig(config, processor);
+			Configuration.Builder cb = IRCFactory.doConfig(config, processor);
 
 			cb.addListener(new JoinsListener());
 			cb.addListener(new LinesListener());
 
 			//build pircbotx
-			Configuration<PircBotX> configuration = cb.buildConfiguration();
+			Configuration configuration = cb.buildConfiguration();
 			PircBotX instance = new PircBotX(configuration);
 			instance.startBot();
+			instance.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			throw new RuntimeException(ex);

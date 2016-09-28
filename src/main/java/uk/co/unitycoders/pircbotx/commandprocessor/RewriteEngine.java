@@ -21,10 +21,14 @@ package uk.co.unitycoders.pircbotx.commandprocessor;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import uk.co.unitycoders.pircbotx.LocalConfiguration;
 import uk.co.unitycoders.pircbotx.middleware.AbstractMiddleware;
 
 public class RewriteEngine extends AbstractMiddleware {
+	private static final Logger LOG = LoggerFactory.getLogger(RewriteEngine.class);
 	private Map<String, String> rules;
 
 	public RewriteEngine() {
@@ -38,7 +42,7 @@ public class RewriteEngine extends AbstractMiddleware {
 		}
 
 		for (Map.Entry<String, String> rule : config.aliases.entrySet()) {
-			System.out.println(rule.getKey()+" is mapped to "+rule.getValue());
+			LOG.info("{} is mapped to {}", rule.getKey(), rule.getValue());
 			addRule(rule.getKey(), rule.getValue());
 		}
 
@@ -54,7 +58,7 @@ public class RewriteEngine extends AbstractMiddleware {
 		for (Map.Entry<String, String> rule : rules.entrySet()) {
 			output = output.replaceAll(rule.getKey(), rule.getValue());
 		}
-		System.out.println(source+" "+output);
+		LOG.info("{} {}", source, output);
 
 		return output;
 	}

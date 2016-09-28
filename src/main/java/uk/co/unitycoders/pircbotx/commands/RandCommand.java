@@ -36,7 +36,7 @@ import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
  */
 public class RandCommand extends AnnotationModule {
 
-	private Logger logger = LoggerFactory.getLogger(RandCommand.class);
+	private static final Logger logger = LoggerFactory.getLogger(RandCommand.class);
 	private LineModel lines;
 
 	public RandCommand() {

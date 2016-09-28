@@ -1,9 +1,8 @@
-package uk.co.unitycoders.pircbotx.commandprocessor.irc;
+package uk.co.unitycoders.pircbotx.backends.irc;
 
 import javax.net.ssl.SSLSocketFactory;
 
 import org.pircbotx.Configuration;
-import org.pircbotx.PircBotX;
 import org.pircbotx.cap.SASLCapHandler;
 
 import uk.co.unitycoders.pircbotx.LocalConfiguration;
@@ -18,21 +17,16 @@ public class IRCFactory {
 	/**
 	 * Map our configuration file onto PIrcBotX's config builder
 	 *
-<<<<<<< HEAD
-	 * @param cb PircBotX config builder
-	 * @param config our configuration instance
-=======
 	 * @param config our configuration instance
 	 * @param processor the processor to bind to
->>>>>>> master
 	 */
-	public static Configuration.Builder<PircBotX> doConfig(LocalConfiguration config, CommandProcessor processor) {
-		Configuration.Builder<PircBotX> cb = new Configuration.Builder<PircBotX>();
+	public static Configuration.Builder doConfig(LocalConfiguration config, CommandProcessor processor) {
+		Configuration.Builder cb = new Configuration.Builder();
 		cb.addListener(new CommandListener(processor, config.trigger));
 
 		//build the bot
 		cb.setName(config.nick);
-		cb.setServer(config.host, config.port);
+		cb.addServer(config.host, config.port);
 
 		if (config.sasl) {
 			cb.setCapEnabled(true);

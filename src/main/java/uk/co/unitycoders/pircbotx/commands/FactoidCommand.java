@@ -35,7 +35,7 @@ import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 import uk.co.unitycoders.pircbotx.modules.Usage;
 
 public class FactoidCommand extends AnnotationModule {
-	private final Logger logger = LoggerFactory.getLogger(FactoidCommand.class);
+	private static final Logger logger = LoggerFactory.getLogger(FactoidCommand.class);
 	private FactoidModel model;
 
 	public FactoidCommand() {

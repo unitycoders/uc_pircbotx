@@ -26,6 +26,7 @@ public class AnnotationModule implements Module {
 	 * Default constructor for inherited classes.
 	 *
 	 * This is the constructor which subclasses should use. It will automatically register the methods which the subclass has tagged with the command interface.
+	 * @param name the name of the module
 	 */
 	public AnnotationModule(String name) {
 		this.name = name;
@@ -40,6 +41,7 @@ public class AnnotationModule implements Module {
 	 * This is the constructor which allows classes with command annotations with does not implement the Module interface.
 	 * This was the case for all plugins which are part of uc_pircbotx 0.2 or earlier, but presents problems for dynamic loading.
 	 *
+	 * @param name the name of the module
 	 * @param source the class which should be wrapped.
 	 */
 	public AnnotationModule(String name, Object source) {
@@ -55,7 +57,7 @@ public class AnnotationModule implements Module {
 
 		Node node = nodes.get(action);
 		if (node == null) {
-			throw new CommandNotFoundException(action);
+			throw new CommandNotFoundException(name, action);
 		}
 
 		try {
@@ -81,7 +83,7 @@ public class AnnotationModule implements Module {
 		return nodes.containsKey(action);
 	}
 
-	protected void processAnnotations() {
+	protected final void processAnnotations() {
 		Class<?> clazz = source.getClass();
 
 		//take the HelpText annotation from the class (if exists)

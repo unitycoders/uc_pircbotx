@@ -16,31 +16,43 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package uk.co.unitycoders.pircbotx.commandprocessor.irc;
+package uk.co.unitycoders.pircbotx.backends.irc;
 
 import java.util.List;
 
 import org.pircbotx.PircBotX;
-import org.pircbotx.hooks.events.PrivateMessageEvent;
+import org.pircbotx.User;
+import org.pircbotx.hooks.types.GenericMessageEvent;
 
-public class UserMessage extends BasicMessage {
-	private final PrivateMessageEvent<PircBotX> event;
+import uk.co.unitycoders.pircbotx.backends.AbstractMessage;
 
-	public UserMessage(PrivateMessageEvent<PircBotX> event, List<String> args) {
-		super(event, args);
-		this.event = event;
+/**
+ * Abstract message adapter for uc_pircbotx.
+ *
+ * An abstract version of the Bot Message interface which deals with some of
+ * the common features which we can deal with for the child classes.
+ */
+abstract class IRCMessage extends AbstractMessage {
+	private final GenericMessageEvent event;
+
+	public IRCMessage(GenericMessageEvent message, List<String> args) {
+		super(args);
+		this.event = message;
 	}
 
 	@Override
-	public void sendAction(String action) {
-		event.getUser().send().action(action);
+	public void respond(String response) {
+		event.respond(response);
 	}
 
 	@Override
-	public String getTargetName() {
-		return event.getUser().getNick();
+	public User getUser() {
+		return event.getUser();
 	}
 
-
+	@Override
+	public PircBotX getBot() {
+		return event.getBot();
+	}
 
 }

@@ -16,14 +16,13 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package uk.co.unitycoders.pircbotx.commandprocessor.irc;
+package uk.co.unitycoders.pircbotx.backends.irc;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.pircbotx.Colors;
-import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
@@ -36,7 +35,7 @@ import uk.co.unitycoders.pircbotx.commandprocessor.CommandProcessor;
  * This class is notified by pircbotx when the bot gets a message. It's sole
  * purpose is to act as an adapter between the command processor and pircbotx.
  */
-public class CommandListener extends ListenerAdapter<PircBotX> {
+class CommandListener extends ListenerAdapter {
 
 	private final CommandProcessor processor;
 	private final String prefix;
@@ -47,14 +46,14 @@ public class CommandListener extends ListenerAdapter<PircBotX> {
 	}
 
 	@Override
-	public void onMessage(MessageEvent<PircBotX> event) throws Exception {
+	public void onMessage(MessageEvent event) throws Exception {
 		try{
 			String messageText = event.getMessage();
 
 			if (messageText.startsWith(prefix)) {
 				List<String> args = extractMessage(messageText.substring(1));
 
-				BasicMessage message = new ChannelMessage(event, args);
+				IRCMessage message = new ChannelMessage(event, args);
 				processor.invoke(message);
 			} else {
 				//check for someone trying to address the bot by name
@@ -62,7 +61,7 @@ public class CommandListener extends ListenerAdapter<PircBotX> {
 				Matcher matcher = pattern.matcher(messageText);
 				if (matcher.matches()) {
 					List<String> args = extractMessage(matcher.group(1));
-					BasicMessage message = new ChannelMessage(event, args);
+					IRCMessage message = new ChannelMessage(event, args);
 					processor.invoke(message);
 				}
 			}
@@ -72,7 +71,7 @@ public class CommandListener extends ListenerAdapter<PircBotX> {
 	}
 
 	@Override
-	public void onPrivateMessage(PrivateMessageEvent<PircBotX> event) throws Exception {
+	public void onPrivateMessage(PrivateMessageEvent event) throws Exception {
 		try {
 			List<String> messageText = extractMessage(event.getMessage());
 			processor.invoke(new UserMessage(event, messageText));

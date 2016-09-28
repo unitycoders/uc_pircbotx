@@ -53,14 +53,6 @@
 		</developer>
 	</developers>
 
-	<pluginRepositories>
-	    <pluginRepository>
-	        <id>sonatype-snapshots</id>
-	        <name>Sonatype Snapshots</name>
-	        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-	    </pluginRepository>
-	</pluginRepositories>
-
 	<build>
 		<plugins>
 			<!-- we need java 1.7 to run -->
@@ -113,7 +105,7 @@
 			<plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
-                <version>2.2.0</version>
+                <version>2.2.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -194,7 +186,7 @@
 		<dependency>
 			<groupId>org.pircbotx</groupId>
 			<artifactId>pircbotx</artifactId>
-			<version>2.0.1</version>
+			<version>2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-daemon</groupId>

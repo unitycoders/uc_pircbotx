@@ -68,7 +68,11 @@ public class DummyMessage implements Message {
 
 	@Override
 	public String getArgument(int id) {
-		throw new IllegalArgumentException("that is not supported");
+		if (args.length <= id || id < 0) {
+			throw new IllegalArgumentException("that is not supported");
+		}
+		
+		return args[id];
 	}
 
 }

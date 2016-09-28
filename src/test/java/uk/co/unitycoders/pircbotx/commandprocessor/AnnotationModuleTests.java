@@ -11,7 +11,7 @@ import uk.co.unitycoders.pircbotx.modules.AnnotationModule;
 import uk.co.unitycoders.pircbotx.modules.Module;
 
 public class AnnotationModuleTests {
-	private final String INVALID_COMMAND = "banana";
+	private static final String INVALID_COMMAND = "banana";
 	private AnnotationModule object;
 
 	@Before
@@ -30,9 +30,8 @@ public class AnnotationModuleTests {
 	public void testModuleNoHelpText() {
 		AnnotationModule module = new MockAnnotationModuleNoHelpText();
 
-		String expected = null;
 		String result = module.getModuleHelp();
-		Assert.assertEquals(expected, result);
+		Assert.assertNull(result);
 	}
 
 	@Test
@@ -83,9 +82,8 @@ public class AnnotationModuleTests {
 	public void testCommandNoHelpTextdefault() {
 		String command = "default";
 
-		String expected = null;
 		String result = object.getHelp(command);
-		Assert.assertEquals(expected, result);
+		Assert.assertNull(result);
 	}
 
 	@Test
@@ -122,9 +120,8 @@ public class AnnotationModuleTests {
 	public void testNoCommandHelpText() {
 		String command = INVALID_COMMAND;
 
-		String expected = null;
 		String result = object.getHelp(command);
-		Assert.assertEquals(expected, result);
+		Assert.assertNull(result);
 	}
 
 	@Test

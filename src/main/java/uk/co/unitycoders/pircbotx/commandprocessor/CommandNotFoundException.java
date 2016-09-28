@@ -20,11 +20,29 @@ package uk.co.unitycoders.pircbotx.commandprocessor;
 
 public class CommandNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
+	private final String module;
 	private final String command;
 
-	public CommandNotFoundException(String command) {
-		super(command+" is not a valid command.");
+	public CommandNotFoundException() {
+		super("You didn't provide a module or command");
+		this.module = null;
+		this.command = null;
+	}
+	
+	public CommandNotFoundException(String module) {
+		super(module+" is not a loaded module");
+		this.module = module;
+		this.command = null;
+	}
+	
+	public CommandNotFoundException(String module, String command) {
+		super(command+" is not defined in "+module+".");
+		this.module = module;
 		this.command = command;
+	}
+	
+	public String getModuleName() {
+		return module;
 	}
 
 	public String getCommandName() {

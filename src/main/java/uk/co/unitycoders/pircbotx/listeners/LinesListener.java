@@ -18,7 +18,6 @@
  */
 package uk.co.unitycoders.pircbotx.listeners;
 
-import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
@@ -31,7 +30,7 @@ import uk.co.unitycoders.pircbotx.data.db.LineModel;
  *
  * @author Bruce Cowan
  */
-public class LinesListener extends ListenerAdapter<PircBotX> {
+public class LinesListener extends ListenerAdapter {
 
 	private LineModel model;
 
@@ -47,7 +46,7 @@ public class LinesListener extends ListenerAdapter<PircBotX> {
 	}
 
 	@Override
-	public void onMessage(MessageEvent<PircBotX> event) throws Exception {
+	public void onMessage(MessageEvent event) throws Exception {
 		model.storeLine(event.getMessage());
 	}
 }

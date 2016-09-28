@@ -1,5 +1,5 @@
 /**
- * Copyright © 2012-2015 Unity Coders
+ * Copyright © 2013-2015 Unity Coders
  *
  * This file is part of uc_pircbotx.
  *
@@ -16,28 +16,28 @@
  * You should have received a copy of the GNU General Public License along with
  * uc_pircbotx. If not, see <http://www.gnu.org/licenses/>.
  */
-package uk.co.unitycoders.pircbotx.listeners;
+package uk.co.unitycoders.pircbotx.backends.irc;
 
-import org.pircbotx.hooks.ListenerAdapter;
-import org.pircbotx.hooks.events.JoinEvent;
+import java.util.List;
 
-import uk.co.unitycoders.pircbotx.data.db.DBConnection;
-import uk.co.unitycoders.pircbotx.data.db.JoinModel;
+import org.pircbotx.hooks.events.MessageEvent;
 
-public class JoinsListener extends ListenerAdapter {
+class ChannelMessage extends IRCMessage {
+	private final MessageEvent event;
 
-	private JoinModel model;
-
-	public JoinsListener() {
-		try {
-			this.model = DBConnection.getJoinModel();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+	public ChannelMessage(MessageEvent event, List<String> args) {
+		super(event, args);
+		this.event = event;
 	}
 
 	@Override
-	public void onJoin(JoinEvent event) throws Exception {
-		model.incrementJoin(event.getUser().getNick());
+	public void sendAction(String action) {
+		event.getChannel().send().action(action);
 	}
+
+	@Override
+	public String getTargetName() {
+		return event.getChannel().getName();
+	}
+
 }

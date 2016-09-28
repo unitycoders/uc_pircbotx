@@ -19,6 +19,7 @@
 package uk.co.unitycoders.pircbotx.commandprocessor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,7 +45,7 @@ import uk.co.unitycoders.pircbotx.modules.Module;
  *
  */
 public class CommandProcessor {
-	private final String USE_FORMAT = "usage: %s %s %s";
+	private static final String USE_FORMAT = "usage: %s %s %s";
 
 	private final Logger logger = LoggerFactory.getLogger(CommandProcessor.class);
 	private final Pattern tokeniser;
@@ -58,6 +59,7 @@ public class CommandProcessor {
 	 * This will create a new command processor and will initialise the regex
 	 * pattern the bot will use to match commands. It will also create the maps
 	 * needed to store information about the commands.
+	 * @param middleware the list of steps to process the message
 	 */
 	public CommandProcessor(List<BotMiddleware> middleware) {
 		assert middleware != null : "don't pass null as the middleware, use empty list instead";
@@ -180,7 +182,8 @@ public class CommandProcessor {
 	 * event.
 	 *
 	 * @param message the event to be processed
-	 * @throws Exception
+	 * @throws CommandNotFoundException if the command does not exist
+	 * @throws Exception if the method throws an exception
 	 */
 	public void invoke(Message message) throws Exception {
 		for (BotMiddleware mw : middleware) {
@@ -190,23 +193,28 @@ public class CommandProcessor {
 		}
 
 		String module = message.getArgument(Module.MODULE_ARG, null);
-		String action = message.getArgument(Module.COMMAND_ARG, Module.DEFAULT_COMMAND);
+		if (module == null) {
+			throw new CommandNotFoundException();
+		}
+		
 		Module node = commands.get(module);
 		if (node == null) {
 			throw new CommandNotFoundException(module);
 		}
-
+		
 		try {
 			node.fire(message);
 		} catch (CommandNotFoundException ex) {
-			message.respond("That's not a valid command");
+			String action = message.getArgument(Module.COMMAND_ARG, Module.DEFAULT_COMMAND);
+			logger.warn("module {} reported invalid command for action {}", module, action);
 			throw ex;
 		} catch (IllegalArgumentException ex) {
+			String action = message.getArgument(Module.COMMAND_ARG, Module.DEFAULT_COMMAND);
 			String[] args = node.getArgumentsFor(action);
 			if (args == null) {
 				message.respond("You did not supply the correct arguments");
 			} else {
-				message.respond(String.format(USE_FORMAT, module, action, args));
+				message.respond(String.format(USE_FORMAT, module, action, Arrays.toString(args)));
 			}
 		} catch (Exception ex) {
 			message.respond("Something has gone wrong, please let the developers know");
