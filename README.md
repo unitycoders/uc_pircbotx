@@ -1,5 +1,6 @@
 # uc_pircbotx - IRC Bot
-[![Build Status](https://travis-ci.org/unitycoders/uc_pircbotx.svg?branch=master)](https://travis-ci.org/unitycoders/uc_pircbotx)
+[![build
+status](https://git.fossgalaxy.com/open-source/irc-bot/badges/master/build.svg)](https://git.fossgalaxy.com/open-source/irc-bot/commits/master)
 
 This is a bot for #unity-coders, which uses [pircbotx][pircbotx]. Source available on
 [github](http://git.unitycoders.co.uk/uc_pircbotx).
@@ -12,6 +13,9 @@ If you would like documentation on how to use the bot, please consult the
 
 ### Compiling and running with maven
     $ mvn package
+    $ mkdir target/config
+    $ cp src/main/resources/uc_pircbotx.json.example target/config/bot.json
+    # edit config in target/config/bot.json
     $ java -jar target/uc_pircbotx-0.1-SNAPSHOT-jar-with-dependencies.jar
 
 ### Running as a service (demo, not a real system service yet)
@@ -23,6 +27,31 @@ Warning: This is **very** experimental. It /should/ work on debian based distrib
     $ sudo src/main/scripts/unix-install
     $ vim /etc/uc_pircbotx.json # edit to suit your needs
     $ sudo ucbot-ctl
+
+### Running as a docker image
+This is the way we are currently using the bot for our needs. There is a
+public docker image on [docker hub](https://hub.docker.com/r/webpigeon/uc_pircbotx/).
+
+There are however a few issues needing to be fixed:
+* Plugins directory is not a thing yet
+
+#### running the image
+```
+mkdir config plugins
+wget https://raw.githubusercontent.com/unitycoders/uc_pircbotx/master/src/main/resources/uc_pircbotx.json.example -O config/bot.json
+# edit config file
+sudo docker run -d --name ircbot -v `pwd`/config:/home/uc_pircbotx/config -v `pwd`/plugins:/home/uc_pircbotx/plugins webpigeon/uc_pircbotx
+```
+
+
+#### building the docker image
+This is mostly for webpigeon incase he forgets
+
+```
+# sudo docker login
+sudo docker build -t webpigeon/uc_pircbotx .
+sudo docker push webpigeon/uc_pircbotx
+```
 
 ### Maven With IDEs
 #### Maven With Eclipse
